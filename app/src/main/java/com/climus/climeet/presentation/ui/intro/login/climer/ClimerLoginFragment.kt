@@ -12,6 +12,8 @@ import com.climus.climeet.databinding.FragmentClimerLoginBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
 import com.climus.climeet.presentation.ui.main.MainActivity
+import com.climus.climeet.presentation.util.Constants.KAKAO
+import com.climus.climeet.presentation.util.Constants.NAVER
 import com.climus.climeet.presentation.util.Constants.TAG
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -89,7 +91,7 @@ class ClimerLoginFragment :
                 }
                 // 로그인 성공 부분
                 else if (token != null) {
-                    viewModel.login(LoginType.KAKAO, token.accessToken)
+                    viewModel.login(KAKAO, token.accessToken)
                 }
             }
         } else {
@@ -106,7 +108,7 @@ class ClimerLoginFragment :
         if (error != null) {
             Log.e(TAG, "이메일 로그인 실패 $error")
         } else if (token != null) {
-            viewModel.login(LoginType.KAKAO, token.accessToken)
+            viewModel.login(KAKAO, token.accessToken)
         }
     }
 
@@ -114,7 +116,7 @@ class ClimerLoginFragment :
         val oauthLoginCallback = object : OAuthLoginCallback {
 
             override fun onSuccess() {
-                viewModel.login(LoginType.NAVER, NaverIdLoginSDK.getAccessToken().toString())
+                viewModel.login(NAVER, NaverIdLoginSDK.getAccessToken().toString())
             }
 
             override fun onFailure(httpStatus: Int, message: String) {

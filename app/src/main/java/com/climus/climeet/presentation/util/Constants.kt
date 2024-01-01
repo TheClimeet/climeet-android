@@ -6,4 +6,7 @@ object Constants {
     const val X_ACCESS_TOKEN = "X-ACCESS_TOKEN"
     const val X_REFRESH_TOKEN = "X_REFRESH_TOKEN"
 
+    const val KAKAO = "KAKAO"
+    const val NAVER = "NAVER"
+
 }
