@@ -2,4 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="cm_main">#FFBEDF22</color>
+    <color name="cm_background">#FF333333</color>
+
+    <color name="cm_grey1">#FFDFDFDF</color>
+    <color name="cm_grey2">#FFC1C1C1</color>
+    <color name="cm_grey3">#FFA3A3A3</color>
+    <color name="cm_grey4">#FF6F6F6F</color>
+
+    <color name="cm_red">#FFE64646</color>
 </resources>
