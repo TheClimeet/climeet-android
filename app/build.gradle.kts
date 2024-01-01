@@ -103,4 +103,10 @@ dependencies {
 
     // Circle Indicator
     implementation("me.relex:circleindicator:2.1.6")
+
+    // naver login
+    implementation("com.navercorp.nid:oauth-jdk8:5.6.0")
+
+    // kakao login
+    implementation("com.kakao.sdk:v2-all:2.17.0")
 }
