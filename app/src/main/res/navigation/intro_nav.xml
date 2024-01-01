@@ -17,15 +17,18 @@
     <fragment
         android:id="@+id/login_fragment"
         android:name="com.climus.climeet.presentation.ui.intro.login.LoginFragment"
-        android:label="login" >
-
+        android:label="login">
 
         <action
             android:id="@+id/action_login_fragment_to_admin_login_fragment"
-            app:destination="@id/admin_login_fragment" />
+            app:destination="@id/admin_login_fragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/top_swipe" />
         <action
             android:id="@+id/action_login_fragment_to_climer_login_fragment"
-            app:destination="@id/climer_login_fragment" />
+            app:destination="@id/climer_login_fragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/top_swipe" />
     </fragment>
 
     <fragment

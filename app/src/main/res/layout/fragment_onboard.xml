@@ -32,7 +32,7 @@
             android:id="@+id/idc_onboard"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            app:ci_animator="@anim/alpha"
+            app:ci_animator="@anim/indicator_anim"
             app:ci_drawable="@drawable/oval_indicator_select"
             app:ci_drawable_unselected="@drawable/oval_indicator_unselect"
             app:ci_height="12dp"
