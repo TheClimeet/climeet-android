@@ -38,9 +38,24 @@
             app:ci_height="12dp"
             app:ci_margin="8dp"
             app:ci_width="12dp"
+            app:layout_constraintBottom_toTopOf="@id/guide"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_start"
+            style="@style/TextSmallSemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rect_mainfill_nostroke_15radius"
+            android:minHeight="0dp"
+            android:paddingVertical="8dp"
+            android:text="시작하기"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guide" />
+            app:layout_constraintTop_toBottomOf="@id/idc_onboard" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
