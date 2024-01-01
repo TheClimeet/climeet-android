@@ -1,12 +1,17 @@
 package com.climus.climeet.presentation.ui.intro.login.climer
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentClimerLoginBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
+import com.climus.climeet.presentation.ui.main.MainActivity
 import com.climus.climeet.presentation.util.Constants.TAG
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -26,6 +31,7 @@ class ClimerLoginFragment :
         super.onViewCreated(view, savedInstanceState)
 
         setBtnListener()
+        initEventObserve()
     }
 
     private fun setBtnListener() {
@@ -35,6 +41,29 @@ class ClimerLoginFragment :
 
         binding.btnNaverLogin.setOnClickListener {
             naverLogin()
+        }
+    }
+
+    private fun initEventObserve() {
+        repeatOnStarted {
+            viewModel.event.collect {
+                when (it) {
+                    is ClimerLoginEvent.GoToMainActivity -> {
+                        val intent = Intent(requireContext(), MainActivity::class.java)
+                            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                    }
+
+                    is ClimerLoginEvent.NavigateToSignUp -> {
+
+                        // todo 회원가입 최종단계에서 필요한, 소셜타입과 토큰을 싱글톤 Object에 임시저장
+                        ClimerSignupForm.setSocialType(it.socialType)
+                        ClimerSignupForm.setToken(it.token)
+
+                        findNavController().toSetClimerNick()
+                    }
+                }
+            }
         }
     }
 
@@ -101,6 +130,12 @@ class ClimerLoginFragment :
             }
         }
         NaverIdLoginSDK.authenticate(requireContext(), oauthLoginCallback)
+    }
+
+    private fun NavController.toSetClimerNick() {
+        val action =
+            ClimerLoginFragmentDirections.actionClimerLoginFragmentToSetClimerNameFragment()
+        navigate(action)
     }
 
 }
