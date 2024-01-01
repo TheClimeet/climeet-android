@@ -30,24 +30,18 @@ class ClimerLoginFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setBtnListener()
+        binding.vm = viewModel
         initEventObserve()
-    }
-
-    private fun setBtnListener() {
-        binding.btnKakaoLogin.setOnClickListener {
-            kakaoLogin()
-        }
-
-        binding.btnNaverLogin.setOnClickListener {
-            naverLogin()
-        }
     }
 
     private fun initEventObserve() {
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
+                    is ClimerLoginEvent.StartKakaoLogin -> kakaoLogin()
+                    is ClimerLoginEvent.StartNaverLogin -> naverLogin()
+                    is ClimerLoginEvent.NavigateBack -> findNavController().navigateUp()
+
                     is ClimerLoginEvent.GoToMainActivity -> {
                         val intent = Intent(requireContext(), MainActivity::class.java)
                             .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -133,8 +127,7 @@ class ClimerLoginFragment :
     }
 
     private fun NavController.toSetClimerNick() {
-        val action =
-            ClimerLoginFragmentDirections.actionClimerLoginFragmentToSetClimerNameFragment()
+        val action = ClimerLoginFragmentDirections.actionClimerLoginFragmentToSetClimerNameFragment()
         navigate(action)
     }
 
