@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.intro.login.climer.ClimerLoginViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
