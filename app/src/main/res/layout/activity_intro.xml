@@ -3,6 +3,10 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.intro.IntroViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
