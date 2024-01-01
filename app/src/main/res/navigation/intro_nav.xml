@@ -17,7 +17,25 @@
     <fragment
         android:id="@+id/login_fragment"
         android:name="com.climus.climeet.presentation.ui.intro.login.LoginFragment"
-        android:label="Login"/>
+        android:label="login" >
 
+
+        <action
+            android:id="@+id/action_login_fragment_to_admin_login_fragment"
+            app:destination="@id/admin_login_fragment" />
+        <action
+            android:id="@+id/action_login_fragment_to_climer_login_fragment"
+            app:destination="@id/climer_login_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/climer_login_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.login.climer.ClimerLoginFragment"
+        android:label="climerLogin" />
+
+    <fragment
+        android:id="@+id/admin_login_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.login.admin.AdminLoginFragment"
+        android:label="adminLogin" />
 
 </navigation>
