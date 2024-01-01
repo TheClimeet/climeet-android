@@ -1,4 +1,4 @@
-PR 제목: [Epic] 구현 기능 설명 
+PR 제목: [Epic/Task 티켓번호] 구현 기능 설명 
 
 PR 설명: 
 - PR 단위는, Jira 의 Task 단위 (특수한 상황 제외시,  Task  미완료시 PR 발행하지 말기)
