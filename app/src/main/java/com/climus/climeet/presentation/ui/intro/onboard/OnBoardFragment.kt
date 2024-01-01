@@ -2,6 +2,8 @@ package com.climus.climeet.presentation.ui.intro.onboard
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentOnboardBinding
@@ -13,6 +15,7 @@ class OnBoardFragment : BaseFragment<FragmentOnboardBinding>(R.layout.fragment_o
         super.onViewCreated(view, savedInstanceState)
 
         setViewpager()
+        setBtnListener()
     }
 
     private fun setViewpager() {
@@ -37,6 +40,16 @@ class OnBoardFragment : BaseFragment<FragmentOnboardBinding>(R.layout.fragment_o
             override fun onPageScrollStateChanged(state: Int) {}
             override fun onPageSelected(position: Int) {}
         })
+    }
 
+    private fun setBtnListener() {
+        binding.btnStart.setOnClickListener {
+            findNavController().toLogin()
+        }
+    }
+
+    private fun NavController.toLogin() {
+        val action = OnBoardFragmentDirections.actionOnboardFragmentToLoginFragment()
+        navigate(action)
     }
 }

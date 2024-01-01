@@ -9,7 +9,15 @@
         android:name="com.climus.climeet.presentation.ui.intro.onboard.OnBoardFragment"
         android:label="onBoard">
 
+        <action
+            android:id="@+id/action_onboard_fragment_to_login_fragment"
+            app:destination="@id/login_fragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.login.LoginFragment"
+        android:label="Login"/>
 
 
 </navigation>
