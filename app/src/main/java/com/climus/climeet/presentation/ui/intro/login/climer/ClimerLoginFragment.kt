@@ -43,6 +43,7 @@ class ClimerLoginFragment :
                     is ClimerLoginEvent.NavigateBack -> findNavController().navigateUp()
 
                     is ClimerLoginEvent.GoToMainActivity -> {
+                        // todo 클라이머 모드 지정?
                         val intent = Intent(requireContext(), MainActivity::class.java)
                             .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)

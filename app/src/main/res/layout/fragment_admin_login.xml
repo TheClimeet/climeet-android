@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.intro.login.admin.AdminLoginViewModel" />
@@ -19,9 +21,9 @@
             android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> vm.navigateToBack()}"
             android:layout_marginTop="20dp"
             android:background="@android:color/transparent"
+            android:onClick="@{() -> vm.navigateToBack()}"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
@@ -68,6 +70,7 @@
             android:layout_marginTop="4dp"
             android:backgroundTint="@color/cm_grey1"
             android:hint="아이디 입력하기"
+            android:text="@={vm.id}"
             android:textColor="@color/cm_grey1"
             android:textColorHint="@color/cm_grey1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -79,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_text_error"
-            android:visibility="invisible"
+            android:visibility="@{vm.warningText.blank? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/et_id"
             app:layout_constraintEnd_toEndOf="@id/et_id"
             app:layout_constraintTop_toTopOf="@id/et_id" />
@@ -91,7 +94,7 @@
             android:layout_height="wrap_content"
             android:text="계정 정보를 다시 확인해주세요"
             android:textColor="@color/cm_red"
-            android:visibility="invisible"
+            android:visibility="@{vm.warningText.blank? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_id" />
@@ -115,6 +118,7 @@
             android:layout_marginTop="4dp"
             android:backgroundTint="@color/cm_grey1"
             android:hint="비밀번호 입력하기"
+            android:text="@={vm.pw}"
             android:textColor="@color/cm_grey1"
             android:textColorHint="@color/cm_grey1"
             app:layout_constraintEnd_toEndOf="parent"
