@@ -57,6 +57,8 @@ class ClimerLoginFragment :
 
                         findNavController().toSetClimerNick()
                     }
+
+                    is ClimerLoginEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }

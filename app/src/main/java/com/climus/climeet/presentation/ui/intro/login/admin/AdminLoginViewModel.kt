@@ -18,6 +18,7 @@ sealed class AdminLoginEvent {
     data object NavigateToFindAccount : AdminLoginEvent()
     data object NavigateToSignUp : AdminLoginEvent()
     data object GoToMainActivity : AdminLoginEvent()
+    data class ShowToastMessage(val msg: String) : AdminLoginEvent()
 }
 
 @HiltViewModel

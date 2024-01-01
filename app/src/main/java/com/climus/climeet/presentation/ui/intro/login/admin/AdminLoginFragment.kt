@@ -11,7 +11,7 @@ import com.climus.climeet.databinding.FragmentAdminLoginBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.MainActivity
 
-class AdminLoginFragment: BaseFragment<FragmentAdminLoginBinding>(R.layout.fragment_admin_login){
+class AdminLoginFragment : BaseFragment<FragmentAdminLoginBinding>(R.layout.fragment_admin_login) {
 
     private val viewModel: AdminLoginViewModel by viewModels()
 
@@ -22,27 +22,30 @@ class AdminLoginFragment: BaseFragment<FragmentAdminLoginBinding>(R.layout.fragm
         initEventObserve()
     }
 
-    private fun initEventObserve(){
+    private fun initEventObserve() {
         repeatOnStarted {
-            viewModel.event.collect{
-                when(it){
+            viewModel.event.collect {
+                when (it) {
                     is AdminLoginEvent.GoToMainActivity -> {
                         // todo 암장관리자모드 지정?
                         val intent = Intent(requireContext(), MainActivity::class.java)
                             .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
                     }
+
                     is AdminLoginEvent.NavigateToSignUp -> findNavController().toSetCragName()
                     is AdminLoginEvent.NavigateToFindAccount -> {
                         // todo id/pw 찾기로 이동
                     }
+
                     is AdminLoginEvent.NavigateToBack -> findNavController().navigateUp()
+                    is AdminLoginEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }
     }
 
-    private fun NavController.toSetCragName(){
+    private fun NavController.toSetCragName() {
         val action = AdminLoginFragmentDirections.actionAdminLoginFragmentToSetCragNameFragment()
         navigate(action)
     }

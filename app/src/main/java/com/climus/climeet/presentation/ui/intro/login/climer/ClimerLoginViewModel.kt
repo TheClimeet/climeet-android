@@ -17,6 +17,7 @@ sealed class ClimerLoginEvent {
     data object GoToMainActivity: ClimerLoginEvent()
     data class NavigateToSignUp(val socialType: String, val token: String): ClimerLoginEvent()
     data object NavigateBack: ClimerLoginEvent()
+    data class ShowToastMessage(val msg: String): ClimerLoginEvent()
 }
 
 @HiltViewModel
