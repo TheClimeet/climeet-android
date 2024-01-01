@@ -95,4 +95,7 @@ dependencies {
     // navigation
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.1")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.1")
+
+    // Circle Indicator
+    implementation("me.relex:circleindicator:2.1.6")
 }

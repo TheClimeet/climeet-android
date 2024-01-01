@@ -10,13 +10,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="onboard"
-            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.8" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_onboard"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <me.relex.circleindicator.CircleIndicator3
+            android:id="@+id/idc_onboard"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            app:ci_animator="@anim/alpha"
+            app:ci_drawable="@drawable/oval_indicator_select"
+            app:ci_drawable_unselected="@drawable/oval_indicator_unselect"
+            app:ci_height="12dp"
+            app:ci_margin="8dp"
+            app:ci_width="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guide" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
