@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.intro.login.admin.AdminLoginViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,6 +19,7 @@
             android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> vm.navigateToBack()}"
             android:layout_marginTop="20dp"
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
@@ -123,6 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:background="@drawable/rect_grey1fill_nostroke_20radius"
+            android:onClick="@{() -> vm.login()}"
             android:text="로그인하기"
             android:textColor="@color/cm_darkgrey"
             app:layout_constraintEnd_toEndOf="parent"
@@ -130,11 +136,12 @@
             app:layout_constraintTop_toBottomOf="@id/et_pw" />
 
         <TextView
-            android:id="@+id/btn_search_id_pw"
+            android:id="@+id/btn_find_id_pw"
             style="@style/TextRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:onClick="@{() -> vm.navigateToFindAccount()}"
             android:text="ID/PW 찾기"
             android:textColor="@color/cm_grey2"
             app:layout_constraintStart_toStartOf="parent"
@@ -146,6 +153,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:onClick="@{() -> vm.navigateToSignUp()}"
             android:text="암장을 새로 등록하시나요?"
             android:textColor="@color/cm_grey2"
             app:layout_constraintEnd_toEndOf="parent"
