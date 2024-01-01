@@ -34,11 +34,30 @@
     <fragment
         android:id="@+id/climer_login_fragment"
         android:name="com.climus.climeet.presentation.ui.intro.login.climer.ClimerLoginFragment"
-        android:label="climerLogin" />
+        android:label="climerLogin" >
+
+        <action
+            android:id="@+id/action_climer_login_fragment_to_set_climer_name_fragment"
+            app:destination="@id/set_climer_name_fragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/admin_login_fragment"
         android:name="com.climus.climeet.presentation.ui.intro.login.admin.AdminLoginFragment"
-        android:label="adminLogin" />
+        android:label="adminLogin" >
+        <action
+            android:id="@+id/action_admin_login_fragment_to_set_crag_name_fragment"
+            app:destination="@id/set_crag_name_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/set_climer_name_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.climer.SetClimerNickFragment"/>
+
+    <fragment
+        android:id="@+id/set_crag_name_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.SetCragNameFragment"
+        android:label="setCragName"/>
+
 
 </navigation>
