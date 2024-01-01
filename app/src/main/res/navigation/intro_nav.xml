@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/intro_nav"
+    app:startDestination="@id/onboard_fragment">
+
+    <fragment
+        android:id="@+id/onboard_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.onboard.OnBoardFragment"
+        android:label="onBoard">
+
+        <action
+            android:id="@+id/action_onboard_fragment_to_login_fragment"
+            app:destination="@id/login_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/login_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.login.LoginFragment"
+        android:label="login">
+
+        <action
+            android:id="@+id/action_login_fragment_to_admin_login_fragment"
+            app:destination="@id/admin_login_fragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/top_swipe" />
+        <action
+            android:id="@+id/action_login_fragment_to_climer_login_fragment"
+            app:destination="@id/climer_login_fragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/top_swipe" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/climer_login_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.login.climer.ClimerLoginFragment"
+        android:label="climerLogin" >
+
+        <action
+            android:id="@+id/action_climer_login_fragment_to_set_climer_name_fragment"
+            app:destination="@id/set_climer_name_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/admin_login_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.login.admin.AdminLoginFragment"
+        android:label="adminLogin" >
+        <action
+            android:id="@+id/action_admin_login_fragment_to_set_crag_name_fragment"
+            app:destination="@id/set_crag_name_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/set_climer_name_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.climer.SetClimerNickFragment"/>
+
+    <fragment
+        android:id="@+id/set_crag_name_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.SetCragNameFragment"
+        android:label="setCragName"/>
+
+
+</navigation>

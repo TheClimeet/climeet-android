@@ -11,5 +11,7 @@
     <color name="cm_grey3">#FFA3A3A3</color>
     <color name="cm_grey4">#FF6F6F6F</color>
 
+    <color name="cm_darkgrey">#FF2C2D2E</color>
+
     <color name="cm_red">#FFE64646</color>
 </resources>
