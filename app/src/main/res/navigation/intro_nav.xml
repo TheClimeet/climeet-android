@@ -53,12 +53,21 @@
 
     <fragment
         android:id="@+id/set_climer_name_fragment"
-        android:name="com.climus.climeet.presentation.ui.intro.signup.climer.SetClimerNickFragment"/>
+        android:name="com.climus.climeet.presentation.ui.intro.signup.climer.SetClimerNickFragment">
+        <action
+            android:id="@+id/action_set_climer_name_fragment_to_setClimerProfileFragment"
+            app:destination="@id/set_climer_profile_fragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/set_crag_name_fragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.admin.SetCragNameFragment"
         android:label="setCragName"/>
+
+    <fragment
+        android:id="@+id/set_climer_profile_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.climer.SetClimerProfileFragment"
+        android:label="SetClimerProfileFragment" />
 
 
 </navigation>

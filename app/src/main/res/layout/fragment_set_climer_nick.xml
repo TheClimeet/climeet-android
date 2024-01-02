@@ -31,11 +31,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.navigateToBack()}"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-            <!--        android:onClick="@{() -> vm.navigateToBack()}"-->
 
             <TextView
                 android:id="@+id/tv_set_nick"
@@ -103,10 +103,11 @@
                 android:hint="2~8글자의 한글과 숫자로 입력하세요."
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="12dp"
+                android:text="@={vm.nick}"
                 android:textColorHint="@color/white"
-                app:layout_constarintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_explain_regular" />
+                app:layout_constraintTop_toBottomOf="@id/tv_explain_regular" />
 
             <ImageView
                 android:id="@+id/iv_error"
@@ -114,6 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/ic_text_error"
+                android:visibility="@{vm.warningText.isEmpty() ? View.INVISIBLE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@id/et_nick"
                 app:layout_constraintEnd_toEndOf="@id/et_nick"
                 app:layout_constraintTop_toTopOf="@id/et_nick" />
@@ -125,13 +127,41 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
-                android:text="계정 정보를 다시 확인해주세요"
+                android:text="@{vm.warningText}"
                 android:textColor="@color/cm_red"
+                android:visibility="@{vm.warningText.isEmpty() ? View.INVISIBLE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_nick" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageButton
+            android:id="@+id/btn_next_unselect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="60dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_unselect"
+            android:visibility="@{vm.isNextButtonVisible ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btn_next_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="60dp"
+            android:background="@android:color/transparent"
+            android:onClick="@{() -> vm.NavigateToSetProfile()}"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_select"
+            android:visibility="@{vm.isNextButtonVisible ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
