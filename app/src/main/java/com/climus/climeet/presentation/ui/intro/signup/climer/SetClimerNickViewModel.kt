@@ -85,9 +85,23 @@ class SetClimerNickViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun NavigateToSetProfile() {
-        viewModelScope.launch {
-            _event.emit(SetClimerNickEvent.NavigateToSetProfile)
+
+    fun navigateToSetProfile() {
+        val currentNick = nick.value
+        if (currentNick.isNotBlank() && isNickNameValid(currentNick) && !isNickNameDuplicated(
+                currentNick
+            )
+        ) {
+            // ClimerSignupForm에 닉네임 설정
+            ClimerSignupForm.setNickName(currentNick)
+
+            // 이벤트 발송하여 프래그먼트에서 화면 전환 처리
+            viewModelScope.launch {
+                _event.emit(SetClimerNickEvent.NavigateToSetProfile)
+            }
+        } else {
+            // 닉네임이 유효하지 않거나 중복될 경우 경고 메시지 업데이트
+            warningText.value = "유효하지 않은 닉네임입니다."
         }
     }
 

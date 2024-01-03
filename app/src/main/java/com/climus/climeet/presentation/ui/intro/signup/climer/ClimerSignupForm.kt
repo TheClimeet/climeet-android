@@ -1,5 +1,7 @@
 package com.climus.climeet.presentation.ui.intro.signup.climer
 
+import android.util.Log
+
 object ClimerSignupForm {
 
     //todo
@@ -7,17 +9,25 @@ object ClimerSignupForm {
     // - 회원가입 데이터를 임시 저장하기 위한 싱글톤 Object
 
     var token = ""
-    private set
+        private set
 
     var socialType = ""
-    private set
+        private set
 
-    fun setToken(data: String){
+    var nickName = ""
+        private set
+
+    fun setToken(data: String) {
         token = data
     }
 
-    fun setSocialType(data: String){
+    fun setSocialType(data: String) {
         socialType = data
+    }
+
+    fun setNickName(data: String) {
+        nickName = data
+        Log.d("setNickNameLog", nickName)
     }
 
 }

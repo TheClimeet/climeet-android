@@ -156,7 +156,7 @@
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="60dp"
             android:background="@android:color/transparent"
-            android:onClick="@{() -> vm.NavigateToSetProfile()}"
+            android:onClick="@{() -> vm.navigateToSetProfile()}"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_select"
             android:visibility="@{vm.isNextButtonVisible ? View.VISIBLE : View.INVISIBLE}"

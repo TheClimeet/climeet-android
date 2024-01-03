@@ -4,7 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
 
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.intro.signup.climer.SetClimerProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -108,7 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="켈리0921"
+            android:text="켈리051"
             app:layout_constraintEnd_toEndOf="@id/iv_profile"
             app:layout_constraintStart_toStartOf="@id/iv_profile"
             app:layout_constraintTop_toBottomOf="@id/iv_profile" />
@@ -122,9 +126,9 @@
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_skip"
-            android:visibility="@{vm.isNextButtonVisible ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+        <!--            android:visibility="@{vm.isNextButtonVisible ? View.INVISIBLE : View.VISIBLE}"-->
 
         <ImageButton
             android:id="@+id/btn_next_select"
@@ -133,12 +137,12 @@
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="60dp"
             android:background="@android:color/transparent"
-            android:onClick="@{() -> vm.NavigateToSetProfile()}"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_select"
-            android:visibility="@{vm.isNextButtonVisible ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+<!--        android:onClick="@{() -> vm.NavigateToSetProfile()}"-->
+<!--        android:visibility="@{vm.isNextButtonVisible ? View.VISIBLE : View.INVISIBLE}"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
