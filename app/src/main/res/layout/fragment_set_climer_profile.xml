@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
 
         <variable
@@ -101,7 +102,10 @@
             android:layout_width="191dp"
             android:layout_height="191dp"
             android:layout_marginTop="80dp"
+            android:adjustViewBounds="true"
             android:background="@drawable/oval_grey5fill_nostroke_noradius"
+            android:scaleType="fitXY"
+            android:onClick="@{()->vm.ImageClick()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout2" />
@@ -112,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="켈리051"
+            android:text="@{vm.nick}"
             app:layout_constraintEnd_toEndOf="@id/iv_profile"
             app:layout_constraintStart_toStartOf="@id/iv_profile"
             app:layout_constraintTop_toBottomOf="@id/iv_profile" />
@@ -141,8 +145,8 @@
             android:src="@drawable/ic_select"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-<!--        android:onClick="@{() -> vm.NavigateToSetProfile()}"-->
-<!--        android:visibility="@{vm.isNextButtonVisible ? View.VISIBLE : View.INVISIBLE}"-->
+        <!--        android:onClick="@{() -> vm.NavigateToSetProfile()}"-->
+        <!--        android:visibility="@{vm.isNextButtonVisible ? View.VISIBLE : View.INVISIBLE}"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
