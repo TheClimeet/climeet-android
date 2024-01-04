@@ -104,8 +104,9 @@
             android:layout_marginTop="80dp"
             android:adjustViewBounds="true"
             android:background="@drawable/oval_grey5fill_nostroke_noradius"
-            android:scaleType="fitXY"
             android:onClick="@{()->vm.ImageClick()}"
+            android:scaleType="fitXY"
+            app:imageUri="@{vm.imageUri}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout2" />

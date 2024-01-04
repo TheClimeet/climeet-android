@@ -11,8 +11,12 @@ import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.net.Uri
+import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetClimerProfileBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -23,27 +27,10 @@ class SetClimerProfileFragment :
 
     private val viewModel: SetClimerProfileViewModel by viewModels()
 
-//    private var imgUri : Uri? = null
-//
-//    private val selectImageResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//        if (result.resultCode == Activity.RESULT_OK) {
-//            imgUri = result.data?.data
-//            Glide.with(this)
-//                .load(imgUri)
-//                .into(binding.ivProfile)
-//        }
-//    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
-
-//        // 갤러리 호출
-//        binding.ivProfile.setOnClickListener{
-//            val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
-//            selectImageResultLauncher.launch(intent)
-//        }
 
         initEventObserve()
     }
@@ -74,18 +61,27 @@ class SetClimerProfileFragment :
             ) == PackageManager.PERMISSION_GRANTED -> {
                 Log.d("SetImage", "0번")
                 // 이미 권한이 부여되어 있음, 갤러리를 여는 로직 실행
-                //pickImageFromGallery()
+                pickImageFromGallery()
             }
+
             shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_IMAGES) -> {
                 Log.d("SetImage", "1번")
                 // 토스트 or 스낵바로 권한 설정해야 이미지 선택 가능함을 알림
-
+                informAboutPermissionDenial()
             }
+
             else -> {
                 //권한 요청
                 requestPermission()
             }
         }
+    }
+
+    private fun pickImageFromGallery() {
+        //val intent = Intent(MediaStore.ACTION_PICK_IMAGES) 이건 갤러리를 띄우는 다른 방법
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE)
     }
 
     private fun requestPermission() {
@@ -120,6 +116,14 @@ class SetClimerProfileFragment :
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == Activity.RESULT_OK) {
+            val imageUri = data?.data
+            viewModel.setImageUri(imageUri) // ViewModel에 이미지 URI 업데이트
+        }
+    }
+
     private fun informAboutPermissionDenial() {
         Snackbar.make(
             binding.root,
@@ -134,5 +138,18 @@ class SetClimerProfileFragment :
         }.show()
     }
 
+}
 
+object BindingAdapters {
+    @JvmStatic
+    @BindingAdapter("imageUri")
+    fun bindImageUri(imageView: ImageView, uri: Uri?) {
+        if (uri != null) {
+            Glide.with(imageView.context)
+                .load(uri)
+                .into(imageView)
+        } else {
+
+        }
+    }
 }
