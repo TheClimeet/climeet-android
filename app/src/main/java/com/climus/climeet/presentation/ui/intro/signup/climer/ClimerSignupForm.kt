@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.intro.signup.climer
 
+import android.net.Uri
 import android.util.Log
 
 object ClimerSignupForm {
@@ -17,6 +18,9 @@ object ClimerSignupForm {
     var nickName = ""
         private set
 
+    var imageUri: Uri? = null
+        private set
+
     fun setToken(data: String) {
         token = data
     }
@@ -27,7 +31,10 @@ object ClimerSignupForm {
 
     fun setNickName(data: String) {
         nickName = data
-        Log.d("setNickNameLog", nickName)
+    }
+
+    fun setImageUri(uri: Uri?) {
+        imageUri = uri
     }
 
 }

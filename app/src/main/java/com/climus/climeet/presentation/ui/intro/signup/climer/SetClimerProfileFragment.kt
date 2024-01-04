@@ -16,6 +16,7 @@ import android.provider.Settings
 import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import androidx.navigation.NavController
 import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetClimerProfileBinding
@@ -41,6 +42,7 @@ class SetClimerProfileFragment :
                 when (it) {
                     is SetClimerProfileEvent.NavigateToBack -> findNavController().navigateUp()
                     is SetClimerProfileEvent.ImageClick -> checkPermissionAndPickImage()
+                    is SetClimerProfileEvent.NavigateToSetLevel -> findNavController().toSetClimerLevel()
                 }
             }
         }
@@ -97,6 +99,12 @@ class SetClimerProfileFragment :
         private const val REQUEST_CODE_PICK_IMAGE = 2
     }
 
+    private fun NavController.toSetClimerLevel() {
+        val action =
+            SetClimerProfileFragmentDirections.actionSetClimerProfileFragmentToSetClimerLevelFragment()
+        navigate(action)
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -147,6 +155,7 @@ object BindingAdapters {
         if (uri != null) {
             Glide.with(imageView.context)
                 .load(uri)
+                .circleCrop()
                 .into(imageView)
         } else {
 

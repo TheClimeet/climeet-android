@@ -7,6 +7,7 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.climus.climeet.R
@@ -21,6 +22,8 @@ import javax.inject.Inject
 sealed class SetClimerProfileEvent {
 
     data object NavigateToBack : SetClimerProfileEvent()
+
+    data object NavigateToSetLevel : SetClimerProfileEvent()
 
     data object ImageClick : SetClimerProfileEvent()
 
@@ -37,6 +40,8 @@ class SetClimerProfileViewModel @Inject constructor() : ViewModel()  {
     // 이미지 URI를 저장하는 LiveData
     val imageUri = MutableLiveData<Uri?>()
 
+    val isNextButtonVisible = imageUri.map { it != null }
+
     fun navigateToBack(){
         viewModelScope.launch {
             _event.emit(SetClimerProfileEvent.NavigateToBack)
@@ -51,6 +56,13 @@ class SetClimerProfileViewModel @Inject constructor() : ViewModel()  {
 
     fun setImageUri(imageUri: Uri?) {
         this.imageUri.value = imageUri
+        ClimerSignupForm.setImageUri(imageUri)
+    }
+
+    fun navigateToSetLevel(){
+        viewModelScope.launch {
+            _event.emit(SetClimerProfileEvent.NavigateToSetLevel)
+        }
     }
 
 }

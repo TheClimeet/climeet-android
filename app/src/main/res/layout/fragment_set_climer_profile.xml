@@ -131,9 +131,10 @@
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_skip"
+            android:visibility="@{vm.isNextButtonVisible ? View.INVISIBLE : View.VISIBLE}"
+            android:onClick="@{() -> vm.navigateToSetLevel()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-        <!--            android:visibility="@{vm.isNextButtonVisible ? View.INVISIBLE : View.VISIBLE}"-->
 
         <ImageButton
             android:id="@+id/btn_next_select"
@@ -144,10 +145,10 @@
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_select"
+            android:visibility="@{vm.isNextButtonVisible ? View.VISIBLE : View.INVISIBLE}"
+            android:onClick="@{() -> vm.navigateToSetLevel()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-        <!--        android:onClick="@{() -> vm.NavigateToSetProfile()}"-->
-        <!--        android:visibility="@{vm.isNextButtonVisible ? View.VISIBLE : View.INVISIBLE}"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
