@@ -6,27 +6,34 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
+import com.climus.climeet.databinding.FragmentSetClimerLevelBinding
+import com.climus.climeet.databinding.FragmentSetClimerNickBinding
+import com.climus.climeet.presentation.base.BaseFragment
 
-class SetClimerLevelFragment : Fragment() {
+class SetClimerLevelFragment :
+    BaseFragment<FragmentSetClimerLevelBinding>(R.layout.fragment_set_climer_level) {
 
-    companion object {
-        fun newInstance() = SetClimerLevelFragment()
+    private val viewModel: SetClimerLevelViewModel by viewModels()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.vm = viewModel
+        initEventObserve()
     }
 
-    private lateinit var viewModel: SetClimerLevelViewModel
+    private fun initEventObserve() {
+        repeatOnStarted {
+            viewModel.event.collect {
+                when (it) {
+                    is SetClimerLevelEvent.NavigateToBack -> findNavController().navigateUp()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_set_climer_level, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SetClimerLevelViewModel::class.java)
-        // TODO: Use the ViewModel
+                }
+            }
+        }
     }
 
 }
