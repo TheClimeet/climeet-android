@@ -1,6 +1,7 @@
 package com.climus.climeet.presentation.ui.intro.signup.climer
 
 import android.graphics.Rect
+import android.util.Log
 import android.view.View
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.LiveData
@@ -21,6 +22,7 @@ sealed class SetClimerLevelEvent {
 
     data object NavigateToBack : SetClimerLevelEvent()
 
+    data object NavigateToNext : SetClimerLevelEvent()
 
 }
 
@@ -36,6 +38,8 @@ class SetClimerLevelViewModel @Inject constructor() : ViewModel() {
     val levels: LiveData<List<LevelItem>> = _levels
 
     private var selectedPosition = -1
+
+    val isNextButtonVisible = MutableLiveData(selectedPosition != -1)
 
     init {
         val initialLevels = listOf(
@@ -54,17 +58,26 @@ class SetClimerLevelViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun navigateToSetNext() {
+        ClimerSignupForm.setLevel(selectedPosition)
+        viewModelScope.launch {
+            _event.emit(SetClimerLevelEvent.NavigateToNext)
+        }
+    }
+
     fun selectLevel(position: Int) {
-        // 항목 업데이트
+        // 이전 선택되었던 항목 업데이트
         if (selectedPosition != -1) {
             _levels.value?.get(selectedPosition)?.isSelected = false
         }
 
-        // 새로 선택된 항목의 상태를 업데이트합니다.
+        // 새로 선택된 항목 업데이트
         _levels.value?.get(position)?.isSelected = true
         selectedPosition = position
 
-        // LiveData를 갱신하여 UI에 반영합니다.
+        isNextButtonVisible.value = selectedPosition != -1
+
+        // UI반영
         _levels.value = _levels.value
     }
 

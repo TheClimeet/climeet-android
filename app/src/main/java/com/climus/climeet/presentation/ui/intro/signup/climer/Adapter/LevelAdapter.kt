@@ -30,7 +30,6 @@ class LevelAdapter(private val viewModel: SetClimerLevelViewModel) :
                 viewModel.selectLevel(adapterPosition)
             }
 
-            // 선택된 상태에 따라 배경색과 텍스트 색상을 설정합니다.
             if (levelItem.isSelected) {
                 binding.root.setBackgroundResource(R.drawable.rect_mainfill_nostroke_8radius)
                 binding.tvTitle.setTextColor(Color.BLACK)
