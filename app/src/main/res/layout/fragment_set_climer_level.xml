@@ -65,9 +65,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="30dp"
             android:paddingHorizontal="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_next_unselect"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/view">
@@ -78,10 +79,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="6dp"
-                android:text="@{vm.explainText}"
+                android:text="켈리0921님, 클라이밍을\n시작한지 얼마나 되셨어요?"
+                android:textSize="26sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+            <!--android:text="@{vm.explainText}"-->
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_level"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_explain_large"
+                tools:listitem = "@layout/item_level"
+                tools:itemCount="5"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
