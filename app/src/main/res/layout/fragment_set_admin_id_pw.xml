@@ -4,9 +4,11 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupViewModel" />
+            type="com.climus.climeet.presentation.ui.intro.signup.admin.idpw.SetAdminIdPwViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -110,6 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:hint="아이디를 입력하세요"
+                android:text="@={vm.id}"
                 android:textColor="@color/white"
                 android:textColorHint="@color/cm_grey4"
                 android:background="@null"
@@ -130,7 +133,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="중복된 아이디입니다."
+                android:text="@={vm.warningTextId}"
                 android:textColor="@color/cm_red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -154,6 +157,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:hint="비밀번호 입력하기"
+                android:text="@={vm.pw}"
                 android:textColor="@color/white"
                 android:textColorHint="@color/cm_grey4"
                 android:background="@null"
@@ -174,7 +178,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="영문과 숫자 조합 8자리 이상 입력하세요."
+                android:text="@={vm.warningTextPw}"
                 android:textColor="@color/cm_red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -191,7 +195,7 @@
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_next_disabled"
-            android:visibility="visible"
+            android:visibility="@{vm.isNextButtonEnabled? View.INVISIBLE : View.VISIBLE }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -204,7 +208,8 @@
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_next_activated"
-            android:visibility="gone"
+            android:onClick="@{() -> vm.navigateToNext()}"
+            android:visibility="@{vm.isNextButtonEnabled? View.VISIBLE : View.INVISIBLE }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
