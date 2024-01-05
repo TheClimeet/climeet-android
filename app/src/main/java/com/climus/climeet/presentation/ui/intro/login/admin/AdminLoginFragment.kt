@@ -33,7 +33,7 @@ class AdminLoginFragment : BaseFragment<FragmentAdminLoginBinding>(R.layout.frag
                         startActivity(intent)
                     }
 
-                    is AdminLoginEvent.NavigateToSignUp -> findNavController().toSetCragName()
+                    is AdminLoginEvent.NavigateToSignUp -> findNavController().toAnnounceAdminSignup()
                     is AdminLoginEvent.NavigateToFindAccount -> {
                         // todo id/pw 찾기로 이동
                     }
@@ -45,8 +45,8 @@ class AdminLoginFragment : BaseFragment<FragmentAdminLoginBinding>(R.layout.frag
         }
     }
 
-    private fun NavController.toSetCragName() {
-        val action = AdminLoginFragmentDirections.actionAdminLoginFragmentToSetCragNameFragment()
+    private fun NavController.toAnnounceAdminSignup() {
+        val action = AdminLoginFragmentDirections.actionAdminLoginFragmentToAnnounceAdminSignupFragment()
         navigate(action)
     }
 
