@@ -35,4 +35,8 @@ class SearchCragNameViewModel @Inject constructor() : ViewModel() {
 
         }.launchIn(viewModelScope)
     }
+    
+    fun deleteKeyword(){
+        keyword.value = ""
+    }
 }
