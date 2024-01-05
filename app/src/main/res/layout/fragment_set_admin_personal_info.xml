@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View" />
+
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupViewModel" />
+            type="com.climus.climeet.presentation.ui.intro.signup.admin.personal.SetAdminPersonalViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -111,6 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:hint="이름을 입력해주세요"
+                android:text="@={vm.name}"
                 android:textColor="@color/white"
                 android:textColorHint="@color/cm_grey4"
                 android:background="@null"
@@ -131,7 +132,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="이름을 정확히 입력해주세요."
+                android:text="@={vm.warningTextName}"
                 android:textColor="@color/cm_red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -155,6 +156,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:hint="전화번호 입력하기"
+                android:text="@={vm.phone}"
+                android:maxLength="13"
                 android:inputType="phone"
                 android:textColor="@color/white"
                 android:textColorHint="@color/cm_grey4"
@@ -176,7 +179,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="전화번호 형식이 아닙니다."
+                android:text="@={vm.warningTextPhone}"
                 android:textColor="@color/cm_red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -200,6 +203,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:hint="이메일 입력하기"
+                android:text="@={vm.email}"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/white"
                 android:textColorHint="@color/cm_grey4"
@@ -221,7 +225,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="이메일 형식이 아닙니다."
+                android:text="@={vm.warningTextEmail}"
                 android:textColor="@color/cm_red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -238,7 +242,7 @@
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_next_disabled"
-            android:visibility="visible"
+            android:visibility="@{vm.isNextButtonEnabled? View.INVISIBLE : View.VISIBLE }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -251,7 +255,8 @@
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_next_activated"
-            android:visibility="gone"
+            android:visibility="@{vm.isNextButtonEnabled? View.VISIBLE : View.INVISIBLE }"
+            android:onClick="@{() -> vm.navigateToNext()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
