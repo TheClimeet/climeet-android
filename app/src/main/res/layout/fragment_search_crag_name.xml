@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.intro.signup.admin.searchname.SearchCragNameViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -77,6 +81,7 @@
             android:drawableStart="@drawable/ic_search"
             android:paddingHorizontal="12dp"
             android:paddingVertical="8dp"
+            android:text="@={vm.keyword}"
             android:textCursorDrawable="@drawable/ic_main_cursor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
