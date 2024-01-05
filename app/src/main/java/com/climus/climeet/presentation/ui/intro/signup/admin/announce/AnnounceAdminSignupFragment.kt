@@ -5,6 +5,8 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentAnnounceAdminSignupBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -15,6 +17,7 @@ class AnnounceAdminSignupFragment: BaseFragment<FragmentAnnounceAdminSignupBindi
         super.onViewCreated(view, savedInstanceState)
 
         setDescriptionText()
+        setBtnListener()
     }
 
     private fun setDescriptionText(){
@@ -28,6 +31,21 @@ class AnnounceAdminSignupFragment: BaseFragment<FragmentAnnounceAdminSignupBindi
                 )
             }
         binding.tvDescription.text = spannable
+    }
+
+    private fun setBtnListener(){
+        binding.btnNext.setOnClickListener {
+            findNavController().toSearchCragName()
+        }
+
+        binding.btnBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+    }
+
+    private fun NavController.toSearchCragName(){
+        val action = AnnounceAdminSignupFragmentDirections.actionAnnounceAdminSignupFragmentToSearchCragNameFragment()
+        navigate(action)
     }
 
 }
