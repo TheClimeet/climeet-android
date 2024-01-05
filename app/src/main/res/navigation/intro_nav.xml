@@ -55,14 +55,26 @@
         android:name="com.climus.climeet.presentation.ui.intro.signup.climer.SetClimerNickFragment"/>
 
     <fragment
-        android:id="@+id/set_crag_name_fragment"
-        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.SetCragNameFragment"
-        android:label="setCragName"/>
-
-    <fragment
         android:id="@+id/announce_admin_signup_fragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.admin.announce.AnnounceAdminSignupFragment"
-        android:label="announceAdminSignup"/>
+        android:label="announceAdminSignup">
+        <action
+            android:id="@+id/action_announce_admin_signup_fragment_to_search_crag_name_fragment"
+            app:destination="@id/search_crag_name_fragment" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/search_crag_name_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.searchname.SearchCragNameFragment"
+        android:label="searchCragName">
+        <action
+            android:id="@+id/action_search_crag_name_fragment_to_set_crag_name_fragment"
+            app:destination="@id/set_crag_name_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/set_crag_name_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.setname.SetCragNameFragment"
+        android:label="setCragName"/>
 
 </navigation>

@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.intro.signup.admin
+package com.climus.climeet.presentation.ui.intro.signup.admin.setname
 
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetCragNameBinding
