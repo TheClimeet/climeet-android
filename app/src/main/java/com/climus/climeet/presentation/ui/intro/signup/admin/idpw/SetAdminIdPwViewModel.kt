@@ -33,14 +33,14 @@ class SetAdminIdPwViewModel @Inject constructor() : ViewModel() {
     val isNextButtonEnabled = MutableStateFlow(false)
 
     // 버튼 상태 변화
-    fun updateNextButtonState() {
-        Log.d("admin", "button valid : " + (isIdValid(id.value) && isPasswordValid(pw.value)))
+    private fun updateNextButtonState() {
+        // Log.d("admin", "button valid : " + (isIdValid(id.value) && isPasswordValid(pw.value)))
         isNextButtonEnabled.value = isIdValid(id.value) && isPasswordValid(pw.value)
     }
 
     // 아이디 유효성 검사
     private fun isIdValid(id: String): Boolean {
-        //todo : API 호출해 아이디 중복 처리 (동작 확인차 임시로 값 넣음)
+        // todo : API 호출해 아이디 중복 처리 (동작 확인차 임시로 값 넣음)
         return id != "test"
     }
 
@@ -98,7 +98,7 @@ class SetAdminIdPwViewModel @Inject constructor() : ViewModel() {
         val nowId = id.value
         val nowPw = pw.value
 
-        if (nowId.isNotBlank() && nowPw.isNotBlank() && isIdValid(nowId) && isPasswordValid(nowPw)) {
+        if (nowId.isNotBlank() && nowPw.isNotBlank() && isNextButtonEnabled.value) {
             // 아이디 비번 저장
             AdminSignupForm.setId(nowId)
             AdminSignupForm.setPw(nowPw)
