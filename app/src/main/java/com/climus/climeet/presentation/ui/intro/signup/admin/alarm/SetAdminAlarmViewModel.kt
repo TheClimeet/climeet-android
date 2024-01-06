@@ -35,11 +35,7 @@ class SetAdminAlarmViewModel @Inject constructor() : ViewModel() {
         // 알림 설정
         AdminSignupForm.setAlarm(true)
 
-        Log.d("admin", "아이디 비번 확인 : " + AdminSignupForm.id + ", " + AdminSignupForm.pw)
-        Log.d("admin", "이름 전화번호 이메일 확인 : " + AdminSignupForm.name + ", " + AdminSignupForm.phoneNum + ", " + AdminSignupForm.email)
-        // 이미지
-        // 서비스
-        Log.d("admin", "알림 설정 : " + AdminSignupForm.alarm)
+        Log.d("admin", "알림 설정 : ${AdminSignupForm.alarm}")
 
         viewModelScope.launch {
             _event.emit(SetAdminAlarmEvent.NavigateToNextAlarmOn)
