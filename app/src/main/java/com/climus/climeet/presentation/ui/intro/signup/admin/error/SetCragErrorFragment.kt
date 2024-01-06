@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.intro.signup.admin.error
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetCragErrorBinding
@@ -11,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SetCragErrorFragment: BaseFragment<FragmentSetCragErrorBinding>(R.layout.fragment_set_crag_error) {
 
+    private val viewModel: SetCragErrorViewModel by viewModels()
     private val args: SetCragErrorFragmentArgs by navArgs()
     private val cragId by lazy { args.cragId }
     private val cragImgUrl by lazy { args.cragImgUrl }
@@ -19,6 +21,8 @@ class SetCragErrorFragment: BaseFragment<FragmentSetCragErrorBinding>(R.layout.f
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.vm = viewModel
+        viewModel.setCragInfo(cragId, cragImgUrl, cragName)
     }
 
 }

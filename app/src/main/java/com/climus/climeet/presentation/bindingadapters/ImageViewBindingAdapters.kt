@@ -12,3 +12,13 @@ fun bindProfileImg(imageView: ImageView, url: String) {
         .error(R.drawable.test)
         .into(imageView)
 }
+
+@BindingAdapter("formCheck")
+fun bindFormCheck(iv: ImageView, data: String) {
+    if (data.isBlank()) {
+        iv.setImageResource(R.drawable.ic_check_off)
+    } else {
+        iv.setImageResource(R.drawable.ic_check_on)
+    }
+
+}
