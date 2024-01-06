@@ -45,8 +45,9 @@ class SetAdminIdPwViewModel @Inject constructor() : ViewModel() {
     }
 
     // 비밀번호 유효성 검사
+    // @!%*?&의 기호도 허용
     private fun isPasswordValid(pw: String): Boolean {
-        val passwordPattern = Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}\$")
+        val passwordPattern = Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@\$@!%*?&]{8,}\$")
         return passwordPattern.matches(pw)
     }
 
@@ -103,7 +104,8 @@ class SetAdminIdPwViewModel @Inject constructor() : ViewModel() {
             AdminSignupForm.setId(nowId)
             AdminSignupForm.setPw(nowPw)
 
-            Log.d("admin", "아이디 비번 저장 : " + AdminSignupForm.id + ", " + AdminSignupForm.pw)
+            Log.d("admin", "아이디 비번 : ${AdminSignupForm.id}, ${AdminSignupForm.pw}")
+
             // 화면 전환
             viewModelScope.launch {
                 _event.emit(SetAdminIdPwEvent.NavigateToNext)
