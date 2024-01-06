@@ -32,6 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.navigateToBack()}"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_back"
                 app:layout_constraintBottom_toBottomOf="parent"

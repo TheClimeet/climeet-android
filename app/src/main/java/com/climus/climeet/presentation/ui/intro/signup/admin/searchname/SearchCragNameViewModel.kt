@@ -85,4 +85,10 @@ class SearchCragNameViewModel @Inject constructor() : ViewModel() {
             _event.emit(SearchCragNameEvent.NavigateToSetCragName(id))
         }
     }
+
+    fun navigateToBack(){
+        viewModelScope.launch {
+            _event.emit(SearchCragNameEvent.NavigateToBack)
+        }
+    }
 }
