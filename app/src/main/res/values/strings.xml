@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">climeet</string>
+    <string name="set_crag_name_warning_text">이미 등록된 암장이에요!\n문제가 생겼다면 여기를 클릭하세요</string>
 </resources>
