@@ -43,7 +43,7 @@ class SetCragNameFragment :
         }
 
         override fun onClick(widget: View) {
-            findNavController().toSetCragNameError()
+            viewModel.navigateToSetCragNameError()
         }
     }
 
@@ -69,6 +69,9 @@ class SetCragNameFragment :
                 when (it) {
                     is SetCragNameEvent.NavigateToBusinessRegistration -> findNavController().toBusinessRegistration()
                     is SetCragNameEvent.NavigateToBack -> findNavController().navigateUp()
+                    is SetCragNameEvent.NavigateToSetCragNameError -> findNavController().toSetCragNameError(
+                        it.cragId, it.imgUrl, it.cragName
+                    )
                 }
             }
         }
@@ -79,8 +82,12 @@ class SetCragNameFragment :
         navigate(action)
     }
 
-    private fun NavController.toSetCragNameError() {
-        val action = SetCragNameFragmentDirections.actionSetCragNameFragmentToSetCragErrorFragment()
+    private fun NavController.toSetCragNameError(id: Long, imgUrl: String, name: String) {
+        val action = SetCragNameFragmentDirections.actionSetCragNameFragmentToSetCragErrorFragment(
+            id,
+            imgUrl,
+            name
+        )
         navigate(action)
     }
 

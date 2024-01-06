@@ -18,6 +18,11 @@ import javax.inject.Inject
 sealed class SetCragNameEvent {
     data object NavigateToBack : SetCragNameEvent()
     data object NavigateToBusinessRegistration : SetCragNameEvent()
+    data class NavigateToSetCragNameError(
+        val cragId: Long,
+        val imgUrl: String,
+        val cragName: String
+    ): SetCragNameEvent()
 }
 
 @HiltViewModel
@@ -57,6 +62,18 @@ class SetCragNameViewModel @Inject constructor() : ViewModel() {
     fun navigateToBusinessRegistration() {
         viewModelScope.launch {
             _event.emit(SetCragNameEvent.NavigateToBusinessRegistration)
+        }
+    }
+
+    fun navigateToSetCragNameError(){
+        viewModelScope.launch {
+            cragId?.let{ cragId ->
+                _event.emit(SetCragNameEvent.NavigateToSetCragNameError(
+                    cragId,
+                    uiCragInfo.value.imgUrl,
+                    uiCragInfo.value.name
+                ))
+            }
         }
     }
 
