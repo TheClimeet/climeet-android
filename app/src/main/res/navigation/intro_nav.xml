@@ -83,12 +83,21 @@
         <action
             android:id="@+id/action_set_crag_name_fragment_to_set_crag_error_fragment"
             app:destination="@id/set_crag_error_fragment" />
+        <action
+            android:id="@+id/action_set_crag_name_fragment_to_business_registration_fragment"
+            app:destination="@id/business_registration_fragment" />
 
     </fragment>
 
     <fragment
         android:id="@+id/set_crag_error_fragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.admin.error.SetCragErrorFragment"
-        android:label="setCragError" />
+        android:label="setCragError"/>
+
+
+    <fragment
+        android:id="@+id/business_registration_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.submitdoc.BusinessRegistrationFragment"
+        android:label="businessRegistration" />
 
 </navigation>
