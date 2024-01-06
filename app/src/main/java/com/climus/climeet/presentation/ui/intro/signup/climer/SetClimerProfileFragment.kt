@@ -10,11 +10,16 @@ import androidx.navigation.fragment.findNavController
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.res.Resources
+import android.graphics.Color
 import android.net.Uri
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
+import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.view.setPadding
 import androidx.databinding.BindingAdapter
 import androidx.navigation.NavController
 import com.bumptech.glide.Glide
@@ -22,6 +27,10 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetClimerProfileBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SetClimerProfileFragment :
     BaseFragment<FragmentSetClimerProfileBinding>(R.layout.fragment_set_climer_profile) {
@@ -133,17 +142,39 @@ class SetClimerProfileFragment :
     }
 
     private fun informAboutPermissionDenial() {
-        Snackbar.make(
-            binding.root,
-            "권한이 거부되었습니다. 설정에서 권한을 허용해주세요.",
-            Snackbar.LENGTH_INDEFINITE
-        ).setAction("설정") {
+        val snack = Snackbar.make(binding.root,
+            "엑세스 권한이 거부되었습니다",
+            Snackbar.LENGTH_INDEFINITE)
+
+        val snackView = snack.view
+        val textView = snackView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+        val icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_snackbar_check)
+        icon?.setBounds(0, 0, icon.intrinsicWidth, icon.intrinsicHeight)
+        textView.setCompoundDrawables(icon, null, null, null)
+        textView.compoundDrawablePadding = dpToPx(12)
+        snackView.setPadding(snackView.paddingLeft, dpToPx(8), snackView.paddingRight, dpToPx(8))
+
+        snack.setTextColor(Color.BLACK)
+        snack.setBackgroundTint(Color.WHITE)
+        snack.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.cm_main))
+        snack.setAction("설정"){
             // 애플리케이션 설정 화면으로 이동하는 인텐트
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             val uri = Uri.fromParts("package", requireActivity().packageName, null)
             intent.data = uri
             startActivity(intent)
-        }.show()
+        }
+        snack.show()
+
+        CoroutineScope(Dispatchers.Main).launch {
+            delay(3000)
+            snack.dismiss()
+        }
+
+    }
+
+    fun dpToPx(dp: Int): Int {
+        return (dp * Resources.getSystem().displayMetrics.density).toInt()
     }
 
 }
