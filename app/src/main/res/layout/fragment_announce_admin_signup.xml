@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:dividerColor="@color/white"
-            app:dividerThickness="4dp"
+            app:dividerThickness="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_toolbar" />
