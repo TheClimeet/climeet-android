@@ -29,6 +29,7 @@
                 android:id="@+id/btn_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> vm.navigateToBack()}"
                 android:background="@android:color/transparent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_back"
@@ -80,7 +81,8 @@
                     android:layout_marginTop="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:profileImgUrl="@{vm.cragImgUrl}" />
 
                 <TextView
                     android:id="@+id/tv_name"
@@ -88,6 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
+                    android:text="@{vm.cragName}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/iv_profile"
@@ -259,6 +262,7 @@
                     android:layout_marginTop="60dp"
                     android:background="@drawable/selector_submit_btn"
                     android:enabled="@{vm.isDataReady}"
+                    android:onClick="@{() -> vm.submitErrorForm()}"
                     android:text="제출하기"
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
