@@ -3,6 +3,9 @@ package com.climus.climeet.presentation.ui.intro.signup.climer
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.databinding.BindingAdapter
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController

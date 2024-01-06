@@ -1,9 +1,13 @@
 package com.climus.climeet.presentation.ui.intro.signup.climer
 
 import android.util.Log
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.R
 import com.climus.climeet.presentation.ui.intro.login.admin.AdminLoginEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -33,6 +37,10 @@ class SetClimerNickViewModel @Inject constructor() : ViewModel() {
 
     val warningText = MutableStateFlow("")
 
+    val warningTextColor = warningText.map { text ->
+        if (text != "사용 가능한 아이디입니다.") R.color.cm_red else R.color.cm_grey6
+    }.asLiveData()
+
     val nick = MutableStateFlow("")
 
     private val nickNamePattern = "^[가-힣0-9]{2,8}\$".toRegex()
@@ -54,26 +62,32 @@ class SetClimerNickViewModel @Inject constructor() : ViewModel() {
         newNick.isNotBlank() && isNickNameValid(newNick) && !isNickNameDuplicated(newNick)
     }.asLiveData()
 
+    private var hasUserStartedTyping = false
+
+    val isErrorVisible = nick.map { newNick ->
+        // 입력이 시작되었고, 닉네임이 유효하지 않거나 중복된 경우 버튼이 보이게 함
+        newNick.isNotEmpty() && (!isNickNameValid(newNick) || isNickNameDuplicated(newNick))
+    }.asLiveData()
+
     private fun nickObserve() {
         nick.onEach { nick ->
+            hasUserStartedTyping = nick.isNotEmpty()
+
             when {
                 nick.isEmpty() -> {
-                    // 닉네임이 비어있을 때는 경고 메시지를 설정하지 않습니다.
+                    warningText.value = ""
                 }
 
                 !isNickNameValid(nick) -> {
                     warningText.value = "2~8글자의 한글과 숫자로 입력하세요."
-                    Log.d("Teststst", "규칙위반")
                 }
 
                 isNickNameDuplicated(nick) -> {
                     warningText.value = "중복된 닉네임입니다."
-                    Log.d("Teststst", "중복")
                 }
 
                 else -> {
-                    warningText.value = ""
-                    Log.d("Teststst", "옳다")
+                    warningText.value = "사용 가능한 아이디입니다."
                 }
             }
         }.launchIn(viewModelScope)
@@ -95,13 +109,11 @@ class SetClimerNickViewModel @Inject constructor() : ViewModel() {
             // ClimerSignupForm에 닉네임 설정
             ClimerSignupForm.setNickName(currentNick)
 
-            // 이벤트 발송하여 프래그먼트에서 화면 전환 처리
             viewModelScope.launch {
                 _event.emit(SetClimerNickEvent.NavigateToSetProfile)
             }
         } else {
-            // 닉네임이 유효하지 않거나 중복될 경우 경고 메시지 업데이트
-            warningText.value = "유효하지 않은 닉네임입니다."
+
         }
     }
 
