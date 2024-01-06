@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupViewModel" />
+            type="com.climus.climeet.presentation.ui.intro.signup.admin.alarm.SetAdminAlarmViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -105,6 +103,27 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/tv_off_alarm"
+            style="@style/TextSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="다음에 알림받기"
+            android:textColor="@color/cm_main"
+            android:onClick="@{() -> vm.navigateToNextAlarmOff()}"
+            app:layout_constraintBottom_toTopOf="@id/btn_set_alarm"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <View
+            android:layout_width="95dp"
+            android:layout_height="1dp"
+            android:background="@color/cm_main"
+            app:layout_constraintStart_toStartOf="@id/tv_off_alarm"
+            app:layout_constraintEnd_toEndOf="@id/tv_off_alarm"
+            app:layout_constraintTop_toBottomOf="@id/tv_off_alarm"/>
+
         <Button
             android:id="@+id/btn_set_alarm"
             style="@style/TextMediumSemiBold"
@@ -117,6 +136,7 @@
             android:text="알림 받고 실력 상승하기"
             android:backgroundTint="@color/cm_main"
             android:textColor="@color/black"
+            android:onClick="@{() -> vm.navigateToNextAlarmOn()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

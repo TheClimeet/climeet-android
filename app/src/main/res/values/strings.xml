@@ -14,7 +14,7 @@
     <string name="set_admin_service_explain_large">우리 암장이 제공하고 있는\n서비스를 알려주세요.</string>
     <string name="set_admin_service_explain_regular">프로필 설정에서 언제든지 바꿀 수 있어요.</string>
 
-    <string name="set_admin_alarm_explain_large">더클라임 연남 관리자님,\n우리 조금 더 자주 만나요! </string>
+    <string name="set_admin_alarm_explain_large">관리자님,\n우리 조금 더 자주 만나요! </string>
     <string name="set_admin_alarm_explain_regular">나의 완등을 기록할수록 더 많은 정상을 만날 수 있어요.\n언제든지 [MY > 설정 > 알림]에서 변경할 수 있어요</string>
 
     <string name="set_admin_complete_medium">감사합니다!\n일단 계정이 생성되면 연락드릴게요.</string>
