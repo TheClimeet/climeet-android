@@ -75,6 +75,12 @@
     <fragment
         android:id="@+id/set_crag_name_fragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.admin.setname.SetCragNameFragment"
-        android:label="setCragName"/>
+        android:label="setCragName">
+
+        <argument
+            android:name="cragId"
+            app:argType="long"/>
+
+    </fragment>
 
 </navigation>
