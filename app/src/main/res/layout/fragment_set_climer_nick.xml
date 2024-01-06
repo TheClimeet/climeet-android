@@ -99,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:background="@drawable/rect_grey4fill_nostroke_32radius"
+                android:background="@drawable/rect_grey7fill_nostroke_32radius"
                 android:hint="2~8글자의 한글과 숫자로 입력하세요."
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="12dp"

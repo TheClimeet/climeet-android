@@ -35,7 +35,7 @@ class LevelAdapter(private val viewModel: SetClimerLevelViewModel) :
                 binding.tvTitle.setTextColor(Color.BLACK)
                 binding.tvDescription.setTextColor(Color.BLACK)
             } else {
-                binding.root.setBackgroundResource(R.drawable.rect_grey4fill_nostroke_8radius)
+                binding.root.setBackgroundResource(R.drawable.rect_grey7fill_nostroke_8radius)
                 binding.tvTitle.setTextColor(Color.WHITE)
                 binding.tvDescription.setTextColor(Color.WHITE)
             }
