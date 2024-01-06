@@ -127,8 +127,7 @@ class SetAdminPersonalViewModel @Inject constructor() : ViewModel() {
             AdminSignupForm.setPhone(nowPhone)
             AdminSignupForm.setEmail(nowEmail)
 
-            Log.d("admin", "아이디 비번 확인 : " + AdminSignupForm.id + ", " + AdminSignupForm.pw)
-            Log.d("admin", "이름 전화번호 이메일 저장 : " + AdminSignupForm.name + ", " + AdminSignupForm.phoneNum + ", " + AdminSignupForm.email)
+            Log.d("admin", "이름 전화번호 이메일 : ${AdminSignupForm.name}, ${AdminSignupForm.phoneNum}, ${AdminSignupForm.email}")
 
             // 화면 전환
             viewModelScope.launch {
