@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
+
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupViewModel" />
+            type="com.climus.climeet.presentation.ui.intro.signup.admin.service.SetAdminServiceViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="15dp"
-                android:text="배경 설정"
+                android:text="암장 제공 서비스"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -92,115 +93,17 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_explain_large"
                 app:layout_constraintStart_toStartOf="parent"/>
 
-            <GridLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_service"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                app:orientation = "horizontal"
-                android:columnCount="2"
-                android:rowCount="4"
+                tools:listitem="@layout/item_service"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
                 app:layout_constraintTop_toBottomOf="@id/tv_explain_regular"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <!-- Button 1 -->
-                <android.widget.Button
-                    style="@style/TextMediumSemiBold"
-                    android:id="@+id/btn_shower_place"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_column="0"
-                    android:layout_row="0"
-                    android:text="샤워 시설"
-                    android:textColor="@color/txt_selector_white_black"
-                    android:background="@drawable/btn_selected_background"/>
-                <!-- Button 2 -->
-                <android.widget.Button
-                    style="@style/TextMediumSemiBold"
-                    android:id="@+id/btn_shower_item"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_column="1"
-                    android:layout_row="0"
-                    android:text="샤워 용품"
-                    android:textColor="@color/txt_selector_white_black"
-                    android:background="@drawable/btn_selected_background"/>
-                <!-- Button 3 -->
-                <android.widget.Button
-                    style="@style/TextMediumSemiBold"
-                    android:id="@+id/btn_tower"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_column="0"
-                    android:layout_row="1"
-                    android:text="수건 제공"
-                    android:textColor="@color/txt_selector_white_black"
-                    android:background="@drawable/btn_selected_background"/>
-                <!-- Button 4 -->
-                <android.widget.Button
-                    style="@style/TextMediumSemiBold"
-                    android:id="@+id/btn_washstand"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_column="1"
-                    android:layout_row="1"
-                    android:text="간이 세면대"
-                    android:textColor="@color/txt_selector_white_black"
-                    android:background="@drawable/btn_selected_background"/>
-                <!-- Button 5 -->
-                <android.widget.Button
-                    style="@style/TextMediumSemiBold"
-                    android:id="@+id/btn_chalk"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_column="0"
-                    android:layout_row="2"
-                    android:text="초크 대여"
-                    android:textColor="@color/txt_selector_white_black"
-                    android:background="@drawable/btn_selected_background"/>
-                <!-- Button 6 -->
-                <android.widget.Button
-                    style="@style/TextMediumSemiBold"
-                    android:id="@+id/btn_shoes"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_column="1"
-                    android:layout_row="2"
-                    android:text="암벽화 대여"
-                    android:textColor="@color/txt_selector_white_black"
-                    android:background="@drawable/btn_selected_background"/>
-                <!-- Button 7 -->
-                <android.widget.Button
-                    style="@style/TextMediumSemiBold"
-                    android:id="@+id/btn_tripod"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_column="0"
-                    android:layout_row="3"
-                    android:text="삼각대 대여"
-                    android:textColor="@color/txt_selector_white_black"
-                    android:background="@drawable/btn_selected_background"/>
-                <!-- Button 8 -->
-                <android.widget.Button
-                    style="@style/TextMediumSemiBold"
-                    android:id="@+id/btn_clothes"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_column="1"
-                    android:layout_row="3"
-                    android:text="운동복 대여"
-                    android:textColor="@color/txt_selector_white_black"
-                    android:background="@drawable/btn_selected_background"/>
-
-            </GridLayout>
+                app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -213,7 +116,7 @@
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_next_disabled"
-            android:visibility="visible"
+            android:visibility="@{vm.isNextButtonEnabled? View.INVISIBLE : View.VISIBLE }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -226,7 +129,8 @@
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_next_activated"
-            android:visibility="gone"
+            android:visibility="@{vm.isNextButtonEnabled? View.VISIBLE : View.INVISIBLE }"
+            android:onClick="@{() -> vm.navigateToNext()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
