@@ -110,7 +110,11 @@
     <fragment
         android:id="@+id/set_crag_error_complete_fragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.admin.error.SetCragErrorCompleteFragment"
-        android:label="setCragErrorComplete" />
+        android:label="setCragErrorComplete" >
+        <action
+            android:id="@+id/action_set_crag_error_complete_fragment_to_login_fragment"
+            app:destination="@id/login_fragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/business_registration_fragment"
