@@ -2,7 +2,7 @@ package com.climus.climeet.presentation.ui.intro.signup.admin.announce
 
 import android.os.Bundle
 import android.text.Spannable
-import android.text.SpannableStringBuilder
+import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.navigation.NavController
@@ -21,7 +21,7 @@ class AnnounceAdminSignupFragment: BaseFragment<FragmentAnnounceAdminSignupBindi
     }
 
     private fun setDescriptionText(){
-        val spannable = SpannableStringBuilder("암장 관리자 회원가입을 하시려면 다음 절차가 필요해요\n꼼꼼하게 확인하여 모두가 즐거운 클밋을 만들어갈게요!")
+        val spannable = SpannableString("암장 관리자 회원가입을 하시려면 다음 절차가 필요해요\n꼼꼼하게 확인하여 모두가 즐거운 클밋을 만들어갈게요!")
             .apply{
                 setSpan(
                     ForegroundColorSpan(requireContext().getColor(R.color.cm_main)),
