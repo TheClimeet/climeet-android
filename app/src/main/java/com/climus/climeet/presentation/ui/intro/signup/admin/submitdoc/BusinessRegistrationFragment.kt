@@ -5,12 +5,17 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import androidx.fragment.app.viewModels
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentBusinessRegistrationBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BusinessRegistrationFragment :
     BaseFragment<FragmentBusinessRegistrationBinding>(R.layout.fragment_business_registration) {
+
+    private val viewModel: BusinessRegistrationViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
