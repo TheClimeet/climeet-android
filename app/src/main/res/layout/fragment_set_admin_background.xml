@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View" />
+
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupViewModel" />
+            type="com.climus.climeet.presentation.ui.intro.signup.admin.background.SetAdminBackgroundViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -91,13 +91,14 @@
                 android:text="@string/set_admin_background_explain_regular"
                 app:layout_constraintTop_toBottomOf="@id/tv_explain_large"
                 app:layout_constraintStart_toStartOf="parent"/>
-
+            <!--   이미지 설정    -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="60dp"
                 app:cardCornerRadius="10dp"
+                android:onClick="@{()-> vm.setImageClick()}"
                 app:layout_constraintTop_toBottomOf="@id/tv_explain_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -121,7 +122,7 @@
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_next_disabled"
-            android:visibility="visible"
+            android:visibility="@{vm.isNextButtonEnabled? View.INVISIBLE : View.VISIBLE }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -134,7 +135,8 @@
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_next_activated"
-            android:visibility="gone"
+            android:visibility="@{vm.isNextButtonEnabled? View.VISIBLE : View.INVISIBLE }"
+            android:onClick="@{() -> vm.navigateToNext()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
