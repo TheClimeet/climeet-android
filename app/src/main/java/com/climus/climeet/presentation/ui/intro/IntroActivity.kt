@@ -17,7 +17,7 @@ import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class IntroActivity: BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::inflate) {
+class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::inflate) {
 
     private val viewModel: IntroViewModel by viewModels()
 
@@ -41,10 +41,10 @@ class IntroActivity: BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::in
         initEventObserve()
     }
 
-    private fun initEventObserve(){
+    private fun initEventObserve() {
         repeatOnStarted {
-            viewModel.event.collect{
-                when(it){
+            viewModel.event.collect {
+                when (it) {
                     is IntroEvent.GoToGallery -> onCheckStoragePermissions()
                 }
             }
@@ -106,8 +106,7 @@ class IntroActivity: BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::in
                 val uri = result.data?.data
 
                 uri?.let {
-
-
+                    viewModel.setImage(it)
                 }
             }
         }
