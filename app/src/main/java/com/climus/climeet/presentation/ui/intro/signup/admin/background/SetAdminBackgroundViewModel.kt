@@ -37,7 +37,7 @@ class SetAdminBackgroundViewModel @Inject constructor() : ViewModel(){
 
     // 서비스 설정으로 이동
     fun navigateToNext() {
-        Log.d("admin", "배경사진 Uri : ${AdminSignupForm.imgUri}")
+        Log.d("admin", "배경사진 Uri : ${AdminSignupForm.backgroundImage}")
 
         viewModelScope.launch {
             _event.emit(SetAdminBackgroundEvent.NavigateToNext)
@@ -54,6 +54,6 @@ class SetAdminBackgroundViewModel @Inject constructor() : ViewModel(){
     // 이미지 주소 설정
     fun setImage(uri: String) {
         imgUri.value = uri
-        AdminSignupForm.setImg(uri) // 사진 링크 폼에 넣기
+        AdminSignupForm.setBackgroundImg(uri) // 사진 링크 폼에 넣기
     }
 }
