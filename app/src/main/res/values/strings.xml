@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">climeet</string>
+
+
+    <string name="set_climer_nick_explain_regular">2~8글자의 한글과 숫자만 가능해요.\n설정에서 언제든지 바꿀 수 있어요.</string>
+    <string name="set_climer_nick_explain_large">클밋에서 사용하실\n닉네임을 설정해주세요!</string>
+    <string name="set_climer_profile_explain_large">클밋에서 사용하실\n프로필을 설정해주세요!</string>
+
 </resources>
