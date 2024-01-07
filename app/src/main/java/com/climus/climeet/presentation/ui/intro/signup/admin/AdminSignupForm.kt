@@ -2,6 +2,8 @@ package com.climus.climeet.presentation.ui.intro.signup.admin
 
 import android.net.Uri
 
+import com.climus.climeet.presentation.ui.intro.signup.admin.service.Service
+
 object AdminSignupForm {
 
     //todo
@@ -17,5 +19,46 @@ object AdminSignupForm {
 
     fun setBusinessRegistrationUri(uri: Uri){
         businessRegistrationUri = uri
+    }
+    var id = ""
+        private set // 읽기 전용
+    var pw = ""
+        private set
+    var name = ""
+        private set
+    var phoneNum = ""
+        private set
+    var email = ""
+        private set
+    var backgroundImage: String? = null
+        private set
+    var services: List<Service> = emptyList()    // service 형식 고려
+        private set
+    var alarm = false
+        private set
+
+    fun setId(data: String){
+        id = data
+    }
+    fun setPw(data: String){
+        pw = data
+    }
+    fun setName(data: String){
+        name = data
+    }
+    fun setPhone(data: String){
+        phoneNum = data
+    }
+    fun setEmail(data: String){
+        email = data
+    }
+    fun setBackgroundImg(uri: String?) {
+        backgroundImage = uri
+    }
+    fun setSelectedServices(data: List<Service>) {
+        services = data
+    }
+    fun setAlarm(data: Boolean){
+        alarm = data
     }
 }
