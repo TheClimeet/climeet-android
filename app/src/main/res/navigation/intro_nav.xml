@@ -104,7 +104,11 @@
     <fragment
         android:id="@+id/set_climer_level_fragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.climer.SetClimerLevelFragment"
-        android:label="fragment_set_climer_level" />
+        android:label="fragment_set_climer_level" >
+        <action
+            android:id="@+id/action_set_climer_level_fragment_to_followCragFragment"
+            app:destination="@id/followCragFragment" />
+    </fragment>
 
 
 </navigation>

@@ -106,7 +106,7 @@
                 android:text="인스타그램 / 페이스북"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:visibility="invisible"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -122,7 +122,7 @@
                 android:text="인스타그램 / 페이스북"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                android:visibility="visible"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -199,7 +199,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/rect_grey7_radius8"
                 android:fontFamily="@font/robotoblack"
-                android:text="블로그/ 카페 / 커뮤니티"
+                android:text="블로그 / 카페 / 커뮤니티"
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 android:visibility="visible"
@@ -215,7 +215,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/rect_main_radius8"
                 android:fontFamily="@font/robotoblack"
-                android:text="블로그/ 카페 / 커뮤니티"
+                android:text="블로그 / 카페 / 커뮤니티"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:visibility="invisible"
@@ -257,24 +257,25 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!--        <ImageView-->
-        <!--            android:id="@+id/btn_next_invalid"-->
-        <!--            android:layout_width="54dp"-->
-        <!--            android:layout_height="54dp"-->
-        <!--            android:layout_marginRight="30dp"-->
-        <!--            android:layout_marginBottom="50dp"-->
-        <!--            android:src="@drawable/shape_gray7_circle"-->
-        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent" />-->
+        <ImageView
+            android:id="@+id/btn_next_invalid"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="50dp"
+            android:src="@drawable/shape_gray7_circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <!--        <ImageView-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:src="@drawable/ic_arrow_right_gray"-->
-        <!--            app:layout_constraintBottom_toBottomOf="@+id/btn_next_invalid"-->
-        <!--            app:layout_constraintEnd_toEndOf="@+id/btn_next_invalid"-->
-        <!--            app:layout_constraintStart_toStartOf="@+id/btn_next_invalid"-->
-        <!--            app:layout_constraintTop_toTopOf="@+id/btn_next_invalid" />-->
+        <ImageView
+            android:id="@+id/btn_next_arrow_invalid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_right_gray"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_next_invalid"
+            app:layout_constraintEnd_toEndOf="@+id/btn_next_invalid"
+            app:layout_constraintStart_toStartOf="@+id/btn_next_invalid"
+            app:layout_constraintTop_toTopOf="@+id/btn_next_invalid" />
 
         <ImageView
             android:id="@+id/btn_next_valid"
@@ -282,16 +283,17 @@
             android:layout_height="54dp"
             android:layout_marginRight="30dp"
             android:layout_marginBottom="50dp"
-            android:visibility="visible"
+            android:visibility="invisible"
             android:src="@drawable/shape_main_circle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
+            android:id="@+id/btn_next_arrow_valid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_arrow_right_main"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/btn_next_valid"
             app:layout_constraintEnd_toEndOf="@+id/btn_next_valid"
             app:layout_constraintStart_toStartOf="@+id/btn_next_valid"

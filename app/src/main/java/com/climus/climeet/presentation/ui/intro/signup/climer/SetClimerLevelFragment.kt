@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,9 +44,7 @@ class SetClimerLevelFragment :
             viewModel.event.collect {
                 when (it) {
                     is SetClimerLevelEvent.NavigateToBack -> findNavController().navigateUp()
-                    is SetClimerLevelEvent.NavigateToNext -> {
-
-                    }
+                    is SetClimerLevelEvent.NavigateToNext -> findNavController().toFollowCrag()
                 }
             }
         }
@@ -58,6 +57,12 @@ class SetClimerLevelFragment :
             adapter = this@SetClimerLevelFragment.adapter
             addItemDecoration(AdapterDecoration())
         }
+    }
+
+    private fun NavController.toFollowCrag() {
+        val action =
+            SetClimerLevelFragmentDirections.actionSetClimerLevelFragmentToFollowCragFragment()
+        navigate(action)
     }
 
 }

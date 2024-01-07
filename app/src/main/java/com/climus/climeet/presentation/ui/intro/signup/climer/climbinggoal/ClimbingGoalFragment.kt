@@ -35,6 +35,10 @@ class ClimbingGoalFragment : BaseFragment<FragmentClimbingGoalBinding>(R.layout.
             unselectedIv.setOnClickListener {
                 toggleVisibility(selectedIv)
                 toggleVisibility(unselectedIv)
+                binding.btnNextValid.visibility = View.VISIBLE
+                binding.btnNextArrowValid.visibility = View.VISIBLE
+                binding.btnNextInvalid.visibility = View.INVISIBLE
+                binding.btnNextArrowInvalid.visibility = View.INVISIBLE
             }
         }
 
