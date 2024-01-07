@@ -15,6 +15,7 @@ import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetCragNameBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -67,7 +68,11 @@ class SetCragNameFragment :
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
-                    is SetCragNameEvent.NavigateToBusinessRegistration -> findNavController().toBusinessRegistration()
+                    is SetCragNameEvent.NavigateToBusinessRegistration -> {
+                        AdminSignupForm.setCragId(cragId)
+                        findNavController().toBusinessRegistration()
+                    }
+
                     is SetCragNameEvent.NavigateToBack -> findNavController().navigateUp()
                     is SetCragNameEvent.NavigateToSetCragNameError -> findNavController().toSetCragNameError(
                         it.cragId, it.imgUrl, it.cragName
@@ -78,7 +83,8 @@ class SetCragNameFragment :
     }
 
     private fun NavController.toBusinessRegistration() {
-        val action = SetCragNameFragmentDirections.actionSetCragNameFragmentToBusinessRegistrationFragment()
+        val action =
+            SetCragNameFragmentDirections.actionSetCragNameFragmentToBusinessRegistrationFragment()
         navigate(action)
     }
 
