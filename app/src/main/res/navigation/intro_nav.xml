@@ -106,6 +106,8 @@
             android:id="@+id/action_set_crag_error_fragment_to_set_crag_error_complete_fragment"
             app:destination="@id/set_crag_error_complete_fragment" />
 
+    </fragment>
+
     <fragment
         android:id="@+id/set_admin_id_pw_fragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.admin.idpw.SetAdminIdPwFragment"
@@ -173,6 +175,10 @@
     <fragment
         android:id="@+id/business_registration_fragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.admin.submitdoc.BusinessRegistrationFragment"
-        android:label="businessRegistration" />
+        android:label="businessRegistration" >
+        <action
+            android:id="@+id/action_business_registration_fragment_to_set_admin_id_pw_fragment"
+            app:destination="@id/set_admin_id_pw_fragment" />
+    </fragment>
 
 </navigation>

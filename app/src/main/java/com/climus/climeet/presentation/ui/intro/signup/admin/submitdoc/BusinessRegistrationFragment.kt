@@ -7,6 +7,8 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentBusinessRegistrationBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -48,7 +50,7 @@ class BusinessRegistrationFragment :
         repeatOnStarted {
             viewModel.event.collect{
                 when(it){
-                    is BusinessRegistrationEvent.NavigateToNext -> {}
+                    is BusinessRegistrationEvent.NavigateToSetAdminIdPw -> findNavController().toSetAdminIdPw()
                     is BusinessRegistrationEvent.NavigateToBack -> {}
                 }
             }
@@ -62,5 +64,10 @@ class BusinessRegistrationFragment :
                 AdminSignupForm.setBusinessRegistrationUri(it)
             }
         }
+    }
+
+    private fun NavController.toSetAdminIdPw(){
+        val action = BusinessRegistrationFragmentDirections.actionBusinessRegistrationFragmentToSetAdminIdPwFragment()
+        navigate(action)
     }
 }

@@ -104,6 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
             android:background="@android:color/transparent"
+            android:onClick="@{() -> vm.navigateToSetAdminIdPw()}"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_next_off"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -58,8 +58,7 @@ class SetCragErrorFragment :
     }
 
     private fun NavController.toSetCragErrorComplete() {
-        val action =
-            SetCragErrorFragmentDirections.actionSetCragErrorFragmentToSetCragErrorCompleteFragment()
+        val action = SetCragErrorFragmentDirections.actionSetCragErrorFragmentToSetCragErrorCompleteFragment()
         navigate(action)
     }
 
