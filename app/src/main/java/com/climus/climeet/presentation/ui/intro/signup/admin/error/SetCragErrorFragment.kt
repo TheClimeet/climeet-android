@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.intro.signup.admin.error
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -27,6 +28,7 @@ class SetCragErrorFragment :
         binding.vm = viewModel
         viewModel.setCragInfo(cragId, cragImgUrl, cragName)
         initEventObserve()
+        editTextListener()
     }
 
     private fun initEventObserve() {
@@ -40,8 +42,24 @@ class SetCragErrorFragment :
         }
     }
 
+    private fun editTextListener() {
+        listOf(binding.etEmail, binding.etName, binding.etPhone, binding.etPosition).forEach {
+            it.setOnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    view.backgroundTintList =
+                        ContextCompat.getColorStateList(requireContext(), R.color.cm_main)
+                } else {
+                    view.backgroundTintList =
+                        ContextCompat.getColorStateList(requireContext(), R.color.cm_grey3)
+                }
+            }
+        }
+
+    }
+
     private fun NavController.toSetCragErrorComplete() {
-        val action = SetCragErrorFragmentDirections.actionSetCragErrorFragmentToSetCragErrorCompleteFragment()
+        val action =
+            SetCragErrorFragmentDirections.actionSetCragErrorFragmentToSetCragErrorCompleteFragment()
         navigate(action)
     }
 
