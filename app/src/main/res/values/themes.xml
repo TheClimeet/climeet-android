@@ -8,4 +8,11 @@
         <item name="android:windowLightNavigationBar">false</item>
     </style>
 
+    <style name="All10RadiusImageView" parent="">
+        <item name="cornerSizeTopRight">10dp</item>
+        <item name="cornerSizeTopLeft">10dp</item>
+        <item name="cornerSizeBottomRight">10dp</item>
+        <item name="cornerSizeBottomLeft">10dp</item>
+    </style>
+
 </resources>
