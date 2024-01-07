@@ -131,7 +131,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:background="@drawable/rect_grey1fill_nostroke_20radius"
+            android:background="@drawable/rect_grey3fill_nostroke_20radius"
             android:onClick="@{() -> vm.login()}"
             android:text="로그인하기"
             android:textColor="@color/cm_darkgrey"

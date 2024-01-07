@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,13 +9,13 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.intro.signup.climer.SetClimerNickViewModel" />
-
+            type="com.climus.climeet.presentation.ui.intro.signup.climer.SetClimerProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.intro.signup.climer.SetClimerProfileFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout"
@@ -42,7 +43,7 @@
                 style="@style/TextMediumBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="닉네임 설정"
+                android:text="프로필 설정"
                 app:layout_constraintBottom_toBottomOf="@+id/btn_back"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="6dp"
-                android:text="@string/set_climer_nick_explain_large"
+                android:text="@string/set_climer_profile_explain_large"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -89,63 +90,49 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21dp"
                 android:lineSpacingExtra="6dp"
-                android:text="@string/set_climer_nick_explain_regular"
+                android:text="설정에서 언제든지 바꿀 수 있어요."
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_explain_large" />
 
-            <EditText
-                android:id="@+id/et_nick"
-                style="@style/TextRegular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/rect_grey7fill_nostroke_32radius"
-                android:hint="2~8글자의 한글과 숫자로 입력하세요."
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="12dp"
-                android:text="@={vm.nick}"
-                android:textColorHint="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_explain_regular" />
-
-            <ImageView
-                android:id="@+id/iv_error"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_text_error"
-                android:visibility="@{vm.isErrorVisible ? View.VISIBLE : View.INVISIBLE}"
-                app:layout_constraintBottom_toBottomOf="@id/et_nick"
-                app:layout_constraintEnd_toEndOf="@id/et_nick"
-                app:layout_constraintTop_toTopOf="@id/et_nick" />
-
-            <TextView
-                android:id="@+id/tv_text_warning"
-                style="@style/TextRegular"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:text="@{vm.warningText}"
-                android:visibility="@{vm.warningText.isEmpty() ? View.INVISIBLE : View.VISIBLE}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_nick"
-                app:textColorResource="@{vm.warningTextColor}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <ImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="191dp"
+            android:layout_height="191dp"
+            android:layout_marginTop="60dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
+            android:onClick="@{()->vm.ImageClick()}"
+            android:scaleType="fitXY"
+            app:imageUri="@{vm.imageUri}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout2" />
+
+        <TextView
+            android:id="@+id/tv_nick"
+            style="@style/TextMediumBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@{vm.nick}"
+            app:layout_constraintEnd_toEndOf="@id/iv_profile"
+            app:layout_constraintStart_toStartOf="@id/iv_profile"
+            app:layout_constraintTop_toBottomOf="@id/iv_profile" />
+
         <ImageButton
-            android:id="@+id/btn_next_unselect"
+            android:id="@+id/btn_next_skip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="60dp"
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_unselect"
+            android:src="@drawable/ic_skip"
             android:visibility="@{vm.isNextButtonVisible ? View.INVISIBLE : View.VISIBLE}"
+            android:onClick="@{() -> vm.navigateToSetLevel()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -156,10 +143,10 @@
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="60dp"
             android:background="@android:color/transparent"
-            android:onClick="@{() -> vm.navigateToSetProfile()}"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_select"
             android:visibility="@{vm.isNextButtonVisible ? View.VISIBLE : View.INVISIBLE}"
+            android:onClick="@{() -> vm.navigateToSetLevel()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
