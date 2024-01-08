@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/climer_login_fragment"
         android:name="com.climus.climeet.presentation.ui.intro.login.climer.ClimerLoginFragment"
-        android:label="climerLogin" >
+        android:label="climerLogin">
 
         <action
             android:id="@+id/action_climer_login_fragment_to_set_climer_name_fragment"
@@ -45,10 +45,10 @@
     <fragment
         android:id="@+id/admin_login_fragment"
         android:name="com.climus.climeet.presentation.ui.intro.login.admin.AdminLoginFragment"
-        android:label="adminLogin" >
+        android:label="adminLogin">
         <action
-            android:id="@+id/action_admin_login_fragment_to_set_crag_name_fragment"
-            app:destination="@id/set_crag_name_fragment" />
+            android:id="@+id/action_admin_login_fragment_to_announce_admin_signup_fragment"
+            app:destination="@id/announce_admin_signup_fragment" />
     </fragment>
 
     <fragment
@@ -60,13 +60,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/set_crag_name_fragment"
-        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.SetCragNameFragment"
-        android:label="setCragName"/>
-    <fragment
         android:id="@+id/climbingGoalFragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.climer.climbinggoal.ClimbingGoalFragment"
-        android:label="ClimbingGoalFragment" >
+        android:label="ClimbingGoalFragment">
         <action
             android:id="@+id/action_climbingGoalFragment_to_noticeSettingFragment"
             app:destination="@id/noticeSettingFragment" />
@@ -78,7 +74,7 @@
     <fragment
         android:id="@+id/noticeSettingFragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.climer.noticesetting.NoticeSettingFragment"
-        android:label="NoticeSettingFragment" >
+        android:label="NoticeSettingFragment">
         <action
             android:id="@+id/action_noticeSettingFragment_to_completetFragment"
             app:destination="@id/completeFragment" />
@@ -86,7 +82,7 @@
     <fragment
         android:id="@+id/followCragFragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragFragment"
-        android:label="FollowCragFragment" >
+        android:label="FollowCragFragment">
         <action
             android:id="@+id/action_followCragFragment_to_climbingGoalFragment"
             app:destination="@id/climbingGoalFragment" />
@@ -95,7 +91,7 @@
     <fragment
         android:id="@+id/set_climer_profile_fragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.climer.SetClimerProfileFragment"
-        android:label="SetClimerProfileFragment" >
+        android:label="SetClimerProfileFragment">
         <action
             android:id="@+id/action_set_climer_profile_fragment_to_set_climer_level_fragment"
             app:destination="@id/set_climer_level_fragment" />
@@ -104,11 +100,137 @@
     <fragment
         android:id="@+id/set_climer_level_fragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.climer.SetClimerLevelFragment"
-        android:label="fragment_set_climer_level" >
+        android:label="fragment_set_climer_level">
         <action
             android:id="@+id/action_set_climer_level_fragment_to_followCragFragment"
             app:destination="@id/followCragFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/announce_admin_signup_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.announce.AnnounceAdminSignupFragment"
+        android:label="announceAdminSignup">
+        <action
+            android:id="@+id/action_announce_admin_signup_fragment_to_search_crag_name_fragment"
+            app:destination="@id/search_crag_name_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/search_crag_name_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.searchname.SearchCragNameFragment"
+        android:label="searchCragName">
+        <action
+            android:id="@+id/action_search_crag_name_fragment_to_set_crag_name_fragment"
+            app:destination="@id/set_crag_name_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/set_crag_name_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.setname.SetCragNameFragment"
+        android:label="setCragName">
+
+        <argument
+            android:name="cragId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_set_crag_name_fragment_to_set_crag_error_fragment"
+            app:destination="@id/set_crag_error_fragment" />
+        <action
+            android:id="@+id/action_set_crag_name_fragment_to_business_registration_fragment"
+            app:destination="@id/business_registration_fragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/set_crag_error_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.error.SetCragErrorFragment"
+        android:label="setCragError">
+        <argument
+            android:name="cragId"
+            app:argType="long" />
+        <argument
+            android:name="cragImgUrl"
+            app:argType="string" />
+        <argument
+            android:name="cragName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_set_crag_error_fragment_to_set_crag_error_complete_fragment"
+            app:destination="@id/set_crag_error_complete_fragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/set_admin_id_pw_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.idpw.SetAdminIdPwFragment"
+        android:label="setAdminIdPw">
+        <action
+            android:id="@+id/action_set_admin_id_pw_fragment_to_set_admin_personal_fragment"
+            app:destination="@id/set_admin_personal_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/set_admin_personal_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.personal.SetAdminPersonalInfoFragment"
+        android:label="setAdminPersonalInfo">
+        <action
+            android:id="@+id/action_set_admin_personal_fragment_to_set_admin_background_fragment"
+            app:destination="@+id/set_admin_background_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/set_admin_background_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.background.SetAdminBackgroundFragment"
+        android:label="setAdminBackground">
+        <action
+            android:id="@+id/action_set_admin_background_fragment_to_set_admin_service_fragment"
+            app:destination="@id/set_admin_service_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/set_admin_service_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.service.SetAdminServiceFragment"
+        android:label="setAdminService">
+        <action
+            android:id="@+id/action_set_admin_service_fragment_to_set_admin_alarm_fragment"
+            app:destination="@id/set_admin_alarm_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/set_admin_alarm_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.alarm.SetAdminAlarmFragment"
+        android:label="setAdminAlarm">
+        <action
+            android:id="@+id/action_set_admin_alarm_fragment_to_set_admin_complete_fragment"
+            app:destination="@id/set_admin_complete_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/set_admin_complete_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.complete.SetAdminCompleteFragment"
+        android:label="setAdminComplete">
+
+        <action
+            android:id="@+id/action_set_admin_complete_fragment_to_login_fragment"
+            app:destination="@id/login_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/set_crag_error_complete_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.error.SetCragErrorCompleteFragment"
+        android:label="setCragErrorComplete">
+        <action
+            android:id="@+id/action_set_crag_error_complete_fragment_to_login_fragment"
+            app:destination="@id/login_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/business_registration_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.admin.submitdoc.BusinessRegistrationFragment"
+        android:label="businessRegistration">
+        <action
+            android:id="@+id/action_business_registration_fragment_to_set_admin_id_pw_fragment"
+            app:destination="@id/set_admin_id_pw_fragment" />
+    </fragment>
 
 </navigation>

@@ -103,9 +103,6 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.1")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.1")
 
-    // Image CircleView
-    implementation("de.hdodenhof:circleimageview:3.1.0")
-
     // Circle Indicator
     implementation("me.relex:circleindicator:2.1.6")
 
@@ -114,6 +111,9 @@ dependencies {
 
     // kakao login
     implementation("com.kakao.sdk:v2-all:2.17.0")
+
+    // CircleImageView
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 
     // Live Data
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
