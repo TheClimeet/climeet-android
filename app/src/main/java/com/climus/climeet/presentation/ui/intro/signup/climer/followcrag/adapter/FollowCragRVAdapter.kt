@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.climus.climeet.R
-import com.climus.climeet.databinding.FollowCragsRvItemBinding
+import com.climus.climeet.databinding.ItemFollowCragsBinding
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.Crag
 
 class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.Adapter<FollowCragRVAdapter.ViewHolder>(){
@@ -18,7 +18,7 @@ class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.A
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val binding: FollowCragsRvItemBinding = FollowCragsRvItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding: ItemFollowCragsBinding = ItemFollowCragsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -57,7 +57,7 @@ class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.A
 
     override fun getItemCount(): Int = items.size
 
-    inner class ViewHolder(val binding: FollowCragsRvItemBinding): RecyclerView.ViewHolder(binding.root){
+    inner class ViewHolder(val binding: ItemFollowCragsBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(crag: Crag) {
             if (crag.profileUrl != null) {
                 Glide.with(binding.root.context)

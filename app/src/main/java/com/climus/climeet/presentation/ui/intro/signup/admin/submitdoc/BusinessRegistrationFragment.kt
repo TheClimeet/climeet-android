@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.intro.signup.admin.submitdoc
 
+import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -28,6 +29,7 @@ class BusinessRegistrationFragment :
 
         binding.vm = viewModel
         binding.pvm = parentViewModel
+        binding.btnNext.isEnabled = false
         setDescriptionText()
         initEventObserve()
         initParentImageObserve()
@@ -46,10 +48,10 @@ class BusinessRegistrationFragment :
         binding.tvDescription.text = spannable
     }
 
-    private fun initEventObserve(){
+    private fun initEventObserve() {
         repeatOnStarted {
-            viewModel.event.collect{
-                when(it){
+            viewModel.event.collect {
+                when (it) {
                     is BusinessRegistrationEvent.NavigateToSetAdminIdPw -> findNavController().toSetAdminIdPw()
                     is BusinessRegistrationEvent.NavigateToBack -> {}
                 }
@@ -57,17 +59,24 @@ class BusinessRegistrationFragment :
         }
     }
 
-    private fun initParentImageObserve(){
+    private fun initParentImageObserve() {
         repeatOnStarted {
-            parentViewModel.imageUri.collect{
-                binding.btnGotoGallery.setImageURI(it)
-                AdminSignupForm.setBusinessRegistrationUri(it)
+            parentViewModel.imageUri.collect {
+                setImage(it)
             }
         }
     }
 
-    private fun NavController.toSetAdminIdPw(){
-        val action = BusinessRegistrationFragmentDirections.actionBusinessRegistrationFragmentToSetAdminIdPwFragment()
+    private fun setImage(uri: Uri) {
+        binding.btnGotoGallery.setImageURI(uri)
+        AdminSignupForm.setBusinessRegistrationUri(uri)
+        binding.btnNext.isEnabled = true
+        binding.btnNext.setImageResource(R.drawable.ic_next_on)
+    }
+
+    private fun NavController.toSetAdminIdPw() {
+        val action =
+            BusinessRegistrationFragmentDirections.actionBusinessRegistrationFragmentToSetAdminIdPwFragment()
         navigate(action)
     }
 }

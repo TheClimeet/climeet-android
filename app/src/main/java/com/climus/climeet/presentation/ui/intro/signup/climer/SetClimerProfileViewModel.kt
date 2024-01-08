@@ -14,13 +14,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 sealed class SetClimerProfileEvent {
-
     data object NavigateToBack : SetClimerProfileEvent()
-
     data object NavigateToSetLevel : SetClimerProfileEvent()
-
-    data object ImageClick : SetClimerProfileEvent()
-
 }
 
 @HiltViewModel
@@ -39,12 +34,6 @@ class SetClimerProfileViewModel @Inject constructor() : ViewModel()  {
     fun navigateToBack(){
         viewModelScope.launch {
             _event.emit(SetClimerProfileEvent.NavigateToBack)
-        }
-    }
-
-    fun ImageClick(){
-        viewModelScope.launch {
-            _event.emit(SetClimerProfileEvent.ImageClick)
         }
     }
 

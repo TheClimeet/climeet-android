@@ -5,7 +5,9 @@
 
     <data>
 
-        <import type="android.view.View" />
+        <variable
+            name="pvm"
+            type="com.climus.climeet.presentation.ui.intro.IntroViewModel" />
 
         <variable
             name="vm"
@@ -104,7 +106,7 @@
             android:layout_marginTop="60dp"
             android:adjustViewBounds="true"
             android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
-            android:onClick="@{()->vm.ImageClick()}"
+            android:onClick="@{()->pvm.goToGallery()}"
             android:scaleType="fitXY"
             app:imageUri="@{vm.imageUri}"
             app:layout_constraintEnd_toEndOf="parent"
@@ -123,30 +125,15 @@
             app:layout_constraintTop_toBottomOf="@id/iv_profile" />
 
         <ImageButton
-            android:id="@+id/btn_next_skip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="60dp"
-            android:background="@android:color/transparent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_skip"
-            android:visibility="@{vm.isNextButtonVisible ? View.INVISIBLE : View.VISIBLE}"
-            android:onClick="@{() -> vm.navigateToSetLevel()}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <ImageButton
             android:id="@+id/btn_next_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="60dp"
             android:background="@android:color/transparent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_select"
-            android:visibility="@{vm.isNextButtonVisible ? View.VISIBLE : View.INVISIBLE}"
             android:onClick="@{() -> vm.navigateToSetLevel()}"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_next_on"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

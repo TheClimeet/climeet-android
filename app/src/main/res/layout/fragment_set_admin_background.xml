@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="android.view.View" />
+
+        <variable
+            name="pvm"
+            type="com.climus.climeet.presentation.ui.intro.IntroViewModel" />
 
         <variable
             name="vm"
@@ -26,8 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="20dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
                 android:id="@+id/btn_back"
@@ -39,9 +42,9 @@
                 android:onClick="@{() -> vm.navigateToBack()}"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_back"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_title"
@@ -51,10 +54,10 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="15dp"
                 android:text="배경 설정"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -64,14 +67,14 @@
             android:layout_height="1dp"
             android:background="@color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_top"/>
+            app:layout_constraintTop_toBottomOf="@id/layout_top" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="20dp"
-            app:layout_constraintTop_toBottomOf="@id/view_line"
-            app:layout_constraintBottom_toTopOf="@id/guide">
+            app:layout_constraintBottom_toTopOf="@id/guide"
+            app:layout_constraintTop_toBottomOf="@id/view_line">
             <!--   주의 문구    -->
             <TextView
                 android:id="@+id/tv_explain_large"
@@ -79,8 +82,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/set_admin_background_explain_large"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_explain_regular"
@@ -89,42 +92,29 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@string/set_admin_background_explain_regular"
-                app:layout_constraintTop_toBottomOf="@id/tv_explain_large"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_explain_large" />
             <!--   이미지 설정    -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="60dp"
+                android:onClick="@{()-> pvm.goToGallery()}"
                 app:cardCornerRadius="10dp"
-                android:onClick="@{()-> vm.setImageClick()}"
-                app:layout_constraintTop_toBottomOf="@id/tv_explain_regular"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/tv_explain_regular">
 
                 <ImageView
                     android:id="@+id/iv_img_icon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add_img"
-                    android:scaleType="centerCrop"/>
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_add_img" />
             </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <ImageButton
-            android:id="@+id/btn_next_disabled"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="40dp"
-            android:background="@android:color/transparent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_next_disabled"
-            android:visibility="@{vm.isNextButtonEnabled? View.INVISIBLE : View.VISIBLE }"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ImageButton
             android:id="@+id/btn_next"
@@ -133,12 +123,11 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="40dp"
             android:background="@android:color/transparent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_next_activated"
-            android:visibility="@{vm.isNextButtonEnabled? View.VISIBLE : View.INVISIBLE }"
             android:onClick="@{() -> vm.navigateToNext()}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_next_on"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

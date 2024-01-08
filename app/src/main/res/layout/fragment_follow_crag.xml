@@ -10,7 +10,7 @@
         tools:context=".presentation.ui.intro.signup.climer.followcrag.FollowCragFragment">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,11 +31,11 @@
                 tools:ignore="MissingConstraints" />
 
             <TextView
+                style="@style/TextMediumBold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                style="@style/TextMediumBold"
                 android:gravity="center"
                 android:text="암장 설정"
                 android:textColor="@color/white"
@@ -51,8 +51,8 @@
             android:id="@+id/climbing_goal_underline"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#FCFFFF"
             android:layout_marginTop="16dp"
+            android:background="#FCFFFF"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -61,6 +61,7 @@
 
         <TextView
             android:id="@+id/tv_follow_crags"
+            style="@style/TextLargeBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -68,7 +69,6 @@
             android:text="자주 가는 암장을\n팔로우하세요!"
             android:textColor="@color/white"
             android:textSize="28sp"
-            style="@style/TextLargeBold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,14 +76,14 @@
             android:id="@+id/et_serach_crags"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginTop="42dp"
             android:layout_marginHorizontal="20dp"
-            android:background="@drawable/shape_search_box"
-            android:paddingHorizontal="40dp"
-            android:inputType="text"
+            android:layout_marginTop="42dp"
+            android:background="@drawable/rect_grey7fill_nostroke_32radius"
             android:hint="암장을 검색하세요."
-            android:textColorHint="@color/white"
+            android:inputType="text"
+            android:paddingHorizontal="40dp"
             android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_search_crags"
@@ -101,28 +101,28 @@
 
         <Spinner
             android:id="@+id/spinner"
+            style="@style/TextLargeBold"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
             android:background="@drawable/spinner_custom"
             android:gravity="center"
-            style="@style/TextLargeBold"
             android:overlapAnchor="false"
             android:popupBackground="#DEDEDE"
             android:popupElevation="10dp"
-            android:theme="@style/SpinnerTheme"
             android:textColor="@color/white"
             android:textSize="14sp"
+            android:theme="@style/SpinnerTheme"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_serach_crags" />
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/ic_dropdown"
             android:layout_marginRight="5dp"
+            android:src="@drawable/ic_dropdown"
             app:layout_constraintBottom_toBottomOf="@+id/spinner"
             app:layout_constraintEnd_toEndOf="@+id/spinner"
             app:layout_constraintTop_toTopOf="@+id/spinner" />
@@ -137,7 +137,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_serach_crags"
-            tools:listitem="@layout/follow_crags_rv_item" />
+            tools:listitem="@layout/item_follow_crags" />
 
         <ImageView
             android:id="@+id/btn_next_valid"
@@ -145,8 +145,8 @@
             android:layout_height="54dp"
             android:layout_marginRight="30dp"
             android:layout_marginBottom="60dp"
-            android:visibility="visible"
             android:src="@drawable/shape_main_circle"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
