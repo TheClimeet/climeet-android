@@ -30,7 +30,7 @@ object AdminSignupForm {
         private set
     var email = ""
         private set
-    var backgroundImage: String? = null
+    var backgroundImage: Uri? = null
         private set
     var services: List<Service> = emptyList()    // service 형식 고려
         private set
@@ -52,7 +52,7 @@ object AdminSignupForm {
     fun setEmail(data: String){
         email = data
     }
-    fun setBackgroundImg(uri: String?) {
+    fun setBackgroundImg(uri: Uri) {
         backgroundImage = uri
     }
     fun setSelectedServices(data: List<Service>) {

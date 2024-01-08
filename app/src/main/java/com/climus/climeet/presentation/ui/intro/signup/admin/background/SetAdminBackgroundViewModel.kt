@@ -16,7 +16,6 @@ import javax.inject.Inject
 sealed class SetAdminBackgroundEvent {
     data object NavigateToBack : SetAdminBackgroundEvent()
     data object NavigateToNext : SetAdminBackgroundEvent()
-    data object SetImageClick : SetAdminBackgroundEvent()
 }
 
 @HiltViewModel
@@ -42,18 +41,5 @@ class SetAdminBackgroundViewModel @Inject constructor() : ViewModel(){
         viewModelScope.launch {
             _event.emit(SetAdminBackgroundEvent.NavigateToNext)
         }
-    }
-
-    // 이미지 설정 눌림
-    fun setImageClick() {
-        viewModelScope.launch {
-            _event.emit(SetAdminBackgroundEvent.SetImageClick)
-        }
-    }
-
-    // 이미지 주소 설정
-    fun setImage(uri: String) {
-        imgUri.value = uri
-        AdminSignupForm.setBackgroundImg(uri) // 사진 링크 폼에 넣기
     }
 }

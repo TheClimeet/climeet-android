@@ -4,7 +4,9 @@
 
     <data>
 
-        <import type="android.view.View" />
+        <variable
+            name="pvm"
+            type="com.climus.climeet.presentation.ui.intro.IntroViewModel" />
 
         <variable
             name="vm"
@@ -98,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="60dp"
-                android:onClick="@{()-> vm.setImageClick()}"
+                android:onClick="@{()-> pvm.goToGallery()}"
                 app:cardCornerRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -115,19 +117,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageButton
-            android:id="@+id/btn_next_disabled"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="40dp"
-            android:background="@android:color/transparent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_next_off"
-            android:visibility="@{vm.isNextButtonEnabled? View.INVISIBLE : View.VISIBLE }"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <ImageButton
             android:id="@+id/btn_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -137,7 +126,6 @@
             android:onClick="@{() -> vm.navigateToNext()}"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_next_on"
-            android:visibility="@{vm.isNextButtonEnabled? View.VISIBLE : View.INVISIBLE }"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
