@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -92,8 +92,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_explain_large"
-                tools:listitem = "@layout/item_level"
-                tools:itemCount="5"/>
+                tools:itemCount="5"
+                tools:listitem="@layout/item_level" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -106,7 +106,7 @@
             android:layout_marginBottom="60dp"
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_unselect"
+            android:src="@drawable/ic_next_off"
             android:visibility="@{vm.isNextButtonVisible ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -118,9 +118,9 @@
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="60dp"
             android:background="@android:color/transparent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_select"
             android:onClick="@{() -> vm.navigateToSetNext()}"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_next_on"
             android:visibility="@{vm.isNextButtonVisible ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

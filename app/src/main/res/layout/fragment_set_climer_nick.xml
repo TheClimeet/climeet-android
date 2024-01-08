@@ -144,7 +144,7 @@
             android:layout_marginBottom="60dp"
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_unselect"
+            android:src="@drawable/ic_next_off"
             android:visibility="@{vm.isNextButtonVisible ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -158,7 +158,7 @@
             android:background="@android:color/transparent"
             android:onClick="@{() -> vm.navigateToSetProfile()}"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_select"
+            android:src="@drawable/ic_next_on"
             android:visibility="@{vm.isNextButtonVisible ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
