@@ -24,6 +24,12 @@ object ClimerSignupForm {
     var level = 0
         private set
 
+    var howToKnow : Int = 0
+        private set
+
+    var notice : Boolean = false
+        private set
+
     fun setToken(data: String) {
         token = data
     }
@@ -40,8 +46,15 @@ object ClimerSignupForm {
         imageUri = uri
     }
 
-    fun setLevel(climerLevel: Int){
+    fun setLevel(climerLevel: Int) {
         level = climerLevel
     }
 
+    fun setHowToKnow(path: Int) {
+        howToKnow = path
+    }
+
+    fun setNotice(permit: Boolean) {
+        notice = permit
+    }
 }
