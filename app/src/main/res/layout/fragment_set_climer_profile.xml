@@ -5,7 +5,9 @@
 
     <data>
 
-        <import type="android.view.View" />
+        <variable
+            name="pvm"
+            type="com.climus.climeet.presentation.ui.intro.IntroViewModel" />
 
         <variable
             name="vm"
@@ -104,7 +106,7 @@
             android:layout_marginTop="60dp"
             android:adjustViewBounds="true"
             android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
-            android:onClick="@{()->vm.ImageClick()}"
+            android:onClick="@{()->pvm.goToGallery()}"
             android:scaleType="fitXY"
             app:imageUri="@{vm.imageUri}"
             app:layout_constraintEnd_toEndOf="parent"
