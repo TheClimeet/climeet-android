@@ -15,7 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.ui.intro.signup.climer.SetClimerProfileFragment">
+        tools:context=".presentation.ui.intro.signup.climer.setclimerprofile.SetClimerProfileFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout"

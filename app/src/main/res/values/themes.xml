@@ -1,11 +1,23 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
+
     <style name="Theme.Climeet" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:windowBackground">@color/cm_background</item>
         <item name="android:statusBarColor">@color/cm_background</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:navigationBarColor">@color/black</item>
-        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
+    </style>
+
+    <style name="Base.Theme.Climeet" parent="Theme.AppCompat.Light"/>
+
+    <style name="SpinnerDivideStyle" parent="android:style/Widget.ListView.DropDown">
+        <item name="android:divider">@color/white</item> <!-- divider 색 -->
+        <item name="android:dividerHeight">1dp</item> <!-- divider 높이 -->
+    </style>
+    <style name="SpinnerTheme">
+        <item name="android:dropDownListViewStyle">@style/SpinnerDivideStyle</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
 </resources>

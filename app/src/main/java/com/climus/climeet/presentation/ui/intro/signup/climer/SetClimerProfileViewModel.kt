@@ -1,16 +1,10 @@
 package com.climus.climeet.presentation.ui.intro.signup.climer
 
 import android.net.Uri
-import android.util.Log
-import android.widget.ImageView
-import androidx.databinding.BindingAdapter
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide
-import com.climus.climeet.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

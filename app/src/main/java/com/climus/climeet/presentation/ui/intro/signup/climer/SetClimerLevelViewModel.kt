@@ -1,14 +1,9 @@
 package com.climus.climeet.presentation.ui.intro.signup.climer
 
-import android.graphics.Rect
-import android.util.Log
-import android.view.View
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.LevelItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
