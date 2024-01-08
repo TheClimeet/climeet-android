@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentClimbingGoalBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
 import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragFragmentDirections
 
 class ClimbingGoalFragment : BaseFragment<FragmentClimbingGoalBinding>(R.layout.fragment_climbing_goal) {
@@ -49,6 +50,8 @@ class ClimbingGoalFragment : BaseFragment<FragmentClimbingGoalBinding>(R.layout.
         binding.btnNextValid.setOnClickListener {
             findNavController().toNoticeSetting()
         }
+
+        binding.tvClimbingGoalNickname.text = ClimerSignupForm.nickName + "님,"
     }
 
     private fun toggleVisibility(view: View) {

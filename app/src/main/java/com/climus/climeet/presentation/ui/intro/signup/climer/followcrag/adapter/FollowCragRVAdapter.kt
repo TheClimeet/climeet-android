@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.intro.signup.climer.followcrag
+package com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.adapter
 
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater

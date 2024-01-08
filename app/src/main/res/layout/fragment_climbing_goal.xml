@@ -14,18 +14,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="32dp"
-            android:paddingBottom="12dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/iv_climbing_goal_back"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_arrow_back"
+                android:src="@drawable/ic_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints" />
@@ -35,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:fontFamily="@font/robotoblack"
+                style="@style/TextMediumBold"
                 android:gravity="center"
                 android:text="클라이밍 목표"
                 android:textColor="@color/white"
@@ -50,39 +49,39 @@
         <LinearLayout
             android:id="@+id/climbing_goal_underline"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:background="#FCFFFF"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout1"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/constraintLayout1" />
 
         <TextView
-            android:id="@+id/tv_follow_crags"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="123dp"
-            android:text="켈리님,"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            android:fontFamily="@font/robotoblack"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/tv_climbing_goal_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:fontFamily="@font/robotoblack"
+            android:layout_marginTop="100dp"
+            android:text="켈리님,"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            style="@style/TextLargeBold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView5"
+            style="@style/TextLargeBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:text="클밋을 어떻게 알게 되었나요?"
             android:textColor="@color/white"
             android:textSize="25sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_follow_crags" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_climbing_goal_nickname" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -92,17 +91,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_climbing_goal_nickname"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
             app:layout_constraintVertical_bias="0.0">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_instagram_facebook_unselected"
+                style="@style/TextRegularBold"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="50dp"
                 android:background="@drawable/rect_grey7_radius8"
-                android:fontFamily="@font/robotoblack"
                 android:text="인스타그램 / 페이스북"
                 android:textColor="@color/white"
                 android:textSize="14sp"
@@ -113,12 +112,12 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_instagram_facebook_selected"
+                style="@style/TextRegularBold"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="50dp"
                 android:background="@drawable/rect_main_radius8"
-                android:fontFamily="@font/robotoblack"
                 android:text="인스타그램 / 페이스북"
                 android:textColor="@color/black"
                 android:textSize="14sp"
@@ -129,12 +128,12 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_youtube_unselected"
+                style="@style/TextRegularBold"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/rect_grey7_radius8"
-                android:fontFamily="@font/robotoblack"
                 android:text="유튜브"
                 android:textColor="@color/white"
                 android:textSize="14sp"
@@ -145,12 +144,12 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_youtube_selected"
+                style="@style/TextRegularBold"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/rect_main_radius8"
-                android:fontFamily="@font/robotoblack"
                 android:text="유튜브"
                 android:textColor="@color/black"
                 android:textSize="14sp"
@@ -161,12 +160,12 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_recommended_unselected"
+                style="@style/TextRegularBold"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/rect_grey7_radius8"
-                android:fontFamily="@font/robotoblack"
                 android:text="지인 추천"
                 android:textColor="@color/white"
                 android:textSize="14sp"
@@ -177,12 +176,12 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_recommended_selected"
+                style="@style/TextRegularBold"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/rect_main_radius8"
-                android:fontFamily="@font/robotoblack"
                 android:text="지인 추천"
                 android:textColor="@color/black"
                 android:textSize="14sp"
@@ -193,12 +192,12 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_blog_cafe_unselected"
+                style="@style/TextRegularBold"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/rect_grey7_radius8"
-                android:fontFamily="@font/robotoblack"
                 android:text="블로그 / 카페 / 커뮤니티"
                 android:textColor="@color/white"
                 android:textSize="14sp"
@@ -209,12 +208,12 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_blog_cafe_selected"
+                style="@style/TextRegularBold"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/rect_main_radius8"
-                android:fontFamily="@font/robotoblack"
                 android:text="블로그 / 카페 / 커뮤니티"
                 android:textColor="@color/black"
                 android:textSize="14sp"
@@ -225,12 +224,12 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_etc_unselected"
+                style="@style/TextRegularBold"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/rect_grey7_radius8"
-                android:fontFamily="@font/robotoblack"
                 android:text="기타"
                 android:textColor="@color/white"
                 android:textSize="14sp"
@@ -241,12 +240,12 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_etc_selected"
+                style="@style/TextRegularBold"
                 android:layout_width="match_parent"
                 android:layout_height="54dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/rect_main_radius8"
-                android:fontFamily="@font/robotoblack"
                 android:text="기타"
                 android:textColor="@color/black"
                 android:textSize="14sp"
@@ -262,7 +261,7 @@
             android:layout_width="54dp"
             android:layout_height="54dp"
             android:layout_marginRight="30dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="60dp"
             android:src="@drawable/shape_gray7_circle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -282,7 +281,7 @@
             android:layout_width="54dp"
             android:layout_height="54dp"
             android:layout_marginRight="30dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="60dp"
             android:visibility="invisible"
             android:src="@drawable/shape_main_circle"
             app:layout_constraintBottom_toBottomOf="parent"

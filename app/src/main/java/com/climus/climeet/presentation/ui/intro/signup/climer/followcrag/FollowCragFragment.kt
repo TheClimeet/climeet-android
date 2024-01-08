@@ -1,26 +1,21 @@
 package com.climus.climeet.presentation.ui.intro.signup.climer.followcrag
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentFollowCragBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.climus.climeet.presentation.ui.intro.login.climer.ClimerLoginFragmentDirections
-import com.climus.climeet.presentation.ui.intro.signup.climer.climbinggoal.ClimbingGoalActivity
+import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.adapter.CustomSpinnerAdaptor
+import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.adapter.FollowCragRVAdapter
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.Crag
 
 class FollowCragFragment : BaseFragment<FragmentFollowCragBinding>(R.layout.fragment_follow_crag) {
 
     private var cragList = ArrayList<Crag>()
-    private val viewModel: FollowCragViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +24,6 @@ class FollowCragFragment : BaseFragment<FragmentFollowCragBinding>(R.layout.frag
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.vm = viewModel
 
         binding.ivFollowCragsBack.setOnClickListener {
             findNavController().navigateUp()
