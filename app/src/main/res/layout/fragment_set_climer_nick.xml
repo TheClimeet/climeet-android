@@ -8,7 +8,7 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.intro.signup.climer.SetClimerNickViewModel" />
+            type="com.climus.climeet.presentation.ui.intro.signup.climer.setnick.SetClimerNickViewModel" />
 
     </data>
 

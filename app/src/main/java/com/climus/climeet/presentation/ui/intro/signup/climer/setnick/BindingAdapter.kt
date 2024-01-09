@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.intro.signup.climer.Adapter
+package com.climus.climeet.presentation.ui.intro.signup.climer.setnick
 
 import android.widget.TextView
 import androidx.core.content.ContextCompat

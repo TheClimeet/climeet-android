@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.intro.signup.climer
+package com.climus.climeet.presentation.ui.intro.signup.climer.setnick
 
 import android.os.Bundle
 import android.view.View
