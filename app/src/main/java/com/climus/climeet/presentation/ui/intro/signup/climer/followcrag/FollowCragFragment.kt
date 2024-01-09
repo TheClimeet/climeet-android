@@ -1,6 +1,7 @@
 package com.climus.climeet.presentation.ui.intro.signup.climer.followcrag
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,17 +34,17 @@ class FollowCragFragment : BaseFragment<FragmentFollowCragBinding>(R.layout.frag
             findNavController().toClimbingGoal()
         }
 
-        val sortOptions = listOf("가나다순","팔로우순")
+//        val sortOptions = listOf("가나다순","팔로우순")
 
-        binding.spinner.adapter = CustomSpinnerAdaptor(requireActivity(), R.layout.item_spinner_sort_option, sortOptions)
-        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                val value = binding.spinner.getItemAtPosition(p2).toString()
-            }
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                // 선택되지 않은 경우
-            }
-        }
+//        binding.spinner.adapter = CustomSpinnerAdaptor(requireActivity(), R.layout.item_spinner_sort_option, sortOptions)
+//        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+//                val value = binding.spinner.getItemAtPosition(p2).toString()
+//            }
+//            override fun onNothingSelected(p0: AdapterView<*>?) {
+//                // 선택되지 않은 경우
+//            }
+//        }
 
         cragList.apply {
             add(Crag(null, "더클라임 클라이밍 강남점", 70, false))
@@ -68,12 +69,6 @@ class FollowCragFragment : BaseFragment<FragmentFollowCragBinding>(R.layout.frag
             binding.rvFollowCrags.visibility = View.VISIBLE
         }
 
-        followCragRVAdapter.setItemClickListener(
-            object : FollowCragRVAdapter.OnItemClickListener {
-                override fun onItemClick(crag : Crag) {
-                    crag.isFollowing = !crag.isFollowing
-                }
-            })
     }
 
     private fun NavController.toClimbingGoal() {
