@@ -14,6 +14,12 @@ class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.A
 
     private val followStatus = SparseBooleanArray()
 
+    fun submitList(filteredList: List<Crag>) {
+        items.clear()
+        items.addAll(filteredList)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
