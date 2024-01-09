@@ -49,8 +49,10 @@ class SetCragErrorFragment :
                     view.backgroundTintList =
                         ContextCompat.getColorStateList(requireContext(), R.color.cm_main)
                 } else {
-                    view.backgroundTintList =
-                        ContextCompat.getColorStateList(requireContext(), R.color.cm_grey3)
+                    if (it.text.isBlank()) {
+                        view.backgroundTintList =
+                            ContextCompat.getColorStateList(requireContext(), R.color.cm_grey3)
+                    }
                 }
             }
         }
