@@ -67,7 +67,7 @@ class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.A
                     .load(crag.profileUrl)
                     .into(binding.cragsProfileArea)
             } else {
-                binding.cragsProfileArea.setImageResource(R.drawable.shape_light_gray_circle)
+                binding.cragsProfileArea.setImageResource(R.drawable.oval_lightgreyfill_nostroke_noradius)
             }
             binding.tvCragName.text = crag.name
             binding.tvCragsFollow.text = crag.followers.toString()

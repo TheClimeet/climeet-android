@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.intro.signup.climer.complete
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,25 +23,20 @@ class CompleteFragment : BaseFragment<FragmentCompleteBinding>(R.layout.fragment
 
         val checkIv = binding.ivCompleteCheck
 
-        val translationXAnimator = ObjectAnimator.ofFloat(checkIv, View.TRANSLATION_X, -checkIv.width.toFloat(), 0f).apply {
+        checkIv.scaleX = 0f
+        checkIv.scaleY = 1f
+
+        val animator = ValueAnimator.ofFloat(0f, 1f).apply {
             duration = 1000
             interpolator = AccelerateDecelerateInterpolator()
+            addUpdateListener { valueAnimator ->
+                val value = valueAnimator.animatedValue as Float
+                checkIv.scaleX = value
+            }
         }
 
-        val scaleXAnimator = ObjectAnimator.ofFloat(checkIv, View.SCALE_X, 0f, 1f).apply {
-            duration = 1000
-            interpolator = AccelerateDecelerateInterpolator()
-        }
+        animator.start()
 
-        val scaleYAnimator = ObjectAnimator.ofFloat(checkIv, View.SCALE_Y, 0f, 1f).apply {
-            duration = 1000
-            interpolator = AccelerateDecelerateInterpolator()
-        }
-
-        val animatorSet = AnimatorSet()
-        animatorSet.playTogether(translationXAnimator, scaleXAnimator, scaleYAnimator)
-
-        animatorSet.start()
     }
 
 }

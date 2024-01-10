@@ -36,7 +36,8 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
     private val storagePermissionList =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arrayOf(  // 안드로이드 13 이상 필요한 권한들
-                Manifest.permission.READ_MEDIA_IMAGES
+                Manifest.permission.READ_MEDIA_IMAGES,
+                Manifest.permission.POST_NOTIFICATIONS
             )
         } else {
             arrayOf(  // 안드로이드 13 미만 필요한 권한들

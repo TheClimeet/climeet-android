@@ -121,14 +121,14 @@
             android:layout_height="16dp"
             android:layout_marginTop="14dp"
             android:layout_marginLeft="15dp"
-            android:background="@drawable/shape_main_circle"
+            android:background="@drawable/oval_mainfill_nostroke_noradius"
             app:layout_constraintStart_toStartOf="@+id/textView2"
             app:layout_constraintTop_toTopOf="@+id/textView2" />
 
         <ImageView
             android:layout_width="8dp"
             android:layout_height="8dp"
-            android:background="@drawable/shape_gray7_circle"
+            android:background="@drawable/oval_grey7fill_nostroke_noradius"
             app:layout_constraintBottom_toBottomOf="@+id/iv_main_circle"
             app:layout_constraintEnd_toEndOf="@+id/iv_main_circle"
             app:layout_constraintStart_toStartOf="@+id/iv_main_circle"
@@ -212,14 +212,14 @@
             android:layout_height="16dp"
             android:layout_marginTop="14dp"
             android:layout_marginLeft="15dp"
-            android:background="@drawable/shape_main_circle"
+            android:background="@drawable/oval_mainfill_nostroke_noradius"
             app:layout_constraintStart_toStartOf="@+id/textView2"
             app:layout_constraintTop_toTopOf="@+id/textView3" />
 
         <ImageView
             android:layout_width="8dp"
             android:layout_height="8dp"
-            android:background="@drawable/shape_gray7_circle"
+            android:background="@drawable/oval_grey7fill_nostroke_noradius"
             app:layout_constraintBottom_toBottomOf="@+id/iv_main_circle2"
             app:layout_constraintEnd_toEndOf="@+id/iv_main_circle2"
             app:layout_constraintStart_toStartOf="@+id/iv_main_circle2"
