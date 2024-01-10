@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
+import com.climus.climeet.presentation.ui.intro.signup.admin.model.ServiceUiData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,8 +26,8 @@ class SetAdminServiceViewModel @Inject constructor() : ViewModel() {
     private val _event = MutableSharedFlow<SetAdminServiceEvent>()
     val event: SharedFlow<SetAdminServiceEvent> = _event.asSharedFlow()
 
-    private val _serviceList = MutableLiveData<List<Service>>(emptyList()) // fragment에서 넘겨준 서비스 리스트 저장
-    val serviceList: LiveData<List<Service>> = _serviceList
+    private val _serviceList = MutableLiveData<List<ServiceUiData>>(emptyList()) // fragment에서 넘겨준 서비스 리스트 저장
+    val serviceList: LiveData<List<ServiceUiData>> = _serviceList
 
     val isNextButtonEnabled = MutableStateFlow(false)
 
@@ -37,7 +37,7 @@ class SetAdminServiceViewModel @Inject constructor() : ViewModel() {
     }
 
     // 서비스 리스트 가져오기
-    fun setInitialServices(initialServices: List<Service>) {
+    fun setInitialServices(initialServices: List<ServiceUiData>) {
         _serviceList.value = initialServices
     }
 

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetAdminServiceBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.intro.signup.admin.model.ServiceUiData
 
 class SetAdminServiceFragment : BaseFragment<FragmentSetAdminServiceBinding>(R.layout.fragment_set_admin_service) {
 
@@ -17,14 +18,14 @@ class SetAdminServiceFragment : BaseFragment<FragmentSetAdminServiceBinding>(R.l
 
     // 임시로 데이터 생성
     val tempData = listOf(
-        Service(1, "샤워 시설"),
-        Service(2, "샤워 용품"),
-        Service(3, "수건 제공"),
-        Service(4, "간이 세면대"),
-        Service(5, "초크 대여"),
-        Service(6, "암벽화 대여"),
-        Service(7, "삼각대 대여"),
-        Service(8, "운동복 대여"),
+        ServiceUiData(1, "샤워 시설"),
+        ServiceUiData(2, "샤워 용품"),
+        ServiceUiData(3, "수건 제공"),
+        ServiceUiData(4, "간이 세면대"),
+        ServiceUiData(5, "초크 대여"),
+        ServiceUiData(6, "암벽화 대여"),
+        ServiceUiData(7, "삼각대 대여"),
+        ServiceUiData(8, "운동복 대여"),
     )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

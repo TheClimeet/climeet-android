@@ -8,8 +8,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.databinding.ItemServiceBinding
+import com.climus.climeet.presentation.ui.intro.signup.admin.model.ServiceUiData
 
-class ServiceRVAdapter(private val vm: SetAdminServiceViewModel, private val serviceList: List<Service>) : RecyclerView.Adapter<ServiceRVAdapter.ViewHolder>() {
+class ServiceRVAdapter(private val vm: SetAdminServiceViewModel, private val serviceList: List<ServiceUiData>) : RecyclerView.Adapter<ServiceRVAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItemServiceBinding = ItemServiceBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
@@ -34,7 +35,7 @@ class ServiceRVAdapter(private val vm: SetAdminServiceViewModel, private val ser
             }
         }
 
-        fun bind(service: Service){
+        fun bind(service: ServiceUiData){
             binding.btnItem.text = service.title
 
             if(service.isSelected) {
