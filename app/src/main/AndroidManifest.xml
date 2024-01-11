@@ -8,6 +8,9 @@
     <!-- 갤러리 권한 ver.13~ -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
 
+    <!--  알림 권한  -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+
     <application
         android:name=".app.App"
         android:icon="@mipmap/ic_launcher"

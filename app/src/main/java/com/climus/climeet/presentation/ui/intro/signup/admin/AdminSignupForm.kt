@@ -11,8 +11,13 @@ object AdminSignupForm {
     // - 회원가입 데이터를 임시 저장하기 위한 싱글톤 Object
 
     private var cragId: Long = -1L
+    var cragName = ""
+        private set
     private var businessRegistrationUri: Uri? = null
 
+    fun setCragName(name: String){
+        cragName = name
+    }
     fun setCragId(id: Long){
         cragId = id
     }

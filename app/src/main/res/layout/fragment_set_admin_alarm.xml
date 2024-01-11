@@ -4,6 +4,9 @@
 
     <data>
         <variable
+            name="fragment"
+            type="com.climus.climeet.presentation.ui.intro.signup.admin.alarm.SetAdminAlarmFragment" />
+        <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.intro.signup.admin.alarm.SetAdminAlarmViewModel" />
     </data>
@@ -136,7 +139,6 @@
             android:text="알림 받고 실력 상승하기"
             android:backgroundTint="@color/cm_main"
             android:textColor="@color/black"
-            android:onClick="@{() -> vm.navigateToNextAlarmOn()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
