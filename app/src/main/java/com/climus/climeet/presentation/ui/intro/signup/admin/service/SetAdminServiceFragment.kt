@@ -10,9 +10,11 @@ import com.climus.climeet.databinding.FragmentSetAdminServiceBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.ServiceUiData
 
-class SetAdminServiceFragment : BaseFragment<FragmentSetAdminServiceBinding>(R.layout.fragment_set_admin_service) {
+class SetAdminServiceFragment : BaseFragment<FragmentSetAdminServiceBinding>(R.layout.fragment_set_admin_service),
+    OnServiceClickListener {
 
     private val viewModel: SetAdminServiceViewModel by viewModels()
+    private lateinit var serviceRVAdapter: ServiceRVAdapter
 
     // todo : API 호출해 서비스 리스트 저장하기
 
@@ -39,8 +41,12 @@ class SetAdminServiceFragment : BaseFragment<FragmentSetAdminServiceBinding>(R.l
         viewModel.setInitialServices(tempData)
 
         initRecyclerview()
-
         initEventObserve()
+    }
+
+    override fun onServiceClick(position: Int) {
+        viewModel.toggleServiceSelection(position)
+        serviceRVAdapter.notifyItemChanged(position)
     }
 
     private fun initEventObserve() {
@@ -57,7 +63,7 @@ class SetAdminServiceFragment : BaseFragment<FragmentSetAdminServiceBinding>(R.l
     // 서비스 RecyclerView
     private fun initRecyclerview() {
         // todo : tempData 대신 API에서 받아온 값 넘겨주기
-        val serviceRVAdapter = ServiceRVAdapter(viewModel, tempData)
+        serviceRVAdapter = ServiceRVAdapter(tempData, this)
         binding.rvService.layoutManager = GridLayoutManager(context, 2)
         binding.rvService.adapter = serviceRVAdapter
     }

@@ -7,34 +7,39 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
+import com.climus.climeet.databinding.ItemCragSearchBinding
 import com.climus.climeet.databinding.ItemServiceBinding
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.ServiceUiData
+import com.climus.climeet.presentation.ui.intro.signup.admin.searchname.SearchCragNameViewHolder
 
-class ServiceRVAdapter(private val vm: SetAdminServiceViewModel, private val serviceList: List<ServiceUiData>) : RecyclerView.Adapter<ServiceRVAdapter.ViewHolder>() {
+// 클릭 이벤트를 처리하는 인터페이스 정의
+interface OnServiceClickListener {
+    fun onServiceClick(position: Int)
+}
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val binding: ItemServiceBinding = ItemServiceBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
+class ServiceRVAdapter(
+    private val serviceList: List<ServiceUiData>,
+    private val onServiceClickListener: OnServiceClickListener
+) : RecyclerView.Adapter<ServiceRVAdapter.ServiceViewHolder>() {
 
-        return ViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServiceViewHolder =
+        ServiceViewHolder(
+            ItemServiceBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
+
+    override fun onBindViewHolder(holder: ServiceViewHolder, position: Int) {
+        holder.bind(serviceList[position])
+
+        holder.binding.btnItem.setOnClickListener {
+            onServiceClickListener.onServiceClick(position)
+        }
     }
 
     override fun getItemCount(): Int = serviceList.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(serviceList[position])
-    }
-
-    inner class ViewHolder(val binding: ItemServiceBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        // 아이템 연결
-        init {
-            binding.btnItem.setOnClickListener {
-                vm.toggleServiceSelection(adapterPosition)
-                Log.d("admin", "${serviceList[adapterPosition]} 눌림")
-                notifyItemChanged(adapterPosition) // 선택 상태가 변경되면 해당 아이템만 갱신 (다른 아이템이 영향받지 않게)
-            }
-        }
-
+    class ServiceViewHolder(val binding: ItemServiceBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(service: ServiceUiData){
             binding.btnItem.text = service.title
 
