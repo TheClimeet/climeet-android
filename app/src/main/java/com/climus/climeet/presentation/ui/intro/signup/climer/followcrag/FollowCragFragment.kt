@@ -72,7 +72,7 @@ class FollowCragFragment : BaseFragment<FragmentFollowCragBinding>(R.layout.frag
     }
 
     private fun NavController.toClimbingGoal() {
-        val action = FollowCragFragmentDirections.actionFollowCragFragmentToClimbingGoalFragment()
+        val action = FollowCragFragmentDirections.actionFollowCragFragmentToHowToKnowFragment3()
         navigate(action)
     }
 

@@ -23,7 +23,7 @@ object ClimerSignupForm {
     var level = 0
         private set
 
-    var howToKnow : Int = 0
+    var way : Int = 0
         private set
 
     var noticePermission : Boolean = false
@@ -49,8 +49,8 @@ object ClimerSignupForm {
         level = climerLevel
     }
 
-    fun setHowToKnow(path: Int) {
-        howToKnow = path
+    fun setWay(howToKnow: Int) {
+        way = howToKnow
     }
 
     fun setNotice(permit: Boolean) {

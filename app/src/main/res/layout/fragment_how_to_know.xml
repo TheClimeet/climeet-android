@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.intro.signup.climer.howtoknow.HowToKnowViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/cm_grey9"
+        tools:context=".presentation.ui.intro.signup.climer.howtoknow.HowToKnowFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_climbing_goal_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_back"
+                android:onClick="@{() -> vm.navigateToBack()}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                style="@style/TextMediumBold"
+                android:gravity="center"
+                android:text="클라이밍 목표"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/iv_climbing_goal_back"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/climbing_goal_underline"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FCFFFF"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/constraintLayout1" />
+
+        <TextView
+            android:id="@+id/tv_climbing_goal_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="100dp"
+            android:text="@{vm.explainText}"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            style="@style/TextLargeBold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_climbing_goal_nickname"
+            app:layout_constraintVertical_bias="0.0">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_way"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="5"
+                tools:listitem="@layout/item_way" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/btn_next_invalid"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="60dp"
+            android:src="@drawable/oval_grey7fill_nostroke_noradius"
+            android:visibility="@{vm.isNextButtonVisible ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_next_arrow_invalid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_right_gray"
+            android:visibility="@{vm.isNextButtonVisible ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_next_invalid"
+            app:layout_constraintEnd_toEndOf="@+id/btn_next_invalid"
+            app:layout_constraintStart_toStartOf="@+id/btn_next_invalid"
+            app:layout_constraintTop_toTopOf="@+id/btn_next_invalid" />
+
+        <ImageView
+            android:id="@+id/btn_next_valid"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="60dp"
+            android:visibility="@{vm.isNextButtonVisible ? View.VISIBLE : View.INVISIBLE}"
+            android:src="@drawable/oval_mainfill_nostroke_noradius"
+            android:onClick="@{() -> vm.navigateToNext()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_next_arrow_valid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_right_main"
+            android:visibility="@{vm.isNextButtonVisible ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_next_valid"
+            app:layout_constraintEnd_toEndOf="@+id/btn_next_valid"
+            app:layout_constraintStart_toStartOf="@+id/btn_next_valid"
+            app:layout_constraintTop_toTopOf="@+id/btn_next_valid" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
