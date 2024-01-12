@@ -230,7 +230,7 @@
         android:name="com.climus.climeet.presentation.ui.intro.signup.climer.howtoknow.HowToKnowFragment"
         android:label="HowToKnowFragment" >
         <action
-            android:id="@+id/action_howToKnowFragment3_to_noticeSettingFragment"
+            android:id="@+id/action_howToKnowFragment_to_noticeSettingFragment"
             app:destination="@id/noticeSettingFragment" />
     </fragment>
 

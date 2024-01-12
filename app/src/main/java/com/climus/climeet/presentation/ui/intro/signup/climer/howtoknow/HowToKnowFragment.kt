@@ -56,7 +56,7 @@ class HowToKnowFragment
 
     private fun NavController.toNoticeSetting() {
         val action =
-            HowToKnowFragmentDirections.actionHowToKnowFragment3ToNoticeSettingFragment()
+            HowToKnowFragmentDirections.actionHowToKnowFragmentToNoticeSettingFragment()
         navigate(action)
     }
 }

@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -38,6 +39,8 @@ class NoticeSettingFragment : BaseFragment<FragmentNoticeSettingBinding>(R.layou
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
                 PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.POST_NOTIFICATIONS)
             ) {
+                ClimerSignupForm.setNotice(true)
+                Log.d("Push Permission", ClimerSignupForm.noticePermission.toString())
                 findNavController().toComplete()
             } else {
                 // 푸쉬 권한 없음
@@ -46,6 +49,8 @@ class NoticeSettingFragment : BaseFragment<FragmentNoticeSettingBinding>(R.layou
         }
 
         binding.tvNoticeSettingDisagree.setOnClickListener {
+            ClimerSignupForm.setNotice(false)
+            Log.d("Push Permission", ClimerSignupForm.noticePermission.toString())
             findNavController().toComplete()
         }
 
@@ -61,9 +66,13 @@ class NoticeSettingFragment : BaseFragment<FragmentNoticeSettingBinding>(R.layou
             Constants.REQ_PERMISSION_PUSH -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_DENIED) {
                     // 알림 권한을 거부했을 때 실행
+                    ClimerSignupForm.setNotice(false)
+                    Log.d("Push Permission", ClimerSignupForm.noticePermission.toString())
                     informAboutPermissionDenial()
                 } else {
                     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+                    ClimerSignupForm.setNotice(true)
+                    Log.d("Push Permission", ClimerSignupForm.noticePermission.toString())
                     findNavController().toComplete()
                 }
             }
