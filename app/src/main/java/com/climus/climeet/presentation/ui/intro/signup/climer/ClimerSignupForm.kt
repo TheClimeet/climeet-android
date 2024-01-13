@@ -1,7 +1,6 @@
 package com.climus.climeet.presentation.ui.intro.signup.climer
 
 import android.net.Uri
-import android.util.Log
 
 object ClimerSignupForm {
 
@@ -24,10 +23,10 @@ object ClimerSignupForm {
     var level = 0
         private set
 
-    var howToKnow : Int = 0
+    var way : Int = 0
         private set
 
-    var notice : Boolean = false
+    var noticePermission : Boolean = false
         private set
 
     fun setToken(data: String) {
@@ -50,11 +49,11 @@ object ClimerSignupForm {
         level = climerLevel
     }
 
-    fun setHowToKnow(path: Int) {
-        howToKnow = path
+    fun setWay(howToKnow: Int) {
+        way = howToKnow
     }
 
     fun setNotice(permit: Boolean) {
-        notice = permit
+        noticePermission = permit
     }
 }

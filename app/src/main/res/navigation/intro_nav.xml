@@ -60,14 +60,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/climbingGoalFragment"
-        android:name="com.climus.climeet.presentation.ui.intro.signup.climer.climbinggoal.ClimbingGoalFragment"
-        android:label="ClimbingGoalFragment">
-        <action
-            android:id="@+id/action_climbingGoalFragment_to_noticeSettingFragment"
-            app:destination="@id/noticeSettingFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/completeFragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.climer.complete.CompleteFragment"
         android:label="CompleteFragment" />
@@ -83,9 +75,10 @@
         android:id="@+id/followCragFragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragFragment"
         android:label="FollowCragFragment">
+
         <action
-            android:id="@+id/action_followCragFragment_to_climbingGoalFragment"
-            app:destination="@id/climbingGoalFragment" />
+            android:id="@+id/action_followCragFragment_to_howToKnowFragment3"
+            app:destination="@id/howToKnowFragment3" />
     </fragment>
 
     <fragment
@@ -231,6 +224,14 @@
         <action
             android:id="@+id/action_business_registration_fragment_to_set_admin_id_pw_fragment"
             app:destination="@id/set_admin_id_pw_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/howToKnowFragment3"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.climer.howtoknow.HowToKnowFragment"
+        android:label="HowToKnowFragment" >
+        <action
+            android:id="@+id/action_howToKnowFragment_to_noticeSettingFragment"
+            app:destination="@id/noticeSettingFragment" />
     </fragment>
 
 </navigation>

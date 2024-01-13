@@ -24,9 +24,6 @@ class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.A
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
-        holder.itemView.setOnClickListener {
-            itemClickListener.onItemClick(items[position])
-        }
 
         val btnFollowing = holder.binding.btnFollowing
         val btnFollow = holder.binding.btnFollow
@@ -40,18 +37,24 @@ class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.A
             btnFollow.visibility = View.INVISIBLE
         }
 
+        // 팔로우 +1
         btnFollowing.setOnClickListener {
             followStatus.put(position, !isFollow) // 토글
             btnFollowing.visibility = View.INVISIBLE
             btnFollow.visibility = View.VISIBLE
             notifyItemChanged(position)
+            val cragItem = items[position]
+            cragItem.followers += 1
         }
 
+        // 팔로우 -1
         btnFollow.setOnClickListener {
             followStatus.put(position, !isFollow) // 토글
             btnFollowing.visibility = View.VISIBLE
             btnFollow.visibility = View.INVISIBLE
             notifyItemChanged(position)
+            val cragItem = items[position]
+            cragItem.followers -= 1
         }
     }
 
@@ -64,7 +67,7 @@ class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.A
                     .load(crag.profileUrl)
                     .into(binding.cragsProfileArea)
             } else {
-                binding.cragsProfileArea.setImageResource(R.drawable.shape_light_gray_circle)
+                binding.cragsProfileArea.setImageResource(R.drawable.oval_lightgreyfill_nostroke_noradius)
             }
             binding.tvCragName.text = crag.name
             binding.tvCragsFollow.text = crag.followers.toString()
@@ -73,15 +76,5 @@ class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.A
                 binding.btnFollow.visibility = View.VISIBLE
             }
         }
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(crag : Crag)
-    }
-
-    private lateinit var itemClickListener : OnItemClickListener
-
-    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
-        this.itemClickListener = onItemClickListener
     }
 }
