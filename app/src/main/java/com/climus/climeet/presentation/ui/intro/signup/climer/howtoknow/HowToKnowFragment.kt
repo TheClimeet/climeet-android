@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentHowToKnowBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.climus.climeet.presentation.ui.intro.signup.climer.Adapter.WayAdapter
 import com.climus.climeet.presentation.ui.intro.signup.climer.AdapterDecoration
 
 class HowToKnowFragment

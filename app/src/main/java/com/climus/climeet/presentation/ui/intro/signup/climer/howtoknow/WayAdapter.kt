@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.intro.signup.climer.Adapter
+package com.climus.climeet.presentation.ui.intro.signup.climer.howtoknow
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.databinding.ItemWayBinding
-import com.climus.climeet.presentation.ui.intro.signup.climer.howtoknow.HowToKnowViewModel
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.WayItem
 
 class WayAdapter (private val viewModel: HowToKnowViewModel) :
@@ -14,10 +13,10 @@ class WayAdapter (private val viewModel: HowToKnowViewModel) :
 
     var ways: List<WayItem> = listOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WayAdapter.WaysViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WaysViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemWayBinding.inflate(inflater, parent, false)
-        return WayAdapter.WaysViewHolder(binding)
+        return WaysViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: WaysViewHolder, position: Int) {
