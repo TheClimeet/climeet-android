@@ -55,13 +55,6 @@ class FollowCragFragment : BaseFragment<FragmentFollowCragBinding>(R.layout.frag
             rvFollowCrags.layoutManager =
                 LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
 
-            followCragRVAdapter.setItemClickListener(
-                object : FollowCragRVAdapter.OnItemClickListener {
-                    override fun onItemClick(crag: Crag) {
-                        crag.isFollowing = !crag.isFollowing
-                    }
-                })
-
             etSerachCrags.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
                     s: CharSequence,
@@ -97,11 +90,13 @@ class FollowCragFragment : BaseFragment<FragmentFollowCragBinding>(R.layout.frag
                             layoutSearchMiss.visibility = View.INVISIBLE
                             pbLoading.visibility = View.VISIBLE
                             delay(500)
+                            // 검색 결과가 있는 경우
                             if (searchText == "더클라임") {
                                 rvFollowCrags.visibility = View.VISIBLE
                                 layoutSearchMiss.visibility = View.INVISIBLE
                                 pbLoading.visibility = View.INVISIBLE
                             } else {
+                                // 검색 결과가 없는 경우
                                 rvFollowCrags.visibility = View.INVISIBLE
                                 layoutSearchMiss.visibility = View.VISIBLE
                                 pbLoading.visibility = View.INVISIBLE

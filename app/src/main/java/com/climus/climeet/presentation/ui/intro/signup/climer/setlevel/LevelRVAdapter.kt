@@ -13,8 +13,6 @@ class LevelRVAdapter(private val viewModel: SetClimerLevelViewModel) :
 
     var levels: List<LevelItem> = listOf()
 
-    // ...
-
     override fun onBindViewHolder(holder: LevelViewHolder, position: Int) {
         val levelItem = levels[position]
         holder.bind(levelItem, viewModel)
