@@ -8,6 +8,7 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
+import android.os.Build.*
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
@@ -34,10 +35,10 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
 
     private lateinit var neededPermissionList: MutableList<String>
     private val storagePermissionList =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
             arrayOf(  // 안드로이드 13 이상 필요한 권한들
                 Manifest.permission.READ_MEDIA_IMAGES,
-                Manifest.permission.POST_NOTIFICATIONS
+                // Manifest.permission.POST_NOTIFICATIONS
             )
         } else {
             arrayOf(  // 안드로이드 13 미만 필요한 권한들
