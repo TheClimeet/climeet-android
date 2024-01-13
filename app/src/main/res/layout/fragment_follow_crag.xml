@@ -192,7 +192,7 @@
             android:layout_height="54dp"
             android:layout_marginRight="30dp"
             android:layout_marginBottom="60dp"
-            android:src="@drawable/shape_main_circle"
+            android:src="@drawable/oval_mainfill_nostroke_noradius"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
