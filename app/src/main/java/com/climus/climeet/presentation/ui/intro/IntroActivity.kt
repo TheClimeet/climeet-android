@@ -4,28 +4,17 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Resources
-import android.graphics.Color
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.provider.Settings
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.climus.climeet.R
 import com.climus.climeet.databinding.ActivityIntroBinding
 import com.climus.climeet.presentation.base.BaseActivity
 import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::inflate) {
@@ -77,14 +66,15 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
             showPermissionDialog(
                 "클밋의 다음 작업을 허용하시겠습니까? 기기 사진, 미디어, 파일 액세스",
                 ::requestPermission,
-                ::informAboutPermissionDenial
-            )
+            ) {
+                showPermissionSnackBar(binding.snackGuide)
+            }
         } else {
             openGallery()
         }
     }
 
-    private fun requestPermission(){
+    private fun requestPermission() {
         ActivityCompat.requestPermissions(
             this,
             neededPermissionList.toTypedArray(),
@@ -110,7 +100,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
             ) {
                 openGallery()
             } else {
-                informAboutPermissionDenial()
+                showPermissionSnackBar(binding.snackGuide)
             }
         }
     }
@@ -131,41 +121,4 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
                 }
             }
         }
-
-    private fun informAboutPermissionDenial() {
-        val snack = Snackbar.make(binding.root,
-            "엑세스 권한이 거부되었습니다",
-            Snackbar.LENGTH_INDEFINITE)
-
-        val snackView = snack.view
-        val textView = snackView.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-        val icon = ContextCompat.getDrawable(this, R.drawable.ic_snackbar_check)
-        icon?.setBounds(0, 0, icon.intrinsicWidth, icon.intrinsicHeight)
-        textView.setCompoundDrawables(icon, null, null, null)
-        textView.compoundDrawablePadding = dpToPx(12)
-        snackView.setPadding(snackView.paddingLeft, dpToPx(8), snackView.paddingRight, dpToPx(8))
-
-        snack.setTextColor(Color.BLACK)
-        snack.setBackgroundTint(Color.WHITE)
-        snack.setActionTextColor(ContextCompat.getColor(this, R.color.cm_main))
-        snack.setAction("설정"){
-            // 애플리케이션 설정 화면으로 이동하는 인텐트
-            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            val uri = Uri.fromParts("package", this.packageName, null)
-            intent.data = uri
-            startActivity(intent)
-        }
-        snack.show()
-
-        CoroutineScope(Dispatchers.Main).launch {
-            delay(3000)
-            snack.dismiss()
-        }
-
-    }
-
-    fun dpToPx(dp: Int): Int {
-        return (dp * Resources.getSystem().displayMetrics.density).toInt()
-    }
-
 }
