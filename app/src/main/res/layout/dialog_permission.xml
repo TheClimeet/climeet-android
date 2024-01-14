@@ -15,6 +15,17 @@
         android:paddingVertical="20dp">
 
         <TextView
+            style="@style/TextRegular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="클밋"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/tv_description"
             style="@style/TextRegular"
             android:layout_width="wrap_content"
@@ -29,12 +40,12 @@
             android:id="@+id/btn_refuse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
             android:background="@android:color/transparent"
-            android:minHeight="0dp"
             android:minWidth="0dp"
+            android:minHeight="0dp"
             android:paddingHorizontal="10dp"
             android:paddingVertical="10dp"
-            android:layout_marginEnd="12dp"
             android:text="거부"
             android:textColor="@color/cm_main"
             app:layout_constraintBottom_toBottomOf="@id/btn_confirm"
@@ -46,8 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@android:color/transparent"
-            android:minHeight="0dp"
             android:minWidth="0dp"
+            android:minHeight="0dp"
             android:paddingHorizontal="10dp"
             android:paddingVertical="10dp"
             android:text="허용"

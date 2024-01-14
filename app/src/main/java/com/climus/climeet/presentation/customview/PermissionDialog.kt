@@ -1,6 +1,5 @@
 package com.climus.climeet.presentation.customview
 
-import android.app.ActionBar.LayoutParams
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -16,7 +15,6 @@ class PermissionDialog(
 ) : Dialog(context) {
 
     private lateinit var binding: DialogPermissionBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DialogPermissionBinding.inflate(layoutInflater)
