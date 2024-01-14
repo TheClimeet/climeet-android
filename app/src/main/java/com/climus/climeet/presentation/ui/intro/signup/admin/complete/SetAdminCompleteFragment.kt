@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.intro.signup.admin.complete
 
+import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -16,6 +17,12 @@ class SetAdminCompleteFragment : BaseFragment<FragmentSetAdminCompleteBinding>(R
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
+
+        binding.ivCheck.setImageResource(R.drawable.ic_check_anim)
+        val drawable = binding.ivCheck.drawable
+        if (drawable is Animatable) {
+            (drawable as Animatable).start()
+        }
 
         initEventObserve()
     }

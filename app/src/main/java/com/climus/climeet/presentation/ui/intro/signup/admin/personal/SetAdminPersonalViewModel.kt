@@ -2,8 +2,11 @@ package com.climus.climeet.presentation.ui.intro.signup.admin.personal
 
 import android.util.Log
 import android.util.Patterns
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.R
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -11,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,6 +33,19 @@ class SetAdminPersonalViewModel @Inject constructor() : ViewModel() {
     val warningTextName = MutableStateFlow("")
     val warningTextPhone = MutableStateFlow("")
     val warningTextEmail = MutableStateFlow("")
+    val nameViewColor = MutableStateFlow(R.color.cm_grey4)
+    val phoneViewColor = MutableStateFlow(R.color.cm_grey4)
+    val emailViewColor = MutableStateFlow(R.color.cm_grey4)
+
+    val warningNameColor: LiveData<Int> = warningTextName.map { text ->
+        if (text != "") R.color.cm_red else R.color.white
+    }.asLiveData()
+    val warningPhoneColor: LiveData<Int> = warningTextPhone.map { text ->
+        if (text != "") R.color.cm_red else R.color.white
+    }.asLiveData()
+    val warningEmailColor: LiveData<Int> = warningTextEmail.map { text ->
+        if (text != "") R.color.cm_red else R.color.white
+    }.asLiveData()
 
     val name = MutableStateFlow("")
     val phone = MutableStateFlow("")
@@ -66,11 +83,14 @@ class SetAdminPersonalViewModel @Inject constructor() : ViewModel() {
         name.onEach {
             if (name.value.isBlank()) {
                 warningTextName.value = ""
+                nameViewColor.value = R.color.cm_grey4
             } else {
                 if (!isNameValid(name.value)) {
                     warningTextName.value = "이름을 정확히 입력해주세요."
+                    nameViewColor.value = R.color.cm_grey4
                 } else{
                     warningTextName.value = ""
+                    nameViewColor.value = R.color.cm_main
                 }
             }
             updateNextButtonState()
@@ -81,11 +101,14 @@ class SetAdminPersonalViewModel @Inject constructor() : ViewModel() {
         phone.onEach {
             if (phone.value.isBlank()) {
                 warningTextPhone.value = ""
+                phoneViewColor.value = R.color.cm_grey4
             } else {
                 if (!isPhoneValid(phone.value)) {
                     warningTextPhone.value = "전화번호 형식이 아닙니다."
+                    phoneViewColor.value = R.color.cm_grey4
                 } else{
                     warningTextPhone.value = ""
+                    phoneViewColor.value = R.color.cm_main
                 }
             }
             updateNextButtonState()
@@ -96,11 +119,14 @@ class SetAdminPersonalViewModel @Inject constructor() : ViewModel() {
         email.onEach {
             if (email.value.isBlank()) {
                 warningTextEmail.value = ""
+                emailViewColor.value = R.color.cm_grey4
             } else {
                 if (!isEmailValid(email.value)) {
                     warningTextEmail.value = "이메일 형식이 아닙니다."
+                    emailViewColor.value = R.color.cm_grey4
                 } else{
                     warningTextEmail.value = ""
+                    emailViewColor.value = R.color.cm_main
                 }
             }
             updateNextButtonState()

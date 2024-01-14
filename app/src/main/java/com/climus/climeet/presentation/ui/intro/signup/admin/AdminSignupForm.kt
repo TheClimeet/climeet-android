@@ -2,7 +2,7 @@ package com.climus.climeet.presentation.ui.intro.signup.admin
 
 import android.net.Uri
 
-import com.climus.climeet.presentation.ui.intro.signup.admin.service.Service
+import com.climus.climeet.presentation.ui.intro.signup.admin.model.ServiceUiData
 
 object AdminSignupForm {
 
@@ -11,8 +11,13 @@ object AdminSignupForm {
     // - 회원가입 데이터를 임시 저장하기 위한 싱글톤 Object
 
     private var cragId: Long = -1L
+    var cragName = ""
+        private set
     private var businessRegistrationUri: Uri? = null
 
+    fun setCragName(name: String){
+        cragName = name
+    }
     fun setCragId(id: Long){
         cragId = id
     }
@@ -21,7 +26,7 @@ object AdminSignupForm {
         businessRegistrationUri = uri
     }
     var id = ""
-        private set // 읽기 전용
+        private set
     var pw = ""
         private set
     var name = ""
@@ -32,7 +37,7 @@ object AdminSignupForm {
         private set
     var backgroundImage: Uri? = null
         private set
-    var services: List<Service> = emptyList()    // service 형식 고려
+    var services: List<ServiceUiData> = emptyList()    // service 형식 고려
         private set
     var alarm = false
         private set
@@ -55,7 +60,7 @@ object AdminSignupForm {
     fun setBackgroundImg(uri: Uri) {
         backgroundImage = uri
     }
-    fun setSelectedServices(data: List<Service>) {
+    fun setSelectedServices(data: List<ServiceUiData>) {
         services = data
     }
     fun setAlarm(data: Boolean){
