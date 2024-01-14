@@ -44,19 +44,24 @@ class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.A
             btnFollow.visibility = View.INVISIBLE
         }
 
+        // 팔로우 +1
         btnFollowing.setOnClickListener {
             followStatus.put(position, !isFollow) // 토글
             btnFollowing.visibility = View.INVISIBLE
             btnFollow.visibility = View.VISIBLE
             notifyItemChanged(position)
+
+            val cragItem = items[position]
             cragItem.followers += 1
         }
 
+        // 팔로우 -1
         btnFollow.setOnClickListener {
             followStatus.put(position, !isFollow) // 토글
             btnFollowing.visibility = View.VISIBLE
             btnFollow.visibility = View.INVISIBLE
             notifyItemChanged(position)
+            val cragItem = items[position]
             cragItem.followers -= 1
         }
     }

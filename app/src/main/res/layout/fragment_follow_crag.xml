@@ -125,6 +125,34 @@
         <!--            app:layout_constraintBottom_toBottomOf="@+id/spinner"-->
         <!--            app:layout_constraintEnd_toEndOf="@+id/spinner"-->
         <!--            app:layout_constraintTop_toTopOf="@+id/spinner" />-->
+      
+<!--        <Spinner-->
+<!--            android:id="@+id/spinner"-->
+<!--            style="@style/TextLargeBold"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginRight="20dp"-->
+<!--            android:background="@drawable/spinner_custom"-->
+<!--            android:gravity="center"-->
+<!--            android:overlapAnchor="false"-->
+<!--            android:popupBackground="#DEDEDE"-->
+<!--            android:popupElevation="10dp"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="14sp"-->
+<!--            android:theme="@style/SpinnerTheme"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/et_serach_crags" />-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginRight="5dp"-->
+<!--            android:src="@drawable/ic_dropdown"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/spinner"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/spinner"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/spinner" />-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_follow_crags"
