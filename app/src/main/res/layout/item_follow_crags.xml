@@ -8,6 +8,9 @@
         <variable
             name="keyword"
             type="String" />
+        <variable
+            name="crag"
+            type="com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag" />
 
     </data>
 
@@ -78,11 +81,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:text="더클라임 클라이밍 강남점"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-<!--                app:keyword="@{keyword}"-->
-<!--                app:searchResult="@{item.name}"-->
+                    android:text="@{crag.name}"
+                    app:keyword="@{keyword}"
+                    android:textSize="16sp"
+                    tools:text="더클라임 클라이밍 강남점"
+                    app:searchResult="@{crag.name}"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
