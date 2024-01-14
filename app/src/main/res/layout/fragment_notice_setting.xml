@@ -13,46 +13,43 @@
             android:id="@+id/constraintLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
+            android:paddingHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/iv_climbing_goal_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@android:color/transparent"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_back"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                style="@style/TextMediumBold"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="클라이밍 목표"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/tv_set_nick"
+                style="@style/TextMediumBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="알림 설정"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_climbing_goal_back"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_climbing_goal_back" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <View
             android:id="@+id/climbing_goal_underline"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="1dp"
+            android:layout_marginStart="-20dp"
             android:layout_marginTop="16dp"
-            android:background="#FCFFFF"
-            android:orientation="horizontal"
+            android:layout_marginEnd="-20dp"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/constraintLayout1" />

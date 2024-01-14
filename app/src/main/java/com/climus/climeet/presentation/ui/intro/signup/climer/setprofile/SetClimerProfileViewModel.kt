@@ -1,10 +1,11 @@
-package com.climus.climeet.presentation.ui.intro.signup.climer
+package com.climus.climeet.presentation.ui.intro.signup.climer.setprofile
 
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

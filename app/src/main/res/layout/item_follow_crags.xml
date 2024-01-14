@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="keyword"
+            type="String" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,28 +34,28 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_following"
+                style="@style/TextLargeBold"
                 android:layout_width="72dp"
                 android:layout_height="35dp"
-                android:background="@drawable/btn_follow"
                 android:layout_marginHorizontal="20dp"
+                android:background="@drawable/btn_follow"
                 android:text="팔로잉"
-                android:textSize="14sp"
-                style="@style/TextLargeBold"
                 android:textColor="@color/white"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/linearLayout"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_follow"
+                style="@style/TextLargeBold"
                 android:layout_width="72dp"
                 android:layout_height="35dp"
-                android:background="@drawable/btn_following"
                 android:layout_marginHorizontal="20dp"
+                android:background="@drawable/btn_following"
                 android:text="팔로우"
-                android:textSize="14sp"
-                style="@style/TextLargeBold"
                 android:textColor="@color/black"
+                android:textSize="14sp"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/linearLayout"
@@ -70,13 +74,15 @@
 
                 <TextView
                     android:id="@+id/tv_crag_name"
+                    style="@style/TextLargeBold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    style="@style/TextLargeBold"
                     android:text="더클라임 클라이밍 강남점"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
+<!--                app:keyword="@{keyword}"-->
+<!--                app:searchResult="@{item.name}"-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -84,20 +90,20 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        style="@style/TextLargeBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
-                        style="@style/TextLargeBold"
                         android:text="팔로워"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tv_crags_follow"
+                        style="@style/TextLargeBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        style="@style/TextLargeBold"
                         android:text="70"
                         android:textColor="@color/white"
                         android:textSize="12sp" />

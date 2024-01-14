@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.intro.signup.climer.Adapter
+package com.climus.climeet.presentation.ui.intro.signup.climer.setlevel
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -6,15 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.databinding.ItemLevelBinding
-import com.climus.climeet.presentation.ui.intro.signup.climer.SetClimerLevelViewModel
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.LevelItem
 
-class LevelAdapter(private val viewModel: SetClimerLevelViewModel) :
-    RecyclerView.Adapter<LevelAdapter.LevelViewHolder>() {
+class LevelRVAdapter(private val viewModel: SetClimerLevelViewModel) :
+    RecyclerView.Adapter<LevelRVAdapter.LevelViewHolder>() {
 
     var levels: List<LevelItem> = listOf()
-
-    // ...
 
     override fun onBindViewHolder(holder: LevelViewHolder, position: Int) {
         val levelItem = levels[position]

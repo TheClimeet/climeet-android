@@ -14,6 +14,12 @@ class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.A
 
     private val followStatus = SparseBooleanArray()
 
+    fun submitList(filteredList: List<Crag>) {
+        items.clear()
+        items.addAll(filteredList)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -24,6 +30,7 @@ class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.A
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
+        val cragItem = items[position]
 
         val btnFollowing = holder.binding.btnFollowing
         val btnFollow = holder.binding.btnFollow
@@ -43,6 +50,7 @@ class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.A
             btnFollowing.visibility = View.INVISIBLE
             btnFollow.visibility = View.VISIBLE
             notifyItemChanged(position)
+
             val cragItem = items[position]
             cragItem.followers += 1
         }

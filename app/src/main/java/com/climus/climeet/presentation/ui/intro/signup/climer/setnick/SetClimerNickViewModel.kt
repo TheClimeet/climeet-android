@@ -1,14 +1,10 @@
-package com.climus.climeet.presentation.ui.intro.signup.climer
+package com.climus.climeet.presentation.ui.intro.signup.climer.setnick
 
-import android.util.Log
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.R
-import com.climus.climeet.presentation.ui.intro.login.admin.AdminLoginEvent
+import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

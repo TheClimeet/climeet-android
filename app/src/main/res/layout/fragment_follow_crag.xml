@@ -3,59 +3,58 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/cm_grey9"
         tools:context=".presentation.ui.intro.signup.climer.followcrag.FollowCragFragment">
 
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
+            android:paddingHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/iv_follow_crags_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@android:color/transparent"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_back"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="MissingConstraints" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/tv_set_nick"
                 style="@style/TextMediumBold"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center"
                 android:text="암장 설정"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_follow_crags_back"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/iv_follow_crags_back"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_follow_crags_back" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <View
             android:id="@+id/climbing_goal_underline"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="1dp"
+            android:layout_marginStart="-20dp"
             android:layout_marginTop="16dp"
-            android:background="#FCFFFF"
-            android:orientation="horizontal"
+            android:layout_marginEnd="-20dp"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/constraintLayout1" />
 
@@ -64,21 +63,21 @@
             style="@style/TextLargeBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="137dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
             android:text="자주 가는 암장을\n팔로우하세요!"
             android:textColor="@color/white"
             android:textSize="28sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/climbing_goal_underline" />
 
         <EditText
             android:id="@+id/et_serach_crags"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="42dp"
-            android:background="@drawable/rect_grey7fill_nostroke_32radius"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rect_grey7fill_nostroke_20radius"
             android:hint="암장을 검색하세요."
             android:inputType="text"
             android:paddingHorizontal="40dp"
@@ -99,6 +98,34 @@
             app:layout_constraintStart_toStartOf="@+id/et_serach_crags"
             app:layout_constraintTop_toTopOf="@+id/et_serach_crags" />
 
+        <!--        <Spinner-->
+        <!--            android:id="@+id/spinner"-->
+        <!--            style="@style/TextLargeBold"-->
+        <!--            android:layout_width="120dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:layout_marginTop="10dp"-->
+        <!--            android:layout_marginRight="20dp"-->
+        <!--            android:background="@drawable/spinner_custom"-->
+        <!--            android:gravity="center"-->
+        <!--            android:overlapAnchor="false"-->
+        <!--            android:popupBackground="#DEDEDE"-->
+        <!--            android:popupElevation="10dp"-->
+        <!--            android:textColor="@color/white"-->
+        <!--            android:textSize="14sp"-->
+        <!--            android:theme="@style/SpinnerTheme"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/et_serach_crags" />-->
+
+        <!--        <ImageView-->
+        <!--            android:layout_width="30dp"-->
+        <!--            android:layout_height="30dp"-->
+        <!--            android:layout_marginRight="5dp"-->
+        <!--            android:src="@drawable/ic_dropdown"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@+id/spinner"-->
+        <!--            app:layout_constraintEnd_toEndOf="@+id/spinner"-->
+        <!--            app:layout_constraintTop_toTopOf="@+id/spinner" />-->
+      
 <!--        <Spinner-->
 <!--            android:id="@+id/spinner"-->
 <!--            style="@style/TextLargeBold"-->
@@ -131,14 +158,61 @@
             android:id="@+id/rv_follow_crags"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="20dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/btn_next_valid"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_serach_crags"
             tools:listitem="@layout/item_follow_crags" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_search_miss"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="20dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/btn_next_valid"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_serach_crags">
+
+
+            <ImageView
+                android:id="@+id/iv_question"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_question_mark" />
+
+            <TextView
+                android:id="@+id/tv_question"
+                style="@style/TextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="검색결과가 없어요.\n다시 한 번 검색해주세요."
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="@+id/iv_question"
+                app:layout_constraintStart_toStartOf="@+id/iv_question"
+                app:layout_constraintTop_toBottomOf="@+id/iv_question" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ProgressBar
+            android:id="@+id/pb_loading"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/btn_next_valid"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_serach_crags"/>
 
         <ImageView
             android:id="@+id/btn_next_valid"
