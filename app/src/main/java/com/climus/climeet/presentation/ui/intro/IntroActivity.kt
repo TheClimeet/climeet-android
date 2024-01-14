@@ -74,14 +74,22 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
         }
 
         if (neededPermissionList.isNotEmpty()) {
-            ActivityCompat.requestPermissions(
-                this,
-                neededPermissionList.toTypedArray(),
-                STORAGE_PERMISSION
+            showPermissionDialog(
+                "클밋의 다음 작업을 허용하시겠습니까? 기기 사진, 미디어, 파일 액세스",
+                ::requestPermission,
+                ::informAboutPermissionDenial
             )
         } else {
             openGallery()
         }
+    }
+
+    private fun requestPermission(){
+        ActivityCompat.requestPermissions(
+            this,
+            neededPermissionList.toTypedArray(),
+            STORAGE_PERMISSION
+        )
     }
 
     override fun onRequestPermissionsResult(

@@ -11,6 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.climus.climeet.presentation.customview.LoadingDialog
+import com.climus.climeet.presentation.customview.PermissionDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -21,6 +22,8 @@ abstract class BaseActivity<B : ViewDataBinding>(
     protected lateinit var binding: B
     private lateinit var loadingDialog: LoadingDialog
     private var loadingState = false
+
+    private lateinit var permissionDialog: PermissionDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +36,15 @@ abstract class BaseActivity<B : ViewDataBinding>(
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED, block)
         }
+    }
+
+    fun showPermissionDialog(
+        description: String,
+        confirmBtnClickListener: () -> Unit,
+        refuseBtnClickListener: () -> Unit
+    ){
+        permissionDialog = PermissionDialog(this, description, confirmBtnClickListener, refuseBtnClickListener)
+        permissionDialog.show()
     }
 
     fun showLoading(context: Context) {
