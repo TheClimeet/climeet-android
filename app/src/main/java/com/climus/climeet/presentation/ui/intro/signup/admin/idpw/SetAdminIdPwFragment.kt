@@ -41,7 +41,7 @@ class SetAdminIdPwFragment : BaseFragment<FragmentSetAdminIdPwBinding>(R.layout.
 
     // color를 관찰하고, 변경될 때마다 EditText 아래 바 색상 업데이트
     private fun observeColorChange(flow: Flow<Int>, view: View) {
-        lifecycleScope.launch {
+        repeatOnStarted {
             flow.collect { color ->
                 view.setBackgroundColor(ContextCompat.getColor(requireContext(), color))
             }
