@@ -5,6 +5,12 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,6 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:onClick="@{() -> vm.navigateToBack()}"
                 android:background="@android:color/transparent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_back"
@@ -73,30 +80,23 @@
 
         <EditText
             android:id="@+id/et_serach_crags"
+            style="@style/TextRegular"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/rect_grey7fill_nostroke_20radius"
+            android:drawableStart="@drawable/ic_search"
             android:hint="암장을 검색하세요."
             android:inputType="text"
-            android:paddingHorizontal="40dp"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:textSize="14sp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
+            android:text="@={vm.keyword}"
+            android:textCursorDrawable="@drawable/ic_main_cursor"
+            android:textColorHint="@color/cm_grey3"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_search_crags"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_follow_crags" />
-
-        <ImageView
-            android:id="@+id/iv_search_crags"
-            android:layout_width="17dp"
-            android:layout_height="17dp"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/ic_search"
-            app:layout_constraintBottom_toBottomOf="@+id/et_serach_crags"
-            app:layout_constraintStart_toStartOf="@+id/et_serach_crags"
-            app:layout_constraintTop_toTopOf="@+id/et_serach_crags" />
 
         <!--        <Spinner-->
         <!--            android:id="@+id/spinner"-->
@@ -154,18 +154,19 @@
 <!--            app:layout_constraintEnd_toEndOf="@+id/spinner"-->
 <!--            app:layout_constraintTop_toTopOf="@+id/spinner" />-->
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_follow_crags"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="20dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/btn_next_valid"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_serach_crags"
-            tools:listitem="@layout/item_follow_crags" />
+        <ImageButton
+            android:id="@+id/btn_follow_crag_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:background="@android:color/transparent"
+            android:onClick="@{() -> vm.deleteKeyword()}"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_delete"
+            android:visibility="@{vm.keyword.blank? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/et_serach_crags"
+            app:layout_constraintEnd_toEndOf="@+id/et_serach_crags"
+            app:layout_constraintTop_toTopOf="@+id/et_serach_crags" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_search_miss"
@@ -220,6 +221,7 @@
             android:layout_height="54dp"
             android:layout_marginRight="30dp"
             android:layout_marginBottom="60dp"
+            android:onClick="@{() -> vm.navigateToHowToKnow()}"
             android:src="@drawable/oval_mainfill_nostroke_noradius"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -234,6 +236,18 @@
             app:layout_constraintEnd_toEndOf="@+id/btn_next_valid"
             app:layout_constraintStart_toStartOf="@+id/btn_next_valid"
             app:layout_constraintTop_toTopOf="@+id/btn_next_valid" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_follow_crags"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_next_valid"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_serach_crags"
+            tools:listitem="@layout/item_follow_crags" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

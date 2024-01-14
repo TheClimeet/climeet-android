@@ -35,6 +35,8 @@ class NoticeSettingFragment : BaseFragment<FragmentNoticeSettingBinding>(R.layou
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.tvNoticeSettingTitle.text = ClimerSignupForm.nickName + " 회원님!"
+
         binding.btnNoticeSettingAgreement.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
                 PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.POST_NOTIFICATIONS)

@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.adapter
 
+import android.annotation.SuppressLint
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
@@ -8,17 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.ItemFollowCragsBinding
-import com.climus.climeet.presentation.ui.intro.signup.climer.model.Crag
+import com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiData
+import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
 
-class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.Adapter<FollowCragRVAdapter.ViewHolder>(){
+class FollowCragRVAdapter() : RecyclerView.Adapter<FollowCragRVAdapter.ViewHolder>(){
 
     private val followStatus = SparseBooleanArray()
-
-    fun submitList(filteredList: List<Crag>) {
-        items.clear()
-        items.addAll(filteredList)
-        notifyDataSetChanged()
-    }
+    private var searchList: List<FollowCrag> = emptyList()
+    private var keyword: String = ""
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -29,8 +27,7 @@ class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.A
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(items[position])
-        val cragItem = items[position]
+        holder.bind(searchList[position], keyword)
 
         val btnFollowing = holder.binding.btnFollowing
         val btnFollow = holder.binding.btnFollow
@@ -50,8 +47,7 @@ class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.A
             btnFollowing.visibility = View.INVISIBLE
             btnFollow.visibility = View.VISIBLE
             notifyItemChanged(position)
-
-            val cragItem = items[position]
+            val cragItem = searchList[position]
             cragItem.followers += 1
         }
 
@@ -61,25 +57,35 @@ class FollowCragRVAdapter(private val items: MutableList<Crag>) : RecyclerView.A
             btnFollowing.visibility = View.VISIBLE
             btnFollow.visibility = View.INVISIBLE
             notifyItemChanged(position)
-            val cragItem = items[position]
+            val cragItem = searchList[position]
             cragItem.followers -= 1
         }
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = searchList.size
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setList(list: List<FollowCrag>, keyword: String) {
+        searchList = list
+        this.keyword = keyword
+        notifyDataSetChanged()
+    }
 
     inner class ViewHolder(val binding: ItemFollowCragsBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(crag: Crag) {
-            if (crag.profileUrl != null) {
+        fun bind(followCrag: FollowCrag, keyword: String) {
+            binding.keyword = keyword
+            binding.crag = followCrag
+
+            if (followCrag.profileUrl != null) {
                 Glide.with(binding.root.context)
-                    .load(crag.profileUrl)
+                    .load(followCrag.profileUrl)
                     .into(binding.cragsProfileArea)
             } else {
                 binding.cragsProfileArea.setImageResource(R.drawable.oval_lightgreyfill_nostroke_noradius)
             }
-            binding.tvCragName.text = crag.name
-            binding.tvCragsFollow.text = crag.followers.toString()
-            if(crag.isFollowing) {
+            binding.tvCragName.text = followCrag.name
+            binding.tvCragsFollow.text = followCrag.followers.toString()
+            if(followCrag.isFollowing) {
                 binding.btnFollowing.visibility = View.INVISIBLE
                 binding.btnFollow.visibility = View.VISIBLE
             }
