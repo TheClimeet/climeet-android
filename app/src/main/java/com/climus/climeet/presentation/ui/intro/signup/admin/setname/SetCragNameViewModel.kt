@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.intro.signup.admin.setname
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.CragInfoUiData
 import com.climus.climeet.presentation.util.Constants.TEST_IMG
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -60,6 +61,9 @@ class SetCragNameViewModel @Inject constructor() : ViewModel() {
     }
 
     fun navigateToBusinessRegistration() {
+        // 알림설정 페이지에서 쓰기 위해 이름 저장
+        AdminSignupForm.setCragName(uiCragInfo.value.name)
+
         viewModelScope.launch {
             _event.emit(SetCragNameEvent.NavigateToBusinessRegistration)
         }

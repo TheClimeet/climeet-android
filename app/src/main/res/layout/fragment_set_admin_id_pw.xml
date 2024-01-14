@@ -115,12 +115,12 @@
                 android:hint="아이디를 입력하세요"
                 android:singleLine="true"
                 android:text="@={vm.id}"
-                android:textColor="@color/white"
+                app:textColorResource="@{vm.warningIdColor}"
                 android:textColorHint="@color/cm_grey4"
                 app:layout_constraintTop_toBottomOf="@id/tv_id" />
 
             <View
-                android:id="@+id/view_grey"
+                android:id="@+id/view_bar"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="3dp"
@@ -138,7 +138,7 @@
                 android:textColor="@color/cm_red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_grey" />
+                app:layout_constraintTop_toBottomOf="@id/view_bar" />
 
             <TextView
                 android:id="@+id/tv_pw"
@@ -161,12 +161,12 @@
                 android:hint="비밀번호 입력하기"
                 android:singleLine="true"
                 android:text="@={vm.pw}"
-                android:textColor="@color/white"
+                app:textColorResource="@{vm.warningPwColor}"
                 android:textColorHint="@color/cm_grey4"
                 app:layout_constraintTop_toBottomOf="@id/tv_pw" />
 
             <View
-                android:id="@+id/view_grey2"
+                android:id="@+id/view_bar2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="3dp"
@@ -184,7 +184,7 @@
                 android:textColor="@color/cm_red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_grey2" />
+                app:layout_constraintTop_toBottomOf="@id/view_bar2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

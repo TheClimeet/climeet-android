@@ -2,7 +2,9 @@ package com.climus.climeet.presentation.ui.intro.signup.admin.idpw
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.R
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -10,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,6 +30,16 @@ class SetAdminIdPwViewModel @Inject constructor() : ViewModel() {
 
     val warningTextId = MutableStateFlow("")
     val warningTextPw = MutableStateFlow("")
+    val idViewColor = MutableStateFlow(R.color.cm_grey4)
+    val pwViewColor = MutableStateFlow(R.color.cm_grey4)
+
+    val warningIdColor = warningTextId.map { text ->
+        if (text != "") R.color.cm_red else R.color.white
+    }.asLiveData()
+
+    val warningPwColor = warningTextPw.map { text ->
+        if (text != "") R.color.cm_red else R.color.white
+    }.asLiveData()
 
     val id = MutableStateFlow("")
     val pw = MutableStateFlow("")
@@ -44,10 +57,9 @@ class SetAdminIdPwViewModel @Inject constructor() : ViewModel() {
         return id != "test"
     }
 
-    // 비밀번호 유효성 검사
-    // @!%*?&의 기호도 허용
+    // 비밀번호 유효성 검사 ( @!%*?&의 기호도 허용 )
     private fun isPasswordValid(pw: String): Boolean {
-        val passwordPattern = Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@\$@!%*?&]{8,}\$")
+        val passwordPattern = Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@\$@!%*?.&]{8,}\$")
         return passwordPattern.matches(pw)
     }
 
@@ -61,11 +73,14 @@ class SetAdminIdPwViewModel @Inject constructor() : ViewModel() {
         id.onEach {
             if (id.value.isBlank()) {
                 warningTextId.value = ""
+                idViewColor.value = R.color.cm_grey4
             } else {
                 if (!isIdValid(id.value)) {
                     warningTextId.value = "중복된 아이디 입니다."
+                    idViewColor.value = R.color.cm_grey4
                 } else{
                     warningTextId.value = ""
+                    idViewColor.value = R.color.cm_main
                 }
             }
             updateNextButtonState()
@@ -76,11 +91,15 @@ class SetAdminIdPwViewModel @Inject constructor() : ViewModel() {
         pw.onEach {
             if (pw.value.isBlank()) {
                 warningTextPw.value = ""
+                pwViewColor.value = R.color.cm_grey4
             } else {
                 if (!isPasswordValid(pw.value)) {
                     warningTextPw.value = "영문과 숫자 조합 8자리 이상 입력하세요."
+                    pwViewColor.value = R.color.cm_grey4
+
                 } else {
                     warningTextPw.value = ""
+                    pwViewColor.value = R.color.cm_main
                 }
             }
             updateNextButtonState()

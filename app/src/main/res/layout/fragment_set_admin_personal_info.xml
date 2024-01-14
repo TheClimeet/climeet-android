@@ -115,12 +115,12 @@
                 android:hint="이름을 입력해주세요"
                 android:singleLine="true"
                 android:text="@={vm.name}"
-                android:textColor="@color/white"
+                app:textColorResource="@{vm.warningNameColor}"
                 android:textColorHint="@color/cm_grey4"
                 app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
             <View
-                android:id="@+id/view_grey"
+                android:id="@+id/view_bar"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="3dp"
@@ -138,7 +138,7 @@
                 android:textColor="@color/cm_red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_grey" />
+                app:layout_constraintTop_toBottomOf="@id/view_bar" />
             <!--  전화번호  -->
             <TextView
                 android:id="@+id/tv_phone"
@@ -162,12 +162,12 @@
                 android:inputType="phone"
                 android:maxLength="13"
                 android:text="@={vm.phone}"
-                android:textColor="@color/white"
+                app:textColorResource="@{vm.warningPhoneColor}"
                 android:textColorHint="@color/cm_grey4"
                 app:layout_constraintTop_toBottomOf="@id/tv_phone" />
 
             <View
-                android:id="@+id/view_grey2"
+                android:id="@+id/view_bar2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="3dp"
@@ -185,7 +185,7 @@
                 android:textColor="@color/cm_red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_grey2" />
+                app:layout_constraintTop_toBottomOf="@id/view_bar2" />
             <!--  이메일  -->
             <TextView
                 android:id="@+id/tv_email"
@@ -208,12 +208,12 @@
                 android:hint="이메일 입력하기"
                 android:inputType="textEmailAddress"
                 android:text="@={vm.email}"
-                android:textColor="@color/white"
+                app:textColorResource="@{vm.warningEmailColor}"
                 android:textColorHint="@color/cm_grey4"
                 app:layout_constraintTop_toBottomOf="@id/tv_email" />
 
             <View
-                android:id="@+id/view_grey3"
+                android:id="@+id/view_bar3"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="3dp"
@@ -231,7 +231,7 @@
                 android:textColor="@color/cm_red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_grey3" />
+                app:layout_constraintTop_toBottomOf="@id/view_bar3" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
