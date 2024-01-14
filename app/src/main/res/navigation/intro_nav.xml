@@ -60,16 +60,16 @@
     </fragment>
 
     <fragment
-        android:id="@+id/completeFragment"
-        android:name="com.climus.climeet.presentation.ui.intro.signup.climer.complete.CompleteFragment"
-        android:label="CompleteFragment" />
+        android:id="@+id/setClimerCompleteFragment"
+        android:name="com.climus.climeet.presentation.ui.intro.signup.climer.complete.SetClimerCompleteFragment"
+        android:label="SetClimerCompleteFragment" />
     <fragment
         android:id="@+id/noticeSettingFragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.climer.noticesetting.NoticeSettingFragment"
         android:label="NoticeSettingFragment">
         <action
             android:id="@+id/action_noticeSettingFragment_to_completetFragment"
-            app:destination="@id/completeFragment" />
+            app:destination="@id/setClimerCompleteFragment" />
     </fragment>
     <fragment
         android:id="@+id/followCragFragment"
