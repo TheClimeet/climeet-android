@@ -26,5 +26,12 @@
             app:layout_constraintTop_toTopOf="parent"
             app:navGraph="@navigation/intro_nav" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/snack_guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.9" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
