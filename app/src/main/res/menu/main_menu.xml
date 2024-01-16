@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/selector_menu_home"
+        android:enabled="true"
+        android:title="홈" />
+
+    <item
+        android:id="@+id/nav_shorts"
+        android:icon="@drawable/selector_menu_shorts"
+        android:enabled="true"
+        android:title="Shorts" />
+
+    <item
+        android:id="@+id/nav_upload"
+        android:icon="@drawable/selector_menu_upload"
+        android:enabled="true"
+        android:title="업로드" />
+
+    <item
+        android:id="@+id/nav_record"
+        android:icon="@drawable/selector_menu_record"
+        android:enabled="true"
+        android:title="운동기록" />
+
+    <item
+        android:id="@+id/nav_mypage"
+        android:icon="@drawable/selector_menu_mypage"
+        android:enabled="true"
+        android:title="마이페이지" />
+</menu>
