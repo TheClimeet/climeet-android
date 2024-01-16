@@ -12,6 +12,7 @@ import javax.inject.Inject
 
 sealed class IntroEvent {
     data object GoToGallery : IntroEvent()
+    data class CheckAlarmPermission( val confirmAction: () -> Unit) : IntroEvent()
 }
 
 @HiltViewModel
@@ -26,6 +27,12 @@ class IntroViewModel @Inject constructor() : ViewModel() {
     fun goToGallery() {
         viewModelScope.launch {
             _event.emit(IntroEvent.GoToGallery)
+        }
+    }
+
+    fun checkAlarmPermission(confirmAction: () -> Unit) {
+        viewModelScope.launch {
+            _event.emit(IntroEvent.CheckAlarmPermission(confirmAction))
         }
     }
 

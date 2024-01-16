@@ -10,34 +10,45 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rect_whitefill_nostroke_12radius"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="20dp">
-
-        <TextView
-            style="@style/TextRegular"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="클밋"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:background="@drawable/rect_whitefill_nostroke_12radius">
 
         <TextView
             android:id="@+id/tv_description"
             style="@style/TextRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="28dp"
+            android:textAlignment="center"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="클밋의 다음 작업을 허용하시겠습니까? 기기 사진, 미디어, 파일액세스" />
+            tools:text="클밋의 다음 작업을 허용하시겠습니까?\n기기 사진, 미디어, 파일액세스" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/dv_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:orientation="horizontal"
+            app:dividerColor="@color/cm_grey2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_description" />
+
+        <View
+            android:id="@+id/dv_vertical"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/cm_grey2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dv_horizontal" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_refuse"
+            style="@style/TextRegularSemiBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
@@ -45,26 +56,30 @@
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:paddingHorizontal="10dp"
-            android:paddingVertical="10dp"
+            android:paddingVertical="20dp"
             android:text="거부"
-            android:textColor="@color/cm_main"
-            app:layout_constraintBottom_toBottomOf="@id/btn_confirm"
-            app:layout_constraintEnd_toStartOf="@id/btn_confirm" />
+            android:textColor="@color/cm_grey7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/dv_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dv_horizontal" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_confirm"
+            style="@style/TextRegularBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:background="@android:color/transparent"
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:paddingHorizontal="10dp"
             android:paddingVertical="10dp"
-            android:text="허용"
-            android:textColor="@color/cm_main"
+            android:text="승인"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_description" />
+            app:layout_constraintStart_toEndOf="@id/dv_vertical"
+            app:layout_constraintTop_toBottomOf="@id/dv_horizontal" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

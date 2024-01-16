@@ -15,6 +15,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.climus.climeet.presentation.customview.LoadingDialog
+import com.climus.climeet.presentation.customview.Permission
 import com.climus.climeet.presentation.customview.PermissionDialog
 import com.climus.climeet.presentation.customview.PermissionSnackBar
 import kotlinx.coroutines.CoroutineScope
@@ -44,19 +45,19 @@ abstract class BaseActivity<B : ViewDataBinding>(
     }
 
     fun showPermissionDialog(
-        description: String,
-        confirmBtnClickListener: () -> Unit,
+        type: Permission,
+        confirmBtnClickListener: (Permission) -> Unit,
         refuseBtnClickListener: () -> Unit
-    ){
-        permissionDialog = PermissionDialog(this, description, confirmBtnClickListener, refuseBtnClickListener)
+    ) {
+        permissionDialog = PermissionDialog(this, type, confirmBtnClickListener, refuseBtnClickListener)
         permissionDialog.show()
     }
 
     fun showPermissionSnackBar(
         view: View,
-    ){
-        PermissionSnackBar.make(view){
-            val intent = Intent().apply{
+    ) {
+        PermissionSnackBar.make(view) {
+            val intent = Intent().apply {
                 action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
                 data = Uri.parse("package:$packageName")
             }
@@ -90,5 +91,4 @@ abstract class BaseActivity<B : ViewDataBinding>(
             loadingDialog.dismiss()
         }
     }
-
 }

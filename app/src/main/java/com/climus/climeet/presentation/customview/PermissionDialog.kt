@@ -6,11 +6,12 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import com.climus.climeet.databinding.DialogPermissionBinding
+import com.climus.climeet.presentation.util.Constants
 
 class PermissionDialog(
     context: Context,
-    private val description: String,
-    private val confirmBtnClickListener: () -> Unit,
+    private val type: Permission,
+    private val confirmBtnClickListener: (Permission) -> Unit,
     private val refuseBtnClickListener: () -> Unit
 ) : Dialog(context) {
 
@@ -25,9 +26,9 @@ class PermissionDialog(
     private fun initView() = with(binding) {
         window?.attributes?.y = 200
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        tvDescription.text = description
+        tvDescription.text = type.msg
         btnConfirm.setOnClickListener {
-            confirmBtnClickListener()
+            confirmBtnClickListener(type)
             dismiss()
         }
         btnRefuse.setOnClickListener {
@@ -35,4 +36,9 @@ class PermissionDialog(
             dismiss()
         }
     }
+}
+
+enum class Permission(val code: Int, val msg: String) {
+    ALARM(Constants.ALARM_PERMISSION, "클밋의 다음 작업을 허용하시겠습니까?\n알림 수신"),
+    STORAGE(Constants.STORAGE_PERMISSION, "클밋의 다음 작업을 허용하시겠습니까?\n기기, 사진, 미디어, 파일 엑세스")
 }

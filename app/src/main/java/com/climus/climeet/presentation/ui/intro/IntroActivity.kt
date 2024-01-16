@@ -4,8 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
-import android.os.Build.*
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,6 +14,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.climus.climeet.databinding.ActivityIntroBinding
 import com.climus.climeet.presentation.base.BaseActivity
+import com.climus.climeet.presentation.customview.Permission
+import com.climus.climeet.presentation.util.Constants.ALARM_PERMISSION
 import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::inflate) {
 
     private val viewModel: IntroViewModel by viewModels()
+    private var confirmAction: (() -> Unit?)? = null
 
     private lateinit var neededPermissionList: MutableList<String>
     private val storagePermissionList =
@@ -36,6 +39,13 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
             )
         }
 
+    private val alarmPermissionList =
+        if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+            arrayOf(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            emptyArray()
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.vm = viewModel
@@ -47,16 +57,20 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
-                    is IntroEvent.GoToGallery -> onCheckStoragePermissions()
+                    is IntroEvent.GoToGallery -> onCheckPermissions(Permission.STORAGE, storagePermissionList)
+                    is IntroEvent.CheckAlarmPermission -> {
+                        confirmAction = it.confirmAction
+                        onCheckPermissions(Permission.ALARM, alarmPermissionList)
+                    }
                 }
             }
         }
     }
 
-    private fun onCheckStoragePermissions() {
+    private fun onCheckPermissions(type: Permission, list: Array<String>){
         neededPermissionList = mutableListOf()
 
-        storagePermissionList.forEach { permission ->
+        list.forEach { permission ->
             if (ContextCompat.checkSelfPermission(
                     this,
                     permission
@@ -66,21 +80,26 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
 
         if (neededPermissionList.isNotEmpty()) {
             showPermissionDialog(
-                "클밋의 다음 작업을 허용하시겠습니까? 기기 사진, 미디어, 파일 액세스",
+                type,
                 ::requestPermission,
             ) {
                 showPermissionSnackBar(binding.snackGuide)
             }
         } else {
-            openGallery()
+            when(type){
+                Permission.STORAGE -> openGallery()
+                Permission.ALARM -> confirmAction?.let{ it() }
+            }
         }
+
+
     }
 
-    private fun requestPermission() {
+    private fun requestPermission(type: Permission) {
         ActivityCompat.requestPermissions(
             this,
             neededPermissionList.toTypedArray(),
-            STORAGE_PERMISSION
+            type.code
         )
     }
 
@@ -104,6 +123,8 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
             } else {
                 showPermissionSnackBar(binding.snackGuide)
             }
+        } else if(requestCode == ALARM_PERMISSION){
+            confirmAction?.let { it() }
         }
     }
 
@@ -124,3 +145,4 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
             }
         }
 }
+
