@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_home"
+        android:id="@+id/home_fragment"
         android:icon="@drawable/selector_menu_home"
         android:enabled="true"
         android:title="홈" />
 
     <item
-        android:id="@+id/nav_shorts"
+        android:id="@+id/shorts_fragment"
         android:icon="@drawable/selector_menu_shorts"
         android:enabled="true"
         android:title="Shorts" />
 
     <item
-        android:id="@+id/nav_upload"
+        android:id="@+id/upload_fragment"
         android:icon="@drawable/selector_menu_upload"
         android:enabled="true"
         android:title="업로드" />
 
     <item
-        android:id="@+id/nav_record"
+        android:id="@+id/record_fragment"
         android:icon="@drawable/selector_menu_record"
         android:enabled="true"
         android:title="운동기록" />
 
     <item
-        android:id="@+id/nav_mypage"
+        android:id="@+id/myPage_fragment"
         android:icon="@drawable/selector_menu_mypage"
         android:enabled="true"
         android:title="마이페이지" />
