@@ -3,7 +3,9 @@ package com.climus.climeet.presentation.ui.intro.signup.climer.complete
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetClimerCompleteBinding
@@ -19,6 +21,8 @@ class SetClimerCompleteFragment : BaseFragment<FragmentSetClimerCompleteBinding>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
+
         binding.vm = viewModel
 
         binding.ivCheck.setImageResource(R.drawable.ic_check_anim)
@@ -26,12 +30,17 @@ class SetClimerCompleteFragment : BaseFragment<FragmentSetClimerCompleteBinding>
         if (drawable is Animatable) {
             (drawable as Animatable).start()
         }
-
-        initEventObserve()
     }
 
-    private fun initEventObserve() {
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            findNavController().toLogin()
+        }
+    }
 
+    private fun NavController.toLogin(){
+        val action = SetClimerCompleteFragmentDirections.actionSetClimerCompleteFragmentToLoginFragment()
+        navigate(action)
     }
 
 }
