@@ -3,6 +3,7 @@ package com.climus.climeet.presentation.ui.intro.signup.admin.complete
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
@@ -11,10 +12,13 @@ import com.climus.climeet.presentation.base.BaseFragment
 
 class SetAdminCompleteFragment : BaseFragment<FragmentSetAdminCompleteBinding>(R.layout.fragment_set_admin_complete) {
 
+    private lateinit var callback: OnBackPressedCallback
     private val viewModel: SetAdminCompleteViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
 
         binding.vm = viewModel
 
@@ -35,6 +39,12 @@ class SetAdminCompleteFragment : BaseFragment<FragmentSetAdminCompleteBinding>(R
                     is SetAdminCompleteEvent.NavigateToNext -> navigateNext()
                 }
             }
+        }
+    }
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            navigateNext()
         }
     }
 

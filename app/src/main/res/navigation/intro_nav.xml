@@ -62,7 +62,11 @@
     <fragment
         android:id="@+id/setClimerCompleteFragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.climer.complete.SetClimerCompleteFragment"
-        android:label="SetClimerCompleteFragment" />
+        android:label="SetClimerCompleteFragment" >
+        <action
+            android:id="@+id/action_setClimerCompleteFragment_to_login_fragment"
+            app:destination="@id/login_fragment" />
+    </fragment>
     <fragment
         android:id="@+id/noticeSettingFragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.climer.noticesetting.NoticeSettingFragment"

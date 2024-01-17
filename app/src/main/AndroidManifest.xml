@@ -5,14 +5,14 @@
     <!-- 갤러리 권한 ~ver.12 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <!-- 갤러리 권한 ver.13~ -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+
     <!-- 알림 권한 -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
-    <!--  알림 권한  -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
         android:name=".app.App"
@@ -31,7 +31,7 @@
         </activity>
 
         <activity android:name=".presentation.ui.intro.IntroActivity"
-            android:windowSoftInputMode="adjustNothing"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false"/>
         <activity
             android:name=".presentation.ui.main.MainActivity"

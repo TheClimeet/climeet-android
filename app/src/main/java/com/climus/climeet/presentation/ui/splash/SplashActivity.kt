@@ -16,7 +16,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         Handler(Looper.getMainLooper()).postDelayed({
 
             val jwt: String? = App.sharedPreferences.getString(X_ACCESS_TOKEN, null)
