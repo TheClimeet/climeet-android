@@ -28,7 +28,7 @@ class SetAdminAlarmFragment :
 
         binding.btnSetAlarm.setOnClickListener {
             parentViewModel.checkAlarmPermission {
-                navigateNext()
+                viewModel.navigateToNextAlarmOn()
             }
         }
 
