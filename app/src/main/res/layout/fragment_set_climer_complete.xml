@@ -53,7 +53,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_start_climeet"
             style="@style/TextMediumSemiBold"
             android:layout_width="match_parent"
@@ -61,7 +61,7 @@
             android:paddingVertical="10dp"
             android:layout_margin="20dp"
             android:text="클밋 시작하기"
-            android:backgroundTint="@color/cm_main"
+            android:background="@drawable/rect_mainfill_nostroke_8radius"
             android:textColor="@color/black"
             app:layout_constraintTop_toTopOf="@id/guide"
             app:layout_constraintBottom_toBottomOf="parent"

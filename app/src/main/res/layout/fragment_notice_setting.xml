@@ -314,7 +314,7 @@
             android:layout_height="56dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="50dp"
-            android:background="@drawable/rect_mainfill_nostroke_999radius"
+            android:background="@drawable/rect_mainfill_nostroke_8radius"
             android:fontFamily="@font/pretendard_bold"
             android:text="알림받고 실력 상승하기"
             android:textColor="@color/black"
