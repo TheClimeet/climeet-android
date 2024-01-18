@@ -111,7 +111,7 @@
             style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:text="다음에 알림받기"
             android:textColor="@color/cm_main"
             android:onClick="@{() -> vm.navigateToNextAlarmOff()}"
@@ -127,9 +127,9 @@
             app:layout_constraintEnd_toEndOf="@id/tv_off_alarm"
             app:layout_constraintTop_toBottomOf="@id/tv_off_alarm"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_set_alarm"
-            style="@style/TextMediumSemiBold"
+            style="@style/TextMediumBold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="10dp"
@@ -137,7 +137,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:text="알림 받고 실력 상승하기"
-            android:backgroundTint="@color/cm_main"
+            android:background="@drawable/rect_mainfill_nostroke_8radius"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
