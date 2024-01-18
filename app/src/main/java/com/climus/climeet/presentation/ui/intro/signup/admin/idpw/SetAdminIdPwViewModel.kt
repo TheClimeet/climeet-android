@@ -44,26 +44,42 @@ class SetAdminIdPwViewModel @Inject constructor() : ViewModel() {
     val id = MutableStateFlow("")
     val pw = MutableStateFlow("")
     val isNextButtonEnabled = MutableStateFlow(false)
+    var idValid = MutableStateFlow(false)
 
     // 버튼 상태 변화
     private fun updateNextButtonState() {
-        // Log.d("admin", "button valid : " + (isIdValid(id.value) && isPasswordValid(pw.value)))
-        isNextButtonEnabled.value = isIdValid(id.value) && isPasswordValid(pw.value)
+        isNextButtonEnabled.value = idValid.value && isPasswordValid(pw.value)
     }
 
-    // 아이디 유효성 검사
-    private fun isIdValid(id: String): Boolean {
+    // 아이디 유효성 검사 -> 버튼 누를 때 호출
+    fun checkIdDuplication() {
+        viewModelScope.launch {
+            if (!isIdValid(id.value)) {
+                warningTextId.value = "중복된 아이디 입니다."
+                idViewColor.value = R.color.cm_grey4
+            } else {
+                warningTextId.value = ""
+                idViewColor.value = R.color.cm_main
+            }
+            updateNextButtonState()
+        }
+    }
+    fun isIdValid(id: String): Boolean {
         // todo : API 호출해 아이디 중복 처리 (동작 확인차 임시로 값 넣음)
-        return id != "test"
+        val result = id != "test"
+
+        idValid.value = result
+        Log.d("admin", "[isIdValid] idValid = ${idValid.value}")
+
+        return result
     }
 
-    // 비밀번호 유효성 검사 ( @!%*?&의 기호도 허용 )
+    // 비밀번호 유효성 검사 ( @!%*?.&의 기호도 허용 )
     private fun isPasswordValid(pw: String): Boolean {
         val passwordPattern = Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@\$@!%*?.&]{8,}\$")
         return passwordPattern.matches(pw)
     }
 
-    // id, pw가 변경될 때 경고 텍스트를 초기화
     init {
         idObserve()
         pwObserve()
@@ -71,12 +87,14 @@ class SetAdminIdPwViewModel @Inject constructor() : ViewModel() {
 
     private fun idObserve() {
         id.onEach {
+            idValid.value = false
+            //Log.d("admin", "[idObserve] idValid = ${idValid.value}")
+
             if (id.value.isBlank()) {
                 warningTextId.value = ""
                 idViewColor.value = R.color.cm_grey4
             } else {
-                if (!isIdValid(id.value)) {
-                    warningTextId.value = "중복된 아이디 입니다."
+                if (!idValid.value) {
                     idViewColor.value = R.color.cm_grey4
                 } else{
                     warningTextId.value = ""
