@@ -17,7 +17,7 @@ object ClimerSignupForm {
     var nickName = ""
         private set
 
-    var imageUri: Uri? = null
+    var imageUri = ""
         private set
 
     var level = 0
@@ -41,8 +41,8 @@ object ClimerSignupForm {
         nickName = data
     }
 
-    fun setImageUri(uri: Uri?) {
-        imageUri = uri
+    fun setImageUri(uri: String?) {
+        imageUri = uri!!
     }
 
     fun setLevel(climerLevel: Int) {

@@ -29,6 +29,7 @@ class SetClimerProfileViewModel @Inject constructor() : ViewModel()  {
 
     // 이미지 URI를 저장하는 LiveData
     val imageUri = MutableLiveData<Uri?>()
+    var imageUriString = ""
 
     val isNextButtonVisible = imageUri.map { it != null }
 
@@ -40,7 +41,7 @@ class SetClimerProfileViewModel @Inject constructor() : ViewModel()  {
 
     fun setImageUri(imageUri: Uri?) {
         this.imageUri.value = imageUri
-        ClimerSignupForm.setImageUri(imageUri)
+        ClimerSignupForm.setImageUri(imageUriString)
     }
 
     fun navigateToSetLevel(){
