@@ -2,6 +2,7 @@ package com.climus.climeet.app.di
 
 import com.climus.climeet.BuildConfig
 import com.climus.climeet.config.AccessTokenInterceptor
+import com.climus.climeet.data.remote.IntroApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,6 +49,12 @@ class NetworkModule {
             .addInterceptor(httpLoggingInterceptor)
             .addNetworkInterceptor(AccessTokenInterceptor())
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideIntroApi(retrofit: Retrofit): IntroApi {
+        return retrofit.create(IntroApi::class.java)
     }
 
 }

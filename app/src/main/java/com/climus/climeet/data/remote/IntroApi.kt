@@ -8,7 +8,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface IntroApi {
-    @POST("/climer/signup/{provider}/{accessToken}")
+    @POST("/climber/signup/{provider}/{accessToken}")
     suspend fun signUpClimer(
         @Path("provider") provider: String,
         @Path("accessToken") accessToken: String,

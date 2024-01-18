@@ -13,7 +13,10 @@ import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.signup.admin.complete.SetAdminCompleteEvent
 import com.climus.climeet.presentation.ui.intro.signup.admin.complete.SetAdminCompleteFragmentDirections
 import com.climus.climeet.presentation.ui.intro.signup.admin.complete.SetAdminCompleteViewModel
+import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SetClimerCompleteFragment : BaseFragment<FragmentSetClimerCompleteBinding>(R.layout.fragment_set_climer_complete) {
 
     private val viewModel: SetClimerCompleteViewModel by viewModels()
@@ -24,6 +27,12 @@ class SetClimerCompleteFragment : BaseFragment<FragmentSetClimerCompleteBinding>
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
 
         binding.vm = viewModel
+
+        viewModel.signUp(
+            provider = ClimerSignupForm.socialType,
+            accessToken = ClimerSignupForm.token,
+            signUpRequest = ClimerSignupForm.toSignupRequest()
+        )
 
         binding.ivCheck.setImageResource(R.drawable.ic_check_anim)
         val drawable = binding.ivCheck.drawable
