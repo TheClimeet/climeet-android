@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentRecordTimerVpBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerFragment
 
 class RecordTimerFragment: BaseFragment<FragmentRecordTimerVpBinding>(R.layout.fragment_record_timer_vp),
     TimerFragment.OnStartClickListener {

@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.record.timer
+package com.climus.climeet.presentation.ui.main.record.timer.exercise
 
 import android.os.Bundle
 import android.view.View

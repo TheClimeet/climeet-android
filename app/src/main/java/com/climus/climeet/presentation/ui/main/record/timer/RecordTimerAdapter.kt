@@ -3,6 +3,8 @@ package com.climus.climeet.presentation.ui.main.record.timer
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.climus.climeet.presentation.ui.main.record.timer.exercise.TimerExerciseFragment
+import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerFragment
 
 class RecordTimerAdapter(
     fragment: Fragment,
