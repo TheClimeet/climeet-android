@@ -1,6 +1,7 @@
 package com.climus.climeet.presentation.ui.main.record.timer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.climus.climeet.R
