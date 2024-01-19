@@ -59,24 +59,21 @@ class SetClimerProfileViewModel @Inject constructor(
                 uploadImage(requestBody)
             }
         }
-        ClimerSignupForm.setImageUri(imageUriString)
     }
     fun uploadImage(requestBody: RequestBody) {
         viewModelScope.launch {
             try {
                 val response = repository.uploadImage(requestBody)
+                val responseBody = response.body()
                 if (response.body()!!.isSuccess) {
-                    Log.d("imgUploading", "성공 ${response.body()!!.code}")
-                    Log.d("imgUploading", "성공 ${response.body()!!.message}")
-                    Log.d("imgUploading", "성공 ${response.body()!!.result.imgUrl}")
+                    imageUriString =  responseBody!!.result.imgUrl
+                    ClimerSignupForm.setImageUri(imageUriString)
                 } else {
-                    Log.d("imgUploading", "실패 ${response.body()!!.code}")
-                    Log.d("imgUploading", "실패 ${response.body()!!.message}")
-                    Log.d("imgUploading", "실패 ${response.body()!!.result.imgUrl}")
+                    Log.d(TAG, "실패 ${response.body()!!.code}")
                 }
 
             }catch(e : Exception){
-                Log.e("imgUploading", "에러 : $e")
+                Log.e(TAG, "이미지 에러 : $e")
             }
 
         }
