@@ -4,8 +4,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -16,12 +14,9 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetClimerProfileBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroViewModel
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SetClimerProfileFragment :
     BaseFragment<FragmentSetClimerProfileBinding>(R.layout.fragment_set_climer_profile) {
 
@@ -58,7 +53,7 @@ class SetClimerProfileFragment :
     }
 
     private fun setImage(uri: Uri) {
-        viewModel.setImageUri(uri)
+        viewModel.setImageUri(requireContext(), uri)
     }
 
     private fun NavController.toSetClimerLevel() {

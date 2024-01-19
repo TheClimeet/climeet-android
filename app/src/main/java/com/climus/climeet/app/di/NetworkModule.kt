@@ -2,7 +2,9 @@ package com.climus.climeet.app.di
 
 import com.climus.climeet.BuildConfig
 import com.climus.climeet.config.AccessTokenInterceptor
+import com.climus.climeet.data.remote.GlobalApi
 import com.climus.climeet.data.remote.IntroApi
+import com.climus.climeet.data.repository.GlobalRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -55,6 +57,18 @@ class NetworkModule {
     @Provides
     fun provideIntroApi(retrofit: Retrofit): IntroApi {
         return retrofit.create(IntroApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGlobalApi(retrofit: Retrofit): GlobalApi {
+        return retrofit.create(GlobalApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGlobalRepository(uploadApi: GlobalApi): GlobalRepository {
+        return GlobalRepository(uploadApi)
     }
 
 }
