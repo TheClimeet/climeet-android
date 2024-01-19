@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.intro.signup.climer.complete
 
+import android.content.Intent
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
@@ -13,6 +14,7 @@ import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.signup.admin.complete.SetAdminCompleteEvent
 import com.climus.climeet.presentation.ui.intro.signup.admin.complete.SetAdminCompleteFragmentDirections
 import com.climus.climeet.presentation.ui.intro.signup.admin.complete.SetAdminCompleteViewModel
+import com.climus.climeet.presentation.ui.main.MainActivity
 
 class SetClimerCompleteFragment : BaseFragment<FragmentSetClimerCompleteBinding>(R.layout.fragment_set_climer_complete) {
 
@@ -29,6 +31,12 @@ class SetClimerCompleteFragment : BaseFragment<FragmentSetClimerCompleteBinding>
         val drawable = binding.ivCheck.drawable
         if (drawable is Animatable) {
             (drawable as Animatable).start()
+        }
+
+        binding.btnStartClimeet.setOnClickListener {
+            val intent = Intent(requireContext(), MainActivity::class.java)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         }
     }
 
