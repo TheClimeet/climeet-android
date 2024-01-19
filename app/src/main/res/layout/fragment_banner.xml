@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.ui.main.home.viewpager.BannerFragment">
+        tools:context=".presentation.ui.main.home.viewpager.introduce.BannerFragment">
 
         <ImageView
             android:id="@+id/banner_image_iv"

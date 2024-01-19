@@ -1,11 +1,10 @@
-package com.climus.climeet.presentation.ui.main.home.viewpager
+package com.climus.climeet.presentation.ui.main.home.viewpager.introduce
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentBannerBinding
 
 class BannerFragment(val imgRes : Int) : Fragment() {
