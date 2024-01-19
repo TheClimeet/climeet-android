@@ -1,13 +1,14 @@
-package com.climus.climeet.presentation.ui.main.record
+package com.climus.climeet.presentation.ui.main.record.timer
 
 import android.os.Bundle
 import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.R
-import com.climus.climeet.databinding.FragmentRecordTimerBinding
+import com.climus.climeet.databinding.FragmentRecordTimerVpBinding
 import com.climus.climeet.presentation.base.BaseFragment
 
-class RecordTimerFragment: BaseFragment<FragmentRecordTimerBinding>(R.layout.fragment_record_timer) {
+class RecordTimerFragment: BaseFragment<FragmentRecordTimerVpBinding>(R.layout.fragment_record_timer_vp),
+    TimerFragment.OnStartClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -16,19 +17,9 @@ class RecordTimerFragment: BaseFragment<FragmentRecordTimerBinding>(R.layout.fra
     }
 
     private fun setViewpager() {
-        // indicator 보여지기 설정
-        val adapter = RecordTimerAdapter().apply {
-            indicatorVisibilityListener = {
-                if (binding.idcTimer.visibility == View.VISIBLE) {
-                    binding.idcTimer.visibility = View.INVISIBLE
-                } else {
-                    binding.idcTimer.visibility = View.VISIBLE
-                }
-            }
-        }
-
-        binding.vpTimer.adapter = adapter
+        binding.vpTimer.adapter = RecordTimerAdapter(this, this)
         binding.idcTimer.setViewPager(binding.vpTimer)
+        binding.vpTimer.offscreenPageLimit = 1 // 현재 페이지를 기준으로 좌우 1개 페이지를 메모리에 유지
 
         binding.vpTimer.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
@@ -37,5 +28,11 @@ class RecordTimerFragment: BaseFragment<FragmentRecordTimerBinding>(R.layout.fra
         })
     }
 
-
+    override fun onStartClick() {
+        if (binding.idcTimer.visibility == View.VISIBLE) {
+            binding.idcTimer.visibility = View.INVISIBLE
+        } else {
+            binding.idcTimer.visibility = View.VISIBLE
+        }
+    }
 }
