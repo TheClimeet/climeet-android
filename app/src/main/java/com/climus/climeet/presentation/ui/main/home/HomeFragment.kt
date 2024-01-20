@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.presentation.ui.main.home.recycler.homegym.HomeGymRVAdapter
 import com.climus.climeet.presentation.ui.main.home.model.HomeGym
+import com.climus.climeet.presentation.ui.main.home.model.PopularShorts
+import com.climus.climeet.presentation.ui.main.home.recycler.popularshorts.ShortsRVAdapter
 import com.climus.climeet.presentation.ui.main.home.viewpager.best.RankingVPAdapter
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerFragment
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerVPAdapter
@@ -24,9 +26,10 @@ class HomeFragment :
     BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private var homeGymList = ArrayList<HomeGym>()
-    private val tabMenu = arrayListOf("완등", "시간", "레벨")
+    private val tabMenu = arrayListOf(" 완등 ", " 시간 ", " 레벨 ")
     private val timer = Timer()
     private val handler = Handler(Looper.getMainLooper())
+    private var shortsList = ArrayList<PopularShorts>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -91,6 +94,19 @@ class HomeFragment :
         TabLayoutMediator(binding.tbHomeBestRanking, binding.vpHomeBestRanking) { tab, position ->
             tab.text = tabMenu[position]
         }.attach()
+
+        shortsList.apply {
+            add(PopularShorts(null, "피커스 구로", "#000000", "V10", "#FFBEDF22"))
+            add(PopularShorts(null, "더클라임 양재", "#FFFFFF", "V1", "#FFBEDF22"))
+            add(PopularShorts(null, "피커스 사당", "#000000", "V9", "#FFBEDF22"))
+            add(PopularShorts(null, "더클라임 마포", "#000000", "V3", "#FFBEDF22"))
+            add(PopularShorts(null, "피커스 부평", "#FFFFFF", "V7", "#000FFF"))
+            add(PopularShorts(null, "더클라임 부천", "#000000", "V2", "#000000"))
+        }
+
+        val shortsRVAdapter = ShortsRVAdapter(shortsList)
+        binding.rvHomeShorts.adapter = shortsRVAdapter
+        binding.rvHomeShorts.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
     }
 
     private fun autoSlide(adapter: BannerVPAdapter) {
