@@ -1,6 +1,7 @@
 package com.climus.climeet.data.repository
 
 import android.net.Uri
+import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.remote.GlobalApi
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -11,9 +12,8 @@ import retrofit2.Response
 import java.io.File
 import javax.inject.Inject
 
-class GlobalRepository @Inject constructor(private val globalApi: GlobalApi) {
-    suspend fun uploadImage(image: RequestBody): Response<UploadImgResponse> {
-        val part = MultipartBody.Part.createFormData("file", "image.jpg", image)
-        return globalApi.uploadImage(part)
-    }
+interface GlobalRepository {
+    suspend fun uploadImage(
+        image: MultipartBody.Part
+    ): BaseState<UploadImgResponse>
 }

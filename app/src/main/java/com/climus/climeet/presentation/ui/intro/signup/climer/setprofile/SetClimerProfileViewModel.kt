@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
@@ -62,20 +63,8 @@ class SetClimerProfileViewModel @Inject constructor(
     }
     fun uploadImage(requestBody: RequestBody) {
         viewModelScope.launch {
-            try {
-                val response = repository.uploadImage(requestBody)
-                val responseBody = response.body()
-                if (response.body()!!.isSuccess) {
-                    imageUriString =  responseBody!!.result.imgUrl
-                    ClimerSignupForm.setImageUri(imageUriString)
-                } else {
-                    Log.d(TAG, "실패 ${response.body()!!.code}")
-                }
-
-            }catch(e : Exception){
-                Log.e(TAG, "이미지 에러 : $e")
-            }
-
+            val part = MultipartBody.Part.createFormData("file", "image.jpg", requestBody)
+            repository.uploadImage(part)
         }
     }
 

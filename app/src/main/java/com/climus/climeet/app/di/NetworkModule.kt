@@ -53,22 +53,4 @@ class NetworkModule {
             .build()
     }
 
-    @Singleton
-    @Provides
-    fun provideIntroApi(retrofit: Retrofit): IntroApi {
-        return retrofit.create(IntroApi::class.java)
-    }
-
-    @Singleton
-    @Provides
-    fun provideGlobalApi(retrofit: Retrofit): GlobalApi {
-        return retrofit.create(GlobalApi::class.java)
-    }
-
-    @Singleton
-    @Provides
-    fun provideGlobalRepository(uploadApi: GlobalApi): GlobalRepository {
-        return GlobalRepository(uploadApi)
-    }
-
 }
