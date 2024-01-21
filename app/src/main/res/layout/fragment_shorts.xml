@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -22,14 +23,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_following_crags"
+            android:id="@+id/rv_shorts_profile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:clipToPadding="false"
             android:orientation="horizontal"
+            android:paddingStart="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_header" />
+            app:layout_constraintTop_toBottomOf="@id/tv_header"
+            tools:listitem="@layout/item_shorts_profile" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_filter_toggle"
@@ -45,7 +49,7 @@
             android:paddingVertical="2dp"
             android:text="최신순"
             app:layout_constraintEnd_toStartOf="@id/btn_more"
-            app:layout_constraintTop_toBottomOf="@id/rv_following_crags" />
+            app:layout_constraintTop_toBottomOf="@id/rv_shorts_profile" />
 
         <ImageButton
             android:id="@+id/btn_more"
@@ -71,7 +75,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_filter_toggle"
-            app:spanCount="2" />
+            app:spanCount="2"
+            tools:listitem="@layout/item_shorts" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
