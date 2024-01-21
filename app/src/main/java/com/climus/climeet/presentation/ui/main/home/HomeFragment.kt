@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.presentation.ui.main.home.recycler.homegym.HomeGymRVAdapter
 import com.climus.climeet.presentation.ui.main.home.model.HomeGym
+import com.climus.climeet.presentation.ui.main.home.model.PopularCrag
 import com.climus.climeet.presentation.ui.main.home.model.PopularShorts
-import com.climus.climeet.presentation.ui.main.home.recycler.popularshorts.ShortsRVAdapter
+import com.climus.climeet.presentation.ui.main.home.recycler.popularcrag.PopularCragRVAdapter
+import com.climus.climeet.presentation.ui.main.home.recycler.popularshorts.PopularShortsRVAdapter
 import com.climus.climeet.presentation.ui.main.home.viewpager.best.RankingVPAdapter
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerFragment
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerVPAdapter
@@ -30,6 +32,7 @@ class HomeFragment :
     private val timer = Timer()
     private val handler = Handler(Looper.getMainLooper())
     private var shortsList = ArrayList<PopularShorts>()
+    private var cragList = ArrayList<PopularCrag>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -104,9 +107,22 @@ class HomeFragment :
             add(PopularShorts(null, "더클라임 부천", "#000000", "V2", "#000000"))
         }
 
-        val shortsRVAdapter = ShortsRVAdapter(shortsList)
-        binding.rvHomeShorts.adapter = shortsRVAdapter
+        val popularShortsRVAdapter = PopularShortsRVAdapter(shortsList)
+        binding.rvHomeShorts.adapter = popularShortsRVAdapter
         binding.rvHomeShorts.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+
+        cragList.apply {
+            add(PopularCrag(null, true, "피커스 구로", 70))
+            add(PopularCrag(null, false, "송도 비블럭", 125))
+            add(PopularCrag(null, true, "더클라임 연남", 12))
+            add(PopularCrag(null, false, "더클라임 마포", 24))
+            add(PopularCrag(null, true, "더클라임 부천", 54))
+            add(PopularCrag(null, false, "더클라임 부천", 90))
+        }
+
+        val crarRVAdapter = PopularCragRVAdapter(cragList)
+        binding.rvHomePopularCrags.adapter = crarRVAdapter
+        binding.rvHomePopularCrags.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
     }
 
     private fun autoSlide(adapter: BannerVPAdapter) {

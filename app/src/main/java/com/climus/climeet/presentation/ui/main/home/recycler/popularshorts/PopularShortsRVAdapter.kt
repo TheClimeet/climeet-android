@@ -1,11 +1,7 @@
 package com.climus.climeet.presentation.ui.main.home.recycler.popularshorts
 
-import android.R.color
 import android.graphics.Color
-import android.graphics.Paint
 import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.OvalShape
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -14,13 +10,13 @@ import com.climus.climeet.databinding.ItemPopularShortsBinding
 import com.climus.climeet.presentation.ui.main.home.model.PopularShorts
 
 
-class ShortsRVAdapter (private val shortsList: ArrayList<PopularShorts>) : RecyclerView.Adapter<ShortsRVAdapter.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShortsRVAdapter.ViewHolder {
+class PopularShortsRVAdapter (private val shortsList: ArrayList<PopularShorts>) : RecyclerView.Adapter<PopularShortsRVAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularShortsRVAdapter.ViewHolder {
         val binding: ItemPopularShortsBinding = ItemPopularShortsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ShortsRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PopularShortsRVAdapter.ViewHolder, position: Int) {
         holder.bind(shortsList[position])
     }
 
