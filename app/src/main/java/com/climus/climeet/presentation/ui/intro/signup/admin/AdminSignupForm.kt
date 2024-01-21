@@ -2,8 +2,6 @@ package com.climus.climeet.presentation.ui.intro.signup.admin
 
 import android.net.Uri
 
-import com.climus.climeet.presentation.ui.intro.signup.admin.model.ServiceUiData
-
 object AdminSignupForm {
 
     //todo
@@ -37,7 +35,7 @@ object AdminSignupForm {
         private set
     var backgroundImage: Uri? = null
         private set
-    var services: List<ServiceUiData> = emptyList()    // service 형식 고려
+    var services: List<String> = emptyList()    // service 형식 고려
         private set
     var alarm = false
         private set
@@ -60,7 +58,7 @@ object AdminSignupForm {
     fun setBackgroundImg(uri: Uri) {
         backgroundImage = uri
     }
-    fun setSelectedServices(data: List<ServiceUiData>) {
+    fun setSelectedServices(data: List<String>) {
         services = data
     }
     fun setAlarm(data: Boolean){
