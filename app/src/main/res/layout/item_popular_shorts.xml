@@ -29,7 +29,7 @@
             android:id="@+id/tv_shorts_crag_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/rect_alpahblackfill_nostroke_radius999"
+            android:background="@drawable/rect_alpahblackfill_nostroke_999radius"
             android:text="피커스 구로"
             style="@style/TextSmall"
             android:textSize="8sp"

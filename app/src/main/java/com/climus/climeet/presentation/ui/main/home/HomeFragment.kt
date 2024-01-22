@@ -9,12 +9,15 @@ import com.climus.climeet.databinding.FragmentHomeBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.presentation.ui.main.home.recycler.homegym.HomeGymRVAdapter
 import com.climus.climeet.presentation.ui.main.home.model.HomeGym
 import com.climus.climeet.presentation.ui.main.home.model.PopularCrag
+import com.climus.climeet.presentation.ui.main.home.model.PopularRoute
 import com.climus.climeet.presentation.ui.main.home.model.PopularShorts
 import com.climus.climeet.presentation.ui.main.home.recycler.popularcrag.PopularCragRVAdapter
+import com.climus.climeet.presentation.ui.main.home.recycler.popularroute.PopularRouteRVAdapter
 import com.climus.climeet.presentation.ui.main.home.recycler.popularshorts.PopularShortsRVAdapter
 import com.climus.climeet.presentation.ui.main.home.viewpager.best.RankingVPAdapter
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerFragment
@@ -23,31 +26,34 @@ import com.google.android.material.tabs.TabLayoutMediator
 import java.util.Timer
 import java.util.TimerTask
 
-@AndroidEntryPoint
 class HomeFragment :
     BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
-    private var homeGymList = ArrayList<HomeGym>()
-    private val tabMenu = arrayListOf(" 완등 ", " 시간 ", " 레벨 ")
     private val timer = Timer()
     private val handler = Handler(Looper.getMainLooper())
-    private var shortsList = ArrayList<PopularShorts>()
-    private var cragList = ArrayList<PopularCrag>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupIntroduceBanner()
+        setupHomeGymList()
+        setupBestRanking()
+        setupPopularShorts()
+        setupPopularCrags()
+        setupPopularRoutes()
+    }
 
+    private fun setupIntroduceBanner() {
         val bannerAdapter = BannerVPAdapter(this, binding.vpHomeIntroduceBanner)
-        bannerAdapter.addFragment(BannerFragment(R.drawable.img_introduce_banner))
-        bannerAdapter.addFragment(BannerFragment(R.drawable.img_introduce_banner))
-        bannerAdapter.addFragment(BannerFragment(R.drawable.img_introduce_banner))
+        repeat(3) {
+            bannerAdapter.addFragment(BannerFragment(R.drawable.img_introduce_banner))
+        }
 
         val viewPager = binding.vpHomeIntroduceBanner
         val itemCount = bannerAdapter.itemCount
         val indicator = binding.tvIndicatorFraction
         viewPager.adapter = bannerAdapter
         viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-        indicator.text = getString(R.string.viewpager2_banner, 1, itemCount)
+
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             var currentState = 0
             var currentPos = 0
@@ -68,61 +74,86 @@ class HomeFragment :
                 positionOffset: Float,
                 positionOffsetPixels: Int
             ) {
-                if(currentState == ViewPager2.SCROLL_STATE_DRAGGING && currentPos == position) {
-                    if(currentPos == 0) viewPager.currentItem = itemCount - 1
-                    else if(currentPos == itemCount - 1) viewPager.currentItem = 0
+                if (currentState == ViewPager2.SCROLL_STATE_DRAGGING && currentPos == position) {
+                    if (currentPos == 0) viewPager.currentItem = itemCount - 1
+                    else if (currentPos == itemCount - 1) viewPager.currentItem = 0
                 }
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
             }
         })
 
         autoSlide(bannerAdapter)
+    }
 
-        homeGymList.apply {
-            add(HomeGym(null, "더클라임 연남", 70))
-            add(HomeGym(null, "더클라임 강남", 23))
-            add(HomeGym(null, "더클라임 구로", 56))
-            add(HomeGym(null, "더클라임 인천", 45))
-            add(HomeGym(null, "더클라임 부산", 137))
-            add(HomeGym(null, "더클라임 부평", 125))
-        }
+    private fun setupRecyclerView(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>, orientation: Int) {
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireActivity(), orientation, false)
+    }
+
+    private fun setupHomeGymList() {
+        val homeGymList = arrayListOf(
+            HomeGym(null, "더클라임 연남", 70),
+            HomeGym(null, "더클라임 강남", 23),
+            HomeGym(null, "더클라임 구로", 56),
+            HomeGym(null, "더클라임 인천", 45),
+            HomeGym(null, "더클라임 부산", 137),
+            HomeGym(null, "더클라임 부평", 125)
+        )
 
         val homeGymRVAdapter = HomeGymRVAdapter(homeGymList)
-        binding.rvHomeHomegym.adapter = homeGymRVAdapter
-        binding.rvHomeHomegym.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+        setupRecyclerView(binding.rvHomeHomegym, homeGymRVAdapter, LinearLayoutManager.HORIZONTAL)
+    }
 
+    private fun setupBestRanking() {
         val rankingAdapter = RankingVPAdapter(this)
         binding.vpHomeBestRanking.adapter = rankingAdapter
 
+        val tabMenu = arrayListOf(" 완등 ", " 시간 ", " 레벨 ")
         TabLayoutMediator(binding.tbHomeBestRanking, binding.vpHomeBestRanking) { tab, position ->
             tab.text = tabMenu[position]
         }.attach()
+    }
 
-        shortsList.apply {
-            add(PopularShorts(null, "피커스 구로", "#000000", "V10", "#FFBEDF22"))
-            add(PopularShorts(null, "더클라임 양재", "#FFFFFF", "V1", "#FFBEDF22"))
-            add(PopularShorts(null, "피커스 사당", "#000000", "V9", "#FFBEDF22"))
-            add(PopularShorts(null, "더클라임 마포", "#000000", "V3", "#FFBEDF22"))
-            add(PopularShorts(null, "피커스 부평", "#FFFFFF", "V7", "#000FFF"))
-            add(PopularShorts(null, "더클라임 부천", "#000000", "V2", "#000000"))
-        }
+    private fun setupPopularShorts() {
+        val shortsList = arrayListOf(
+            PopularShorts(null, "피커스 구로", "#000000", "V10", "#FFBEDF22"),
+            PopularShorts(null, "더클라임 양재", "#FFFFFF", "V1", "#FFBEDF22"),
+            PopularShorts(null, "피커스 사당", "#000000", "V9", "#FFBEDF22"),
+            PopularShorts(null, "더클라임 마포", "#000000", "V3", "#FFBEDF22"),
+            PopularShorts(null, "피커스 부평", "#FFFFFF", "V7", "#000FFF"),
+            PopularShorts(null, "더클라임 부천", "#000000", "V2", "#000000")
+        )
 
         val popularShortsRVAdapter = PopularShortsRVAdapter(shortsList)
-        binding.rvHomeShorts.adapter = popularShortsRVAdapter
-        binding.rvHomeShorts.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+        setupRecyclerView(binding.rvHomeShorts, popularShortsRVAdapter, LinearLayoutManager.HORIZONTAL)
+    }
 
-        cragList.apply {
-            add(PopularCrag(null, true, "피커스 구로", 70))
-            add(PopularCrag(null, false, "송도 비블럭", 125))
-            add(PopularCrag(null, true, "더클라임 연남", 12))
-            add(PopularCrag(null, false, "더클라임 마포", 24))
-            add(PopularCrag(null, true, "더클라임 부천", 54))
-            add(PopularCrag(null, false, "더클라임 부천", 90))
-        }
+    private fun setupPopularCrags() {
+        val cragList = arrayListOf(
+            PopularCrag(null, true, "피커스 구로", 70),
+            PopularCrag(null, false, "송도 비블럭", 125),
+            PopularCrag(null, true, "더클라임 연남", 12),
+            PopularCrag(null, false, "더클라임 마포", 24),
+            PopularCrag(null, true, "더클라임 부천", 54),
+            PopularCrag(null, false, "더클라임 부천", 90)
+        )
 
-        val crarRVAdapter = PopularCragRVAdapter(cragList)
-        binding.rvHomePopularCrags.adapter = crarRVAdapter
-        binding.rvHomePopularCrags.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+        val popularCragRVAdapter = PopularCragRVAdapter(cragList)
+        setupRecyclerView(binding.rvHomePopularCrags, popularCragRVAdapter, LinearLayoutManager.HORIZONTAL)
+    }
+
+    private fun setupPopularRoutes() {
+        val routeList = arrayListOf(
+            PopularRoute(null, "V1", "#63B75D", "더클라임 연남", "툇마루"),
+        PopularRoute(null, "V3", "#555522", "볼더프렌즈", "섹터 A"),
+        PopularRoute(null, "V10", "#FFFFFF", "웨이브락 서면", "Sector V"),
+        PopularRoute(null, "V7", "#4C3E2F", "V10 천호점", "락랜드"),
+        PopularRoute(null, "V2", "#333333", "더클라임 부펀", "툇마루"),
+        PopularRoute(null, "V6", "#765665", "웨이브락 구로", "툇마루")
+        )
+
+        val popularRouteRVAdapter = PopularRouteRVAdapter(routeList)
+        setupRecyclerView(binding.rvHomePopularRoutes, popularRouteRVAdapter, LinearLayoutManager.HORIZONTAL)
     }
 
     private fun autoSlide(adapter: BannerVPAdapter) {
