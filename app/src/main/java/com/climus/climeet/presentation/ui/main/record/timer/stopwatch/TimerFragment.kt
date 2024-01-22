@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.climus.climeet.R
-import com.climus.climeet.databinding.FragmentRecordTimerBinding
+import com.climus.climeet.databinding.FragmentTimerBinding
 import com.climus.climeet.presentation.base.BaseFragment
 
-class TimerFragment: BaseFragment<FragmentRecordTimerBinding>(R.layout.fragment_record_timer) {
+class TimerFragment: BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer) {
 
     private val viewModel: TimerViewModel by viewModels()
 
@@ -22,17 +23,17 @@ class TimerFragment: BaseFragment<FragmentRecordTimerBinding>(R.layout.fragment_
 
         binding.vm = viewModel
 
-        // 시작 버튼 눌림
+        // 스톱워치 시작
         binding.ivStart.setOnClickListener {
             onStartClickListener?.onStartClick()    // Indicator 보이기 설정
 
             viewMode("start")
         }
-        // 일시정지 버튼 눌림
+        // 스톱워치 일시정지
         binding.ivPause.setOnClickListener {
             viewMode("pause")
         }
-        // 재시작 버튼 눌림
+        // 스톱워치 재시작
         binding.ivRestart.setOnClickListener {
             viewMode("restart")
         }
