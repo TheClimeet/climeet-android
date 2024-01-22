@@ -28,7 +28,7 @@ class NoticeSettingFragment :
         }
 
         binding.tvNoticeSettingDisagree.setOnClickListener {
-            ClimerSignupForm.setNotice(false)
+            ClimerSignupForm.setNotice(true)
             Log.d("Push Permission", ClimerSignupForm.noticePermission.toString())
             navigateNext()
         }
