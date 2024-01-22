@@ -63,11 +63,10 @@ class SetAdminServiceViewModel @Inject constructor() : ViewModel() {
     // 알림 설정으로 이동
     fun navigateToNext(){
         if(isNextButtonEnabled.value){
-            // 선택된 서비스 AdminSignupForm에 저장
-            AdminSignupForm.setSelectedServices(_serviceList.value!!)
+            // 선택된 서비스의 title만 추출하여 AdminSignupForm에 저장
+            val selectedServiceTitles = _serviceList.value?.filter { it.isSelected }?.map { it.title } ?: emptyList()
+            AdminSignupForm.setSelectedServices(selectedServiceTitles)
 
-            // todo
-            //  AdminSignupForm.services 저장 형식 괜찮나 확인
             Log.d("admin", "서비스 상태 : ${AdminSignupForm.services}")
 
             viewModelScope.launch {
