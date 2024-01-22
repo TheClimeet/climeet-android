@@ -3,13 +3,15 @@ package com.climus.climeet.presentation.ui.main.record.timer
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.R
-import com.climus.climeet.databinding.FragmentRecordTimerVpBinding
+import com.climus.climeet.databinding.FragmentTimerVpBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerFragment
+import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerViewModel
 
-class RecordTimerFragment: BaseFragment<FragmentRecordTimerVpBinding>(R.layout.fragment_record_timer_vp),
+class RecordTimerFragment: BaseFragment<FragmentTimerVpBinding>(R.layout.fragment_timer_vp),
     TimerFragment.OnStartClickListener {
 
     private lateinit var recordTimerAdapter: RecordTimerAdapter
@@ -36,12 +38,12 @@ class RecordTimerFragment: BaseFragment<FragmentRecordTimerVpBinding>(R.layout.f
         if (binding.idcTimer.visibility == View.VISIBLE) {
             binding.idcTimer.visibility = View.INVISIBLE
             recordTimerAdapter.setTimerStarted(false)
-            Log.d("timer", "타이머 정지")
+            Log.d("timer", "indicator invisible")
         } else {
             binding.idcTimer.visibility = View.VISIBLE
             recordTimerAdapter.setTimerStarted(true)
             binding.idcTimer.setViewPager(binding.vpTimer) // indicator 연결
-            Log.d("timer", "타이머 시작")
+            Log.d("timer", "indicator visible")
         }
     }
 }
