@@ -48,7 +48,11 @@ object ClimerSignupForm {
     }
 
     fun setImageUri(uri: String?) {
-        imageUri = uri!!
+        imageUri = uri?.let{
+            uri
+        } ?: run{
+            ""
+        }
     }
 
     fun setLevel(climerLevel: Int) {
