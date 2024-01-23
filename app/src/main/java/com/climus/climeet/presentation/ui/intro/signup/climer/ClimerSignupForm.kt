@@ -6,9 +6,6 @@ import com.climus.climeet.data.model.request.DiscoveryChannel
 
 object ClimerSignupForm {
 
-
-
-
     var token = ""
         private set
 
@@ -22,12 +19,10 @@ object ClimerSignupForm {
     private var imageUrl = ""
     private var level: ClimbingLevel = ClimbingLevel.BEGINNER
     private var way: DiscoveryChannel = DiscoveryChannel.INSTAGRAM_FACEBOOK
-
-    var noticePermission: Boolean = false
-        private set
+    private var noticePermission: Boolean = false
 
     fun setToken(data: String) {
-        token = data
+        token = "Bearer $data"
     }
 
     fun setSocialType(data: String) {
@@ -76,7 +71,7 @@ object ClimerSignupForm {
             isAllowFollowNotification = this.noticePermission,
             isAllowLikeNotification = this.noticePermission,
             isAllowCommentNotification = this.noticePermission,
-            isAllowAdNotification = true
+            isAllowAdNotification = this.noticePermission,
         )
     }
 }

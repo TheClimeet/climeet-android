@@ -29,7 +29,8 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
     private lateinit var neededPermissionList: MutableList<String>
     private val storagePermissionList =
         if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
-            arrayOf(  // 안드로이드 13 이상 필요한 권한들
+            arrayOf(
+                // 안드로이드 13 이상 필요한 권한들
                 Manifest.permission.READ_MEDIA_IMAGES,
                 // Manifest.permission.POST_NOTIFICATIONS
             )
@@ -50,7 +51,6 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.vm = viewModel
-
         initEventObserve()
     }
 
@@ -61,17 +61,19 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
                     is IntroEvent.GoToGallery -> {
                         onCheckPermissions(Permission.STORAGE, storagePermissionList)
                     }
+
                     is IntroEvent.CheckAlarmPermission -> {
                         confirmAction = it.confirmAction
                         onCheckPermissions(Permission.ALARM, alarmPermissionList)
                     }
+
                     is IntroEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }
     }
 
-    private fun onCheckPermissions(type: Permission, list: Array<String>){
+    private fun onCheckPermissions(type: Permission, list: Array<String>) {
         neededPermissionList = mutableListOf()
 
         list.forEach { permission ->
@@ -90,9 +92,9 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
                 showPermissionSnackBar(binding.snackGuide)
             }
         } else {
-            when(type){
+            when (type) {
                 Permission.STORAGE -> openGallery()
-                Permission.ALARM -> confirmAction?.let{ it() }
+                Permission.ALARM -> confirmAction?.let { it() }
             }
         }
 
@@ -127,7 +129,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
             } else {
                 showPermissionSnackBar(binding.snackGuide)
             }
-        } else if(requestCode == ALARM_PERMISSION){
+        } else if (requestCode == ALARM_PERMISSION) {
             confirmAction?.let { it() }
         }
     }
