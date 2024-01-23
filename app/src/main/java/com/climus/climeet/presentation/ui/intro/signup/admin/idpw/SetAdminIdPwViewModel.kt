@@ -25,6 +25,7 @@ import javax.inject.Inject
 sealed class SetAdminIdPwEvent{
     data object NavigateToBack : SetAdminIdPwEvent()
     data object NavigateToNext : SetAdminIdPwEvent()
+    data class ShowToastMessage(val msg: String): SetAdminIdPwEvent()
 }
 
 data class SetAdminIdPwUiState(
@@ -128,11 +129,7 @@ class SetAdminIdPwViewModel @Inject constructor(
                         }
                     }
                     is BaseState.Error -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                idState = InputState.Error("중복검사 실패.")
-                            )
-                        }
+                        _event.emit(SetAdminIdPwEvent.ShowToastMessage(it.msg))
                         idAvailable.value = false
                     }
                 }

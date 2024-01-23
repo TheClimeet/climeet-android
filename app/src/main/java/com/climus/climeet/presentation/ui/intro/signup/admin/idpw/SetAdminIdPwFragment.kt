@@ -14,7 +14,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SetAdminIdPwFragment : BaseFragment<FragmentSetAdminIdPwBinding>(R.layout.fragment_set_admin_id_pw) {
+class SetAdminIdPwFragment :
+    BaseFragment<FragmentSetAdminIdPwBinding>(R.layout.fragment_set_admin_id_pw) {
 
     private val viewModel: SetAdminIdPwViewModel by viewModels()
 
@@ -32,14 +33,16 @@ class SetAdminIdPwFragment : BaseFragment<FragmentSetAdminIdPwBinding>(R.layout.
                 when (it) {
                     is SetAdminIdPwEvent.NavigateToBack -> findNavController().navigateUp() // 사업자 등록증 설정으로 이동
                     is SetAdminIdPwEvent.NavigateToNext -> navigateNext()
+                    is SetAdminIdPwEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }
     }
 
     // 개인정보 설정으로 이동
-    private fun navigateNext(){
-        val action = SetAdminIdPwFragmentDirections.actionSetAdminIdPwFragmentToSetAdminPersonalFragment()
+    private fun navigateNext() {
+        val action =
+            SetAdminIdPwFragmentDirections.actionSetAdminIdPwFragmentToSetAdminPersonalFragment()
         findNavController().navigate(action)
     }
 }

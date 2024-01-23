@@ -26,6 +26,7 @@ sealed class SetCragNameEvent {
         val imgUrl: String,
         val cragName: String
     ): SetCragNameEvent()
+    data class ShowToastMessage(val msg: String): SetCragNameEvent()
 }
 
 @HiltViewModel
@@ -76,11 +77,7 @@ class SetCragNameViewModel @Inject constructor(
                             }
                         }
                     }
-                    is BaseState.Error -> {
-
-                        // todo 예외처리
-                        
-                    }
+                    is BaseState.Error -> _event.emit(SetCragNameEvent.ShowToastMessage(it.msg))
                 }
             }
         }

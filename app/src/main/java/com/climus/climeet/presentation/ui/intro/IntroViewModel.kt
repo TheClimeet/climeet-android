@@ -18,6 +18,7 @@ import javax.inject.Inject
 sealed class IntroEvent {
     data object GoToGallery : IntroEvent()
     data class CheckAlarmPermission( val confirmAction: () -> Unit) : IntroEvent()
+    data class ShowToastMessage(val msg: String): IntroEvent()
 }
 
 @HiltViewModel
@@ -64,9 +65,7 @@ class IntroViewModel @Inject constructor(
                             else -> {}
                         }
                     }
-                    is BaseState.Error -> {
-
-                    }
+                    is BaseState.Error -> _event.emit(IntroEvent.ShowToastMessage(it.msg))
                 }
             }
         }

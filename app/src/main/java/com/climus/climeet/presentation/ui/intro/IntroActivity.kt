@@ -65,6 +65,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
                         confirmAction = it.confirmAction
                         onCheckPermissions(Permission.ALARM, alarmPermissionList)
                     }
+                    is IntroEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }

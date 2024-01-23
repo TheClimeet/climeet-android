@@ -44,6 +44,7 @@ class SearchCragNameFragment :
                 when(it){
                     is SearchCragNameEvent.NavigateToSetCragName -> findNavController().toSetCragName(it.id, it.name, it.imgUrl)
                     is SearchCragNameEvent.NavigateToBack -> findNavController().navigateUp()
+                    is SearchCragNameEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }

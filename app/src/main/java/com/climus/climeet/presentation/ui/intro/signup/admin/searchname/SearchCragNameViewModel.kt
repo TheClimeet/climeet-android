@@ -30,6 +30,7 @@ data class SearchCragNameUiState(
 sealed class SearchCragNameEvent{
     data object NavigateToBack: SearchCragNameEvent()
     data class NavigateToSetCragName(val id: Long, val name: String, val imgUrl: String): SearchCragNameEvent()
+    data class ShowToastMessage(val msg: String): SearchCragNameEvent()
 }
 
 @HiltViewModel
@@ -75,7 +76,7 @@ class SearchCragNameViewModel @Inject constructor(
                         }
 
                         is BaseState.Error -> {
-                            // todo 에러일떄 예외처리
+                            _event.emit(SearchCragNameEvent.ShowToastMessage(result.msg))
                         }
                     }
                 }

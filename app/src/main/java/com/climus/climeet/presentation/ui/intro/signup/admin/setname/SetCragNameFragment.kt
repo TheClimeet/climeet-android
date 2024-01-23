@@ -78,6 +78,7 @@ class SetCragNameFragment :
                     is SetCragNameEvent.NavigateToSetCragNameError -> findNavController().toSetCragNameError(
                         it.cragId, it.imgUrl, it.cragName
                     )
+                    is SetCragNameEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }
