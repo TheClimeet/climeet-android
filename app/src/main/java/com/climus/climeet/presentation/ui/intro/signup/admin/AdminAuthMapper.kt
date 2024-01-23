@@ -7,7 +7,7 @@ import com.climus.climeet.presentation.util.Constants.TEST_IMG
 
 fun SearchGymResponse.toSearchCragUiData(
     keyword: String,
-    onClickListener: (Long) -> Unit
+    onClickListener: (Long, String, String) -> Unit
 ) = SearchCragUiData(
     id = id,
     imgUrl = TEST_IMG,

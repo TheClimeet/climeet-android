@@ -25,13 +25,14 @@ class SetCragNameFragment :
     private val viewModel: SetCragNameViewModel by viewModels()
     private val args: SetCragNameFragmentArgs by navArgs()
     private val cragId by lazy { args.cragId }
-
+    private val cragName by lazy { args.cragName }
+    private val cragImg by lazy { args.imgUrl}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
-        viewModel.setCragId(cragId)
+        viewModel.setCragInfo(cragId, cragName, cragImg)
         setWarningText()
         initEventObserve()
     }

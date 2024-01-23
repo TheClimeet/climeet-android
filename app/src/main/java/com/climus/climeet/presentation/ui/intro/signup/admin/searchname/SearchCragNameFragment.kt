@@ -42,15 +42,15 @@ class SearchCragNameFragment :
         repeatOnStarted {
             viewModel.event.collect{
                 when(it){
-                    is SearchCragNameEvent.NavigateToSetCragName -> findNavController().toSetCragName(it.id)
+                    is SearchCragNameEvent.NavigateToSetCragName -> findNavController().toSetCragName(it.id, it.name, it.imgUrl)
                     is SearchCragNameEvent.NavigateToBack -> findNavController().navigateUp()
                 }
             }
         }
     }
 
-    private fun NavController.toSetCragName(id: Long){
-        val action = SearchCragNameFragmentDirections.actionSearchCragNameFragmentToSetCragNameFragment(id)
+    private fun NavController.toSetCragName(id: Long, name: String , imgUrl: String){
+        val action = SearchCragNameFragmentDirections.actionSearchCragNameFragmentToSetCragNameFragment(id, name, imgUrl)
         navigate(action)
     }
 }

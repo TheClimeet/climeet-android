@@ -37,21 +37,24 @@ class SetCragNameViewModel @Inject constructor() : ViewModel() {
 
     private var cragId: Long? = null
 
-    fun setCragId(id: Long) {
+    fun setCragInfo(id: Long, name: String, imgUrl: String) {
         cragId = id
-        getCragInfo()
-    }
-
-    private fun getCragInfo() {
-        // todo 서버통신
+        AdminSignupForm.setCragName(name)
 
         _uiCragInfo.update { state ->
             state.copy(
-                imgUrl = TEST_IMG,
-                name = "클라이머스 클라이밍",
-                state = false
+                imgUrl = imgUrl,
+                name = name,
+                state = true
             )
         }
+        checkCragState()
+    }
+
+    private fun checkCragState(){
+        // todo 암장 등록 중복 확인
+
+
     }
 
     fun navigateToBack() {
@@ -61,9 +64,6 @@ class SetCragNameViewModel @Inject constructor() : ViewModel() {
     }
 
     fun navigateToBusinessRegistration() {
-        // 알림설정 페이지에서 쓰기 위해 이름 저장
-        AdminSignupForm.setCragName(uiCragInfo.value.name)
-
         viewModelScope.launch {
             _event.emit(SetCragNameEvent.NavigateToBusinessRegistration)
         }

@@ -29,7 +29,7 @@ data class SearchCragNameUiState(
 
 sealed class SearchCragNameEvent{
     data object NavigateToBack: SearchCragNameEvent()
-    data class NavigateToSetCragName(val id: Long): SearchCragNameEvent()
+    data class NavigateToSetCragName(val id: Long, val name: String, val imgUrl: String): SearchCragNameEvent()
 }
 
 @HiltViewModel
@@ -93,9 +93,9 @@ class SearchCragNameViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToSetCragName(id: Long) {
+    private fun navigateToSetCragName(id: Long, cragName: String, imgUrl: String) {
         viewModelScope.launch {
-            _event.emit(SearchCragNameEvent.NavigateToSetCragName(id))
+            _event.emit(SearchCragNameEvent.NavigateToSetCragName(id, cragName, imgUrl))
         }
     }
 

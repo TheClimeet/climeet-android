@@ -5,5 +5,5 @@ data class SearchCragUiData(
     val imgUrl: String = "",
     val name: String = "",
     val keyword: String = "",
-    val onClickListener: (Long) -> Unit
+    val onClickListener: (Long, String, String) -> Unit
 )
