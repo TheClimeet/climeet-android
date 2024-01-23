@@ -2,6 +2,8 @@ package com.climus.climeet.presentation.ui.intro.signup.admin.alarm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,7 +19,9 @@ sealed class SetAdminAlarmEvent {
 }
 
 @HiltViewModel
-class SetAdminAlarmViewModel @Inject constructor() : ViewModel() {
+class SetAdminAlarmViewModel @Inject constructor(
+    private val repository: IntroRepository
+) : ViewModel() {
 
     private val _event = MutableSharedFlow<SetAdminAlarmEvent>()
     val event: SharedFlow<SetAdminAlarmEvent> = _event.asSharedFlow()
@@ -35,7 +39,16 @@ class SetAdminAlarmViewModel @Inject constructor() : ViewModel() {
         AdminSignupForm.setAlarm(true)
 
         viewModelScope.launch {
-            _event.emit(SetAdminAlarmEvent.NavigateToNextAlarmOn)
+            repository.managerSignUp(AdminSignupForm.getSignupRequest()).let{
+                when(it){
+                    is BaseState.Success -> {
+                        _event.emit(SetAdminAlarmEvent.NavigateToNextAlarmOn)
+                    }
+                    is BaseState.Error -> {
+
+                    }
+                }
+            }
         }
     }
 
@@ -45,7 +58,16 @@ class SetAdminAlarmViewModel @Inject constructor() : ViewModel() {
         AdminSignupForm.setAlarm(false)
 
         viewModelScope.launch {
-            _event.emit(SetAdminAlarmEvent.NavigateToNextAlarmOff)
+            repository.managerSignUp(AdminSignupForm.getSignupRequest()).let{
+                when(it){
+                    is BaseState.Success -> {
+                        _event.emit(SetAdminAlarmEvent.NavigateToNextAlarmOff)
+                    }
+                    is BaseState.Error -> {
+
+                    }
+                }
+            }
         }
     }
 }

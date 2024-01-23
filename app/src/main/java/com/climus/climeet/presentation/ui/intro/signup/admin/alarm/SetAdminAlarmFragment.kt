@@ -10,7 +10,9 @@ import com.climus.climeet.databinding.FragmentSetAdminAlarmBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroViewModel
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SetAdminAlarmFragment :
     BaseFragment<FragmentSetAdminAlarmBinding>(R.layout.fragment_set_admin_alarm) {
 
