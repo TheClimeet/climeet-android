@@ -23,7 +23,7 @@ object ClimerSignupForm {
     var nickName = ""
         private set
 
-    var imageUri = ""
+    var imageUrl = ""
         private set
 
     var level: ClimbingLevel = ClimbingLevel.BEGINNER
@@ -47,12 +47,8 @@ object ClimerSignupForm {
         nickName = data
     }
 
-    fun setImageUri(uri: String?) {
-        imageUri = uri?.let{
-            uri
-        } ?: run{
-            ""
-        }
+    fun setImageUrl(url: String) {
+        imageUrl = url
     }
 
     fun setLevel(climerLevel: Int) {
@@ -84,7 +80,7 @@ object ClimerSignupForm {
             nickName = this.nickName,
             climbingLevel = this.level,
             discoveryChannel = this.way,
-            profileImgUrl = this.imageUri,
+            profileImgUrl = this.imageUrl,
             gymFollowList = this.gymList,
             isAllowFollowNotification = this.noticePermission,
             isAllowLikeNotification = this.noticePermission,

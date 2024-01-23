@@ -14,6 +14,7 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetClimerProfileBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroViewModel
+import com.climus.climeet.presentation.ui.intro.UrlType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,8 +27,11 @@ class SetClimerProfileFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.pvm = parentViewModel
         binding.vm = viewModel
+
+        binding.ivProfile.setOnClickListener {
+            parentViewModel.goToGallery(UrlType.CLIMER_PROFILE)
+        }
 
         initEventObserve()
         initParentImageObserve()

@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import com.climus.climeet.databinding.ActivityIntroBinding
 import com.climus.climeet.presentation.base.BaseActivity
 import com.climus.climeet.presentation.customview.Permission
+import com.climus.climeet.presentation.ui.toMultiPart
 import com.climus.climeet.presentation.util.Constants.ALARM_PERMISSION
 import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,7 +58,9 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
-                    is IntroEvent.GoToGallery -> onCheckPermissions(Permission.STORAGE, storagePermissionList)
+                    is IntroEvent.GoToGallery -> {
+                        onCheckPermissions(Permission.STORAGE, storagePermissionList)
+                    }
                     is IntroEvent.CheckAlarmPermission -> {
                         confirmAction = it.confirmAction
                         onCheckPermissions(Permission.ALARM, alarmPermissionList)
@@ -141,6 +144,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
 
                 uri?.let {
                     viewModel.setImage(it)
+                    viewModel.fileToUrl(it.toMultiPart(this))
                 }
             }
         }

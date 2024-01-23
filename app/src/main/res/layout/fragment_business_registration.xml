@@ -8,10 +8,6 @@
         <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.intro.signup.admin.submitdoc.BusinessRegistrationViewModel" />
-
-        <variable
-            name="pvm"
-            type="com.climus.climeet.presentation.ui.intro.IntroViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -90,7 +86,6 @@
             android:layout_width="248dp"
             android:layout_height="353dp"
             android:layout_marginTop="20dp"
-            android:onClick="@{() -> pvm.goToGallery()}"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_br_img"
             app:layout_constraintEnd_toEndOf="parent"

@@ -5,10 +5,6 @@
     <data>
 
         <variable
-            name="pvm"
-            type="com.climus.climeet.presentation.ui.intro.IntroViewModel" />
-
-        <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.intro.signup.admin.background.SetAdminBackgroundViewModel" />
     </data>
@@ -100,7 +96,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="60dp"
-                android:onClick="@{()-> pvm.goToGallery()}"
                 app:cardCornerRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -6,10 +6,6 @@
     <data>
 
         <variable
-            name="pvm"
-            type="com.climus.climeet.presentation.ui.intro.IntroViewModel" />
-
-        <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.intro.signup.climer.setprofile.SetClimerProfileViewModel" />
     </data>
@@ -106,7 +102,6 @@
             android:layout_marginTop="60dp"
             android:adjustViewBounds="true"
             android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
-            android:onClick="@{()->pvm.goToGallery()}"
             android:scaleType="fitXY"
             app:imageUri="@{vm.imageUri}"
             app:layout_constraintEnd_toEndOf="parent"

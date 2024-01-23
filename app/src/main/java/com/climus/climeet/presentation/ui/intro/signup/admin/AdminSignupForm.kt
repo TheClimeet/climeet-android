@@ -1,6 +1,6 @@
 package com.climus.climeet.presentation.ui.intro.signup.admin
 
-import android.net.Uri
+import com.climus.climeet.data.model.request.ManagerSignUpRequest
 
 object AdminSignupForm {
 
@@ -13,16 +13,15 @@ object AdminSignupForm {
     var cragName: String = ""
         private set
 
-    private var businessRegistrationUri: Uri? = null
-
     private var id = ""
     private var pw = ""
     private var name = ""
     private var phoneNum = ""
     private var email = ""
-    private var backgroundImage: Uri? = null
     private var services: List<String> = emptyList()    // service 형식 고려
     private var alarm = false
+    private var backgroundImgUrl = ""
+    private var businessRegistrationUrl = ""
 
     fun setCragId(id: Long) {
         cragId = id
@@ -32,8 +31,8 @@ object AdminSignupForm {
         cragName = name
     }
 
-    fun setBusinessRegistrationUri(uri: Uri) {
-        businessRegistrationUri = uri
+    fun setBusinessRegistrationUrl(url: String) {
+        businessRegistrationUrl = url
     }
 
     fun setId(data: String) {
@@ -56,8 +55,8 @@ object AdminSignupForm {
         email = data
     }
 
-    fun setBackgroundImg(uri: Uri) {
-        backgroundImage = uri
+    fun setBackgroundUrl(url: String) {
+        backgroundImgUrl = url
     }
 
     fun setSelectedServices(data: List<String>) {
@@ -67,4 +66,19 @@ object AdminSignupForm {
     fun setAlarm(data: Boolean) {
         alarm = data
     }
+
+    fun getSignupRequest(): ManagerSignUpRequest = ManagerSignUpRequest(
+        gymName = cragName,
+        loginId = id,
+        password = pw,
+        name = name,
+        phoneNumber = phoneNum,
+        email = email,
+        backGroundImageUri = backgroundImgUrl,
+        provideServiceList = services,
+        isAllowAdNotification = alarm,
+        isAllowCommentNotification = alarm,
+        isAllowFollowNotification = alarm,
+        isAllowLikeNotification = alarm
+    )
 }
