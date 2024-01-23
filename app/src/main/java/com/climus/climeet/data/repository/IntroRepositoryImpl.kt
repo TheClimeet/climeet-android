@@ -14,15 +14,17 @@ class IntroRepositoryImpl @Inject constructor(
     private val api: IntroApi
 ) : IntroRepository {
 
-    override suspend fun climerAuth(
+    override suspend fun climerSignUp(
         provider: String,
         accessToken: String,
         body: ClimerSignupRequest
-    ): BaseState<ClimerSignupResponse> = runRemote { api.climerLogin(provider, accessToken, body) }
-
-    override suspend fun managerLogin(body: ManagerLoginRequest): BaseState<ManagerLoginResponse> = runRemote { api.managerLogin(body) }
+    ): BaseState<ClimerSignupResponse> = runRemote { api.climerSignUp(provider, accessToken, body) }
 
     override suspend fun managerSignUp(body: ManagerSignUpRequest): BaseState<Unit> = runRemote { api.managerSignUp(body) }
+
+    override suspend fun climerLogin(provider: String, accessToken: String): BaseState<ClimerSignupResponse> = runRemote { api.climerLogin(provider, accessToken) }
+
+    override suspend fun managerLogin(body: ManagerLoginRequest): BaseState<ManagerLoginResponse> = runRemote { api.managerLogin(body) }
 
     override suspend fun managerIdCheck(loginId: String): BaseState<Boolean> = runRemote { api.managerIdCheck(loginId) }
 

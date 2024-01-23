@@ -6,7 +6,7 @@ object Constants {
     const val X_ACCESS_TOKEN = "X-ACCESS_TOKEN"
     const val X_REFRESH_TOKEN = "X_REFRESH_TOKEN"
     const val X_MODE = "X_MODE"
-    const val CLIMER_MODE = "CLIMER"
+    const val CLIMBER_MODE = "CLIMBER"
     const val ADMINE_MODE = "ADMIN"
 
     const val KAKAO = "KAKAO"

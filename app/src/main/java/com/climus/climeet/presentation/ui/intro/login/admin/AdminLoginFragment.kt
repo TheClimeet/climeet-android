@@ -10,7 +10,9 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentAdminLoginBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AdminLoginFragment : BaseFragment<FragmentAdminLoginBinding>(R.layout.fragment_admin_login) {
 
     private val viewModel: AdminLoginViewModel by viewModels()

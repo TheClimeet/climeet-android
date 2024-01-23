@@ -1,10 +1,8 @@
 package com.climus.climeet.presentation.ui.intro.signup.climer
 
-import android.net.Uri
 import com.climus.climeet.data.model.request.ClimbingLevel
 import com.climus.climeet.data.model.request.ClimerSignupRequest
 import com.climus.climeet.data.model.request.DiscoveryChannel
-import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
 
 object ClimerSignupForm {
 

@@ -83,7 +83,7 @@ class AdminLoginViewModel @Inject constructor(
                 when(it){
                     is BaseState.Success -> {
                         
-                        // todo X_MODE 는 ADMIN / CLIMER 로 나뉨
+                        // todo X_MODE 는 ADMIN / CLIMBER 로 나뉨
                         
                         App.sharedPreferences.edit()
                             .putString(X_ACCESS_TOKEN, it.body.accessToken)

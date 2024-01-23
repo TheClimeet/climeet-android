@@ -9,19 +9,25 @@ import com.climus.climeet.data.model.response.ManagerLoginResponse
 
 interface IntroRepository {
 
-    suspend fun climerAuth(
+    suspend fun climerSignUp(
         provider: String,
         accessToken: String,
         body: ClimerSignupRequest
+    ): BaseState<ClimerSignupResponse>
+
+    suspend fun managerSignUp(
+        body: ManagerSignUpRequest
+    ): BaseState<Unit>
+
+    suspend fun climerLogin(
+        provider: String,
+        accessToken: String,
     ): BaseState<ClimerSignupResponse>
 
     suspend fun managerLogin(
         body : ManagerLoginRequest
     ): BaseState<ManagerLoginResponse>
 
-    suspend fun managerSignUp(
-        body: ManagerSignUpRequest
-    ): BaseState<Unit>
 
     suspend fun managerIdCheck(
         loginId: String

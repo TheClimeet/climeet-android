@@ -45,15 +45,12 @@ class ClimerLoginFragment :
                     is ClimerLoginEvent.NavigateBack -> findNavController().navigateUp()
 
                     is ClimerLoginEvent.GoToMainActivity -> {
-                        // todo 클라이머 모드 지정?
                         val intent = Intent(requireContext(), MainActivity::class.java)
                             .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
                     }
 
                     is ClimerLoginEvent.NavigateToSignUp -> {
-
-                        // todo 회원가입 최종단계에서 필요한, 소셜타입과 토큰을 싱글톤 Object에 임시저장
                         ClimerSignupForm.setSocialType(it.socialType)
                         ClimerSignupForm.setToken(it.token)
 

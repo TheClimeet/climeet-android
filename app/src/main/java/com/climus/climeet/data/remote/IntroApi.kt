@@ -16,10 +16,21 @@ import retrofit2.http.Query
 interface IntroApi {
 
     @POST("/climber/login")
-    suspend fun climerLogin(
+    suspend fun climerSignUp(
         @Query("provider") provider: String,
         @Header("Authorization") accessToken: String,
         @Body params: ClimerSignupRequest
+    ): Response<ClimerSignupResponse>
+
+    @POST("/manager/signup")
+    suspend fun managerSignUp(
+        @Body params: ManagerSignUpRequest
+    ): Response<Unit>
+
+    @POST("/climber/login")
+    suspend fun climerLogin(
+        @Query("provider") provider: String,
+        @Header("Authorization") accessToken: String,
     ): Response<ClimerSignupResponse>
 
     @POST("/manager/login")
@@ -37,9 +48,5 @@ interface IntroApi {
         @Path("gymName") gymName: String
     ): Response<Boolean>
 
-    @POST("/manager/signup")
-    suspend fun managerSignUp(
-        @Body params: ManagerSignUpRequest
-    ): Response<Unit>
 
 }

@@ -3,6 +3,11 @@ package com.climus.climeet.presentation.ui.intro.login.climer
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.app.App
+import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.repository.IntroRepository
+import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
+import com.climus.climeet.presentation.util.Constants
 import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,7 +26,9 @@ sealed class ClimerLoginEvent {
 }
 
 @HiltViewModel
-class ClimerLoginViewModel @Inject constructor() : ViewModel() {
+class ClimerLoginViewModel @Inject constructor(
+    private val repository: IntroRepository
+) : ViewModel() {
 
     private val _event = MutableSharedFlow<ClimerLoginEvent>()
     val event: SharedFlow<ClimerLoginEvent> = _event.asSharedFlow()
@@ -34,7 +41,27 @@ class ClimerLoginViewModel @Inject constructor() : ViewModel() {
         // - 실패시 -> Climer 회원가입 Flow 첫번째인 SetClimerNickFragment 로 이동
 
         viewModelScope.launch {
-            _event.emit(ClimerLoginEvent.NavigateToSignUp(type, token))
+            repository.climerLogin(type, token).let{
+                when(it){
+                    is BaseState.Success -> {
+
+                        App.sharedPreferences.edit()
+                            .putString(Constants.X_ACCESS_TOKEN, it.body.accessToken)
+                            .putString(Constants.X_REFRESH_TOKEN, it.body.refreshToken)
+                            .putString(Constants.X_MODE, "CLIMBER")
+                            .apply()
+
+                        _event.emit(ClimerLoginEvent.GoToMainActivity)
+                    }
+
+                    is BaseState.Error -> {
+
+
+                        _event.emit(ClimerLoginEvent.NavigateToSignUp(type, token))
+                    }
+                }
+            }
+
         }
     }
 
