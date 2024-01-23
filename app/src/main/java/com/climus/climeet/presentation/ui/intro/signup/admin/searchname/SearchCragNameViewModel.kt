@@ -1,8 +1,14 @@
 package com.climus.climeet.presentation.ui.intro.signup.admin.searchname
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.repository.IntroRepository
+import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiData
+import com.climus.climeet.presentation.ui.intro.signup.admin.toSearchCragUiData
+import com.climus.climeet.presentation.util.Constants.TAG
 import com.climus.climeet.presentation.util.Constants.TEST_IMG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,7 +33,9 @@ sealed class SearchCragNameEvent{
 }
 
 @HiltViewModel
-class SearchCragNameViewModel @Inject constructor() : ViewModel() {
+class SearchCragNameViewModel @Inject constructor(
+    private val mainRepository: MainRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchCragNameUiState())
     val uiState: StateFlow<SearchCragNameUiState> = _uiState.asStateFlow()
@@ -43,6 +51,7 @@ class SearchCragNameViewModel @Inject constructor() : ViewModel() {
 
     private fun observeKeyword() {
         keyword.onEach {
+            Log.d(TAG,it)
 
             if(it.isBlank()){
                 _uiState.update { state ->
@@ -51,22 +60,26 @@ class SearchCragNameViewModel @Inject constructor() : ViewModel() {
                     )
                 }
             } else {
-                // todo 타이핑 할때마다 API 호출
-                _uiState.update { state ->
-                    state.copy(
-                        searchList = listOf(
-                            SearchCragUiData(2, TEST_IMG, "더클라이머 연남", it, ::navigateToSetCragName),
-                            SearchCragUiData(1, TEST_IMG, "더클라이머 마곡", it,::navigateToSetCragName),
-                            SearchCragUiData(2, TEST_IMG, "더클라이머 연남", it,::navigateToSetCragName),
-                            SearchCragUiData(5, TEST_IMG, "더클라이머 암재", it,::navigateToSetCragName),
-                            SearchCragUiData(6, TEST_IMG, "더클라이머 암곡", it,::navigateToSetCragName),
-                            SearchCragUiData(7, TEST_IMG, "더클라이머 어곡", it,::navigateToSetCragName),
-                            SearchCragUiData(8, TEST_IMG, "더클라이머 이곡", it,::navigateToSetCragName),
-                            SearchCragUiData(1, TEST_IMG, "더클라이머 마곡", it,::navigateToSetCragName),
-                            SearchCragUiData(2, TEST_IMG, "더클라이머 연남", it,::navigateToSetCragName),
-                        )
-                    )
+                mainRepository.searchGym(it).let{ result ->
+                    when(result){
+                        is BaseState.Success -> {
+                            if(result.body.isNotEmpty()){
+                                _uiState.update { state ->
+                                    state.copy(
+                                        searchList = result.body.map{ item -> item.toSearchCragUiData(
+                                            it,::navigateToSetCragName
+                                        )}
+                                    )
+                                }
+                            }
+                        }
+
+                        is BaseState.Error -> {
+                            // todo 에러일떄 예외처리
+                        }
+                    }
                 }
+
             }
         }.launchIn(viewModelScope)
     }

@@ -16,7 +16,7 @@ interface MainApi {
     @POST("/file")
     suspend fun uploadImage(@Part file: MultipartBody.Part): Response<UploadImgResponse>
 
-    @GET("/gym/serach/all")
+    @GET("/gym/search/all")
     suspend fun searchGym(
         @Query("gymname") gymName: String
     ): Response<List<SearchGymResponse>>
