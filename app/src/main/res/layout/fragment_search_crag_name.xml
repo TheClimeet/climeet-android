@@ -123,5 +123,51 @@
             app:layout_constraintTop_toBottomOf="@id/et_search"
             tools:listitem="@layout/item_crag_search" />
 
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            android:visibility="@{vm.uiState.progressState? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_search" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_search_miss"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="20dp"
+            android:visibility="@{vm.uiState.emptyResultState? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_search">
+
+            <ImageView
+                android:id="@+id/iv_question"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_question_mark" />
+
+            <TextView
+                android:id="@+id/tv_question"
+                style="@style/TextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="검색결과가 없어요.\n다시 한 번 검색해주세요."
+                app:layout_constraintEnd_toEndOf="@+id/iv_question"
+                app:layout_constraintStart_toStartOf="@+id/iv_question"
+                app:layout_constraintTop_toBottomOf="@+id/iv_question" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

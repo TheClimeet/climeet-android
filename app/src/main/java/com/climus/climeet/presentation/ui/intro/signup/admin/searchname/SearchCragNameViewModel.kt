@@ -1,16 +1,14 @@
 package com.climus.climeet.presentation.ui.intro.signup.admin.searchname
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
-import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiData
 import com.climus.climeet.presentation.ui.intro.signup.admin.toSearchCragUiData
-import com.climus.climeet.presentation.util.Constants.TAG
-import com.climus.climeet.presentation.util.Constants.TEST_IMG
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -24,13 +22,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class SearchCragNameUiState(
-    val searchList: List<SearchCragUiData> = emptyList()
+    val searchList: List<SearchCragUiData> = emptyList(),
+    val progressState: Boolean = false,
+    val emptyResultState: Boolean = false
 )
 
-sealed class SearchCragNameEvent{
-    data object NavigateToBack: SearchCragNameEvent()
-    data class NavigateToSetCragName(val id: Long, val name: String, val imgUrl: String): SearchCragNameEvent()
-    data class ShowToastMessage(val msg: String): SearchCragNameEvent()
+sealed class SearchCragNameEvent {
+    data object NavigateToBack : SearchCragNameEvent()
+    data class NavigateToSetCragName(val id: Long, val name: String, val imgUrl: String) :
+        SearchCragNameEvent()
+
+    data class ShowToastMessage(val msg: String) : SearchCragNameEvent()
 }
 
 @HiltViewModel
@@ -44,6 +46,8 @@ class SearchCragNameViewModel @Inject constructor(
     private val _event = MutableSharedFlow<SearchCragNameEvent>()
     val event: SharedFlow<SearchCragNameEvent> = _event.asSharedFlow()
 
+    private var curJob: Job? = null
+
     val keyword = MutableStateFlow("")
 
     init {
@@ -52,35 +56,62 @@ class SearchCragNameViewModel @Inject constructor(
 
     private fun observeKeyword() {
         keyword.onEach {
-            Log.d(TAG,it)
-
-            if(it.isBlank()){
+            if (it.isBlank()) {
                 _uiState.update { state ->
                     state.copy(
-                        searchList = emptyList()
+                        searchList = emptyList(),
+                        emptyResultState = false
                     )
                 }
             } else {
-                mainRepository.searchGym(it).let{ result ->
-                    when(result){
-                        is BaseState.Success -> {
-                            if(result.body.isNotEmpty()){
-                                _uiState.update { state ->
-                                    state.copy(
-                                        searchList = result.body.map{ item -> item.toSearchCragUiData(
-                                            it,::navigateToSetCragName
-                                        )}
-                                    )
+                curJob?.cancel()
+
+                _uiState.update { state ->
+                    state.copy(
+                        progressState = true,
+                        emptyResultState = false
+                    )
+                }
+
+                curJob = viewModelScope.launch {
+                    delay(500)
+                    mainRepository.searchGym(it).let { result ->
+                        when (result) {
+                            is BaseState.Success -> {
+                                if (result.body.isNotEmpty()) {
+                                    _uiState.update { state ->
+                                        state.copy(
+                                            searchList = result.body.map { item ->
+                                                item.toSearchCragUiData(
+                                                    it, ::navigateToSetCragName
+                                                )
+                                            },
+                                            progressState = false
+                                        )
+                                    }
+                                } else {
+                                    _uiState.update { state ->
+                                        state.copy(
+                                            searchList = emptyList(),
+                                            progressState = false,
+                                            emptyResultState = true
+                                        )
+                                    }
                                 }
                             }
-                        }
 
-                        is BaseState.Error -> {
-                            _event.emit(SearchCragNameEvent.ShowToastMessage(result.msg))
+                            is BaseState.Error -> {
+                                _uiState.update { state ->
+                                    state.copy(
+                                        progressState = false,
+                                        emptyResultState = true
+                                    )
+                                }
+                                _event.emit(SearchCragNameEvent.ShowToastMessage(result.msg))
+                            }
                         }
                     }
                 }
-
             }
         }.launchIn(viewModelScope)
     }
@@ -100,7 +131,7 @@ class SearchCragNameViewModel @Inject constructor(
         }
     }
 
-    fun navigateToBack(){
+    fun navigateToBack() {
         viewModelScope.launch {
             _event.emit(SearchCragNameEvent.NavigateToBack)
         }
