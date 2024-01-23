@@ -23,7 +23,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             } ?: run {
-                startActivity(Intent(this, IntroActivity::class.java))
+                startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
         }, 2000)

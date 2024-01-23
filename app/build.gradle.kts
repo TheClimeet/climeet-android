@@ -117,4 +117,8 @@ dependencies {
 
     // Live Data
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
+
+    // Calendar
+    implementation ("com.github.prolificinteractive:material-calendarview:2.0.1")
+    implementation ("com.jakewharton.threetenabp:threetenabp:1.1.1")
 }

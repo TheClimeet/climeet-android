@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.main.record.calendar.CalendarViewModel" />
@@ -38,124 +40,187 @@
             app:layout_constraintStart_toEndOf="@id/tv_record"
             app:layout_constraintTop_toTopOf="@id/tv_record" />
 
-        <TextView
-            android:id="@+id/tv_year_month"
-            style="@style/TextMediumSemiBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <View
+            android:id="@+id/view_for_select_year_month"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
             android:layout_marginTop="10dp"
-            android:text="2023.12"
-            app:layout_constraintEnd_toStartOf="@id/iv_date_next"
-            app:layout_constraintStart_toEndOf="@id/iv_date_pre"
-            app:layout_constraintTop_toBottomOf="@id/tv_record" />
-
-        <ImageView
-            android:id="@+id/iv_date_pre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="23dp"
-            android:src="@drawable/ic_date_pre"
-            app:layout_constraintBottom_toBottomOf="@id/tv_year_month"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_year_month" />
-
-        <ImageView
-            android:id="@+id/iv_date_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="23dp"
-            android:src="@drawable/ic_date_next"
-            app:layout_constraintBottom_toBottomOf="@id/tv_year_month"
+            android:background="@color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_year_month" />
-
-        <LinearLayout
-            android:id="@+id/layout_week"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="25dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            android:weightSum="7"
-            app:layout_constraintEnd_toEndOf="paernt"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_year_month">
+            app:layout_constraintTop_toBottomOf="@+id/tv_record"/>
 
-            <TextView
-                style="@style/TextRegularBold"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_yearmonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="5dp"
+            android:background="@color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_for_select_year_month">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="일" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/item_calendar" />
 
-            <TextView
-                style="@style/TextRegularBold"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_month"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="월" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/rv_year"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/item_calendar" />
 
-            <TextView
-                style="@style/TextRegularBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="화" />
-
-            <TextView
-                style="@style/TextRegularBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="수" />
-
-            <TextView
-                style="@style/TextRegularBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="목" />
-
-            <TextView
-                style="@style/TextRegularBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="금" />
-
-            <TextView
-                style="@style/TextRegularBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="토" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_calendar"
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            android:id="@+id/calendar_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="25dp"
-            android:layout_marginTop="10dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/guide"
+            android:layout_margin="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/guide"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_week"
-            app:spanCount="7"
-            tools:itemCount="42"
-            tools:listitem="@layout/item_calendar" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_record"
+            app:mcv_dateTextAppearance="@style/CalendarDate"
+            app:mcv_firstDayOfWeek="sunday"
+            app:mcv_headerTextAppearance="@style/TextMediumBold"
+            app:mcv_leftArrow="@drawable/ic_date_pre"
+            app:mcv_rightArrow="@drawable/ic_date_next"
+            app:mcv_selectionColor="@color/cm_grey6"
+            app:mcv_selectionMode="single"
+            app:mcv_weekDayTextAppearance="@style/TextRegularBold" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_year_month"-->
+<!--            style="@style/TextMediumSemiBold"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:text="2023.12"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/iv_date_next"-->
+<!--            app:layout_constraintStart_toEndOf="@id/iv_date_pre"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tv_record" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/iv_date_pre"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="23dp"-->
+<!--            android:src="@drawable/ic_date_pre"-->
+<!--            android:onClick="@{() -> vm.previousMonth()}"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/tv_year_month"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@id/tv_year_month" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/iv_date_next"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="23dp"-->
+<!--            android:src="@drawable/ic_date_next"-->
+<!--            android:onClick="@{() -> vm.nextMonth()}"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/tv_year_month"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="@id/tv_year_month" />-->
+
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/layout_week"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginHorizontal="25dp"-->
+        <!--            android:layout_marginTop="20dp"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            android:weightSum="7"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/tv_year_month">-->
+
+        <!--            <TextView-->
+        <!--                style="@style/TextRegularBold"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:gravity="center"-->
+        <!--                android:text="일" />-->
+
+        <!--            <TextView-->
+        <!--                style="@style/TextRegularBold"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:gravity="center"-->
+        <!--                android:text="월" />-->
+
+        <!--            <TextView-->
+        <!--                style="@style/TextRegularBold"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:gravity="center"-->
+        <!--                android:text="화" />-->
+
+        <!--            <TextView-->
+        <!--                style="@style/TextRegularBold"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:gravity="center"-->
+        <!--                android:text="수" />-->
+
+        <!--            <TextView-->
+        <!--                style="@style/TextRegularBold"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:gravity="center"-->
+        <!--                android:text="목" />-->
+
+        <!--            <TextView-->
+        <!--                style="@style/TextRegularBold"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:gravity="center"-->
+        <!--                android:text="금" />-->
+
+        <!--            <TextView-->
+        <!--                style="@style/TextRegularBold"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:gravity="center"-->
+        <!--                android:text="토" />-->
+
+
+        <!--        </LinearLayout>-->
+
+        <!--        <androidx.recyclerview.widget.RecyclerView-->
+        <!--            android:id="@+id/rv_calendar"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:layout_marginTop="10dp"-->
+        <!--            android:clickable="true"-->
+        <!--            android:focusable="true"-->
+        <!--            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"-->
+        <!--            app:layout_constraintBottom_toTopOf="@id/guide"-->
+        <!--            app:layout_constraintEnd_toEndOf="@+id/layout_week"-->
+        <!--            app:layout_constraintStart_toStartOf="@+id/layout_week"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/layout_week"-->
+        <!--            app:spanCount="7"-->
+        <!--            tools:itemCount="42"-->
+        <!--            tools:listitem="@layout/item_calendar" />-->
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide"
