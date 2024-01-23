@@ -7,7 +7,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.ActivityMainBinding
 import com.climus.climeet.presentation.base.BaseActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
 
