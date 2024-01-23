@@ -27,7 +27,6 @@ class AdminLoginFragment : BaseFragment<FragmentAdminLoginBinding>(R.layout.frag
             viewModel.event.collect {
                 when (it) {
                     is AdminLoginEvent.GoToMainActivity -> {
-                        // todo 암장관리자모드 지정?
                         val intent = Intent(requireContext(), MainActivity::class.java)
                             .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
