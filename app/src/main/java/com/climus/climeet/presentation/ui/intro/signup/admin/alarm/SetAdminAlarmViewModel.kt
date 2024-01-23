@@ -1,6 +1,5 @@
 package com.climus.climeet.presentation.ui.intro.signup.admin.alarm
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
@@ -31,11 +30,9 @@ class SetAdminAlarmViewModel @Inject constructor() : ViewModel() {
     }
 
     // 알림 수신 동의 후 완료 화면으로 이동
-    fun navigateToNextAlarmOn(){
+    fun navigateToNextAlarmOn() {
         // 알림 설정
         AdminSignupForm.setAlarm(true)
-
-        Log.d("admin", "알림 설정 : ${AdminSignupForm.alarm}")
 
         viewModelScope.launch {
             _event.emit(SetAdminAlarmEvent.NavigateToNextAlarmOn)
@@ -43,11 +40,9 @@ class SetAdminAlarmViewModel @Inject constructor() : ViewModel() {
     }
 
     // 알림 수신 거부 루 완료 화면으로 이동
-    fun navigateToNextAlarmOff(){
+    fun navigateToNextAlarmOff() {
         // 알림 거부
         AdminSignupForm.setAlarm(false)
-
-        Log.d("admin", "알림 설정 : ${AdminSignupForm.alarm}")
 
         viewModelScope.launch {
             _event.emit(SetAdminAlarmEvent.NavigateToNextAlarmOff)

@@ -5,15 +5,14 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetAdminPersonalInfoBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 
-class SetAdminPersonalInfoFragment : BaseFragment<FragmentSetAdminPersonalInfoBinding>(R.layout.fragment_set_admin_personal_info) {
+class SetAdminPersonalInfoFragment :
+    BaseFragment<FragmentSetAdminPersonalInfoBinding>(R.layout.fragment_set_admin_personal_info) {
 
     private val viewModel: SetAdminPersonalViewModel by viewModels()
 
@@ -53,8 +52,9 @@ class SetAdminPersonalInfoFragment : BaseFragment<FragmentSetAdminPersonalInfoBi
     }
 
     // 배경화면 설정으로 이동
-    private fun navigateNext(){
-        val action = SetAdminPersonalInfoFragmentDirections.actionSetAdminPersonalFragmentToSetAdminBackgroundFragment()
+    private fun navigateNext() {
+        val action =
+            SetAdminPersonalInfoFragmentDirections.actionSetAdminPersonalFragmentToSetAdminBackgroundFragment()
         findNavController().navigate(action)
     }
 }
