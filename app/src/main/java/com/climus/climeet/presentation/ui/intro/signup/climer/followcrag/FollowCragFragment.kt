@@ -66,6 +66,7 @@ class FollowCragFragment :
                 when(it){
                     is FollowCragEvent.NavigateToHowToKnow -> findNavController().toHowToKnow()
                     is FollowCragEvent.NavigateToBack -> findNavController().navigateUp()
+                    is FollowCragEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }
