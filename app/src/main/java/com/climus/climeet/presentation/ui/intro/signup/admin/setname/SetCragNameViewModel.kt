@@ -2,6 +2,8 @@ package com.climus.climeet.presentation.ui.intro.signup.admin.setname
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.CragInfoUiData
 import com.climus.climeet.presentation.util.Constants.TEST_IMG
@@ -27,7 +29,9 @@ sealed class SetCragNameEvent {
 }
 
 @HiltViewModel
-class SetCragNameViewModel @Inject constructor() : ViewModel() {
+class SetCragNameViewModel @Inject constructor(
+    private val repository: IntroRepository
+) : ViewModel() {
 
     private val _uiCragInfo = MutableStateFlow(CragInfoUiData())
     val uiCragInfo: StateFlow<CragInfoUiData> = _uiCragInfo.asStateFlow()
@@ -36,9 +40,11 @@ class SetCragNameViewModel @Inject constructor() : ViewModel() {
     val event: SharedFlow<SetCragNameEvent> = _event.asSharedFlow()
 
     private var cragId: Long? = null
+    private var cragName: String = ""
 
     fun setCragInfo(id: Long, name: String, imgUrl: String) {
         cragId = id
+        cragName = name
         AdminSignupForm.setCragName(name)
 
         _uiCragInfo.update { state ->
@@ -52,9 +58,32 @@ class SetCragNameViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun checkCragState(){
-        // todo 암장 등록 중복 확인
+        viewModelScope.launch {
+            repository.managerGymNameCheck(cragName).let{
+                when(it){
+                    is BaseState.Success -> {
+                        if(it.body){
+                            _uiCragInfo.update { state ->
+                                state.copy(
+                                    state = true
+                                )
+                            }
+                        } else {
+                            _uiCragInfo.update { state ->
+                                state.copy(
+                                    state = false 
+                                )
+                            }
+                        }
+                    }
+                    is BaseState.Error -> {
 
-
+                        // todo 예외처리
+                        
+                    }
+                }
+            }
+        }
     }
 
     fun navigateToBack() {
