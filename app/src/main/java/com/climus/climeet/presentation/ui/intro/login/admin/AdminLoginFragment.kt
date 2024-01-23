@@ -34,10 +34,7 @@ class AdminLoginFragment : BaseFragment<FragmentAdminLoginBinding>(R.layout.frag
                     }
 
                     is AdminLoginEvent.NavigateToSignUp -> findNavController().toAnnounceAdminSignup()
-                    is AdminLoginEvent.NavigateToFindAccount -> {
-                        // todo id/pw 찾기로 이동
-                    }
-
+                    is AdminLoginEvent.NavigateToFindAccount -> findNavController().toFindIdPw()
                     is AdminLoginEvent.NavigateToBack -> findNavController().navigateUp()
                     is AdminLoginEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
@@ -47,6 +44,11 @@ class AdminLoginFragment : BaseFragment<FragmentAdminLoginBinding>(R.layout.frag
 
     private fun NavController.toAnnounceAdminSignup() {
         val action = AdminLoginFragmentDirections.actionAdminLoginFragmentToAnnounceAdminSignupFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toFindIdPw(){
+        val action = AdminLoginFragmentDirections.actionAdminLoginFragmentToFindIdPwFragment()
         navigate(action)
     }
 

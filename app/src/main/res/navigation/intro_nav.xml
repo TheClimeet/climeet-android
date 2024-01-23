@@ -49,6 +49,27 @@
         <action
             android:id="@+id/action_admin_login_fragment_to_announce_admin_signup_fragment"
             app:destination="@id/announce_admin_signup_fragment" />
+        <action
+            android:id="@+id/action_admin_login_fragment_to_find_id_pw_fragment"
+            app:destination="@id/find_id_pw_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/find_id_pw_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.login.admin.FindIdPwFragment"
+        android:label="findIdPw">
+        <action
+            android:id="@+id/action_find_id_pw_fragment_to_find_id_pw_complete_fragment"
+            app:destination="@id/find_id_pw_complete_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/find_id_pw_complete_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.login.admin.FindIdPwCompleteFragment"
+        android:label="findIdPwComplete">
+        <action
+            android:id="@+id/action_find_id_pw_complete_fragment_to_login_fragment"
+            app:destination="@id/login_fragment" />
     </fragment>
 
     <fragment
