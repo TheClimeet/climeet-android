@@ -27,7 +27,7 @@ class SetClimerCompleteViewModel @Inject constructor(
     fun signUp(provider: String, accessToken: String, signUpRequest: ClimerSignupRequest) {
 
         viewModelScope.launch {
-            repository.climerAuth(provider, accessToken, signUpRequest).let {
+            repository.climerSignUp(provider, accessToken, signUpRequest).let {
                 when (it) {
                     is BaseState.Success -> {
 

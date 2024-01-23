@@ -57,28 +57,15 @@ class SetClimerProfileFragment :
     }
 
     private fun setImage(uri: Uri) {
-        viewModel.setImageUri(requireContext(), uri)
+        Glide.with(this)
+            .load(uri)
+            .circleCrop() // 기본 이미지
+            .into(binding.ivProfile)
     }
 
     private fun NavController.toSetClimerLevel() {
         val action =
             SetClimerProfileFragmentDirections.actionSetClimerProfileFragmentToSetClimerLevelFragment()
         navigate(action)
-    }
-
-}
-
-object BindingAdapters {
-    @JvmStatic
-    @BindingAdapter("imageUri")
-    fun bindImageUri(imageView: ImageView, uri: Uri?) {
-        if (uri != null) {
-            Glide.with(imageView.context)
-                .load(uri)
-                .circleCrop()
-                .into(imageView)
-        } else {
-
-        }
     }
 }

@@ -48,7 +48,7 @@ class ClimerLoginViewModel @Inject constructor(
                         App.sharedPreferences.edit()
                             .putString(Constants.X_ACCESS_TOKEN, it.body.accessToken)
                             .putString(Constants.X_REFRESH_TOKEN, it.body.refreshToken)
-                            .putString(Constants.X_MODE, "CLIMBER")
+                            .putString(Constants.X_MODE, "CLIMER")
                             .apply()
 
                         _event.emit(ClimerLoginEvent.GoToMainActivity)
