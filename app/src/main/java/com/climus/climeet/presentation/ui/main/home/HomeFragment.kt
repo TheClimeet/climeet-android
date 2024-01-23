@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentHomeBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -11,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.climus.climeet.presentation.ui.intro.signup.climer.noticesetting.NoticeSettingFragmentDirections
 import com.climus.climeet.presentation.ui.main.home.recycler.homegym.HomeGymRVAdapter
 import com.climus.climeet.presentation.ui.main.home.model.HomeGym
 import com.climus.climeet.presentation.ui.main.home.model.PopularCrag
@@ -40,19 +42,30 @@ class HomeFragment :
         setupPopularShorts()
         setupPopularCrags()
         setupPopularRoutes()
+
+        binding.tvHomeRankingViewAll.setOnClickListener {
+            navigateNext()
+        }
+    }
+
+    private fun navigateNext() {
+        val action = HomeFragmentDirections.actionHomeFragmentToBestClimerFragment()
+        findNavController().navigate(action)
     }
 
     private fun setupIntroduceBanner() {
         val bannerAdapter = BannerVPAdapter(this, binding.vpHomeIntroduceBanner)
-        repeat(3) {
-            bannerAdapter.addFragment(BannerFragment(R.drawable.img_introduce_banner))
-        }
+
+        bannerAdapter.addFragment(BannerFragment(R.drawable.img_introduce_banner))
+        bannerAdapter.addFragment(BannerFragment(R.drawable.img_introduce_banner))
+        bannerAdapter.addFragment(BannerFragment(R.drawable.img_introduce_banner))
 
         val viewPager = binding.vpHomeIntroduceBanner
         val itemCount = bannerAdapter.itemCount
         val indicator = binding.tvIndicatorFraction
         viewPager.adapter = bannerAdapter
         viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        indicator.text = getString(R.string.viewpager2_banner, 1, itemCount)
 
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             var currentState = 0
@@ -82,7 +95,7 @@ class HomeFragment :
             }
         })
 
-        autoSlide(bannerAdapter)
+        // autoSlide(bannerAdapter)
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>, orientation: Int) {
@@ -156,18 +169,19 @@ class HomeFragment :
         setupRecyclerView(binding.rvHomePopularRoutes, popularRouteRVAdapter, LinearLayoutManager.HORIZONTAL)
     }
 
-    private fun autoSlide(adapter: BannerVPAdapter) {
-        timer.scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                handler.post {
-                    val nextItem = binding.vpHomeIntroduceBanner.currentItem + 1
-                    if (nextItem < adapter.itemCount) {
-                        binding.vpHomeIntroduceBanner.currentItem = nextItem
-                    } else {
-                        binding.vpHomeIntroduceBanner.currentItem = 0 // 순환
-                    }
-                }
-            }
-        }, 3000, 3000)
-    }
+//    private fun autoSlide(adapter: BannerVPAdapter) {
+//        timer.scheduleAtFixedRate(object : TimerTask() {
+//            override fun run() {
+//                handler.post {
+//                    val nextItem = binding.vpHomeIntroduceBanner.currentItem + 1
+//                    if (nextItem < adapter.itemCount) {
+//                        binding.vpHomeIntroduceBanner.currentItem = nextItem
+//                    } else {
+//                        binding.vpHomeIntroduceBanner.currentItem = 0 // 순환
+//                    }
+//                }
+//            }
+//        }, 3000, 3000)
+//    }
+
 }

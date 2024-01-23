@@ -96,7 +96,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/rv_home_homegym" />
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/tv_home_ranking_view_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
@@ -161,7 +161,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/tv_home_shorts_view_all"
                 style="@style/TextLargeBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -198,7 +198,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/rv_home_shorts" />
 
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/tv_home_crag_view_all"
                 style="@style/TextLargeBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -235,6 +235,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/rv_home_popular_crags" />
 
             <TextView
+                android:id="@+id/tv_home_route_view_all"
                 style="@style/TextLargeBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
