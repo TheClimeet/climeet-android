@@ -16,6 +16,9 @@ sealed class SetAdminAlarmEvent {
     data object NavigateToBack : SetAdminAlarmEvent()
     data object NavigateToNextAlarmOn : SetAdminAlarmEvent()
     data object NavigateToNextAlarmOff : SetAdminAlarmEvent()
+    data class ShowToastMessage(val msg: String): SetAdminAlarmEvent()
+    data object ShowLoading: SetAdminAlarmEvent()
+    data object DismissLoading: SetAdminAlarmEvent()
 }
 
 @HiltViewModel
@@ -39,13 +42,15 @@ class SetAdminAlarmViewModel @Inject constructor(
         AdminSignupForm.setAlarm(true)
 
         viewModelScope.launch {
+            _event.emit(SetAdminAlarmEvent.ShowLoading)
             repository.managerSignUp(AdminSignupForm.getSignupRequest()).let{
                 when(it){
                     is BaseState.Success -> {
                         _event.emit(SetAdminAlarmEvent.NavigateToNextAlarmOn)
                     }
                     is BaseState.Error -> {
-
+                        _event.emit(SetAdminAlarmEvent.DismissLoading)
+                        _event.emit(SetAdminAlarmEvent.ShowToastMessage(it.msg))
                     }
                 }
             }
@@ -58,13 +63,15 @@ class SetAdminAlarmViewModel @Inject constructor(
         AdminSignupForm.setAlarm(false)
 
         viewModelScope.launch {
+            _event.emit(SetAdminAlarmEvent.ShowLoading)
             repository.managerSignUp(AdminSignupForm.getSignupRequest()).let{
                 when(it){
                     is BaseState.Success -> {
                         _event.emit(SetAdminAlarmEvent.NavigateToNextAlarmOff)
                     }
                     is BaseState.Error -> {
-
+                        _event.emit(SetAdminAlarmEvent.DismissLoading)
+                        _event.emit(SetAdminAlarmEvent.ShowToastMessage(it.msg))
                     }
                 }
             }

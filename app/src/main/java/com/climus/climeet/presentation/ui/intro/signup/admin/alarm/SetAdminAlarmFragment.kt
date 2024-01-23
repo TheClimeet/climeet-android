@@ -44,6 +44,9 @@ class SetAdminAlarmFragment :
                     is SetAdminAlarmEvent.NavigateToBack -> findNavController().navigateUp()  // 서비스 설정으로 이동
                     is SetAdminAlarmEvent.NavigateToNextAlarmOn -> navigateNext()
                     is SetAdminAlarmEvent.NavigateToNextAlarmOff -> navigateNext()
+                    is SetAdminAlarmEvent.ShowLoading -> showLoading(requireContext())
+                    is SetAdminAlarmEvent.DismissLoading -> dismissLoading()
+                    is SetAdminAlarmEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }
