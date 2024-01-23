@@ -116,7 +116,8 @@
                 android:singleLine="true"
                 android:text="@={vm.id}"
                 android:textColorHint="@color/cm_grey4"
-                app:layout_constraintTop_toBottomOf="@id/tv_id" />
+                app:layout_constraintTop_toBottomOf="@id/tv_id"
+                app:textStateColor="@{vm.uiState.idState}" />
 
             <View
                 android:id="@+id/view_bar"
@@ -125,23 +126,24 @@
                 android:layout_marginTop="3dp"
                 android:background="@color/cm_grey4"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_id" />
+                app:layout_constraintTop_toBottomOf="@id/et_id"
+                app:viewStateColor="@{vm.uiState.idState}" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_id_check"
                 style="@style/TextTiny"
                 android:layout_width="80dp"
                 android:layout_height="24dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/rect_mainfill_nostroke_8radius"
+                android:onClick="@{() -> vm.checkIdDuplication()}"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="5dp"
-                android:layout_marginBottom="10dp"
                 android:text="중복 확인"
                 android:textColor="@color/black"
-                android:onClick="@{() -> vm.checkIdDuplication()}"
-                android:background="@drawable/rect_mainfill_nostroke_8radius"
+                app:layout_constraintBottom_toBottomOf="@id/et_id"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/et_id"
-                app:layout_constraintBottom_toBottomOf="@id/et_id"/>
+                app:layout_constraintTop_toTopOf="@id/et_id" />
 
             <TextView
                 android:id="@+id/tv_id_warning"
@@ -150,6 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/cm_red"
+                app:helperMessage="@{vm.uiState.idState}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view_bar" />
@@ -176,16 +179,17 @@
                 android:singleLine="true"
                 android:text="@={vm.pw}"
                 android:textColorHint="@color/cm_grey4"
-                app:layout_constraintTop_toBottomOf="@id/tv_pw" />
+                app:layout_constraintTop_toBottomOf="@id/tv_pw"
+                app:textStateColor="@{vm.uiState.pwState}" />
 
             <View
                 android:id="@+id/view_bar2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="3dp"
-                android:background="@color/cm_grey4"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_pw" />
+                app:layout_constraintTop_toBottomOf="@id/et_pw"
+                app:viewStateColor="@{vm.uiState.pwState}" />
 
             <TextView
                 android:id="@+id/tv_pw_warning"
@@ -194,6 +198,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/cm_red"
+                app:helperMessage="@{vm.uiState.pwState}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view_bar2" />
@@ -209,7 +214,7 @@
             android:background="@android:color/transparent"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_next_off"
-            android:visibility="@{vm.isNextButtonEnabled? View.INVISIBLE : View.VISIBLE }"
+            android:visibility="@{vm.isDataReady()? View.INVISIBLE : View.VISIBLE }"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -223,10 +228,9 @@
             android:onClick="@{() -> vm.navigateToNext()}"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_next_on"
-            android:visibility="@{vm.isNextButtonEnabled? View.VISIBLE : View.INVISIBLE }"
+            android:visibility="@{vm.isDataReady()? View.VISIBLE : View.INVISIBLE }"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,10 +1,7 @@
 package com.climus.climeet.presentation.ui.intro.signup.admin.idpw
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.climus.climeet.R
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.presentation.ui.InputState
@@ -19,7 +16,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -73,7 +69,7 @@ class SetAdminIdPwViewModel @Inject constructor(
                         idState = InputState.Empty
                     )
                 }
-                pwAvailable.value = false
+                idAvailable.value = false
             }
         }.launchIn(viewModelScope)
     }
@@ -92,7 +88,7 @@ class SetAdminIdPwViewModel @Inject constructor(
                 } else {
                     _uiState.update { state ->
                         state.copy(
-                            pwState = InputState.Success("영문과 숫자 조합 8자리 이상 입력하세요.")
+                            pwState = InputState.Error("영문과 숫자 조합 8자리 이상 입력하세요.")
                         )
                     }
                     pwAvailable.value = false
@@ -118,26 +114,26 @@ class SetAdminIdPwViewModel @Inject constructor(
                         if(it.body){
                             _uiState.update { state ->
                                 state.copy(
-                                    pwState = InputState.Success("사용 가능한 아이디 입니다")
+                                    idState = InputState.Success("사용 가능한 아이디 입니다")
                                 )
                             }
-                            pwAvailable.value = true
+                            idAvailable.value = true
                         } else {
                             _uiState.update { state ->
                                 state.copy(
-                                    pwState = InputState.Error("중복된 아이디입니다.")
+                                    idState = InputState.Error("중복된 아이디입니다.")
                                 )
                             }
-                            pwAvailable.value = false
+                            idAvailable.value = false
                         }
                     }
                     is BaseState.Error -> {
                         _uiState.update { state ->
                             state.copy(
-                                pwState = InputState.Error("중복검사 실패.")
+                                idState = InputState.Error("중복검사 실패.")
                             )
                         }
-                        pwAvailable.value = false
+                        idAvailable.value = false
                     }
                 }
             }
