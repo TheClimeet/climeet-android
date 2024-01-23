@@ -15,7 +15,7 @@ object ClimerSignupForm {
     var nickName = ""
         private set
 
-    private val gymList: List<String> = emptyList()
+    private val gymList: MutableList<Long> = mutableListOf()
     private var imageUrl = ""
     private var level: ClimbingLevel = ClimbingLevel.BEGINNER
     private var way: DiscoveryChannel = DiscoveryChannel.INSTAGRAM_FACEBOOK
@@ -35,6 +35,14 @@ object ClimerSignupForm {
 
     fun setImageUrl(url: String) {
         imageUrl = url
+    }
+
+    fun addFollowGym(id: Long){
+        gymList.add(id)
+    }
+
+    fun removeFollowGym(id: Long){
+        gymList.remove(id)
     }
 
     fun setLevel(climerLevel: Int) {

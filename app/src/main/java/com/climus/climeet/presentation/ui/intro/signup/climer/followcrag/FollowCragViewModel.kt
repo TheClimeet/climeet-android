@@ -3,10 +3,12 @@ package com.climus.climeet.presentation.ui.intro.signup.climer.followcrag
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
-import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
+import com.climus.climeet.presentation.ui.intro.signup.climer.toFollowCrag
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -20,7 +22,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class FollowCragUiState(
-    val searchList: List<FollowCrag> = emptyList()
+    val searchList: List<FollowCrag> = emptyList(),
+    val progressState: Boolean = false,
+    val emptyResultState: Boolean = false
 )
 
 sealed class FollowCragEvent{
@@ -39,6 +43,8 @@ class FollowCragViewModel @Inject constructor(
     private val _event = MutableSharedFlow<FollowCragEvent>()
     val event: SharedFlow<FollowCragEvent> = _event.asSharedFlow()
 
+    private var curJob: Job? = null
+
     val keyword = MutableStateFlow("")
 
     init {
@@ -47,45 +53,60 @@ class FollowCragViewModel @Inject constructor(
 
     private fun observeKeyword() {
         keyword.onEach {
-
-            if(it.isBlank()){
+            if (it.isBlank()) {
                 _uiState.update { state ->
                     state.copy(
-                        searchList = emptyList()
+                        searchList = emptyList(),
+                        emptyResultState = false
                     )
                 }
             } else {
-                // todo 타이핑 할때마다 API 호출
-                repository.searchGym(it).let{ result ->
-                    when(result){
-                        is BaseState.Success -> {
-                            _uiState.update { state ->
+                curJob?.cancel()
 
-                                // todo API 호출 성공시, Response 값 FollowCrag로 변환해서 searchList에 삽입
-                                state.copy(
-                                    searchList = listOf(
-                                        FollowCrag(null, "더클라임 클라이밍 강남점", 70, it,false),
-                                        FollowCrag(null, "더클라임 클라이밍 논현점", 30, it,false),
-                                        FollowCrag(null, "더클라임 클라이밍 마곡점", 120, it,false),
-                                        FollowCrag(null, "더클라임 클라이밍 홍대점", 12, it,false),
-                                        FollowCrag(null, "더클라임 클라이밍 강남점", 70, it,false),
-                                        FollowCrag(null, "더클라임 클라이밍 논현점", 30, it,false),
-                                        FollowCrag(null, "더클라임 클라이밍 마곡점", 120, it,false),
-                                        FollowCrag(null, "더클라임 클라이밍 홍대점", 12, it,false),
-                                        FollowCrag(null, "더클라임 클라이밍 강남점", 70, it,false),
-                                        FollowCrag(null, "더클라임 클라이밍 논현점", 30, it,false),
-                                        FollowCrag(null, "더클라임 클라이밍 마곡점", 120, it,false),
-                                        FollowCrag(null, "더클라임 클라이밍 홍대점", 12, it,false),
-                                        FollowCrag(null, "더현대 홍대점", 126, it,false),
-                                        FollowCrag(null, "가톨릭대 홍대점", 126, it,false)
-                                    )
-                                )
-                            }
-                        }
-                        is BaseState.Error -> _event.emit(FollowCragEvent.ShowToastMessage(result.msg))
-                    }
+                _uiState.update { state ->
+                    state.copy(
+                        progressState = true,
+                        emptyResultState = false
+                    )
                 }
 
+                curJob = viewModelScope.launch {
+                    delay(500)
+                    repository.searchGym(it).let { result ->
+                        when (result) {
+                            is BaseState.Success -> {
+                                if (result.body.isNotEmpty()) {
+                                    _uiState.update { state ->
+                                        state.copy(
+                                            searchList = result.body.map { item ->
+                                                item.toFollowCrag(it)
+                                            },
+                                            progressState = false
+                                        )
+                                    }
+                                } else {
+                                    _uiState.update { state ->
+                                        state.copy(
+                                            searchList = emptyList(),
+                                            progressState = false,
+                                            emptyResultState = true
+                                        )
+                                    }
+                                }
+                            }
+
+                            is BaseState.Error -> {
+                                _uiState.update { state ->
+                                    state.copy(
+                                        progressState = false,
+                                        emptyResultState = true
+                                    )
+                                }
+                                _event.emit(FollowCragEvent.ShowToastMessage(result.msg))
+                            }
+                        }
+                    }
+                }
             }
         }.launchIn(viewModelScope)
     }

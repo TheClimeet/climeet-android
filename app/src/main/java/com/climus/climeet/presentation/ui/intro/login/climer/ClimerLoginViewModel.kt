@@ -35,11 +35,6 @@ class ClimerLoginViewModel @Inject constructor(
 
     fun login(type: String, token: String) {
 
-        //todo 
-        // - login 서버 통신
-        // - 성공시 -> MainActivity 로 이동
-        // - 실패시 -> Climer 회원가입 Flow 첫번째인 SetClimerNickFragment 로 이동
-
         viewModelScope.launch {
             repository.climerLogin(type, token).let{
                 when(it){
@@ -51,11 +46,12 @@ class ClimerLoginViewModel @Inject constructor(
                             .putString(Constants.X_MODE, "CLIMER")
                             .apply()
 
-                        _event.emit(ClimerLoginEvent.GoToMainActivity)
+                        _event.emit(ClimerLoginEvent.NavigateToSignUp(type, token))
+//                        _event.emit(ClimerLoginEvent.GoToMainActivity)
                     }
 
                     is BaseState.Error -> {
-
+                        // todo
 
                         _event.emit(ClimerLoginEvent.NavigateToSignUp(type, token))
                     }

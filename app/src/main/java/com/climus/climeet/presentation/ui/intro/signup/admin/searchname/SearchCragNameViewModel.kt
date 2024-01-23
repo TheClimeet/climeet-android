@@ -31,13 +31,12 @@ sealed class SearchCragNameEvent {
     data object NavigateToBack : SearchCragNameEvent()
     data class NavigateToSetCragName(val id: Long, val name: String, val imgUrl: String) :
         SearchCragNameEvent()
-
     data class ShowToastMessage(val msg: String) : SearchCragNameEvent()
 }
 
 @HiltViewModel
 class SearchCragNameViewModel @Inject constructor(
-    private val mainRepository: MainRepository
+    private val repository: MainRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchCragNameUiState())
@@ -75,7 +74,7 @@ class SearchCragNameViewModel @Inject constructor(
 
                 curJob = viewModelScope.launch {
                     delay(500)
-                    mainRepository.searchGym(it).let { result ->
+                    repository.searchGym(it).let { result ->
                         when (result) {
                             is BaseState.Success -> {
                                 if (result.body.isNotEmpty()) {

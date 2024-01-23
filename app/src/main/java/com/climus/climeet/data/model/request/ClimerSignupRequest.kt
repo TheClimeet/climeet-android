@@ -5,7 +5,7 @@ data class ClimerSignupRequest(
     val climbingLevel: ClimbingLevel,
     val discoveryChannel: DiscoveryChannel,
     val profileImgUrl: String?,
-    val gymFollowList: List<String>,
+    val gymFollowList: List<Long>,
     val isAllowFollowNotification: Boolean,
     val isAllowLikeNotification: Boolean,
     val isAllowCommentNotification: Boolean,
