@@ -115,7 +115,6 @@
                 android:hint="아이디를 입력하세요"
                 android:singleLine="true"
                 android:text="@={vm.id}"
-                app:textColorResource="@{vm.warningIdColor}"
                 android:textColorHint="@color/cm_grey4"
                 app:layout_constraintTop_toBottomOf="@id/tv_id" />
 
@@ -150,7 +149,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="@={vm.warningTextId}"
                 android:textColor="@color/cm_red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -177,7 +175,6 @@
                 android:hint="비밀번호 입력하기"
                 android:singleLine="true"
                 android:text="@={vm.pw}"
-                app:textColorResource="@{vm.warningPwColor}"
                 android:textColorHint="@color/cm_grey4"
                 app:layout_constraintTop_toBottomOf="@id/tv_pw" />
 
@@ -196,7 +193,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="@={vm.warningTextPw}"
                 android:textColor="@color/cm_red"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

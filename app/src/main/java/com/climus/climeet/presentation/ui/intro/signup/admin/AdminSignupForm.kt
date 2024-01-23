@@ -15,17 +15,6 @@ object AdminSignupForm {
 
     private var businessRegistrationUri: Uri? = null
 
-    fun setCragId(id: Long){
-        cragId = id
-    }
-
-    fun setCragName(name: String){
-        cragName = name
-    }
-
-    fun setBusinessRegistrationUri(uri: Uri){
-        businessRegistrationUri = uri
-    }
     var id = ""
         private set
     var pw = ""
@@ -42,6 +31,18 @@ object AdminSignupForm {
         private set
     var alarm = false
         private set
+
+    fun setCragId(id: Long){
+        cragId = id
+    }
+
+    fun setCragName(name: String){
+        cragName = name
+    }
+
+    fun setBusinessRegistrationUri(uri: Uri){
+        businessRegistrationUri = uri
+    }
 
     fun setId(data: String){
         id = data

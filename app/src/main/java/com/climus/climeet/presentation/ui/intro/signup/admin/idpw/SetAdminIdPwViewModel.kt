@@ -5,15 +5,24 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.R
+import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.repository.IntroRepository
+import com.climus.climeet.presentation.ui.InputState
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,63 +31,34 @@ sealed class SetAdminIdPwEvent{
     data object NavigateToNext : SetAdminIdPwEvent()
 }
 
+data class SetAdminIdPwUiState(
+    val idState: InputState = InputState.Empty,
+    val pwState: InputState = InputState.Empty
+)
+
 @HiltViewModel
-class SetAdminIdPwViewModel @Inject constructor() : ViewModel() {
+class SetAdminIdPwViewModel @Inject constructor(
+    private val repository: IntroRepository
+) : ViewModel() {
 
     private val _event = MutableSharedFlow<SetAdminIdPwEvent>()
     val event: SharedFlow<SetAdminIdPwEvent> = _event.asSharedFlow()
 
-    val warningTextId = MutableStateFlow("")
-    val warningTextPw = MutableStateFlow("")
-    val idViewColor = MutableStateFlow(R.color.cm_grey4)
-    val pwViewColor = MutableStateFlow(R.color.cm_grey4)
-
-    val warningIdColor = warningTextId.map { text ->
-        if (text != "") R.color.cm_red else R.color.white
-    }.asLiveData()
-
-    val warningPwColor = warningTextPw.map { text ->
-        if (text != "") R.color.cm_red else R.color.white
-    }.asLiveData()
+    private val _uiState = MutableStateFlow(SetAdminIdPwUiState())
+    val uiState: StateFlow<SetAdminIdPwUiState> = _uiState.asStateFlow()
 
     val id = MutableStateFlow("")
     val pw = MutableStateFlow("")
-    val isNextButtonEnabled = MutableStateFlow(false)
-    var idValid = MutableStateFlow(false)
+    private val idAvailable = MutableStateFlow(false)
+    private val pwAvailable = MutableStateFlow(false)
 
-    // 버튼 상태 변화
-    private fun updateNextButtonState() {
-        isNextButtonEnabled.value = idValid.value && isPasswordValid(pw.value)
-    }
-
-    // 아이디 유효성 검사 -> 버튼 누를 때 호출
-    fun checkIdDuplication() {
-        viewModelScope.launch {
-            if (!isIdValid(id.value)) {
-                warningTextId.value = "중복된 아이디 입니다."
-                idViewColor.value = R.color.cm_grey4
-            } else {
-                warningTextId.value = ""
-                idViewColor.value = R.color.cm_main
-            }
-            updateNextButtonState()
-        }
-    }
-    fun isIdValid(id: String): Boolean {
-        // todo : API 호출해 아이디 중복 처리 (동작 확인차 임시로 값 넣음)
-        val result = id != "test"
-
-        idValid.value = result
-        Log.d("admin", "[isIdValid] idValid = ${idValid.value}")
-
-        return result
-    }
-
-    // 비밀번호 유효성 검사 ( @!%*?.&의 기호도 허용 )
-    private fun isPasswordValid(pw: String): Boolean {
-        val passwordPattern = Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@\$@!%*?.&]{8,}\$")
-        return passwordPattern.matches(pw)
-    }
+    val isDataReady = combine(idAvailable, pwAvailable){ id, pw ->
+        id && pw
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(),
+        false
+    )
 
     init {
         idObserve()
@@ -87,41 +67,87 @@ class SetAdminIdPwViewModel @Inject constructor() : ViewModel() {
 
     private fun idObserve() {
         id.onEach {
-            idValid.value = false
-            //Log.d("admin", "[idObserve] idValid = ${idValid.value}")
-
-            if (id.value.isBlank()) {
-                warningTextId.value = ""
-                idViewColor.value = R.color.cm_grey4
-            } else {
-                if (!idValid.value) {
-                    idViewColor.value = R.color.cm_grey4
-                } else{
-                    warningTextId.value = ""
-                    idViewColor.value = R.color.cm_main
+            if(it.isNotBlank()){
+                _uiState.update { state ->
+                    state.copy(
+                        idState = InputState.Empty
+                    )
                 }
+                pwAvailable.value = false
             }
-            updateNextButtonState()
         }.launchIn(viewModelScope)
     }
 
     private fun pwObserve() {
         pw.onEach {
-            if (pw.value.isBlank()) {
-                warningTextPw.value = ""
-                pwViewColor.value = R.color.cm_grey4
-            } else {
-                if (!isPasswordValid(pw.value)) {
-                    warningTextPw.value = "영문과 숫자 조합 8자리 이상 입력하세요."
-                    pwViewColor.value = R.color.cm_grey4
 
+            if(it.isNotBlank()) {
+                if (isPasswordValid(pw.value)) {
+                    _uiState.update { state ->
+                        state.copy(
+                            pwState = InputState.Success("적합한 비밀번호 입니다")
+                        )
+                    }
+                    pwAvailable.value = true
                 } else {
-                    warningTextPw.value = ""
-                    pwViewColor.value = R.color.cm_main
+                    _uiState.update { state ->
+                        state.copy(
+                            pwState = InputState.Success("영문과 숫자 조합 8자리 이상 입력하세요.")
+                        )
+                    }
+                    pwAvailable.value = false
+                }
+            } else {
+                _uiState.update { state ->
+                    state.copy(
+                        pwState = InputState.Empty
+                    )
+                }
+                pwAvailable.value = false
+            }
+
+        }.launchIn(viewModelScope)
+    }
+
+    // 아이디 유효성 검사 -> 버튼 누를 때 호출
+    fun checkIdDuplication() {
+        viewModelScope.launch {
+            repository.managerIdCheck(id.value).let{
+                when(it){
+                    is BaseState.Success -> {
+                        if(it.body){
+                            _uiState.update { state ->
+                                state.copy(
+                                    pwState = InputState.Success("사용 가능한 아이디 입니다")
+                                )
+                            }
+                            pwAvailable.value = true
+                        } else {
+                            _uiState.update { state ->
+                                state.copy(
+                                    pwState = InputState.Error("중복된 아이디입니다.")
+                                )
+                            }
+                            pwAvailable.value = false
+                        }
+                    }
+                    is BaseState.Error -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                pwState = InputState.Error("중복검사 실패.")
+                            )
+                        }
+                        pwAvailable.value = false
+                    }
                 }
             }
-            updateNextButtonState()
-        }.launchIn(viewModelScope)
+        }
+    }
+
+    // 비밀번호 유효성 검사 ( @!%*?.&의 기호도 허용 )
+    private fun isPasswordValid(pw: String): Boolean {
+        val passwordPattern = Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@\$@!%*?.&]{8,}\$")
+        return passwordPattern.matches(pw)
     }
 
     // 사업자 등록증 설정으로 이동
@@ -133,20 +159,10 @@ class SetAdminIdPwViewModel @Inject constructor() : ViewModel() {
 
     // 개인정보 설정으로 이동
     fun navigateToNext(){
-        val nowId = id.value
-        val nowPw = pw.value
-
-        if (nowId.isNotBlank() && nowPw.isNotBlank() && isNextButtonEnabled.value) {
-            // 아이디 비번 저장
-            AdminSignupForm.setId(nowId)
-            AdminSignupForm.setPw(nowPw)
-
-            Log.d("admin", "아이디 비번 : ${AdminSignupForm.id}, ${AdminSignupForm.pw}")
-
-            // 화면 전환
-            viewModelScope.launch {
-                _event.emit(SetAdminIdPwEvent.NavigateToNext)
-            }
+        viewModelScope.launch {
+            AdminSignupForm.setId(id.value)
+            AdminSignupForm.setPw(pw.value)
+            _event.emit(SetAdminIdPwEvent.NavigateToNext)
         }
     }
 }
