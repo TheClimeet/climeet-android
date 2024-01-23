@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import com.climus.climeet.data.repository.GlobalRepository
+import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
 import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.File
 import javax.inject.Inject
 
 sealed class SetClimerProfileEvent {
@@ -30,7 +29,7 @@ sealed class SetClimerProfileEvent {
 
 @HiltViewModel
 class SetClimerProfileViewModel @Inject constructor(
-    private val repository: GlobalRepository
+    private val repository: MainRepository
 ) : ViewModel() {
 
     private val _event = MutableSharedFlow<SetClimerProfileEvent>()

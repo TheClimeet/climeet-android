@@ -1,13 +1,11 @@
 package com.climus.climeet.app.di
 
-import com.climus.climeet.data.remote.GlobalApi
-import com.climus.climeet.data.repository.GlobalRepository
-import com.climus.climeet.data.repository.GlobalRepositoryImpl
+import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.data.repository.MainRepositoryImpl
 import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.data.repository.IntroRepositoryImpl
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -22,7 +20,7 @@ abstract class RepositoryModule {
 
     @Singleton
     @Binds
-    abstract fun bindGlobalRepository(globalRepositoryImpl: GlobalRepositoryImpl): GlobalRepository
+    abstract fun bindMainRepository(globalRepositoryImpl: MainRepositoryImpl): MainRepository
 
 
 }

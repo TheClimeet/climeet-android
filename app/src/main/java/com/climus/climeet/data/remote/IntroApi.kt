@@ -10,11 +10,13 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface IntroApi {
+
     @POST("/climber/login")
     suspend fun climerLogin(
         @Query("provider") provider: String,
         @Header("Authorization") accessToken: String,
         @Body signUpRequest: ClimerSignupRequest
     ): Response<ClimerSignupResponse>
+
 
 }
