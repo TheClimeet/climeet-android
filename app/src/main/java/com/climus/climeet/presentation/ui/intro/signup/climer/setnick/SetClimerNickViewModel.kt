@@ -17,12 +17,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 sealed class SetClimerNickEvent {
-
     data object NavigateToBack : SetClimerNickEvent()
-
     data object NavigateToSetProfile : SetClimerNickEvent()
-
-
 }
 
 @HiltViewModel
