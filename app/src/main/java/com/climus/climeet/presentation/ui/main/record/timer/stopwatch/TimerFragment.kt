@@ -2,11 +2,13 @@ package com.climus.climeet.presentation.ui.main.record.timer.stopwatch
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentTimerBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.customview.NoticePopup
 import com.climus.climeet.presentation.ui.main.record.model.RecordCragData
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.CragSelectBottomFragment
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.CragSelectionListener
@@ -39,9 +41,14 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
         // 스톱워치 시작
         binding.ivStart.setOnClickListener {
-            onStartClickListener?.onStartClick()    // Indicator 보이기 설정
+            if (binding.tvTitle.text == getString(R.string.timer_crag_set_inform)) {
+                val anchorView = view.findViewById<TextView>(R.id.tv_complete)
+                NoticePopup.make(anchorView, "운동 전, 암장을 먼저 선택해주세요.").show()
+            } else {
+                onStartClickListener?.onStartClick()    // Indicator 보이기 설정
 
-            viewMode(ViewMode.START)
+                viewMode(ViewMode.START)
+            }
         }
         // 스톱워치 일시정지
         binding.ivPause.setOnClickListener {
