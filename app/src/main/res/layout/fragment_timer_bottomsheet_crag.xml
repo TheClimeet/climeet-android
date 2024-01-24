@@ -15,8 +15,7 @@
         android:id="@+id/layout_bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="-20dp"
-        android:minHeight="500dp"
+        android:minHeight="550dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +23,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:minHeight="550dp">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guide"
@@ -107,7 +107,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_search_crag"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constrainedHeight="true"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="15dp"
                 android:visibility="visible"
@@ -115,6 +116,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_crag_num"
+                app:layout_constraintBottom_toBottomOf="parent"
                 tools:listitem="@layout/item_crag_search_timer" />
 
             <ProgressBar
