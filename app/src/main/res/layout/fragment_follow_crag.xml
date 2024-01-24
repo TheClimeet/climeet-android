@@ -33,8 +33,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:onClick="@{() -> vm.navigateToBack()}"
                 android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.navigateToBack()}"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_back"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,17 +53,12 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:id="@+id/climbing_goal_underline"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/tool_guide"
             android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="-20dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="-20dp"
-            android:background="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/constraintLayout1" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.085" />
 
         <TextView
             android:id="@+id/tv_follow_crags"
@@ -76,7 +71,7 @@
             android:textColor="@color/white"
             android:textSize="28sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/climbing_goal_underline" />
+            app:layout_constraintTop_toBottomOf="@id/tool_guide" />
 
         <EditText
             android:id="@+id/et_serach_crags"
@@ -92,67 +87,11 @@
             android:paddingHorizontal="12dp"
             android:paddingVertical="8dp"
             android:text="@={vm.keyword}"
-            android:textCursorDrawable="@drawable/ic_main_cursor"
             android:textColorHint="@color/cm_grey3"
+            android:textCursorDrawable="@drawable/ic_main_cursor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_follow_crags" />
-
-        <!--        <Spinner-->
-        <!--            android:id="@+id/spinner"-->
-        <!--            style="@style/TextLargeBold"-->
-        <!--            android:layout_width="120dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_gravity="center"-->
-        <!--            android:layout_marginTop="10dp"-->
-        <!--            android:layout_marginRight="20dp"-->
-        <!--            android:background="@drawable/spinner_custom"-->
-        <!--            android:gravity="center"-->
-        <!--            android:overlapAnchor="false"-->
-        <!--            android:popupBackground="#DEDEDE"-->
-        <!--            android:popupElevation="10dp"-->
-        <!--            android:textColor="@color/white"-->
-        <!--            android:textSize="14sp"-->
-        <!--            android:theme="@style/SpinnerTheme"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@+id/et_serach_crags" />-->
-
-        <!--        <ImageView-->
-        <!--            android:layout_width="30dp"-->
-        <!--            android:layout_height="30dp"-->
-        <!--            android:layout_marginRight="5dp"-->
-        <!--            android:src="@drawable/ic_dropdown"-->
-        <!--            app:layout_constraintBottom_toBottomOf="@+id/spinner"-->
-        <!--            app:layout_constraintEnd_toEndOf="@+id/spinner"-->
-        <!--            app:layout_constraintTop_toTopOf="@+id/spinner" />-->
-      
-<!--        <Spinner-->
-<!--            android:id="@+id/spinner"-->
-<!--            style="@style/TextLargeBold"-->
-<!--            android:layout_width="120dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginRight="20dp"-->
-<!--            android:background="@drawable/spinner_custom"-->
-<!--            android:gravity="center"-->
-<!--            android:overlapAnchor="false"-->
-<!--            android:popupBackground="#DEDEDE"-->
-<!--            android:popupElevation="10dp"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:textSize="14sp"-->
-<!--            android:theme="@style/SpinnerTheme"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/et_serach_crags" />-->
-
-<!--        <ImageView-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_marginRight="5dp"-->
-<!--            android:src="@drawable/ic_dropdown"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/spinner"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/spinner"-->
-<!--            app:layout_constraintTop_toTopOf="@+id/spinner" />-->
 
         <ImageButton
             android:id="@+id/btn_follow_crag_delete"
@@ -175,7 +114,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="20dp"
-            android:visibility="invisible"
+            android:visibility="@{vm.uiState.emptyResultState? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toTopOf="@+id/btn_next_valid"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -198,22 +137,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="검색결과가 없어요.\n다시 한 번 검색해주세요."
                 android:gravity="center"
+                android:text="검색결과가 없어요.\n다시 한 번 검색해주세요."
                 app:layout_constraintEnd_toEndOf="@+id/iv_question"
                 app:layout_constraintStart_toStartOf="@+id/iv_question"
                 app:layout_constraintTop_toBottomOf="@+id/iv_question" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ProgressBar
-            android:id="@+id/pb_loading"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/btn_next_valid"
+            android:id="@+id/progress"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            android:visibility="@{vm.uiState.progressState? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_serach_crags"/>
+            app:layout_constraintTop_toBottomOf="@id/et_serach_crags" />
 
         <ImageView
             android:id="@+id/btn_next_valid"
@@ -243,6 +182,8 @@
             android:layout_height="0dp"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="20dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/btn_next_valid"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -2,6 +2,13 @@ package com.climus.climeet.presentation.ui.intro.login.admin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.app.App
+import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.request.ManagerLoginRequest
+import com.climus.climeet.data.repository.IntroRepository
+import com.climus.climeet.presentation.util.Constants.X_ACCESS_TOKEN
+import com.climus.climeet.presentation.util.Constants.X_MODE
+import com.climus.climeet.presentation.util.Constants.X_REFRESH_TOKEN
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +29,9 @@ sealed class AdminLoginEvent {
 }
 
 @HiltViewModel
-class AdminLoginViewModel @Inject constructor() : ViewModel() {
+class AdminLoginViewModel @Inject constructor(
+    private val repository: IntroRepository
+) : ViewModel() {
 
     private val _event = MutableSharedFlow<AdminLoginEvent>()
     val event: SharedFlow<AdminLoginEvent> = _event.asSharedFlow()
@@ -68,11 +77,37 @@ class AdminLoginViewModel @Inject constructor() : ViewModel() {
     }
 
     fun login() {
-        //todo
-        // - login 서버 통신
-        // - 성공시 -> MainActivity 로 이동
-        // - 실패시 -> Admin 회원가입 Flow 첫번째인 SetCragNameFragment 로 이동
-        warningText.value = "계정 정보를 다시 확인해주세요."
+
+        viewModelScope.launch {
+            repository.managerLogin(ManagerLoginRequest(id.value, pw.value)).let{
+                when(it){
+                    is BaseState.Success -> {
+                        
+                        // todo X_MODE 는 ADMIN / CLIMER 로 나뉨
+                        
+                        App.sharedPreferences.edit()
+                            .putString(X_ACCESS_TOKEN, it.body.accessToken)
+                            .putString(X_REFRESH_TOKEN, it.body.refreshToken)
+                            .putString(X_MODE, "ADMIN")
+                            .apply()
+
+                        _event.emit(AdminLoginEvent.GoToMainActivity)
+                    }
+
+                    is BaseState.Error -> {
+                        when(it.code){
+                            "MEMBER_002" -> {
+                                warningText.value = "계정 정보를 다시 확인해주세요."
+                            }
+                            else -> {
+                                _event.emit(AdminLoginEvent.ShowToastMessage(it.msg))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
 

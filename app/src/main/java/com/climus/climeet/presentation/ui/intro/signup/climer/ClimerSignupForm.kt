@@ -1,18 +1,10 @@
 package com.climus.climeet.presentation.ui.intro.signup.climer
 
-import android.net.Uri
 import com.climus.climeet.data.model.request.ClimbingLevel
 import com.climus.climeet.data.model.request.ClimerSignupRequest
 import com.climus.climeet.data.model.request.DiscoveryChannel
-import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
 
 object ClimerSignupForm {
-
-    //todo
-    // - 회원가입시, 모든 데이터를 임시 저장후, 최종단계에서 한번의 API 통신으로 회원가입
-    // - 회원가입 데이터를 임시 저장하기 위한 싱글톤 Object
-
-    val gymList: List<String> = emptyList()
 
     var token = ""
         private set
@@ -23,20 +15,14 @@ object ClimerSignupForm {
     var nickName = ""
         private set
 
-    var imageUri = ""
-        private set
-
-    var level: ClimbingLevel = ClimbingLevel.BEGINNER
-        private set
-
-    var way: DiscoveryChannel = DiscoveryChannel.INSTAGRAM_FACEBOOK
-        private set
-
-    var noticePermission: Boolean = false
-        private set
+    private val gymList: MutableList<Long> = mutableListOf()
+    private var imageUrl = ""
+    private var level: ClimbingLevel = ClimbingLevel.BEGINNER
+    private var way: DiscoveryChannel = DiscoveryChannel.INSTAGRAM_FACEBOOK
+    private var noticePermission: Boolean = false
 
     fun setToken(data: String) {
-        token = data
+        token = "Bearer $data"
     }
 
     fun setSocialType(data: String) {
@@ -47,12 +33,16 @@ object ClimerSignupForm {
         nickName = data
     }
 
-    fun setImageUri(uri: String?) {
-        imageUri = uri?.let{
-            uri
-        } ?: run{
-            ""
-        }
+    fun setImageUrl(url: String) {
+        imageUrl = url
+    }
+
+    fun addFollowGym(id: Long){
+        gymList.add(id)
+    }
+
+    fun removeFollowGym(id: Long){
+        gymList.remove(id)
     }
 
     fun setLevel(climerLevel: Int) {
@@ -84,12 +74,12 @@ object ClimerSignupForm {
             nickName = this.nickName,
             climbingLevel = this.level,
             discoveryChannel = this.way,
-            profileImgUrl = this.imageUri,
+            profileImgUrl = this.imageUrl,
             gymFollowList = this.gymList,
             isAllowFollowNotification = this.noticePermission,
             isAllowLikeNotification = this.noticePermission,
             isAllowCommentNotification = this.noticePermission,
-            isAllowAdNotification = true
+            isAllowAdNotification = this.noticePermission,
         )
     }
 }

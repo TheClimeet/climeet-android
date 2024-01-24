@@ -11,17 +11,23 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetAdminBackgroundBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroViewModel
-import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
+import com.climus.climeet.presentation.ui.intro.UrlType
 
-class SetAdminBackgroundFragment : BaseFragment<FragmentSetAdminBackgroundBinding>(R.layout.fragment_set_admin_background) {
+class SetAdminBackgroundFragment :
+    BaseFragment<FragmentSetAdminBackgroundBinding>(R.layout.fragment_set_admin_background) {
 
     private val parentViewModel: IntroViewModel by activityViewModels()
     private val viewModel: SetAdminBackgroundViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        parentViewModel.adminSignUpProgress(5)
         binding.vm = viewModel
-        binding.pvm = parentViewModel
+
+        binding.ivImgIcon.setOnClickListener {
+            parentViewModel.goToGallery(UrlType.ADMIN_BACKGROUND)
+        }
 
         initEventObserve()
         initParentImageObserve()
@@ -51,12 +57,12 @@ class SetAdminBackgroundFragment : BaseFragment<FragmentSetAdminBackgroundBindin
             .load(uri)
             .placeholder(R.drawable.ic_add_img) // 기본 이미지
             .into(binding.ivImgIcon)
-        AdminSignupForm.setBackgroundImg(uri)
     }
 
     // 서비스 설정으로 이동
-    private fun navigateNext(){
-        val action = SetAdminBackgroundFragmentDirections.actionSetAdminBackgroundFragmentToSetAdminServiceFragment()
+    private fun navigateNext() {
+        val action =
+            SetAdminBackgroundFragmentDirections.actionSetAdminBackgroundFragmentToSetAdminServiceFragment()
         findNavController().navigate(action)
     }
 }

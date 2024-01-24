@@ -2,9 +2,6 @@ package com.climus.climeet.app.di
 
 import com.climus.climeet.BuildConfig
 import com.climus.climeet.config.AccessTokenInterceptor
-import com.climus.climeet.data.remote.GlobalApi
-import com.climus.climeet.data.remote.IntroApi
-import com.climus.climeet.data.repository.GlobalRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +15,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
+object NetworkModule {
 
     @Singleton
     @Provides

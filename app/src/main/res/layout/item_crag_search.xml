@@ -52,7 +52,6 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rect_mainfill_nostroke_10radius"
             android:minHeight="0dp"
-            android:onClick="@{() -> item.onClickListener.invoke(item.id)}"
             android:paddingHorizontal="20dp"
             android:paddingVertical="4dp"
             android:text="등록하기"
