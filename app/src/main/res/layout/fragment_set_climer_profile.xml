@@ -6,10 +6,6 @@
     <data>
 
         <variable
-            name="pvm"
-            type="com.climus.climeet.presentation.ui.intro.IntroViewModel" />
-
-        <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.intro.signup.climer.setprofile.SetClimerProfileViewModel" />
     </data>
@@ -53,17 +49,12 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:id="@+id/view"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/tool_guide"
             android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="-20dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="-20dp"
-            android:background="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.085" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout2"
@@ -73,7 +64,7 @@
             android:paddingHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view">
+            app:layout_constraintTop_toBottomOf="@id/tool_guide">
 
             <TextView
                 android:id="@+id/tv_explain_large"
@@ -106,9 +97,7 @@
             android:layout_marginTop="60dp"
             android:adjustViewBounds="true"
             android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
-            android:onClick="@{()->pvm.goToGallery()}"
             android:scaleType="fitXY"
-            app:imageUri="@{vm.imageUri}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout2" />

@@ -50,17 +50,12 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:id="@+id/view"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/tool_guide"
             android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="-20dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="-20dp"
-            android:background="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.085" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout2"
@@ -70,7 +65,7 @@
             android:paddingHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view">
+            app:layout_constraintTop_toBottomOf="@id/tool_guide">
 
             <TextView
                 android:id="@+id/tv_explain_large"
@@ -95,7 +90,7 @@
 
             <EditText
                 android:id="@+id/et_nick"
-                style="@style/TextRegular"
+                style="@style/TextSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
@@ -116,6 +111,21 @@
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/ic_text_error"
                 android:visibility="@{vm.isErrorVisible ? View.VISIBLE : View.INVISIBLE}"
+                app:layout_constraintBottom_toBottomOf="@id/et_nick"
+                app:layout_constraintEnd_toEndOf="@id/et_nick"
+                app:layout_constraintTop_toTopOf="@id/et_nick" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_id_check"
+                style="@style/TextTiny"
+                android:layout_width="70dp"
+                android:layout_height="0dp"
+                android:layout_marginVertical="6dp"
+                android:layout_marginEnd="8dp"
+                android:enabled="@{vm.nick.empty? false : true}"
+                android:background="@drawable/selector_duplicate_btn"
+                android:text="중복 확인"
+                android:textColor="@color/selector_duplicate_btn_text"
                 app:layout_constraintBottom_toBottomOf="@id/et_nick"
                 app:layout_constraintEnd_toEndOf="@id/et_nick"
                 app:layout_constraintTop_toTopOf="@id/et_nick" />

@@ -1,6 +1,5 @@
 package com.climus.climeet.presentation.ui.intro.signup.admin.personal
 
-import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -19,7 +18,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed class SetAdminPersonalEvent{
+sealed class SetAdminPersonalEvent {
     data object NavigateToBack : SetAdminPersonalEvent()
     data object NavigateToNext : SetAdminPersonalEvent()
 }
@@ -55,7 +54,8 @@ class SetAdminPersonalViewModel @Inject constructor() : ViewModel() {
     // 버튼 상태 변화
     fun updateNextButtonState() {
         // Log.d("admin", "button valid : " + (isNameValid(name.value) && isPhoneValid(phone.value) && isEmailValid(email.value)))
-        isNextButtonEnabled.value = isNameValid(name.value) && isPhoneValid(phone.value) && isEmailValid(email.value)
+        isNextButtonEnabled.value =
+            isNameValid(name.value) && isPhoneValid(phone.value) && isEmailValid(email.value)
     }
 
     // 유효성 검사
@@ -88,7 +88,7 @@ class SetAdminPersonalViewModel @Inject constructor() : ViewModel() {
                 if (!isNameValid(name.value)) {
                     warningTextName.value = "이름을 정확히 입력해주세요."
                     nameViewColor.value = R.color.cm_grey4
-                } else{
+                } else {
                     warningTextName.value = ""
                     nameViewColor.value = R.color.cm_main
                 }
@@ -106,7 +106,7 @@ class SetAdminPersonalViewModel @Inject constructor() : ViewModel() {
                 if (!isPhoneValid(phone.value)) {
                     warningTextPhone.value = "전화번호 형식이 아닙니다."
                     phoneViewColor.value = R.color.cm_grey4
-                } else{
+                } else {
                     warningTextPhone.value = ""
                     phoneViewColor.value = R.color.cm_main
                 }
@@ -124,7 +124,7 @@ class SetAdminPersonalViewModel @Inject constructor() : ViewModel() {
                 if (!isEmailValid(email.value)) {
                     warningTextEmail.value = "이메일 형식이 아닙니다."
                     emailViewColor.value = R.color.cm_grey4
-                } else{
+                } else {
                     warningTextEmail.value = ""
                     emailViewColor.value = R.color.cm_main
                 }
@@ -147,13 +147,11 @@ class SetAdminPersonalViewModel @Inject constructor() : ViewModel() {
         val nowPhone = phone.value
         val nowEmail = email.value
 
-        if (nowName.isNotBlank() && nowPhone.isNotBlank() &&nowEmail.isNotBlank() && isNextButtonEnabled.value){
+        if (nowName.isNotBlank() && nowPhone.isNotBlank() && nowEmail.isNotBlank() && isNextButtonEnabled.value) {
             // 이름, 전화번호, 이메일 저장
             AdminSignupForm.setName(nowName)
             AdminSignupForm.setPhone(nowPhone)
             AdminSignupForm.setEmail(nowEmail)
-
-            Log.d("admin", "이름 전화번호 이메일 : ${AdminSignupForm.name}, ${AdminSignupForm.phoneNum}, ${AdminSignupForm.email}")
 
             // 화면 전환
             viewModelScope.launch {

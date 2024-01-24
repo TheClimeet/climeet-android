@@ -42,6 +42,10 @@ class SearchCragNameViewHolder(private val binding: ItemCragSearchBinding) :
     fun bind(item: SearchCragUiData, keyword: String) {
         binding.keyword = keyword
         binding.item = item
+
+        binding.btnRegister.setOnClickListener {
+            item.onClickListener(item.id, item.name, item.imgUrl)
+        }
     }
 
 }

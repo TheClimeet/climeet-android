@@ -2,24 +2,24 @@ package com.climus.climeet.presentation.ui.intro.signup.admin.service
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetAdminServiceBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.intro.IntroViewModel
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.ServiceUiData
 
 class SetAdminServiceFragment : BaseFragment<FragmentSetAdminServiceBinding>(R.layout.fragment_set_admin_service),
     OnServiceClickListener {
 
+    private val parentViewModel: IntroViewModel by activityViewModels()
     private val viewModel: SetAdminServiceViewModel by viewModels()
     private lateinit var serviceRVAdapter: ServiceRVAdapter
 
-    // todo : API 호출해 서비스 리스트 저장하기
-
-    // 임시로 데이터 생성
-    val tempData = listOf(
+    private val serviceList = listOf(
         ServiceUiData(1, "샤워 시설"),
         ServiceUiData(2, "샤워 용품"),
         ServiceUiData(3, "수건 제공"),
@@ -33,12 +33,11 @@ class SetAdminServiceFragment : BaseFragment<FragmentSetAdminServiceBinding>(R.l
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 데이터 바인딩 변수에 뷰모델 연결
+        parentViewModel.adminSignUpProgress(6)
         binding.vm = viewModel
 
         // 초기 데이터를 뷰 모델에 설정
-        // todo : tempData 대신 API에서 받아온 데이터로 뷰 모델 설정
-        viewModel.setInitialServices(tempData)
+        viewModel.setInitialServices(serviceList)
 
         initRecyclerview()
         initEventObserve()
@@ -62,8 +61,7 @@ class SetAdminServiceFragment : BaseFragment<FragmentSetAdminServiceBinding>(R.l
 
     // 서비스 RecyclerView
     private fun initRecyclerview() {
-        // todo : tempData 대신 API에서 받아온 값 넘겨주기
-        serviceRVAdapter = ServiceRVAdapter(tempData, this)
+        serviceRVAdapter = ServiceRVAdapter(serviceList, this)
         binding.rvService.layoutManager = GridLayoutManager(context, 2)
         binding.rvService.adapter = serviceRVAdapter
     }
