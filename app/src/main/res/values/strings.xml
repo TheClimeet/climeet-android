@@ -18,7 +18,7 @@
     <string name="set_admin_alarm_explain_large">관리자님,\n우리 조금 더 자주 만나요! </string>
     <string name="set_admin_alarm_explain_regular">나의 완등을 기록할수록 더 많은 정상을 만날 수 있어요.\n언제든지 [MY > 설정 > 알림]에서 변경할 수 있어요</string>
 
-    <string name="set_admin_complete_medium">감사합니다!\n일단 계정이 생성되면 연락드릴게요.</string>
+    <string name="set_admin_complete_medium">감사합니다!\n암장 계정이 생성되면 연락드릴게요.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

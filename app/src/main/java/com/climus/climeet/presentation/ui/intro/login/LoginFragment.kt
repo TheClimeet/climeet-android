@@ -24,7 +24,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
     private fun setBtnListener() {
         binding.btnClimerLogin.setOnClickListener {
             binding.btnAdminLogin.isEnabled = false
-            binding.btnClimerLogin.setBackgroundResource(R.drawable.rect_mainfill_nostroke_20radius)
+            binding.btnClimerLogin.setBackgroundResource(R.drawable.rect_mainfill_nostroke_8radius)
             CoroutineScope(Dispatchers.Main).launch {
                 delay(300)
                 findNavController().toClimerLogin()
@@ -33,7 +33,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
 
         binding.btnAdminLogin.setOnClickListener {
             binding.btnClimerLogin.isEnabled = false
-            binding.btnAdminLogin.setBackgroundResource(R.drawable.rect_mainfill_nostroke_20radius)
+            binding.btnAdminLogin.setBackgroundResource(R.drawable.rect_mainfill_nostroke_8radius)
             CoroutineScope(Dispatchers.Main).launch {
                 delay(300)
                 findNavController().toAdminLogin()

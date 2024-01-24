@@ -1,6 +1,5 @@
 package com.climus.climeet.presentation.ui.intro.signup.admin.service
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -26,7 +25,8 @@ class SetAdminServiceViewModel @Inject constructor() : ViewModel() {
     private val _event = MutableSharedFlow<SetAdminServiceEvent>()
     val event: SharedFlow<SetAdminServiceEvent> = _event.asSharedFlow()
 
-    private val _serviceList = MutableLiveData<List<ServiceUiData>>(emptyList()) // fragment에서 넘겨준 서비스 리스트 저장
+    private val _serviceList =
+        MutableLiveData<List<ServiceUiData>>(emptyList()) // fragment에서 넘겨준 서비스 리스트 저장
     val serviceList: LiveData<List<ServiceUiData>> = _serviceList
 
     val isNextButtonEnabled = MutableStateFlow(false)
@@ -61,14 +61,12 @@ class SetAdminServiceViewModel @Inject constructor() : ViewModel() {
     }
 
     // 알림 설정으로 이동
-    fun navigateToNext(){
-        if(isNextButtonEnabled.value){
-            // 선택된 서비스 AdminSignupForm에 저장
-            AdminSignupForm.setSelectedServices(_serviceList.value!!)
-
-            // todo
-            //  AdminSignupForm.services 저장 형식 괜찮나 확인
-            Log.d("admin", "서비스 상태 : ${AdminSignupForm.services}")
+    fun navigateToNext() {
+        if (isNextButtonEnabled.value) {
+            // 선택된 서비스의 title만 추출하여 AdminSignupForm에 저장
+            val selectedServiceTitles =
+                _serviceList.value?.filter { it.isSelected }?.map { it.title } ?: emptyList()
+            AdminSignupForm.setSelectedServices(selectedServiceTitles)
 
             viewModelScope.launch {
                 _event.emit(SetAdminServiceEvent.NavigateToNext)
