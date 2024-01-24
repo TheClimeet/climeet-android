@@ -27,6 +27,7 @@ class SetClimerProfileFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentViewModel.climerSignUpProgress(2)
         binding.vm = viewModel
 
         binding.ivProfile.setOnClickListener {

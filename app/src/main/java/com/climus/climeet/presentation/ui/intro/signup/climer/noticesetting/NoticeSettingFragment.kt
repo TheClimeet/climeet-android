@@ -23,6 +23,7 @@ class NoticeSettingFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentViewModel.climerSignUpProgress(6)
         setText()
         setBtnListener()
         initEventObserve()
