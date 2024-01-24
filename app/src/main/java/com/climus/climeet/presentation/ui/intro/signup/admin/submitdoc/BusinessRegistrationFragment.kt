@@ -27,6 +27,7 @@ class BusinessRegistrationFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentViewModel.adminSignUpProgress(2)
         binding.vm = viewModel
         binding.btnGotoGallery.setOnClickListener {
             parentViewModel.goToGallery(UrlType.ADMIN_BUSINESS_REGISTRATION)

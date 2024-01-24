@@ -3,23 +3,27 @@ package com.climus.climeet.presentation.ui.intro.login.admin
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentAdminLoginBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.intro.IntroViewModel
 import com.climus.climeet.presentation.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AdminLoginFragment : BaseFragment<FragmentAdminLoginBinding>(R.layout.fragment_admin_login) {
 
+    private val parentViewModel: IntroViewModel by activityViewModels()
     private val viewModel: AdminLoginViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentViewModel.signUpProgressStop()
         binding.vm = viewModel
         initEventObserve()
     }

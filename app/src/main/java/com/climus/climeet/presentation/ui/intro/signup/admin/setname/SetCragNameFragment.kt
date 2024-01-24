@@ -8,6 +8,7 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -15,6 +16,7 @@ import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetCragNameBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.intro.IntroViewModel
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class SetCragNameFragment :
     BaseFragment<FragmentSetCragNameBinding>(R.layout.fragment_set_crag_name) {
 
+    private val parentViewModel: IntroViewModel by activityViewModels()
     private val viewModel: SetCragNameViewModel by viewModels()
     private val args: SetCragNameFragmentArgs by navArgs()
     private val cragId by lazy { args.cragId }
@@ -31,6 +34,7 @@ class SetCragNameFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentViewModel.adminSignUpProgress(1)
         binding.vm = viewModel
         viewModel.setCragInfo(cragId, cragName, cragImg)
         setWarningText()

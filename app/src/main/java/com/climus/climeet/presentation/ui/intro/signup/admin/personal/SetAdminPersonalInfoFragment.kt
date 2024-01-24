@@ -4,22 +4,25 @@ import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetAdminPersonalInfoBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.intro.IntroViewModel
 import kotlinx.coroutines.flow.Flow
 
 class SetAdminPersonalInfoFragment :
     BaseFragment<FragmentSetAdminPersonalInfoBinding>(R.layout.fragment_set_admin_personal_info) {
 
+    private val parentViewModel: IntroViewModel by activityViewModels()
     private val viewModel: SetAdminPersonalViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 데이터 바인딩 변수에 뷰모델 연결
+        parentViewModel.adminSignUpProgress(4)
         binding.vm = viewModel
 
         binding.etPhone.addTextChangedListener(PhoneNumberFormattingTextWatcher())

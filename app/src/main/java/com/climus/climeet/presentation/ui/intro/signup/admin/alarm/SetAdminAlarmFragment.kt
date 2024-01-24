@@ -22,7 +22,7 @@ class SetAdminAlarmFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 데이터 바인딩 변수에 뷰모델 연결
+        parentViewModel.adminSignUpProgress(7)
         binding.vm = viewModel
 
         // AdminSignupForm의 지점명을 가져와 붙여줄 예정 (임시로 이름을 넣어둠)

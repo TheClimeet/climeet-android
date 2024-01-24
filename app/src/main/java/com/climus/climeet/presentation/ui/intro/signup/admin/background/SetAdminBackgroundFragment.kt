@@ -21,6 +21,8 @@ class SetAdminBackgroundFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        parentViewModel.adminSignUpProgress(5)
         binding.vm = viewModel
 
         binding.ivImgIcon.setOnClickListener {
