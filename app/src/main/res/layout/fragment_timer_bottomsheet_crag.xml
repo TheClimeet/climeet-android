@@ -2,142 +2,167 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
-        
+
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.CragSelectBottomViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="-20dp"
+        android:minHeight="500dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        app:behavior_expandedOffset="100dp">
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.6" />
-
-        <TextView
-            android:id="@+id/tv_title"
-            style="@style/TextRegularSemiBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="암장 검색"
-            android:textSize="18sp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <View
-            android:id="@+id/view_line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="15dp"
-            android:background="#484C4F"
-            app:layout_constraintTop_toBottomOf="@id/tv_title" />
-
-        <EditText
-            android:id="@+id/et_crag_name"
-            style="@style/TextRegular"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
-            android:paddingVertical="10dp"
-            android:paddingHorizontal="45dp"
-            android:inputType="text"
-            android:hint="암장의 이름, 지역"
-            android:textColorHint="@color/cm_grey3"
-            android:textColor="@color/white"
-            android:background="@drawable/rect_grey7fill_nostroke_32radius"
-            app:layout_constraintTop_toBottomOf="@id/view_line"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <ImageView
-            android:id="@+id/iv_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:src="@drawable/ic_search"
-            app:layout_constraintStart_toStartOf="@id/et_crag_name"
-            app:layout_constraintTop_toTopOf="@id/et_crag_name"
-            app:layout_constraintBottom_toBottomOf="@id/et_crag_name"/>
-
-        <ImageButton
-            android:id="@+id/btn_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-            android:src="@drawable/ic_delete"
-            android:background="@android:color/transparent"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="@id/et_crag_name"
-            app:layout_constraintTop_toTopOf="@id/et_crag_name"
-            app:layout_constraintBottom_toBottomOf="@id/et_crag_name"/>
-
-        <TextView
-            android:id="@+id/tv_crag_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="총 n개의 검색 결과가 있습니다."
-            android:textColor="@color/cm_grey6"
-            app:layout_constraintTop_toBottomOf="@id/et_crag_name"
-            app:layout_constraintStart_toStartOf="@id/iv_search"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_search_crag"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginHorizontal="20dp"
-            tools:listitem="@layout/item_crag_search_timer"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/tv_crag_num"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_search_none"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/tv_crag_num"
-            app:layout_constraintStart_toStartOf="@id/iv_search"
-            app:layout_constraintBottom_toTopOf="@id/guide">
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/iv_none"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_search2"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/tv_none"/>
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.6" />
 
             <TextView
-                android:id="@+id/tv_none"
-                style="@style/TextRegular"
+                android:id="@+id/tv_title"
+                style="@style/TextRegularSemiBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/timer_crag_search_nothing_msg"
-                android:textColor="@color/cm_grey6"
-                android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/iv_none"
-                app:layout_constraintStart_toStartOf="parent"
+                android:text="암장 검색"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="#484C4F"
+                app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+            <EditText
+                android:id="@+id/et_crag_name"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rect_grey7fill_nostroke_32radius"
+                android:hint="암장의 이름, 지역"
+                android:inputType="text"
+                android:paddingHorizontal="45dp"
+                android:paddingVertical="10dp"
+                android:text="@={vm.keyword}"
+                android:textColor="@color/white"
+                android:textColorHint="@color/cm_grey3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_line" />
+
+            <ImageView
+                android:id="@+id/iv_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:src="@drawable/ic_search"
+                app:layout_constraintBottom_toBottomOf="@id/et_crag_name"
+                app:layout_constraintStart_toStartOf="@id/et_crag_name"
+                app:layout_constraintTop_toTopOf="@id/et_crag_name" />
+
+            <ImageButton
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.deleteKeyword()}"
+                android:src="@drawable/ic_delete"
+                app:layout_constraintBottom_toBottomOf="@id/et_crag_name"
+                app:layout_constraintEnd_toEndOf="@id/et_crag_name"
+                app:layout_constraintTop_toTopOf="@id/et_crag_name" />
+
+            <TextView
+                android:id="@+id/tv_crag_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="총 n개의 검색 결과가 있습니다."
+                android:textColor="@color/cm_grey6"
+                app:layout_constraintStart_toStartOf="@id/iv_search"
+                app:layout_constraintTop_toBottomOf="@id/et_crag_name" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_search_crag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="15dp"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_crag_num"
+                tools:listitem="@layout/item_crag_search_timer" />
+
+            <ProgressBar
+                android:id="@+id/pb_loading"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="70dp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_crag_num"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_search_none"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="@id/iv_search"
+                app:layout_constraintTop_toBottomOf="@id/tv_crag_num">
+
+                <ImageView
+                    android:id="@+id/iv_none"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_search2"
+                    app:layout_constraintBottom_toTopOf="@id/tv_none"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_none"
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="@string/timer_crag_search_nothing_msg"
+                    android:textColor="@color/cm_grey6"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_none" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
