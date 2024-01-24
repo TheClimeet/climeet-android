@@ -57,20 +57,19 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:id="@+id/view_line"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_top" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/tool_guide"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.085" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="20dp"
             app:layout_constraintBottom_toTopOf="@id/guide"
-            app:layout_constraintTop_toBottomOf="@id/view_line">
+            app:layout_constraintTop_toBottomOf="@id/tool_guide">
             <!--   주의 문구    -->
             <TextView
                 android:id="@+id/tv_explain_large"

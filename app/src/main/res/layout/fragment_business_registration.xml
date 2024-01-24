@@ -47,16 +47,12 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/dv_header"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/tool_guide"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:dividerColor="@color/white"
-            app:dividerThickness="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar" />
+            app:layout_constraintGuide_percent="0.085" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -68,7 +64,7 @@
             android:lineSpacingExtra="4dp"
             android:text="사업자등록증 사진을\n업로드해주세요!"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dv_header" />
+            app:layout_constraintTop_toBottomOf="@id/tool_guide" />
 
         <TextView
             android:id="@+id/tv_description"
