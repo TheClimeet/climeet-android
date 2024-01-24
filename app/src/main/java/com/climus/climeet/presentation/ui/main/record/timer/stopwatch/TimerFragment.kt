@@ -60,8 +60,8 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         }
         // 정지 버튼 눌림
         binding.ivStop.setOnClickListener {
-            // todo : 다이얼로그 띄우기
-            Toast.makeText(requireContext(), "길게 누르자", Toast.LENGTH_SHORT).show()
+            val anchorView = view.findViewById<TextView>(R.id.tv_complete)
+            NoticePopup.make(anchorView, "정지 버튼을 길게 누르면\n운동이 종료됩니다.").show()
         }
         binding.ivStop.setOnLongClickListener {
             viewMode(ViewMode.STOP)

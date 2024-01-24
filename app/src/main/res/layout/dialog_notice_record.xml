@@ -26,7 +26,7 @@
         <TextView
             android:id="@+id/tv_notice"
             style="@style/TextSmall"
-            android:layout_width="300dp"
+            android:layout_width="290dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:text="알림"
