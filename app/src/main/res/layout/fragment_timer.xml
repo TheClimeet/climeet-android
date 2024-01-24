@@ -124,7 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="암장을 선택해주세요"
+                android:text="@string/timer_crag_set_inform"
                 app:layout_constraintStart_toEndOf="@id/iv_map"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
