@@ -49,7 +49,7 @@ class ClimerLoginViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        // todo
+                        // todo 에러코드에 따라서, 회원가입으로 이동, 토스트메세지 띄우기 분기
 
                         _event.emit(ClimerLoginEvent.NavigateToSignUp(type, token))
                     }
