@@ -83,6 +83,5 @@ class CragSelectBottomViewModel @Inject constructor() : ViewModel() {
     // 선택된 암장 관리
     fun setSelectedItem(item: RecordCragData) {
         selectedCrag.value = item // 암장 선택 시 선택 정보 업데이트
-        Log.d("timer", "뷰모델 선택된 암장 정보 업데이트 : $selectedCrag.value")
     }
 }
