@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.climus.climeet.app.App
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.IntroRepository
-import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
 import com.climus.climeet.presentation.util.Constants
 import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,8 +45,7 @@ class ClimerLoginViewModel @Inject constructor(
                             .putString(Constants.X_MODE, "CLIMER")
                             .apply()
 
-                        _event.emit(ClimerLoginEvent.NavigateToSignUp(type, token))
-//                        _event.emit(ClimerLoginEvent.GoToMainActivity)
+                        _event.emit(ClimerLoginEvent.GoToMainActivity)
                     }
 
                     is BaseState.Error -> {
