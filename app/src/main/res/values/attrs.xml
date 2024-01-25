@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="EmptyCircleView">
+        <attr name="ecColor" format="reference|color" />
+        <attr name="ecTextSize" format="reference|dimension"/>
+        <attr name="ecText" format="reference|string" />
+    </declare-styleable>
+</resources>
