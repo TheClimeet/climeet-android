@@ -11,6 +11,12 @@
         <action
             android:id="@+id/action_home_fragment_to_bestClimerFragment"
             app:destination="@id/bestClimerFragment" />
+        <action
+            android:id="@+id/action_home_fragment_to_popularShortsFragment"
+            app:destination="@id/popularShortsFragment" />
+        <action
+            android:id="@+id/action_home_fragment_to_popularCragsFragment"
+            app:destination="@id/popularCragsFragment" />
     </fragment>
     <fragment
         android:id="@+id/shorts_fragment"
@@ -32,5 +38,13 @@
         android:id="@+id/bestClimerFragment"
         android:name="com.climus.climeet.presentation.ui.main.home.bestclimer.BestClimerFragment"
         android:label="BestClimerFragment" />
+    <fragment
+        android:id="@+id/popularShortsFragment"
+        android:name="com.climus.climeet.presentation.ui.main.home.popularshorts.PopularShortsFragment"
+        android:label="PopularShortsFragment" />
+    <fragment
+        android:id="@+id/popularCragsFragment"
+        android:name="com.climus.climeet.presentation.ui.main.home.popularcrags.PopularCragsFragment"
+        android:label="PopularCragsFragment" />
 
 </navigation>

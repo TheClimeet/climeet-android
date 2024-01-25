@@ -1,10 +1,7 @@
-package com.climus.climeet.presentation.ui.main.home.bestclimer.adapter
+package com.climus.climeet.presentation.ui.main.home.bestclimer.viewpager
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.climus.climeet.presentation.ui.main.home.bestclimer.CompleteDetailFragment
-import com.climus.climeet.presentation.ui.main.home.bestclimer.LevelDetailFragment
-import com.climus.climeet.presentation.ui.main.home.bestclimer.TimeDetailFragment
 
 class BestClimerVPAdpater (fragment : Fragment) : FragmentStateAdapter(fragment) {
 

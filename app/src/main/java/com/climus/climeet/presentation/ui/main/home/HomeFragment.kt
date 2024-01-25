@@ -1,18 +1,14 @@
 package com.climus.climeet.presentation.ui.main.home
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentHomeBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import dagger.hilt.android.AndroidEntryPoint
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.climus.climeet.presentation.ui.intro.signup.climer.noticesetting.NoticeSettingFragmentDirections
 import com.climus.climeet.presentation.ui.main.home.recycler.homegym.HomeGymRVAdapter
 import com.climus.climeet.presentation.ui.main.home.model.HomeGym
 import com.climus.climeet.presentation.ui.main.home.model.PopularCrag
@@ -25,31 +21,51 @@ import com.climus.climeet.presentation.ui.main.home.viewpager.best.RankingVPAdap
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerFragment
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerVPAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import java.util.Timer
-import java.util.TimerTask
 
 class HomeFragment :
     BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
-    private val timer = Timer()
-    private val handler = Handler(Looper.getMainLooper())
+//    private val timer = Timer()
+//    private val handler = Handler(Looper.getMainLooper())
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setupOnClickListener()
         setupIntroduceBanner()
         setupHomeGymList()
         setupBestRanking()
         setupPopularShorts()
         setupPopularCrags()
         setupPopularRoutes()
+    }
 
+    private fun setupOnClickListener() {
         binding.tvHomeRankingViewAll.setOnClickListener {
-            navigateNext()
+            navigateToBestClimer()
+        }
+
+        binding.tvHomeShortsViewAll.setOnClickListener {
+            navigateToPopularShorts()
+        }
+
+        binding.tvHomeCragViewAll.setOnClickListener {
+            navigateToPopularCrags()
         }
     }
 
-    private fun navigateNext() {
+    private fun navigateToBestClimer() {
         val action = HomeFragmentDirections.actionHomeFragmentToBestClimerFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToPopularShorts() {
+        val action = HomeFragmentDirections.actionHomeFragmentToPopularShortsFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToPopularCrags() {
+        val action = HomeFragmentDirections.actionHomeFragmentToPopularCragsFragment()
         findNavController().navigate(action)
     }
 
