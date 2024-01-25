@@ -1,14 +1,17 @@
 package com.climus.climeet.presentation.ui.main.record.calendar
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.compose.runtime.collectAsState
 import androidx.core.view.children
 import androidx.fragment.app.viewModels
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCalendarBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.intro.signup.climer.setlevel.AdapterDecoration
 import com.climus.climeet.presentation.ui.main.record.calendar.DayViewContainer.Companion.selectedDay
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.DayPosition
@@ -25,15 +28,29 @@ import java.util.Locale
 class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment_calendar) {
 
     private val viewModel: CalendarViewModel by viewModels()
+    private var calendarAdapter: CalendarAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
 
+        setRecycler()
         initEventObserve()
         customCalendar()
 
+        repeatOnStarted {
+            viewModel.recordList.collect { list ->
+                calendarAdapter?.setList(list)
+            }
+        }
+
+    }
+
+    private fun setRecycler(){
+        calendarAdapter = CalendarAdapter()
+        binding.rvRecord.adapter = calendarAdapter
+        binding.rvRecord.addItemDecoration(AdapterDecoration())
     }
 
     private fun initEventObserve() {

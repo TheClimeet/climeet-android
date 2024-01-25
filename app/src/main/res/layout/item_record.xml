@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.record.model.ClimbingRecordData" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="2dp"
-            android:text="2023.12.03"
+            android:text="@{item.date}"
             android:textColor="@color/cm_grey4"
             app:layout_constraintStart_toEndOf="@id/iv_crags_profile"
             app:layout_constraintTop_toTopOf="@id/iv_crags_profile" />
@@ -39,8 +43,8 @@
             android:layout_height="wrap_content"
             android:text="더클라임 연남"
             android:textColor="@color/cm_grey1"
-            app:layout_constraintTop_toBottomOf="@id/tv_date"
-            app:layout_constraintStart_toStartOf="@id/tv_date"/>
+            app:layout_constraintStart_toStartOf="@id/tv_date"
+            app:layout_constraintTop_toBottomOf="@id/tv_date" />
 
         <TextView
             android:id="@+id/tv_time_title"
@@ -57,7 +61,7 @@
             style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1h 30m"
+            android:text="@{item.time}"
             app:layout_constraintStart_toStartOf="@id/tv_time_title"
             app:layout_constraintTop_toBottomOf="@id/tv_time_title" />
 
@@ -76,7 +80,7 @@
             style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="8"
+            android:text="@{item.totalAttemptCount}"
             app:layout_constraintStart_toStartOf="@id/tv_challenge_title"
             app:layout_constraintTop_toBottomOf="@id/tv_challenge_title" />
 
@@ -95,7 +99,7 @@
             style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="4"
+            android:text="@{item.totalCompleteCount}"
             app:layout_constraintStart_toStartOf="@id/tv_success_title"
             app:layout_constraintTop_toBottomOf="@id/tv_success_title" />
 
@@ -114,7 +118,7 @@
             style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="V5"
+            android:text="@{item.avgDifficulty}"
             app:layout_constraintStart_toStartOf="@id/tv_level_title"
             app:layout_constraintTop_toBottomOf="@id/tv_level_title" />
 

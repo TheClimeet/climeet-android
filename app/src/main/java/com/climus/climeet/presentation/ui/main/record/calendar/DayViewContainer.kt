@@ -1,6 +1,7 @@
 package com.climus.climeet.presentation.ui.main.record.calendar
 
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -22,6 +23,7 @@ class DayViewContainer(view: View, val viewModel: CalendarViewModel) : ViewConta
                 selectedDay?.deselect()
                 select()
                 viewModel.setIsToday(day.date == LocalDate.now())
+                viewModel.setRecord(day.date)
                 selectedDay = this
             }
         }
