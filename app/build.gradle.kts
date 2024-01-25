@@ -121,4 +121,5 @@ dependencies {
     // Calendar
     implementation ("com.github.prolificinteractive:material-calendarview:2.0.1")
     implementation ("com.jakewharton.threetenabp:threetenabp:1.1.1")
+    implementation ("com.kizitonwose.calendar:view:2.4.1")
 }

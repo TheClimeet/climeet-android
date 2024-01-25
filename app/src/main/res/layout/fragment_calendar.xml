@@ -40,26 +40,15 @@
             app:layout_constraintStart_toEndOf="@id/tv_record"
             app:layout_constraintTop_toTopOf="@id/tv_record" />
 
-        <View
-            android:id="@+id/view_for_select_year_month"
-            android:layout_width="120dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/transparent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_record"/>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_yearmonth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginTop="5dp"
             android:background="@color/transparent"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_for_select_year_month">
+            app:layout_constraintTop_toBottomOf="@+id/layout_month">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_year"
@@ -69,7 +58,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/item_calendar" />
+                tools:listitem="@layout/item_calendar_date" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_month"
@@ -79,160 +68,123 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/rv_year"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/item_calendar" />
+                tools:listitem="@layout/item_calendar_date" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_month"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_record">
 
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-            android:id="@+id/calendar_view"
-            android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/layout_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@id/iv_date_next"
+                app:layout_constraintStart_toEndOf="@+id/iv_date_pre"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_year"
+                    style="@style/TextMediumSemiBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.currentYear}"/>
+
+                <TextView
+                    android:id="@+id/tv_dot"
+                    style="@style/TextMediumSemiBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:text="." />
+
+                <TextView
+                    android:id="@+id/tv_month"
+                    style="@style/TextMediumSemiBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.currentMonth}"/>
+
+            </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/iv_date_pre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="23dp"
+                android:padding="5dp"
+                android:src="@drawable/ic_date_pre"
+                app:layout_constraintBottom_toBottomOf="@id/layout_group"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/layout_group" />
+
+            <ImageView
+                android:id="@+id/iv_date_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="23dp"
+                android:padding="5dp"
+                android:src="@drawable/ic_date_next"
+                app:layout_constraintBottom_toBottomOf="@id/layout_group"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/layout_group" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_calendar"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_margin="10dp"
+            android:layout_marginTop="15dp"
+            android:paddingHorizontal="15dp"
             app:layout_constraintBottom_toTopOf="@+id/guide"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_record"
-            app:mcv_dateTextAppearance="@style/CalendarDate"
-            app:mcv_firstDayOfWeek="sunday"
-            app:mcv_headerTextAppearance="@style/TextMediumBold"
-            app:mcv_leftArrow="@drawable/ic_date_pre"
-            app:mcv_rightArrow="@drawable/ic_date_next"
-            app:mcv_selectionColor="@color/cm_grey6"
-            app:mcv_selectionMode="single"
-            app:mcv_weekDayTextAppearance="@style/TextRegularBold" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_month">
 
-<!--        <TextView-->
-<!--            android:id="@+id/tv_year_month"-->
-<!--            style="@style/TextMediumSemiBold"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:text="2023.12"-->
-<!--            app:layout_constraintEnd_toStartOf="@id/iv_date_next"-->
-<!--            app:layout_constraintStart_toEndOf="@id/iv_date_pre"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/tv_record" />-->
+            <include
+                android:id="@+id/container_titles"
+                layout="@layout/item_calendar_week"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/iv_date_pre"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="23dp"-->
-<!--            android:src="@drawable/ic_date_pre"-->
-<!--            android:onClick="@{() -> vm.previousMonth()}"-->
-<!--            app:layout_constraintBottom_toBottomOf="@id/tv_year_month"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="@id/tv_year_month" />-->
+            <com.kizitonwose.calendar.view.CalendarView
+                android:id="@+id/calendar_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                app:cv_daySize="rectangle"
+                app:cv_dayViewResource="@layout/item_calendar_date"
+                app:cv_orientation="horizontal"
+                app:cv_outDateStyle="endOfRow"
+                app:cv_scrollPaged="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/container_titles" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/iv_date_next"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginEnd="23dp"-->
-<!--            android:src="@drawable/ic_date_next"-->
-<!--            android:onClick="@{() -> vm.nextMonth()}"-->
-<!--            app:layout_constraintBottom_toBottomOf="@id/tv_year_month"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="@id/tv_year_month" />-->
-
-        <!--        <LinearLayout-->
-        <!--            android:id="@+id/layout_week"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginHorizontal="25dp"-->
-        <!--            android:layout_marginTop="20dp"-->
-        <!--            android:orientation="horizontal"-->
-        <!--            android:weightSum="7"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/tv_year_month">-->
-
-        <!--            <TextView-->
-        <!--                style="@style/TextRegularBold"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                android:text="일" />-->
-
-        <!--            <TextView-->
-        <!--                style="@style/TextRegularBold"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                android:text="월" />-->
-
-        <!--            <TextView-->
-        <!--                style="@style/TextRegularBold"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                android:text="화" />-->
-
-        <!--            <TextView-->
-        <!--                style="@style/TextRegularBold"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                android:text="수" />-->
-
-        <!--            <TextView-->
-        <!--                style="@style/TextRegularBold"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                android:text="목" />-->
-
-        <!--            <TextView-->
-        <!--                style="@style/TextRegularBold"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                android:text="금" />-->
-
-        <!--            <TextView-->
-        <!--                style="@style/TextRegularBold"-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_weight="1"-->
-        <!--                android:gravity="center"-->
-        <!--                android:text="토" />-->
-
-
-        <!--        </LinearLayout>-->
-
-        <!--        <androidx.recyclerview.widget.RecyclerView-->
-        <!--            android:id="@+id/rv_calendar"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="0dp"-->
-        <!--            android:layout_marginTop="10dp"-->
-        <!--            android:clickable="true"-->
-        <!--            android:focusable="true"-->
-        <!--            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"-->
-        <!--            app:layout_constraintBottom_toTopOf="@id/guide"-->
-        <!--            app:layout_constraintEnd_toEndOf="@+id/layout_week"-->
-        <!--            app:layout_constraintStart_toStartOf="@+id/layout_week"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/layout_week"-->
-        <!--            app:spanCount="7"-->
-        <!--            tools:itemCount="42"-->
-        <!--            tools:listitem="@layout/item_calendar" />-->
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.70" />
+            app:layout_constraintGuide_percent="0.68" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/sv_scroll"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="10dp"
             android:fillViewport="true"
             android:paddingHorizontal="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -311,11 +263,9 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/btn_add" />
 
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

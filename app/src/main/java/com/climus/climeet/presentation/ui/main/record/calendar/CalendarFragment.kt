@@ -1,19 +1,24 @@
 package com.climus.climeet.presentation.ui.main.record.calendar
 
-import android.content.Context
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.view.children
 import androidx.fragment.app.viewModels
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCalendarBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.prolificinteractive.materialcalendarview.CalendarDay
-import com.prolificinteractive.materialcalendarview.DayViewDecorator
-import com.prolificinteractive.materialcalendarview.DayViewFacade
-import com.prolificinteractive.materialcalendarview.format.TitleFormatter
+import com.kizitonwose.calendar.core.CalendarDay
+import com.kizitonwose.calendar.core.DayPosition
+import com.kizitonwose.calendar.core.daysOfWeek
+import com.kizitonwose.calendar.view.MonthDayBinder
+import com.kizitonwose.calendar.view.ViewContainer
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.DayOfWeek
+import java.time.YearMonth
+import java.time.format.TextStyle
+import java.util.Locale
 
 @AndroidEntryPoint
 class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment_calendar) {
@@ -25,10 +30,9 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
 
         binding.vm = viewModel
 
-        binding.viewForSelectYearMonth.bringToFront()
-
         initEventObserve()
         customCalendar()
+
     }
 
     private fun initEventObserve() {
@@ -39,58 +43,74 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
         }
     }
 
-    private fun customCalendar(){
-        with(binding){
-            // 좌우 화살표 가운데의 연/월이 보이는 방식 커스텀
-            calendarView.setTitleFormatter(TitleFormatter { day ->
-                // CalendarDay라는 클래스는 LocalDate 클래스를 기반으로 만들어진 클래스다
-                // 때문에 MaterialCalendarView에서 연/월 보여주기를 커스텀하려면 CalendarDay 객체의 getDate()로 연/월을 구한 다음 LocalDate 객체에 넣어서
-                // LocalDate로 변환하는 처리가 필요하다
-                val inputText: org.threeten.bp.LocalDate = day.date
-                val calendarHeaderElements =
-                    inputText.toString().split("-".toRegex()).dropLastWhile { it.isEmpty() }
-                        .toTypedArray()
-                val calendarHeaderBuilder = StringBuilder()
-                calendarHeaderBuilder.append(calendarHeaderElements[0])
-                    .append(".")
-                    .append(calendarHeaderElements[1])
-                calendarHeaderBuilder.toString()
-            })
-
-            // 일자 선택 시 내가 정의한 드로어블이 적용되도록 한다
-            val decorator = DayDecorator(requireContext())
-            calendarView.addDecorators(decorator)
-
-            calendarView.setOnDateChangedListener { _, date, _ ->
-                decorator.setSelectedDay(date)
-                calendarView.invalidateDecorators()
+    private fun customCalendar() {
+        binding.calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
+            override fun bind(
+                container: DayViewContainer,
+                data: CalendarDay
+            ) {
+                container.textView.text = data.date.dayOfMonth.toString()
             }
 
+            override fun create(view: View) = DayViewContainer(view)
         }
+
+        // 날짜
+        val currentMonth = YearMonth.now()
+        val startMonth = currentMonth.minusMonths(100)
+        val endMonth = currentMonth.plusMonths(100)
+        binding.calendarView.setup(startMonth, endMonth, DayOfWeek.SUNDAY)
+        binding.calendarView.scrollToMonth(currentMonth)
+
+        // 요일
+        val daysOfWeek = daysOfWeek(firstDayOfWeek = DayOfWeek.SUNDAY)
+        val titlesContainer = view?.findViewById<ViewGroup>(R.id.container_titles)
+        titlesContainer?.children?.map { it as TextView }?.forEachIndexed { index, textView ->
+            val dayOfWeek = daysOfWeek[index]
+            val title = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+            textView.text = title
+        }
+
+        binding.calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
+            override fun create(view: View) = DayViewContainer(view)
+            override fun bind(container: DayViewContainer, data: CalendarDay) {
+                container.textView.text = data.date.dayOfMonth.toString()
+                if (data.position == DayPosition.MonthDate) {
+                    container.titlesContainer.visibility = View.VISIBLE
+                } else {
+                    container.titlesContainer.visibility = View.INVISIBLE
+                }
+            }
+        }
+
+        // 이전 월로 이동
+        binding.ivDatePre.setOnClickListener {
+            binding.calendarView.findFirstVisibleMonth()?.let {
+                binding.calendarView.smoothScrollToMonth(it.yearMonth.minusMonths(1))
+            }
+        }
+
+        // 다음 월로 이동
+        binding.ivDateNext.setOnClickListener {
+            binding.calendarView.findFirstVisibleMonth()?.let {
+                binding.calendarView.smoothScrollToMonth(it.yearMonth.plusMonths(1))
+            }
+        }
+
+        binding.calendarView.monthScrollListener = { month ->
+            // 월이 변경될 때마다 텍스트 뷰를 업데이트
+            viewModel.updateSelectedYearMonth(
+                month.yearMonth.year.toString(),
+                month.yearMonth.month.value.toString()
+            )
+        }
+
     }
+
 }
 
-/* 선택된 요일의 background를 설정하는 Decorator 클래스 */
-private class DayDecorator(context: Context?) : DayViewDecorator {
-    private val drawable: Drawable?
-    private var selectedDay: CalendarDay? = null
-
-    init {
-        drawable = ContextCompat.getDrawable(context!!, R.drawable.rect_mainfill_nostroke_5radius)
-    }
-
-    fun setSelectedDay(day: CalendarDay) {
-        selectedDay = day
-    }
-
-    // true를 리턴 시 모든 요일에 내가 설정한 드로어블이 적용된다
-    override fun shouldDecorate(day: CalendarDay?): Boolean {
-        return day != null && day == selectedDay
-    }
-
-    // 일자 선택 시 내가 정의한 드로어블이 적용되도록 한다
-    override fun decorate(view: DayViewFacade) {
-        view.setSelectionDrawable(drawable!!)
-        //            view.addSpan(new StyleSpan(Typeface.BOLD));   // 달력 안의 모든 숫자들이 볼드 처리됨
-    }
+// 날짜
+class DayViewContainer(view: View) : ViewContainer(view) {
+    val textView = view.findViewById<TextView>(R.id.tv_date)
+    val titlesContainer = view as ViewGroup
 }
