@@ -11,7 +11,7 @@ import java.io.File
 internal fun Uri.toMultiPart(context: Context): MultipartBody.Part {
     val file = File(getRealPathFromUri(this, context) ?: "")
     val requestFile = file.asRequestBody("image/jpg".toMediaTypeOrNull())
-    return MultipartBody.Part.createFormData("image", file.name, requestFile)
+    return MultipartBody.Part.createFormData("file", file.name, requestFile)
 }
 
 

@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import com.climus.climeet.databinding.ActivityIntroBinding
 import com.climus.climeet.presentation.base.BaseActivity
 import com.climus.climeet.presentation.customview.Permission
+import com.climus.climeet.presentation.ui.toMultiPart
 import com.climus.climeet.presentation.util.Constants.ALARM_PERMISSION
 import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +29,8 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
     private lateinit var neededPermissionList: MutableList<String>
     private val storagePermissionList =
         if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
-            arrayOf(  // 안드로이드 13 이상 필요한 권한들
+            arrayOf(
+                // 안드로이드 13 이상 필요한 권한들
                 Manifest.permission.READ_MEDIA_IMAGES,
                 // Manifest.permission.POST_NOTIFICATIONS
             )
@@ -49,7 +51,6 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.vm = viewModel
-
         initEventObserve()
     }
 
@@ -57,17 +58,22 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
-                    is IntroEvent.GoToGallery -> onCheckPermissions(Permission.STORAGE, storagePermissionList)
+                    is IntroEvent.GoToGallery -> {
+                        onCheckPermissions(Permission.STORAGE, storagePermissionList)
+                    }
+
                     is IntroEvent.CheckAlarmPermission -> {
                         confirmAction = it.confirmAction
                         onCheckPermissions(Permission.ALARM, alarmPermissionList)
                     }
+
+                    is IntroEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }
     }
 
-    private fun onCheckPermissions(type: Permission, list: Array<String>){
+    private fun onCheckPermissions(type: Permission, list: Array<String>) {
         neededPermissionList = mutableListOf()
 
         list.forEach { permission ->
@@ -86,9 +92,9 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
                 showPermissionSnackBar(binding.snackGuide)
             }
         } else {
-            when(type){
+            when (type) {
                 Permission.STORAGE -> openGallery()
-                Permission.ALARM -> confirmAction?.let{ it() }
+                Permission.ALARM -> confirmAction?.let { it() }
             }
         }
 
@@ -123,7 +129,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
             } else {
                 showPermissionSnackBar(binding.snackGuide)
             }
-        } else if(requestCode == ALARM_PERMISSION){
+        } else if (requestCode == ALARM_PERMISSION) {
             confirmAction?.let { it() }
         }
     }
@@ -141,6 +147,7 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
 
                 uri?.let {
                     viewModel.setImage(it)
+                    viewModel.fileToUrl(it.toMultiPart(this))
                 }
             }
         }
