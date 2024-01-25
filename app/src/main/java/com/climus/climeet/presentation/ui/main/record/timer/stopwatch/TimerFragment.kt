@@ -1,9 +1,9 @@
 package com.climus.climeet.presentation.ui.main.record.timer.stopwatch
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentTimerBinding
@@ -21,6 +21,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
     CragSelectionListener {
 
     private val timerVM: TimerViewModel by viewModels()
+    private var isStopwatchRunning = false
 
     interface OnStartClickListener {
         fun onStartClick()
@@ -34,6 +35,10 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
         binding.vm = timerVM
 
+        initClickListener()
+    }
+
+    private fun initClickListener() {
         // 암장 선택
         binding.layoutSelectCrag.setOnClickListener {
             showBottomSheet()
@@ -42,42 +47,76 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         // 스톱워치 시작
         binding.ivStart.setOnClickListener {
             if (binding.tvTitle.text == getString(R.string.timer_crag_set_inform)) {
-                val anchorView = view.findViewById<TextView>(R.id.tv_complete)
-                NoticePopup.make(anchorView, "운동 전, 암장을 먼저 선택해주세요.").show()
+                NoticePopup.make(it, "운동 전, 암장을 먼저 선택해주세요.").show()
             } else {
+                startStopwatch()    // 스톱워치 서비스 시작
                 onStartClickListener?.onStartClick()    // Indicator 보이기 설정
-
                 viewMode(ViewMode.START)
             }
         }
+
         // 스톱워치 일시정지
         binding.ivPause.setOnClickListener {
+            pauseStopwatch()
             viewMode(ViewMode.PAUSE)
         }
+
         // 스톱워치 재시작
         binding.ivRestart.setOnClickListener {
+            restartStopwatch()
             viewMode(ViewMode.RESTART)
         }
+
         // 정지 버튼 눌림
         binding.ivStop.setOnClickListener {
-            val anchorView = view.findViewById<TextView>(R.id.tv_complete)
-            NoticePopup.make(anchorView, "정지 버튼을 길게 누르면\n운동이 종료됩니다.").show()
+            NoticePopup.make(it, "정지 버튼을 길게 누르면\n운동이 종료됩니다.").show()
         }
+
         binding.ivStop.setOnLongClickListener {
+            stopStopwatch()
             viewMode(ViewMode.STOP)
             onStartClickListener?.onStartClick()    // Indicator 보이기 설정
             true    // OnClickListener와 같이 쓰기 위해 true로 설정
         }
     }
 
+    private fun startStopwatch() {
+        val intent = Intent(context, TimerService::class.java).apply {
+            putExtra("command", "START")
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context?.startForegroundService(intent)
+        } else {
+            context?.startService(intent)
+        }
+        isStopwatchRunning = true
+    }
+
+    private fun pauseStopwatch() {
+        val intent = Intent(context, TimerService::class.java).apply {
+            putExtra("command", "PAUSE")
+        }
+        context?.startService(intent)
+    }
+
+    private fun restartStopwatch() {
+        val intent = Intent(context, TimerService::class.java).apply {
+            putExtra("command", "RESTART")
+        }
+        context?.startService(intent)
+    }
+
+    private fun stopStopwatch() {
+        val intent = Intent(context, TimerService::class.java).apply {
+            putExtra("command", "STOP")
+        }
+        context?.startService(intent)
+        isStopwatchRunning = false
+    }
+
     override fun onCragSelected(crag: RecordCragData) {
         // 선택된 암장의 이름 보여주기
         binding.tvTitle.text = crag.name
-    }
-
-    private fun setCragSelected(selectedCrag: RecordCragData) {
-        // 선택된 암장의 이름 보여주기
-        binding.tvTitle.text = selectedCrag.name
     }
 
     private fun showBottomSheet() {
