@@ -3,6 +3,7 @@ package com.climus.climeet.presentation.ui.intro.signup.climer.setlevel
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -11,16 +12,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetClimerLevelBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.intro.IntroViewModel
 
 class SetClimerLevelFragment :
     BaseFragment<FragmentSetClimerLevelBinding>(R.layout.fragment_set_climer_level) {
 
+    private val parentViewModel: IntroViewModel by activityViewModels()
     private val viewModel: SetClimerLevelViewModel by viewModels()
     private lateinit var adapter: LevelRVAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentViewModel.climerSignUpProgress(3)
         binding.vm = viewModel
         setupRecyclerView()
 

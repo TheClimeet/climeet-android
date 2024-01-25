@@ -5,17 +5,22 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentAnnounceAdminSignupBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.intro.IntroViewModel
 
 class AnnounceAdminSignupFragment: BaseFragment<FragmentAnnounceAdminSignupBinding>(R.layout.fragment_announce_admin_signup) {
+
+    private val parentViewModel: IntroViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentViewModel.signUpProgressStop()
         setDescriptionText()
         setBtnListener()
     }

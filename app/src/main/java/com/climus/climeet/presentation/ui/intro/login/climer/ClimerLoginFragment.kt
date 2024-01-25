@@ -4,12 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentClimerLoginBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.intro.IntroViewModel
 import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
 import com.climus.climeet.presentation.ui.main.MainActivity
 import com.climus.climeet.presentation.util.Constants.KAKAO
@@ -27,11 +29,13 @@ import dagger.hilt.android.AndroidEntryPoint
 class ClimerLoginFragment :
     BaseFragment<FragmentClimerLoginBinding>(R.layout.fragment_climer_login) {
 
+    private val parentViewModel: IntroViewModel by activityViewModels()
     private val viewModel: ClimerLoginViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentViewModel.signUpProgressStop()
         binding.vm = viewModel
         initEventObserve()
     }
@@ -45,15 +49,12 @@ class ClimerLoginFragment :
                     is ClimerLoginEvent.NavigateBack -> findNavController().navigateUp()
 
                     is ClimerLoginEvent.GoToMainActivity -> {
-                        // todo 클라이머 모드 지정?
                         val intent = Intent(requireContext(), MainActivity::class.java)
                             .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
                     }
 
                     is ClimerLoginEvent.NavigateToSignUp -> {
-
-                        // todo 회원가입 최종단계에서 필요한, 소셜타입과 토큰을 싱글톤 Object에 임시저장
                         ClimerSignupForm.setSocialType(it.socialType)
                         ClimerSignupForm.setToken(it.token)
 

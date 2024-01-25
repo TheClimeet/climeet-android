@@ -49,6 +49,27 @@
         <action
             android:id="@+id/action_admin_login_fragment_to_announce_admin_signup_fragment"
             app:destination="@id/announce_admin_signup_fragment" />
+        <action
+            android:id="@+id/action_admin_login_fragment_to_find_id_pw_fragment"
+            app:destination="@id/find_id_pw_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/find_id_pw_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.login.admin.FindIdPwFragment"
+        android:label="findIdPw">
+        <action
+            android:id="@+id/action_find_id_pw_fragment_to_find_id_pw_complete_fragment"
+            app:destination="@id/find_id_pw_complete_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/find_id_pw_complete_fragment"
+        android:name="com.climus.climeet.presentation.ui.intro.login.admin.FindIdPwCompleteFragment"
+        android:label="findIdPwComplete">
+        <action
+            android:id="@+id/action_find_id_pw_complete_fragment_to_login_fragment"
+            app:destination="@id/login_fragment" />
     </fragment>
 
     <fragment
@@ -62,7 +83,7 @@
     <fragment
         android:id="@+id/setClimerCompleteFragment"
         android:name="com.climus.climeet.presentation.ui.intro.signup.climer.complete.SetClimerCompleteFragment"
-        android:label="SetClimerCompleteFragment" >
+        android:label="SetClimerCompleteFragment">
         <action
             android:id="@+id/action_setClimerCompleteFragment_to_login_fragment"
             app:destination="@id/login_fragment" />
@@ -129,6 +150,15 @@
         <argument
             android:name="cragId"
             app:argType="long" />
+
+        <argument
+            android:name="cragName"
+            app:argType="string" />
+
+        <argument
+            android:name="imgUrl"
+            app:argType="string" />
+
         <action
             android:id="@+id/action_set_crag_name_fragment_to_set_crag_error_fragment"
             app:destination="@id/set_crag_error_fragment" />
@@ -232,7 +262,7 @@
     <fragment
         android:id="@+id/howToKnowFragment3"
         android:name="com.climus.climeet.presentation.ui.intro.signup.climer.howtoknow.HowToKnowFragment"
-        android:label="HowToKnowFragment" >
+        android:label="HowToKnowFragment">
         <action
             android:id="@+id/action_howToKnowFragment_to_noticeSettingFragment"
             app:destination="@id/noticeSettingFragment" />

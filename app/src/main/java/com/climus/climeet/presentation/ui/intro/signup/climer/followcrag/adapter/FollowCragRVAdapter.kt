@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.ItemFollowCragsBinding
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiData
+import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
 
 class FollowCragRVAdapter() : RecyclerView.Adapter<FollowCragRVAdapter.ViewHolder>(){
@@ -49,6 +50,7 @@ class FollowCragRVAdapter() : RecyclerView.Adapter<FollowCragRVAdapter.ViewHolde
             notifyItemChanged(position)
             val cragItem = searchList[position]
             cragItem.followers += 1
+            ClimerSignupForm.addFollowGym(searchList[position].id)
         }
 
         // 팔로우 -1
@@ -59,6 +61,7 @@ class FollowCragRVAdapter() : RecyclerView.Adapter<FollowCragRVAdapter.ViewHolde
             notifyItemChanged(position)
             val cragItem = searchList[position]
             cragItem.followers -= 1
+            ClimerSignupForm.removeFollowGym(searchList[position].id)
         }
     }
 
@@ -76,9 +79,9 @@ class FollowCragRVAdapter() : RecyclerView.Adapter<FollowCragRVAdapter.ViewHolde
             binding.keyword = keyword
             binding.crag = followCrag
 
-            if (followCrag.profileUrl != null) {
+            if (followCrag.imgUrl.isBlank()) {
                 Glide.with(binding.root.context)
-                    .load(followCrag.profileUrl)
+                    .load(followCrag.imgUrl)
                     .into(binding.cragsProfileArea)
             } else {
                 binding.cragsProfileArea.setImageResource(R.drawable.oval_lightgreyfill_nostroke_noradius)

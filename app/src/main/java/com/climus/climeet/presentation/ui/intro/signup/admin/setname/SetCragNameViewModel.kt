@@ -2,6 +2,8 @@ package com.climus.climeet.presentation.ui.intro.signup.admin.setname
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.CragInfoUiData
 import com.climus.climeet.presentation.util.Constants.TEST_IMG
@@ -24,10 +26,13 @@ sealed class SetCragNameEvent {
         val imgUrl: String,
         val cragName: String
     ): SetCragNameEvent()
+    data class ShowToastMessage(val msg: String): SetCragNameEvent()
 }
 
 @HiltViewModel
-class SetCragNameViewModel @Inject constructor() : ViewModel() {
+class SetCragNameViewModel @Inject constructor(
+    private val repository: IntroRepository
+) : ViewModel() {
 
     private val _uiCragInfo = MutableStateFlow(CragInfoUiData())
     val uiCragInfo: StateFlow<CragInfoUiData> = _uiCragInfo.asStateFlow()
@@ -36,21 +41,45 @@ class SetCragNameViewModel @Inject constructor() : ViewModel() {
     val event: SharedFlow<SetCragNameEvent> = _event.asSharedFlow()
 
     private var cragId: Long? = null
+    private var cragName: String = ""
 
-    fun setCragId(id: Long) {
+    fun setCragInfo(id: Long, name: String, imgUrl: String) {
         cragId = id
-        getCragInfo()
-    }
-
-    private fun getCragInfo() {
-        // todo 서버통신
+        cragName = name
+        AdminSignupForm.setCragName(name)
 
         _uiCragInfo.update { state ->
             state.copy(
-                imgUrl = TEST_IMG,
-                name = "클라이머스 클라이밍",
-                state = false
+                imgUrl = imgUrl,
+                name = name,
+                state = true
             )
+        }
+        checkCragState()
+    }
+
+    private fun checkCragState(){
+        viewModelScope.launch {
+            repository.managerGymNameCheck(cragName).let{
+                when(it){
+                    is BaseState.Success -> {
+                        if(it.body){
+                            _uiCragInfo.update { state ->
+                                state.copy(
+                                    state = true
+                                )
+                            }
+                        } else {
+                            _uiCragInfo.update { state ->
+                                state.copy(
+                                    state = false 
+                                )
+                            }
+                        }
+                    }
+                    is BaseState.Error -> _event.emit(SetCragNameEvent.ShowToastMessage(it.msg))
+                }
+            }
         }
     }
 
@@ -61,9 +90,6 @@ class SetCragNameViewModel @Inject constructor() : ViewModel() {
     }
 
     fun navigateToBusinessRegistration() {
-        // 알림설정 페이지에서 쓰기 위해 이름 저장
-        AdminSignupForm.setCragName(uiCragInfo.value.name)
-
         viewModelScope.launch {
             _event.emit(SetCragNameEvent.NavigateToBusinessRegistration)
         }

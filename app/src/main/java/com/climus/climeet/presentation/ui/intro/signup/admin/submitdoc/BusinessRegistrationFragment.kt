@@ -14,7 +14,7 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentBusinessRegistrationBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroViewModel
-import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
+import com.climus.climeet.presentation.ui.intro.UrlType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,8 +27,11 @@ class BusinessRegistrationFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentViewModel.adminSignUpProgress(2)
         binding.vm = viewModel
-        binding.pvm = parentViewModel
+        binding.btnGotoGallery.setOnClickListener {
+            parentViewModel.goToGallery(UrlType.ADMIN_BUSINESS_REGISTRATION)
+        }
         binding.btnNext.isEnabled = false
         setDescriptionText()
         initEventObserve()
@@ -69,7 +72,6 @@ class BusinessRegistrationFragment :
 
     private fun setImage(uri: Uri) {
         binding.btnGotoGallery.setImageURI(uri)
-        AdminSignupForm.setBusinessRegistrationUri(uri)
         binding.btnNext.isEnabled = true
         binding.btnNext.setImageResource(R.drawable.ic_next_on)
     }

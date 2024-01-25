@@ -10,6 +10,8 @@ sealed class BaseState<out T> {
     data class Error(val msg: String, val code: String) : BaseState<Nothing>()
 }
 
+
+
 suspend fun <T> runRemote(block: suspend () -> Response<T>): BaseState<T> {
     return try {
         val response = block()

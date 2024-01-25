@@ -51,16 +51,12 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/dv_header"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/tool_guide"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:dividerColor="@color/white"
-            app:dividerThickness="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar" />
+            app:layout_constraintGuide_percent="0.085" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_half"

@@ -54,15 +54,15 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_set_alarm"
-            style="@style/TextMediumSemiBold"
+            style="@style/TextMediumBold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="10dp"
             android:layout_margin="20dp"
             android:text="메인으로 돌아가기"
-            android:backgroundTint="@color/cm_main"
+            android:background="@drawable/rect_mainfill_nostroke_8radius"
             android:textColor="@color/black"
             android:onClick="@{() -> vm.navigateToNext()}"
             app:layout_constraintTop_toTopOf="@id/guide"

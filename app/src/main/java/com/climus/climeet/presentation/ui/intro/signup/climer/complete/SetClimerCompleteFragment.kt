@@ -5,7 +5,7 @@ import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
@@ -15,17 +15,21 @@ import com.climus.climeet.presentation.ui.intro.signup.admin.complete.SetAdminCo
 import com.climus.climeet.presentation.ui.intro.signup.admin.complete.SetAdminCompleteFragmentDirections
 import com.climus.climeet.presentation.ui.intro.signup.admin.complete.SetAdminCompleteViewModel
 import com.climus.climeet.presentation.ui.main.MainActivity
+import com.climus.climeet.presentation.ui.intro.IntroViewModel
+import com.climus.climeet.presentation.ui.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SetClimerCompleteFragment : BaseFragment<FragmentSetClimerCompleteBinding>(R.layout.fragment_set_climer_complete) {
 
-    private val viewModel: SetClimerCompleteViewModel by viewModels()
+    private val parentViewModel: IntroViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
+        parentViewModel.signUpProgressStop()
 
-        binding.vm = viewModel
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
 
         binding.ivCheck.setImageResource(R.drawable.ic_check_anim)
         val drawable = binding.ivCheck.drawable

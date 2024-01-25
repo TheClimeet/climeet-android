@@ -33,5 +33,40 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.9" />
 
+        <ProgressBar
+            android:id="@+id/pb_climer"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:max="7"
+            android:progressDrawable="@drawable/progress_custom"
+            android:scaleY="0.15"
+            app:layout_constraintBottom_toBottomOf="@id/tool_guide"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tool_guide"
+            app:signUpProgress="@{vm.uiState.climerSignUpState}" />
+
+        <ProgressBar
+            android:id="@+id/pb_admin"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:max="8"
+            android:progressDrawable="@drawable/progress_custom"
+            android:scaleY="0.15"
+            app:layout_constraintBottom_toBottomOf="@id/tool_guide"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tool_guide"
+            app:signUpProgress="@{vm.uiState.adminSignUpState}" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/tool_guide"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.085" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

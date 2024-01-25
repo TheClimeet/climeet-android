@@ -1,9 +1,10 @@
 package com.climus.climeet.presentation.ui.intro.signup.climer.model
 
 data class FollowCrag(
-    var profileUrl : String? = null,
-    var name : String = "",
+    val id: Long,
+    val imgUrl: String = "",
+    val name : String = "",
+    val keyword: String = "",
     var followers : Int = 0,
-    var keyword: String = "",
     var isFollowing: Boolean = false
 )
