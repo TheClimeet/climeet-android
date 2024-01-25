@@ -41,7 +41,11 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
     private fun initClickListener() {
         // 암장 선택
         binding.layoutSelectCrag.setOnClickListener {
-            showBottomSheet()
+            if(isStopwatchRunning){
+                NoticePopup.make(it, "운동중에는 암장을 바꿀 수 없어요!").show()
+            } else {
+                showBottomSheet()
+            }
         }
 
         // 스톱워치 시작
