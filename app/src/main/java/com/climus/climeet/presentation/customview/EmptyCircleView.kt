@@ -17,7 +17,7 @@ class EmptyCircleView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    private var ecColor: Int = Color.WHITE
+    var ecColor: Int = Color.WHITE
     private var ecText: String = ""
     private var ecTextSize: Float = 0F
 

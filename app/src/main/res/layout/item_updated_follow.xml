@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.shorts.model.UpdatedFollowUiData" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,9 +20,11 @@
             android:id="@+id/iv_profile"
             android:layout_width="56dp"
             android:layout_height="56dp"
+            android:onClick="@{() -> item.onClickListener.invoke(item.userId)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:profileImgUrl="@{item.profileImg}"
             tools:src="@drawable/test" />
 
         <View
@@ -38,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:text="@{item.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_profile"

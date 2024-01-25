@@ -5,17 +5,23 @@
 
     <data>
 
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> item.onClickListener.invoke(item.shortsId)}">
 
         <ImageView
             android:id="@+id/iv_thumbnail"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
+            app:imgUrl="@{item.thumbnailImg}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="3:4"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,18 +46,17 @@
                 style="@style/TextSmallSemiBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{item.gymName}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="피커스 구로" />
 
-            <View
+            <com.climus.climeet.presentation.customview.CircleView
                 android:id="@+id/v_crag_level_color"
                 android:layout_width="14dp"
                 android:layout_height="14dp"
                 android:layout_marginStart="4dp"
-                android:background="@drawable/oval"
-                android:backgroundTint="@color/cm_red"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tv_crag_name"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -59,7 +64,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.climus.climeet.presentation.customview.EmptyCircleView
-            android:id="@+id/iv_level"
+            android:id="@+id/iv_climeet_level"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="16dp"

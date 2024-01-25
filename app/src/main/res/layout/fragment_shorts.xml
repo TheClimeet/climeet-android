@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.shorts.ShortsViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_shorts_profile"
+            android:id="@+id/rv_updated_follow"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -33,7 +37,8 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_header"
-            tools:listitem="@layout/item_shorts_profile" />
+            app:list="@{vm.uiState.updatedFollowList}"
+            tools:listitem="@layout/item_updated_follow" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_filter_toggle"
@@ -49,7 +54,7 @@
             android:paddingVertical="2dp"
             android:text="최신순"
             app:layout_constraintEnd_toStartOf="@id/btn_more"
-            app:layout_constraintTop_toBottomOf="@id/rv_shorts_profile" />
+            app:layout_constraintTop_toBottomOf="@id/rv_updated_follow" />
 
         <ImageButton
             android:id="@+id/btn_more"
@@ -66,7 +71,7 @@
             app:layout_constraintTop_toTopOf="@id/btn_filter_toggle" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_shorts"
+            android:id="@+id/rv_shorts_thumbnail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -75,8 +80,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_filter_toggle"
+            app:list="@{vm.uiState.shortsThumbnailList}"
             app:spanCount="2"
-            tools:listitem="@layout/item_shorts" />
+            tools:listitem="@layout/item_shorts_thumbnail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
