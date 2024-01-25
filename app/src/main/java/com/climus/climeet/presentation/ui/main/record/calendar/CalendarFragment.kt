@@ -9,13 +9,14 @@ import androidx.fragment.app.viewModels
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCalendarBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.main.record.calendar.DayViewContainer.Companion.selectedDay
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.DayPosition
 import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.view.MonthDayBinder
-import com.kizitonwose.calendar.view.ViewContainer
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
@@ -55,13 +56,23 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
             override fun create(view: View) = DayViewContainer(view)
         }
 
+        setupCalendarView()
+        setDayOfWeekTitles()
+        setupDayBinder()
+        setupMonthScrollListener()
+
+    }
+
+    private fun setupCalendarView() {
         // 날짜
         val currentMonth = YearMonth.now()
         val startMonth = currentMonth.minusMonths(100)
         val endMonth = currentMonth.plusMonths(100)
         binding.calendarView.setup(startMonth, endMonth, DayOfWeek.SUNDAY)
         binding.calendarView.scrollToMonth(currentMonth)
+    }
 
+    private fun setDayOfWeekTitles() {
         // 요일
         val daysOfWeek = daysOfWeek(firstDayOfWeek = DayOfWeek.SUNDAY)
         val titlesContainer = view?.findViewById<ViewGroup>(R.id.container_titles)
@@ -70,19 +81,35 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
             val title = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
             textView.text = title
         }
+    }
 
+    private fun setupDayBinder() {
         binding.calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
             override fun create(view: View) = DayViewContainer(view)
             override fun bind(container: DayViewContainer, data: CalendarDay) {
                 container.textView.text = data.date.dayOfMonth.toString()
+                container.day = data
                 if (data.position == DayPosition.MonthDate) {
                     container.titlesContainer.visibility = View.VISIBLE
                 } else {
                     container.titlesContainer.visibility = View.INVISIBLE
                 }
+
+                if (data.date == LocalDate.now()) {
+                    if (selectedDay == null) {
+                        selectedDay = container
+                        selectedDay?.select()
+                    } else {
+                        container.deselect()
+                    }
+                } else {
+                    container.deselect()
+                }
             }
         }
+    }
 
+    private fun setupMonthScrollListener() {
         // 이전 월로 이동
         binding.ivDatePre.setOnClickListener {
             binding.calendarView.findFirstVisibleMonth()?.let {
@@ -104,13 +131,8 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
                 month.yearMonth.month.value.toString()
             )
         }
-
     }
 
 }
 
-// 날짜
-class DayViewContainer(view: View) : ViewContainer(view) {
-    val textView = view.findViewById<TextView>(R.id.tv_date)
-    val titlesContainer = view as ViewGroup
-}
+
