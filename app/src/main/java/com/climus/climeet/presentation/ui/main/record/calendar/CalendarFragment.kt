@@ -53,7 +53,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
                 container.textView.text = data.date.dayOfMonth.toString()
             }
 
-            override fun create(view: View) = DayViewContainer(view)
+            override fun create(view: View) = DayViewContainer(view, viewModel)
         }
 
         setupCalendarView()
@@ -85,7 +85,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
 
     private fun setupDayBinder() {
         binding.calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
-            override fun create(view: View) = DayViewContainer(view)
+            override fun create(view: View) = DayViewContainer(view, viewModel)
             override fun bind(container: DayViewContainer, data: CalendarDay) {
                 container.textView.text = data.date.dayOfMonth.toString()
                 container.day = data

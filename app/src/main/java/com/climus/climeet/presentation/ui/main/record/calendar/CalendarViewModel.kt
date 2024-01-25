@@ -1,7 +1,5 @@
 package com.climus.climeet.presentation.ui.main.record.calendar
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,6 +22,8 @@ class CalendarViewModel @Inject constructor() : ViewModel() {
     val currentYear = MutableStateFlow("${YearMonth.now().year}")
     val currentMonth = MutableStateFlow("${YearMonth.now().month.value}")
 
+    val isToday = MutableStateFlow(true)
+
     init {
 
     }
@@ -31,6 +31,10 @@ class CalendarViewModel @Inject constructor() : ViewModel() {
     fun updateSelectedYearMonth(selectedYear: String, selectedMonth: String) {
         currentYear.value = selectedYear
         currentMonth.value = selectedMonth
+    }
+
+    fun setIsToday(today: Boolean) {
+        isToday.value = today
     }
 
 }

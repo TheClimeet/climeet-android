@@ -10,7 +10,7 @@ import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.view.ViewContainer
 import java.time.LocalDate
 
-class DayViewContainer(view: View) : ViewContainer(view) {
+class DayViewContainer(view: View, val viewModel: CalendarViewModel) : ViewContainer(view) {
     val textView: TextView = view.findViewById(R.id.tv_date)
     val squareView: View = view.findViewById(R.id.view_date)
     val titlesContainer: ViewGroup = view as ViewGroup
@@ -21,6 +21,7 @@ class DayViewContainer(view: View) : ViewContainer(view) {
             if (selectedDay != this) {
                 selectedDay?.deselect()
                 select()
+                viewModel.setIsToday(day.date == LocalDate.now())
                 selectedDay = this
             }
         }
