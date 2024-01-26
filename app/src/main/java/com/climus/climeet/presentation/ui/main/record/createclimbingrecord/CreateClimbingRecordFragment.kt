@@ -31,6 +31,7 @@ class CreateClimbingRecordFragment :
             viewModel.event.collect {
                 when (it) {
                     CreateClimbingRecordEvent.ShowDatePicker -> showDatePicker()
+                    CreateClimbingRecordEvent.ShowTimePicker -> TODO()
                 }
             }
         }
@@ -44,6 +45,10 @@ class CreateClimbingRecordFragment :
             viewModel.setDate()
             binding.tvChoiceDate.setTextColor(Color.WHITE)
         }
+    }
+
+    private fun showTimePicker(){
+        // todo : bottomsheet이랑 연결
     }
 
 }

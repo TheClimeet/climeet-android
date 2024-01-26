@@ -15,6 +15,7 @@ import javax.inject.Inject
 
 sealed class CreateClimbingRecordEvent {
     data object ShowDatePicker : CreateClimbingRecordEvent()
+    data object ShowTimePicker : CreateClimbingRecordEvent()
 }
 
 @HiltViewModel
@@ -30,6 +31,12 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
     fun showDatePicker() {
         viewModelScope.launch {
             _event.emit(CreateClimbingRecordEvent.ShowDatePicker)
+        }
+    }
+
+    fun showTimePicker(){
+        viewModelScope.launch {
+            _event.emit(CreateClimbingRecordEvent.ShowTimePicker)
         }
     }
 
