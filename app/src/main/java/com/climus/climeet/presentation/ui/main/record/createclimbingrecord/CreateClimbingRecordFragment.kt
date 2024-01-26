@@ -9,6 +9,7 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCreateClimbingRecordBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectdate.SelectDateBottomFragment
+import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selecttime.SelectTimeBottomFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,7 +32,7 @@ class CreateClimbingRecordFragment :
             viewModel.event.collect {
                 when (it) {
                     CreateClimbingRecordEvent.ShowDatePicker -> showDatePicker()
-                    CreateClimbingRecordEvent.ShowTimePicker -> TODO()
+                    CreateClimbingRecordEvent.ShowTimePicker -> showTimePicker()
                 }
             }
         }
@@ -48,7 +49,8 @@ class CreateClimbingRecordFragment :
     }
 
     private fun showTimePicker(){
-        // todo : bottomsheet이랑 연결
+        val selectTimeBottomFragment = SelectTimeBottomFragment()
+        selectTimeBottomFragment.show(parentFragmentManager, "SelectTimePickerBottomSheet")
     }
 
 }

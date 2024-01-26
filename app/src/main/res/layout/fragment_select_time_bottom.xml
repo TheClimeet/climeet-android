@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -41,6 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
+            android:onClick="@{()->vm.closeFragment()}"
             android:src="@drawable/ic_close"
             app:layout_constraintBottom_toBottomOf="@id/tv_time_title"
             app:layout_constraintEnd_toEndOf="parent"
@@ -62,8 +62,8 @@
                 android:id="@+id/layout_start_time"
                 android:layout_width="0dp"
                 android:layout_height="75dp"
-                android:layout_weight="1"
                 android:layout_marginEnd="8dp"
+                android:layout_weight="1"
                 android:background="@drawable/rect_grey7fill_nostroke_15radius">
 
                 <TextView
@@ -72,9 +72,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="시작"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_start_time"
@@ -83,11 +83,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="6dp"
                     android:text="오전 11시"
-                    android:textSize="18sp"
                     android:textColor="@color/cm_main"
+                    android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -95,8 +95,8 @@
                 android:id="@+id/layout_end_time"
                 android:layout_width="0dp"
                 android:layout_height="75dp"
-                android:layout_weight="1"
                 android:layout_marginStart="8dp"
+                android:layout_weight="1"
                 android:background="@drawable/rect_grey7fill_nostroke_15radius">
 
                 <TextView
@@ -105,9 +105,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="종료"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_end_time"
@@ -116,11 +116,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="6dp"
                     android:text="오후 6시"
-                    android:textSize="18sp"
                     android:textColor="@color/cm_main"
+                    android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -132,8 +132,8 @@
             android:layout_width="0dp"
             android:layout_height="150dp"
             android:layout_marginHorizontal="30dp"
-            android:timePickerMode="spinner"
             android:layout_marginTop="20dp"
+            android:timePickerMode="spinner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_start_end" />
@@ -158,6 +158,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/rect_silverfill_nostroke_5radius"
                 android:gravity="center"
+                android:onClick="@{()->vm.closeFragment()}"
                 android:text="취소"
                 android:textSize="18sp" />
 

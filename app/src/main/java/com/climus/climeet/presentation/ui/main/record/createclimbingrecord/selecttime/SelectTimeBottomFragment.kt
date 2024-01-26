@@ -47,11 +47,12 @@ class SelectTimeBottomFragment : BottomSheetDialogFragment() {
     private fun initEventObserve() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.event.collect {
-
+                when (it) {
+                    SelectTimeBottomEvent.CloseFragment -> dismiss()
+                }
             }
         }
     }
-
 
 
 }
