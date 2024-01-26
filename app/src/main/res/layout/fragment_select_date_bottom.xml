@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
 
         <variable
@@ -17,13 +18,123 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="-20dp"
+        android:background="@drawable/rect_grey9fill_nostroke_20topradius"
         android:minHeight="500dp"
-        android:background="@drawable/rect_grey9fill_nostroke_20radius"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <TextView
+            android:id="@+id/tv_date_title"
+            style="@style/TextMediumBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="54dp"
+            android:text="날짜 선택"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:onClick="@{()->vm.closeFragment()}"
+            android:src="@drawable/ic_close"
+            app:layout_constraintBottom_toBottomOf="@id/tv_date_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_date_title" />
+
+        <TextView
+            android:id="@+id/tv_today_off"
+            style="@style/TextMediumSemiBold"
+            android:layout_width="0dp"
+            android:layout_height="41dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/rect_silverfill_nostroke_5radius"
+            android:gravity="center"
+            android:onClick="@{()->vm.updateIsToday()}"
+            android:text="오늘"
+            android:textSize="18sp"
+            android:visibility="@{vm.isToday() ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_date_title" />
+
+        <TextView
+            android:id="@+id/tv_today_on"
+            style="@style/TextMediumSemiBold"
+            android:layout_width="0dp"
+            android:layout_height="41dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/rect_mainfill_nostroke_5radius"
+            android:gravity="center"
+            android:onClick="@{()->vm.updateIsToday()}"
+            android:text="오늘"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:visibility="@{vm.isToday() ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_date_title" />
+
+        <DatePicker
+            android:id="@+id/dp_date"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="15dp"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_today_off" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:paddingHorizontal="30dp"
+            android:weightSum="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dp_date">
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                style="@style/TextMediumSemiBold"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/rect_silverfill_nostroke_5radius"
+                android:gravity="center"
+                android:onClick="@{()->vm.closeFragment()}"
+                android:text="취소"
+                android:textSize="18sp" />
+
+
+            <TextView
+                android:id="@+id/tv_ok"
+                style="@style/TextMediumSemiBold"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/rect_mainfill_nostroke_5radius"
+                android:gravity="center"
+                android:text="확인"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:onClick="@{()->vm.setDate()}"/>
+
+
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
