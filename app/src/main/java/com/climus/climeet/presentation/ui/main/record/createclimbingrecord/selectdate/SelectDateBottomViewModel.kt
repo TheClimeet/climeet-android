@@ -36,7 +36,7 @@ class SelectDateBottomViewModel @Inject constructor() : ViewModel() {
     }
 
     fun updateIsToday() {
-        if (isToday.value) {
+        if (!isToday.value) {
             viewModelScope.launch {
                 _event.emit(SelectDateBottomEvent.UpdateIsToday)
             }

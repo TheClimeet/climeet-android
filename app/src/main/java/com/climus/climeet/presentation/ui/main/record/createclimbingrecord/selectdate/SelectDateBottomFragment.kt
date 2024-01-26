@@ -1,6 +1,6 @@
 package com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectdate
 
-import android.content.DialogInterface
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSelectDateBottomBinding
+import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateClimbingRecordViewModel
 import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateRecordData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,6 +22,7 @@ import java.util.Calendar
 @AndroidEntryPoint
 class SelectDateBottomFragment : BottomSheetDialogFragment() {
 
+    private val parentViewModel: CreateClimbingRecordViewModel by viewModels()
     private val viewModel: SelectDateBottomViewModel by viewModels()
     private var _binding: FragmentSelectDateBottomBinding? = null
     private val binding get() = _binding!!
@@ -45,8 +47,12 @@ class SelectDateBottomFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setDatePicker()
+        initDatePicker()
         initEventObserve()
+
+        dialog?.setOnDismissListener {
+            parentViewModel.setDate() // BottomSheet가 닫힐 때 setDate() 호출
+        }
 
     }
 
@@ -78,11 +84,18 @@ class SelectDateBottomFragment : BottomSheetDialogFragment() {
         binding.dpDate.updateDate(today.year, today.monthValue - 1, today.dayOfMonth)
     }
 
-    private fun setDatePicker() {
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
+    private fun initDatePicker(){
+        if(CreateRecordData.selectedDate?.year != 9999){
+            setDatePicker(CreateRecordData.selectedDate)
+        } else {
+            setDatePicker(LocalDate.now())
+        }
+    }
+
+    private fun setDatePicker(calendar: LocalDate) {
+        val year = calendar.year
+        val month = calendar.monthValue-1
+        val day = calendar.dayOfMonth
         binding.dpDate.init(
             year,
             month,
@@ -91,4 +104,5 @@ class SelectDateBottomFragment : BottomSheetDialogFragment() {
                 // todo 날짜 변경시?
             })
     }
+
 }

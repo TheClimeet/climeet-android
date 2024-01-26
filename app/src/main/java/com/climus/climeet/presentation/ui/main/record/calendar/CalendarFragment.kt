@@ -1,13 +1,13 @@
 package com.climus.climeet.presentation.ui.main.record.calendar
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.compose.runtime.collectAsState
 import androidx.core.view.children
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCalendarBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -47,7 +47,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
 
     }
 
-    private fun setRecycler(){
+    private fun setRecycler() {
         calendarAdapter = CalendarAdapter()
         binding.rvRecord.adapter = calendarAdapter
         binding.rvRecord.addItemDecoration(AdapterDecoration())
@@ -56,9 +56,17 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
     private fun initEventObserve() {
         repeatOnStarted {
             viewModel.event.collect {
-
+                when (it) {
+                    CalendarEvent.NavigateToCreateClimbingRecord -> findNavController().toCreateClimbingRecord()
+                }
             }
         }
+    }
+
+    private fun NavController.toCreateClimbingRecord() {
+        val action =
+            CalendarFragmentDirections.actionCalendarFragmentToCreateClimbingRecordFragment()
+        navigate(action)
     }
 
     private fun customCalendar() {

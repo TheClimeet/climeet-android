@@ -31,6 +31,14 @@
     <fragment
         android:id="@+id/calendar_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.calendar.CalendarFragment"
-        android:label="CalendarFragment" />
+        android:label="CalendarFragment" >
+        <action
+            android:id="@+id/action_calendar_fragment_to_createClimbingRecordFragment"
+            app:destination="@id/create_climbing_record_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/create_climbing_record_fragment"
+        android:name="com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateClimbingRecordFragment"
+        android:label="CreateClimbingRecordFragment" />
 
 </navigation>

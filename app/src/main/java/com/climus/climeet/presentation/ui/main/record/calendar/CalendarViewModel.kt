@@ -1,19 +1,20 @@
 package com.climus.climeet.presentation.ui.main.record.calendar
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.climus.climeet.presentation.ui.main.record.model.ClimbingRecordData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
 import javax.inject.Inject
 
 sealed class CalendarEvent {
-
+    data object NavigateToCreateClimbingRecord : CalendarEvent()
 }
 
 @HiltViewModel
@@ -54,6 +55,12 @@ class CalendarViewModel @Inject constructor() : ViewModel() {
         } else {
             isRecordVisible.value = false
             recordList.value = emptyList()
+        }
+    }
+
+    fun navigateToCreateClimbingRecord() {
+        viewModelScope.launch {
+            _event.emit(CalendarEvent.NavigateToCreateClimbingRecord)
         }
     }
 
