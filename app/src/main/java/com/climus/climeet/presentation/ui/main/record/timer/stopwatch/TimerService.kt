@@ -21,6 +21,7 @@ import com.climus.climeet.presentation.ui.main.MainActivity
 
 class TimerService : Service() {
     private var startTime = 0L
+    private var pauseTime = 0L
     private var elapsedTime = 0L
     private var isPaused = false
     private var timer: Timer? = null
@@ -63,22 +64,52 @@ class TimerService : Service() {
             String.format("%02d:%02d", minutes, seconds)
         }
 
-        val notificationIntent = Intent(this, MainActivity::class.java).apply {
+        // 알림창 클릭시 타이머 화면으로 이동
+        val timerIntent = Intent(this, MainActivity::class.java).apply {
             putExtra("showTimerFragment", true)
         }
-        // 알림창 클릭시 타이머 화면으로 이동
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
 
-        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+        val pendingIntent: PendingIntent =
+            PendingIntent.getActivity(this, 0, timerIntent, PendingIntent.FLAG_IMMUTABLE)
+
+        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("$timeFormat")
             .setSmallIcon(R.drawable.ic_notification)
             .setContentIntent(pendingIntent)
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            builder.setSound(null)  // 알림음을 null로 설정
+            notification.setSound(null)  // 알림음을 null로 설정
         }
 
-        return builder.build()
+        // 알림창 재시작, 일시중지 버튼
+        if (isPaused) {
+            val restartIntent = Intent(this, TimerService::class.java).apply {
+                putExtra("command", "RESTART")
+            }
+            val restartPendingIntent: PendingIntent =
+                PendingIntent.getService(this, 0, restartIntent, PendingIntent.FLAG_MUTABLE)
+            // 재시작 액션 추가
+            notification.addAction(R.drawable.ic_notification, "재시작", restartPendingIntent)
+        } else {
+            val pauseIntent = Intent(this, TimerService::class.java).apply {
+                putExtra("command", "PAUSE")
+            }
+            val pausePendingIntent: PendingIntent =
+                PendingIntent.getService(this, 1, pauseIntent, PendingIntent.FLAG_MUTABLE)
+            // 일시정지 액션 추가
+            notification.addAction(R.drawable.ic_notification, "일시중지", pausePendingIntent)
+        }
+
+        // 루트 기록 액션 추가
+        val recordIntent = Intent(this, MainActivity::class.java).apply {
+            putExtra("showTimerFragment", true)
+        }
+        val recordPendingIntent: PendingIntent = PendingIntent.getActivity(
+            this, 2, recordIntent, PendingIntent.FLAG_IMMUTABLE
+        )
+        notification.addAction(R.drawable.ic_notification, "루트 기록", recordPendingIntent)
+
+        return notification.build()
     }
 
     private fun createNotificationChannelAndGroup() {
@@ -109,7 +140,7 @@ class TimerService : Service() {
         createNotificationChannelAndGroup()
     }
 
-    private fun startTimer() {
+    private fun setTimer(){
         if (!isPaused) {
             startTime = System.currentTimeMillis()
         }
@@ -118,27 +149,37 @@ class TimerService : Service() {
                 override fun run() {
                     elapsedTime += System.currentTimeMillis() - startTime
                     val notification = createNotification(elapsedTime)
-                    val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                    notificationManager.notify(1, notification)
+                    val notificationManager =
+                        getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    notificationManager.notify(1, notification) // 새로운 알림 생성
                     startTime = System.currentTimeMillis()
                 }
             }, 0, 1000)
         }
+    }
+
+    private fun startTimer() {
+        setTimer()
         Log.d("timer", "서비스 타이머 시작")
     }
 
     private fun pauseTimer() {
         isPaused = true
         timer?.cancel()
+        pauseTime = elapsedTime
+        // 알림창 재생성
+        val notification = createNotification(elapsedTime)
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(1, notification)
         Log.d("timer", "서비스 타이머 일시정지")
     }
 
     private fun restartTimer() {
-        if (isPaused) {
-            isPaused = false
-            startTimer()
-            Log.d("timer", "서비스 타이머 재시작")
-        }
+        isPaused = false
+        // 타이머 재시작
+        setTimer()
+        Log.d("timer", "서비스 타이머 재시작")
     }
 
     private fun stopTimer() {
