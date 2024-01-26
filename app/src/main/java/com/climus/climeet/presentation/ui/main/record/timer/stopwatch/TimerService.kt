@@ -16,6 +16,7 @@ import java.util.Timer
 import java.util.TimerTask
 import java.util.concurrent.TimeUnit
 import android.app.NotificationChannelGroup
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.climus.climeet.presentation.ui.main.MainActivity
 
 
@@ -152,6 +153,12 @@ class TimerService : Service() {
                     val notificationManager =
                         getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                     notificationManager.notify(1, notification) // 새로운 알림 생성
+
+                    // 브로드캐스트 보내기
+                    val intent = Intent("StopwatchUpdate")
+                    intent.putExtra("elapsedTime", elapsedTime)
+                    LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(intent)
+
                     startTime = System.currentTimeMillis()
                 }
             }, 0, 1000)
@@ -184,6 +191,12 @@ class TimerService : Service() {
 
     private fun stopTimer() {
         timer?.cancel()
+
+        // 스톱워치 화면 시간 0으로 바꿔주기
+        val intent = Intent("StopwatchUpdate")
+        intent.putExtra("elapsedTime", 0)
+        LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(intent)
+
         Log.d("timer", "서비스 타이머 종료")
     }
 

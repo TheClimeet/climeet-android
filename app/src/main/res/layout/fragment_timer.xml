@@ -133,13 +133,15 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!--    시간    -->
-        <Chronometer
-            android:id="@+id/cm_time"
+        <TextView
+            android:id="@+id/tv_time"
             style="@style/TextTimer"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:gravity="center"
+            android:text="00:00"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintTop_toBottomOf="@id/layout_select_crag"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -150,7 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="시간"
-            app:layout_constraintTop_toBottomOf="@id/cm_time"
+            app:layout_constraintTop_toBottomOf="@id/tv_time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 

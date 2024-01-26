@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentTimerBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -12,6 +13,7 @@ import com.climus.climeet.presentation.customview.NoticePopup
 import com.climus.climeet.presentation.ui.main.record.model.RecordCragData
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.CragSelectBottomFragment
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.CragSelectionListener
+import java.util.concurrent.TimeUnit
 
 enum class ViewMode {
     START, PAUSE, RESTART, STOP
@@ -34,14 +36,26 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = timerVM
-
+        timerVM.registerReceiver(requireContext())
+        timerObserve()
         initClickListener()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timerVM.unregisterReceiver(requireContext())
+    }
+
+    private fun timerObserve() {
+        timerVM.timeFormat.observe(viewLifecycleOwner, Observer { timeFormat ->
+            binding.tvTime.text = timeFormat
+        })
     }
 
     private fun initClickListener() {
         // 암장 선택
         binding.layoutSelectCrag.setOnClickListener {
-            if(isStopwatchRunning){
+            if (isStopwatchRunning) {
                 NoticePopup.make(it, "운동중에는 암장을 바꿀 수 없어요!").show()
             } else {
                 showBottomSheet()
