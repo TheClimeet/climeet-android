@@ -101,7 +101,10 @@ class SelectDateBottomFragment : BottomSheetDialogFragment() {
             month,
             day,
             DatePicker.OnDateChangedListener { view, year, monthOfYear, dayOfMonth ->
-                // todo 날짜 변경시?
+                if(viewModel.isToday.value){
+                    viewModel.updateIsToday()
+                }
+
             })
     }
 
