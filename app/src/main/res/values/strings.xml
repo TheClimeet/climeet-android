@@ -30,5 +30,6 @@
     <!--  운동 기록  -->
     <string name="timer_crag_search_nothing_msg">검색 결과가 없어요.\n다른 검색어로 검색해 보세요!</string>
     <string name="timer_crag_set_inform">"암장을 선택해주세요"</string>
+    <string name="timer_complete_inform">"오늘도 클밋과 행클 완료!"</string>
 
 </resources>

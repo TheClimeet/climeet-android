@@ -43,17 +43,21 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
     override fun onResume() {
         super.onResume()
         timerVM.isStart.value = sharedPreferences.getBoolean(KEY_IS_START, false)
-        timerVM.isPaused.value  = sharedPreferences.getBoolean(KEY_IS_PAUSE, false)
-        timerVM.isRestart.value  = sharedPreferences.getBoolean(KEY_IS_RESTART, false)
+        timerVM.isPaused.value = sharedPreferences.getBoolean(KEY_IS_PAUSE, false)
+        timerVM.isRestart.value = sharedPreferences.getBoolean(KEY_IS_RESTART, false)
         timerVM.isStop.value = sharedPreferences.getBoolean(KEY_IS_STOP, true)
         // 암장 이름 설정
-        if(timerVM.isStop.value == true){
+        if (timerVM.isStop.value == true) {
             binding.tvTitle.text = getString(R.string.timer_crag_set_inform)
-        } else{
-            binding.tvTitle.text = sharedPreferences.getString("cragName", getString(R.string.timer_crag_set_inform))
+        } else {
+            binding.tvTitle.text =
+                sharedPreferences.getString("cragName", getString(R.string.timer_crag_set_inform))
         }
         timerObserve()
-        Log.d("timer", "onResume\nisStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}")
+        Log.d(
+            "timer",
+            "onResume\nisStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}"
+        )
     }
 
     override fun onPause() {
@@ -64,7 +68,10 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             timerVM.isStop.value?.let { putBoolean(KEY_IS_STOP, it) }
             apply()
         }
-        Log.d("timer", "onPause\nisStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}")
+        Log.d(
+            "timer",
+            "onPause\nisStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}"
+        )
     }
 
     override fun onDestroy() {
@@ -74,7 +81,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
     }
 
     private fun timerObserve() {
-        if(timerVM.isPaused.value == true){
+        if (timerVM.isPaused.value == true) {
             val time = sharedPreferences.getString("pauseTime", timerVM.timeFormat.value)
             binding.tvTime.text = time
             //Log.d("timer", "timerObserve 호출 : $time")
@@ -85,7 +92,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         }
     }
 
-    private fun initTimerLayout(){
+    private fun initTimerLayout() {
         timerVM.isStart.observe(viewLifecycleOwner, Observer { isStart ->
             if (isStart) {
                 viewMode(ViewMode.START)
@@ -170,6 +177,12 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             timerVM.isRestart.value = false
             timerVM.isStop.value = true
             sharedPreferences.edit().putBoolean(KEY_IS_START, false).apply()
+
+            // 완료화면 띄우기
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.add(R.id.main_container, ClimbingCompleteFragment())
+            transaction.addToBackStack(null) // 이전 Fragment로 돌아갈 수 있게 스택에 추가
+            transaction.commit()
             true    // OnClickListener와 같이 쓰기 위해 true로 설정
         }
     }
