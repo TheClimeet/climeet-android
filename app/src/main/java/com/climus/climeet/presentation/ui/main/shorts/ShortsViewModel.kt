@@ -19,13 +19,47 @@ data class ShortsUiState(
     val shortsThumbnailList: List<ShortsThumbnailUiData> = emptyList()
 )
 
+sealed class ShortsEvent{
+    data class NavigateToShortsDetail(val shortsId: Int)
+}
+
 @HiltViewModel
 class ShortsViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow(ShortsUiState())
     val uiState: StateFlow<ShortsUiState> = _uiState.asStateFlow()
 
-    fun getData() {
+    fun getInitData() {
+
+        val thumbNailList = mutableListOf<ShortsThumbnailUiData>()
+
+        for(i in 0 until 5){
+            thumbNailList.add(ShortsThumbnailUiData(
+                1,
+                TEST_IMG,
+                "파커스 강남",
+                "#537049",
+                "#433b80",
+                ::navigateToShortsDetail
+            ))
+            thumbNailList.add(ShortsThumbnailUiData(
+                2,
+                TEST_IMG,
+                "인천 클밋트",
+                "#eb4034",
+                "#eb4034",
+                ::navigateToShortsDetail
+            ))
+            thumbNailList.add(ShortsThumbnailUiData(
+                3,
+                TEST_IMG,
+                "피카부 동경",
+                "#eb4034",
+                "#537049",
+                ::navigateToShortsDetail
+            ))
+        }
+
         viewModelScope.launch {
 
             _uiState.update { state ->
@@ -43,16 +77,7 @@ class ShortsViewModel @Inject constructor() : ViewModel() {
 
             _uiState.update { state ->
                 state.copy(
-                    shortsThumbnailList = listOf(
-                        ShortsThumbnailUiData(
-                            1,
-                            TEST_IMG,
-                            "파커스 강남",
-                            "#eb4034",
-                            "#433b80",
-                            ::navigateToShortsDetail
-                        )
-                    )
+                    shortsThumbnailList = thumbNailList
                 )
             }
         }

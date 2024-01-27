@@ -11,78 +11,86 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/layout_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="25dp">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_header"
-            style="@style/TextLargeSemiBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:text="숏츠"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="25dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_updated_follow"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            android:paddingStart="10dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_header"
-            app:list="@{vm.uiState.updatedFollowList}"
-            tools:listitem="@layout/item_updated_follow" />
+            <TextView
+                android:id="@+id/tv_header"
+                style="@style/TextLargeSemiBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:text="숏츠"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_filter_toggle"
-            style="@style/TextSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/rect_grey8fill_nostroke_5radius"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="2dp"
-            android:text="최신순"
-            app:layout_constraintEnd_toStartOf="@id/btn_more"
-            app:layout_constraintTop_toBottomOf="@id/rv_updated_follow" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_updated_follow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_header"
+                app:list="@{vm.uiState.updatedFollowList}"
+                tools:listitem="@layout/item_updated_follow" />
 
-        <ImageButton
-            android:id="@+id/btn_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:background="@android:color/transparent"
-            android:paddingHorizontal="2dp"
-            android:paddingVertical="8dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_menu"
-            app:layout_constraintBottom_toBottomOf="@id/btn_filter_toggle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/btn_filter_toggle" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_filter_toggle"
+                style="@style/TextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/rect_grey8fill_nostroke_5radius"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="2dp"
+                android:text="최신순"
+                app:layout_constraintEnd_toStartOf="@id/btn_more"
+                app:layout_constraintTop_toBottomOf="@id/rv_updated_follow" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_shorts_thumbnail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_filter_toggle"
-            app:list="@{vm.uiState.shortsThumbnailList}"
-            app:spanCount="2"
-            tools:listitem="@layout/item_shorts_thumbnail" />
+            <ImageButton
+                android:id="@+id/btn_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                android:paddingHorizontal="2dp"
+                android:paddingVertical="8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_menu"
+                app:layout_constraintBottom_toBottomOf="@id/btn_filter_toggle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btn_filter_toggle" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_shorts_thumbnail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_filter_toggle"
+                app:list="@{vm.uiState.shortsThumbnailList}"
+                app:spanCount="2"
+                tools:listitem="@layout/item_shorts_thumbnail" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
 </layout>
