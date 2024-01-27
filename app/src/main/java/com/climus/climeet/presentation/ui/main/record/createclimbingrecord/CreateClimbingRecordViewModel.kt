@@ -16,6 +16,8 @@ import javax.inject.Inject
 sealed class CreateClimbingRecordEvent {
     data object ShowDatePicker : CreateClimbingRecordEvent()
     data object ShowTimePicker : CreateClimbingRecordEvent()
+
+    data object NavigateToSelectCrag : CreateClimbingRecordEvent()
 }
 
 @HiltViewModel
@@ -59,6 +61,12 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
             val day = date.dayOfMonth
             datePickText.value = "${year}년 ${month}월 ${day}일 $koreanDayOfWeek"
             Log.d("dateTest", "dhks ${datePickText.value}")
+        }
+    }
+
+    fun navigateToSelectCrag(){
+        viewModelScope.launch{
+            _event.emit(CreateClimbingRecordEvent.NavigateToSelectCrag)
         }
     }
 

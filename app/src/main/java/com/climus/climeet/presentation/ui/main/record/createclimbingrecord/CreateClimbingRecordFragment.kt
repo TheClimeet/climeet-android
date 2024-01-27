@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCreateClimbingRecordBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -33,6 +35,7 @@ class CreateClimbingRecordFragment :
                 when (it) {
                     CreateClimbingRecordEvent.ShowDatePicker -> showDatePicker()
                     CreateClimbingRecordEvent.ShowTimePicker -> showTimePicker()
+                    CreateClimbingRecordEvent.NavigateToSelectCrag -> findNavController().toSelectCrag()
                 }
             }
         }
@@ -48,9 +51,15 @@ class CreateClimbingRecordFragment :
         }
     }
 
-    private fun showTimePicker(){
+    private fun showTimePicker() {
         val selectTimeBottomFragment = SelectTimeBottomFragment()
         selectTimeBottomFragment.show(parentFragmentManager, "SelectTimePickerBottomSheet")
+    }
+
+    private fun NavController.toSelectCrag() {
+        val action =
+            CreateClimbingRecordFragmentDirections.actionCreateClimbingRecordFragmentToCreateSelectCragFragment()
+        navigate(action)
     }
 
 }

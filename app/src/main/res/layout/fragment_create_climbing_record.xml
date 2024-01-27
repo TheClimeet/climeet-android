@@ -157,6 +157,7 @@
                         android:background="@drawable/rect_grey8fill_nostroke_5radius"
                         android:paddingHorizontal="20dp"
                         android:paddingVertical="13dp"
+                        android:onClick="@{()->vm.navigateToSelectCrag()}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_climbing_gym">
