@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,9 +20,15 @@ class TimerViewModel @Inject constructor() : ViewModel() {
     private val _time = MutableLiveData<Long>().apply { value = 0L }
     val time: LiveData<Long> get() = _time
 
+    var isStart = MutableLiveData<Boolean>().apply { value = false }
+    var isPaused = MutableLiveData<Boolean>().apply { value = false }
+    var isRestart = MutableLiveData<Boolean>().apply { value = false }
+    var isStop = MutableLiveData<Boolean>().apply { value = true }
+
+    // 스톱워치 경과시간 전달받음
     private val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            _time.value = intent.getLongExtra("elapsedTime", 0)
+            _time.value = intent.getLongExtra("elapsedTime", 0L)
         }
     }
 
@@ -48,12 +53,10 @@ class TimerViewModel @Inject constructor() : ViewModel() {
         LocalBroadcastManager.getInstance(context).registerReceiver(
             broadcastReceiver, IntentFilter(STOPWATCH_UPDATE)
         )
-        Log.d("timer", "레지스터 연결")
     }
 
     fun unregisterReceiver(context: Context) {
         LocalBroadcastManager.getInstance(context).unregisterReceiver(broadcastReceiver)
-        Log.d("timer", "레지스터 연결 해제")
     }
 
     companion object {

@@ -1,5 +1,7 @@
 package com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentTimerBottomsheetCragBinding
 import com.climus.climeet.presentation.ui.main.record.model.RecordCragData
+import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +33,7 @@ class CragSelectBottomFragment : BottomSheetDialogFragment() {
 
     private val viewModel: CragSelectBottomViewModel by viewModels()
     private lateinit var binding: FragmentTimerBottomsheetCragBinding
+    private lateinit var sharedPreferences: SharedPreferences
 
     private var cragSearchAdapter: CragSelectRVAdapter? = null
     var cragSelectionListener: CragSelectionListener? = null
@@ -42,6 +46,7 @@ class CragSelectBottomFragment : BottomSheetDialogFragment() {
     ): View? {
         binding = FragmentTimerBottomsheetCragBinding.inflate(inflater, container, false)
         binding.vm = viewModel
+        sharedPreferences = requireContext().getSharedPreferences(TimerFragment.PREF_NAME, Context.MODE_PRIVATE)
 
         // 바텀시트 상단 모서리 radius 적용
         binding.layoutBottom.background = context?.let {
@@ -49,6 +54,11 @@ class CragSelectBottomFragment : BottomSheetDialogFragment() {
                 it,
                 R.drawable.rect_grey9fill_nostroke_20radius
             )
+        }
+
+        binding.btnDelete.setOnClickListener {
+            binding.etCragName.text.clear()
+            Log.d("timer", "삭제 후 : ${binding.etCragName.text}")
         }
 
         return binding.root
@@ -67,6 +77,7 @@ class CragSelectBottomFragment : BottomSheetDialogFragment() {
             // 선택된 암장 정보 저장
             viewModel.setSelectedItem(cragName)
             cragSelectionListener?.onCragSelected(cragName) // TimerFragment로 데이터 전달
+            sharedPreferences.edit().putString("cragName", cragName.name).apply()
             // 바텀시트 닫기
             dismiss()
         }

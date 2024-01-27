@@ -25,6 +25,7 @@ class TimerService : Service() {
     private var pauseTime = 0L
     private var elapsedTime = 0L
     private var isPaused = false
+    private var isStopped = true
     private var timer: Timer? = null
 
     override fun onBind(intent: Intent): IBinder? {
@@ -37,7 +38,7 @@ class TimerService : Service() {
         when (command) {
             "START" -> {
                 startTimer()
-                val notification = createNotification(0)
+                val notification = createNotification(0L)
                 startForeground(1, notification)
             }
             "PAUSE" -> pauseTimer()
@@ -166,6 +167,7 @@ class TimerService : Service() {
     }
 
     private fun startTimer() {
+        isStopped = false
         setTimer()
         Log.d("timer", "서비스 타이머 시작")
     }
@@ -190,11 +192,12 @@ class TimerService : Service() {
     }
 
     private fun stopTimer() {
+        isStopped = true
         timer?.cancel()
 
         // 스톱워치 화면 시간 0으로 바꿔주기
         val intent = Intent("StopwatchUpdate")
-        intent.putExtra("elapsedTime", 0)
+        intent.putExtra("elapsedTime", 0L)
         LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(intent)
 
         Log.d("timer", "서비스 타이머 종료")
