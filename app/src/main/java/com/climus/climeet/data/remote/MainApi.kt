@@ -1,6 +1,7 @@
 package com.climus.climeet.data.remote
 
 import com.climus.climeet.data.model.response.SearchGymResponse
+import com.climus.climeet.data.model.response.ShortsListResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -20,5 +21,17 @@ interface MainApi {
     suspend fun searchGym(
         @Query("gymname") gymName: String
     ): Response<List<SearchGymResponse>>
+
+    @GET("/api/shorts/latest")
+    suspend fun getRecentShorts(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<ShortsListResponse>
+
+    @GET("/api/shorts/popular")
+    suspend fun getPopularShorts(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<ShortsListResponse>
 
 }
