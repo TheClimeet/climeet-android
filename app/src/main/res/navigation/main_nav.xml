@@ -40,5 +40,13 @@
             android:id="@+id/action_shortsDetailFragment_to_rootShortsFragment"
             app:destination="@id/rootShortsFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/shortsBottomSheetFragment"
+        android:name="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsBottomSheetFragment"
+        android:label="ShortsBottomSheetFragment" />
+
+    <action
+        android:id="@+id/globalActionToShortsBottomSheetFragment"
+        app:destination="@id/shortsBottomSheetFragment"/>
 
 </navigation>

@@ -31,7 +31,8 @@ data class ShortsUiState(
 )
 
 sealed class ShortsEvent {
-    data class NavigateToShortsDetail(val shortsId: Int)
+    data object NavigateToSearchCragBottomSheet : ShortsEvent()
+    data class NavigateToShortsDetail(val shortsId: Int) : ShortsEvent()
     data class ShowToastMessage(val msg: String) : ShortsEvent()
 }
 
@@ -184,6 +185,12 @@ class ShortsViewModel @Inject constructor(
 
     private fun navigateToUpdatedFollowShorts(id: Long) {
 
+    }
+
+    fun navigateToSearchCragBottomSheet() {
+        viewModelScope.launch {
+            _event.emit(ShortsEvent.NavigateToSearchCragBottomSheet)
+        }
     }
 
     override fun onClickBookMarkBtn(shortsId: Long) {
