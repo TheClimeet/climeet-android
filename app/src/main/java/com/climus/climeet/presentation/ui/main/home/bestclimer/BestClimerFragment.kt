@@ -3,6 +3,7 @@ package com.climus.climeet.presentation.ui.main.home.bestclimer
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import com.climus.climeet.MainNavDirections
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentBestClimerBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -15,9 +16,21 @@ class BestClimerFragment : BaseFragment<FragmentBestClimerBinding>(R.layout.frag
         super.onViewCreated(view, savedInstanceState)
 
         setupBestClimer()
+        setupOnClickListener()
         binding.icBestClimerBack.setOnClickListener {
             findNavController().navigateUp()
         }
+    }
+
+    private fun setupOnClickListener() {
+        binding.icBestClimerSearch.setOnClickListener {
+            navigateToSearchCrag()
+        }
+    }
+
+    private fun navigateToSearchCrag() {
+        val action = MainNavDirections.actionHomeFragmentToSearchCragFragment()
+        findNavController().navigate(action)
     }
 
     private fun setupBestClimer() {

@@ -9,6 +9,7 @@ import com.climus.climeet.presentation.base.BaseFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.climus.climeet.MainNavDirections
 import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.home.recycler.homegym.HomeGymRVAdapter
@@ -87,7 +88,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private fun navigateToSearchCrag() {
-        val action = HomeFragmentDirections.actionHomeFragmentToSearchCragFragment()
+        val action = MainNavDirections.actionHomeFragmentToSearchCragFragment()
         findNavController().navigate(action)
     }
 

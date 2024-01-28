@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.climus.climeet.MainNavDirections
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentPopularRoutesBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -33,6 +34,15 @@ class PopularRoutesFragment : BaseFragment<FragmentPopularRoutesBinding>(R.layou
         binding.icPopularRoutesBack.setOnClickListener {
             findNavController().navigateUp()
         }
+
+        binding.icPopularRoutesSearch.setOnClickListener {
+            navigateToSearchCrag()
+        }
+    }
+
+    private fun navigateToSearchCrag() {
+        val action = MainNavDirections.actionHomeFragmentToSearchCragFragment()
+        findNavController().navigate(action)
     }
 
     private fun setupPopularRoutesList() {

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.climus.climeet.MainNavDirections
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentBestClimerBinding
 import com.climus.climeet.databinding.FragmentPopularShortsBinding
@@ -34,6 +35,15 @@ class PopularShortsFragment : BaseFragment<FragmentPopularShortsBinding>(R.layou
         binding.icPopularShortsBack.setOnClickListener {
             findNavController().navigateUp()
         }
+
+        binding.icPopularShortsSearch.setOnClickListener {
+            navigateToSearchCrag()
+        }
+    }
+
+    private fun navigateToSearchCrag() {
+        val action = MainNavDirections.actionHomeFragmentToSearchCragFragment()
+        findNavController().navigate(action)
     }
 
     private fun setupPopularShortsList() {

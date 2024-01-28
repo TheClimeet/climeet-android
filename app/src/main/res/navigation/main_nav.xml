@@ -20,9 +20,6 @@
         <action
             android:id="@+id/action_home_fragment_to_popularRoutesFragment"
             app:destination="@id/popularRoutesFragment" />
-        <action
-            android:id="@+id/action_home_fragment_to_searchCragFragment"
-            app:destination="@id/searchCragFragment" />
     </fragment>
     <fragment
         android:id="@+id/shorts_fragment"
@@ -60,5 +57,9 @@
         android:id="@+id/searchCragFragment"
         android:name="com.climus.climeet.presentation.ui.main.home.searchcrag.SearchCragFragment"
         android:label="SearchCragFragment" />
+
+    <action
+        android:id="@+id/action_home_fragment_to_searchCragFragment"
+        app:destination="@id/searchCragFragment" />
 
 </navigation>

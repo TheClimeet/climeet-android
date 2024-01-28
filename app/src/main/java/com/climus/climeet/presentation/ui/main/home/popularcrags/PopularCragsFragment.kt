@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.climus.climeet.MainNavDirections
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentPopularCragsBinding
 import com.climus.climeet.databinding.FragmentPopularShortsBinding
@@ -28,6 +29,16 @@ class PopularCragsFragment : BaseFragment<FragmentPopularCragsBinding>(R.layout.
         binding.icPopularCragsBack.setOnClickListener {
             findNavController().navigateUp()
         }
+
+        binding.icPopularCragsSearch.setOnClickListener {
+            navigateToSearchCrag()
+        }
+
+    }
+
+    private fun navigateToSearchCrag() {
+        val action = MainNavDirections.actionHomeFragmentToSearchCragFragment()
+        findNavController().navigate(action)
     }
 
     private fun setupPopularCrags() {
