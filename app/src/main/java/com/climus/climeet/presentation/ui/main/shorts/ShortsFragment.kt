@@ -23,7 +23,8 @@ class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_sho
         binding.rvShortsThumbnail.adapter = ShortsThumbnailAdapter()
         binding.rvUpdatedFollow.adapter = UpdatedFollowAdapter()
 
-        sharedViewModel.getInitData()
+        sharedViewModel.getUpdatedFollow()
+        sharedViewModel.getPopularShorts(ShortsOption.NEW_SORT)
         addOnScrollListener()
     }
 
@@ -31,10 +32,8 @@ class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_sho
 
         binding.layoutScrollview.setOnScrollChangeListener { v, _, scrollY, _, _ ->
             if (scrollY == binding.layoutScrollview.getChildAt(0).measuredHeight - v.measuredHeight) {
-                // todo 다음 아이템 추가
+                sharedViewModel.callNextList()
             }
         }
     }
-
-
 }

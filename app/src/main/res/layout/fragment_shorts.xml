@@ -55,9 +55,10 @@
                 android:background="@drawable/rect_grey8fill_nostroke_5radius"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
+                android:onClick="@{() -> vm.changeSortType()}"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="2dp"
-                android:text="최신순"
+                android:text="@{vm.uiState.sortType.text}"
                 app:layout_constraintEnd_toStartOf="@id/btn_more"
                 app:layout_constraintTop_toBottomOf="@id/rv_updated_follow" />
 

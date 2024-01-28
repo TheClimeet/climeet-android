@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.databinding.ItemShortsThumbnailBinding
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
+import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import com.climus.climeet.presentation.util.DefaultDiffUtil
 
 class ShortsThumbnailAdapter :
