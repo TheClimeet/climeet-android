@@ -13,6 +13,7 @@ import com.climus.climeet.databinding.FragmentCalendarBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.signup.climer.setlevel.AdapterDecoration
 import com.climus.climeet.presentation.ui.main.record.calendar.DayViewContainer.Companion.selectedDay
+import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selecttime.SelectTimeBottomFragment
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.DayPosition
 import com.kizitonwose.calendar.core.daysOfWeek
@@ -58,6 +59,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
             viewModel.event.collect {
                 when (it) {
                     CalendarEvent.NavigateToCreateClimbingRecord -> findNavController().toCreateClimbingRecord()
+                    CalendarEvent.ShowTimePicker -> showTimePicker()
                 }
             }
         }
@@ -67,6 +69,11 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
         val action =
             CalendarFragmentDirections.actionCalendarFragmentToCreateClimbingRecordFragment()
         navigate(action)
+    }
+
+    private fun showTimePicker() {
+        val selectTimeBottomFragment = SelectTimeBottomFragment()
+        selectTimeBottomFragment.show(parentFragmentManager, "SelectTimePickerBottomSheet")
     }
 
     private fun customCalendar() {

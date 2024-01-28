@@ -15,6 +15,8 @@ import javax.inject.Inject
 
 sealed class CalendarEvent {
     data object NavigateToCreateClimbingRecord : CalendarEvent()
+
+    data object ShowTimePicker : CalendarEvent()
 }
 
 @HiltViewModel
@@ -61,6 +63,12 @@ class CalendarViewModel @Inject constructor() : ViewModel() {
     fun navigateToCreateClimbingRecord() {
         viewModelScope.launch {
             _event.emit(CalendarEvent.NavigateToCreateClimbingRecord)
+        }
+    }
+
+    fun showTimePicker(){
+        viewModelScope.launch {
+            _event.emit(CalendarEvent.ShowTimePicker)
         }
     }
 
