@@ -4,6 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectcrag.CreateSelectCragViewModel" />
@@ -131,14 +133,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_crag_num"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/item_crag_search_timer" />
+            tools:listitem="@layout/item_crag_search_calendar" />
 
         <ProgressBar
             android:id="@+id/pb_loading"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginTop="70dp"
-            android:visibility="invisible"
+            android:visibility="@{vm.uiState.progressState? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_crag_num"/>
@@ -148,7 +150,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
-            android:visibility="visible"
+            android:visibility="@{vm.uiState.emptyResultState? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_crag_num">
 

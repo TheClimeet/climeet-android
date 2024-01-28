@@ -9,8 +9,8 @@
             type="String" />
 
         <variable
-            name="data"
-            type="com.climus.climeet.presentation.ui.main.record.model.RecordCragData" />
+            name="crag"
+            type="com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag" />
 
     </data>
 
@@ -35,9 +35,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             tools:text="송도 비블럭 클라이밍"
-            android:text="@{data.name}"
+            android:text="@{crag.name}"
             app:keyword="@{keyword}"
-            app:searchResult="@{data.name}"
+            app:searchResult="@{crag.name}"
             app:layout_constraintStart_toEndOf="@id/iv_crag_profile"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>

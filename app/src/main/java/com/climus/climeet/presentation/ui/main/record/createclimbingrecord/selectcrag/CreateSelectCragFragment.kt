@@ -32,7 +32,7 @@ class CreateSelectCragFragment :
     private fun initStateObserve() {
         repeatOnStarted {
             viewModel.uiState.collect {
-                //adapter?.setList(it.searchList, viewModel.keyword.value)
+                adapter?.setList(it.searchList, viewModel.keyword.value)
             }
         }
     }
@@ -41,7 +41,8 @@ class CreateSelectCragFragment :
         repeatOnStarted {
             viewModel.event.collect {
                 when(it){
-                    CreateSelectCragEvent.NavigateToBack -> findNavController().navigateUp()
+                    is CreateSelectCragEvent.NavigateToBack -> findNavController().navigateUp()
+                    is CreateSelectCragEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }
