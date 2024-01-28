@@ -4,18 +4,18 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.climus.climeet.databinding.ItemCragSearchTimerBinding
+import com.climus.climeet.databinding.ItemCragSearchCalendarBinding
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
-import com.climus.climeet.presentation.ui.main.record.model.RecordCragData
+import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateRecordData
 
-class CreateSelectCragRVAdapter () : RecyclerView.Adapter<CreateSelectCragRVAdapter.CragSelectViewHolder>() {
+class CreateSelectCragRVAdapter (private val viewModel: CreateSelectCragViewModel) : RecyclerView.Adapter<CreateSelectCragRVAdapter.CragSelectViewHolder>() {
 
     private var searchList: List<FollowCrag> = emptyList()
     private var keyword: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CragSelectViewHolder =
         CragSelectViewHolder(
-            ItemCragSearchTimerBinding.inflate(
+            ItemCragSearchCalendarBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
         )
@@ -24,10 +24,11 @@ class CreateSelectCragRVAdapter () : RecyclerView.Adapter<CreateSelectCragRVAdap
         val cragData = searchList[position]
         holder.bind(searchList[position], keyword)
 
-//        // 암장을 선택하는 버튼 클릭 시
-//        holder.binding.btnSelect.setOnClickListener {
-//            onCragSelected(cragData)
-//        }
+        // 암장을 선택하는 버튼 클릭 시
+        holder.binding.btnSelect.setOnClickListener {
+            CreateRecordData.setSelecetedCrag(cragData)
+            viewModel.exitSignal.value = true
+        }
     }
 
     override fun getItemCount(): Int = searchList.size
@@ -39,7 +40,7 @@ class CreateSelectCragRVAdapter () : RecyclerView.Adapter<CreateSelectCragRVAdap
         notifyDataSetChanged()
     }
 
-    class CragSelectViewHolder(val binding: ItemCragSearchTimerBinding) :
+    class CragSelectViewHolder(val binding: ItemCragSearchCalendarBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: FollowCrag, keyword: String) {

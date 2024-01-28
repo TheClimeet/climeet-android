@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCreateSelectCragBinding
@@ -24,6 +25,14 @@ class CreateSelectCragFragment :
 
         parentViewModel.climerSignUpProgress(4)
         binding.vm = viewModel
+        adapter = CreateSelectCragRVAdapter(viewModel)
+        binding.rvSearchCrag.adapter = adapter
+
+        viewModel.exitSignal.observe(viewLifecycleOwner, Observer { shouldExit ->
+            if (shouldExit) {
+                findNavController().navigateUp()
+            }
+        })
 
         initStateObserve()
         initEventObserve()

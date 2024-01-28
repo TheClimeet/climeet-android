@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectcrag
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
@@ -48,6 +49,8 @@ class CreateSelectCragViewModel @Inject constructor(
     private var curJob: Job? = null
 
     val keyword = MutableStateFlow("")
+
+    val exitSignal = MutableLiveData<Boolean>()
 
     init {
         observeKeyword()
