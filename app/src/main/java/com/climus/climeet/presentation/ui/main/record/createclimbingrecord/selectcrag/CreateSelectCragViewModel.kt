@@ -27,7 +27,8 @@ import javax.inject.Inject
 data class CreateSelectCragUiState(
     val searchList: List<FollowCrag> = emptyList(),
     val progressState: Boolean = false,
-    val emptyResultState: Boolean = false
+    val emptyResultState: Boolean = false,
+    val emptyTextState: Boolean = true
 )
 
 sealed class CreateSelectCragEvent{
@@ -62,7 +63,8 @@ class CreateSelectCragViewModel @Inject constructor(
                 _uiState.update { state ->
                     state.copy(
                         searchList = emptyList(),
-                        emptyResultState = false
+                        emptyResultState = false,
+                        emptyTextState = false
                     )
                 }
             } else {
@@ -71,7 +73,8 @@ class CreateSelectCragViewModel @Inject constructor(
                 _uiState.update { state ->
                     state.copy(
                         progressState = true,
-                        emptyResultState = false
+                        emptyResultState = false,
+                        emptyTextState = false
                     )
                 }
 
@@ -94,7 +97,8 @@ class CreateSelectCragViewModel @Inject constructor(
                                         state.copy(
                                             searchList = emptyList(),
                                             progressState = false,
-                                            emptyResultState = false
+                                            emptyResultState = true,
+                                            emptyTextState = true
                                         )
                                     }
                                 }
@@ -104,7 +108,8 @@ class CreateSelectCragViewModel @Inject constructor(
                                 _uiState.update { state ->
                                     state.copy(
                                         progressState = false,
-                                        emptyResultState = false
+                                        emptyResultState = true,
+                                        emptyTextState = true
                                     )
                                 }
                                 _event.emit(CreateSelectCragEvent.ShowToastMessage(result.msg))
@@ -114,6 +119,15 @@ class CreateSelectCragViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun deleteKeyword() {
+        keyword.value = ""
+        _uiState.update { state ->
+            state.copy(
+                searchList = emptyList()
+            )
+        }
     }
 
     fun navigateToBack(){
