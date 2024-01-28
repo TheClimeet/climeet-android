@@ -2,36 +2,54 @@ package com.climus.climeet.presentation.ui.main.record.calendar
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragEvent
 import com.climus.climeet.presentation.ui.main.record.model.ClimbingRecordData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.YearMonth
 import javax.inject.Inject
 
+data class CalendarUiState(
+    val recordList: List<ClimbingRecordData> = emptyList(),
+    val emptyResultState: Boolean = false
+)
+
 sealed class CalendarEvent {
     data object NavigateToCreateClimbingRecord : CalendarEvent()
 
     data object ShowTimePicker : CalendarEvent()
+
+    data class ShowToastMessage(val msg: String): CalendarEvent()
 }
 
 @HiltViewModel
-class CalendarViewModel @Inject constructor() : ViewModel() {
+class CalendarViewModel @Inject constructor(
+    private val repository: MainRepository
+) : ViewModel() {
+    private val _uiState = MutableStateFlow(CalendarUiState())
+    val uiState: StateFlow<CalendarUiState> = _uiState.asStateFlow()
 
     private val _event = MutableSharedFlow<CalendarEvent>()
     val event: SharedFlow<CalendarEvent> = _event.asSharedFlow()
+
+    private var curJob: Job? = null
 
     val currentYear = MutableStateFlow("${YearMonth.now().year}")
     val currentMonth = MutableStateFlow("${YearMonth.now().month.value}")
 
     val isToday = MutableStateFlow(true)
     val isRecordVisible = MutableStateFlow(false)
-
-    val recordList = MutableStateFlow<List<ClimbingRecordData>>(emptyList())
 
     init {
     }
@@ -46,17 +64,45 @@ class CalendarViewModel @Inject constructor() : ViewModel() {
     }
 
     fun setRecord(date: LocalDate) {
-        val testDate: LocalDate = LocalDate.of(2024, 1, 13)
-        if (date == testDate) {
-            isRecordVisible.value = true
-            recordList.value = listOf(
-                ClimbingRecordData(0, "2024.01.13", "1h 30m", "8", "4", "V5", "더클라임 연남"),
-                ClimbingRecordData(1, "2024.01.13", "2h 30m", "5", "10", "V2", "더클라임 강남"),
-                ClimbingRecordData(2, "2024.01.13", "3h 30m", "3", "9", "V6", "더클라임 부천")
+        _uiState.update { state ->
+            state.copy(
+                emptyResultState = true
             )
-        } else {
-            isRecordVisible.value = false
-            recordList.value = emptyList()
+        }
+        curJob = viewModelScope.launch {
+            repository.getSelectDateRecord(date.toString(), date.toString()).let { result ->
+                when(result){
+                    is BaseState.Success -> {
+                        if(result.body.isNotEmpty()){
+                            _uiState.update { state ->
+                                state.copy(
+                                    recordList = result.body.map{ item ->
+                                        item.toClimbingRecordData("더클라임 연남")
+                                    },
+                                    emptyResultState = false
+                                )
+                            }
+                        } else {
+                            _uiState.update { state ->
+                                state.copy(
+                                    recordList = emptyList(),
+                                    emptyResultState = true
+                                )
+                            }
+                        }
+
+                    }
+                    is BaseState.Error -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                recordList = emptyList(),
+                                emptyResultState = true
+                            )
+                        }
+                        _event.emit(CalendarEvent.ShowToastMessage(result.msg))
+                    }
+                }
+            }
         }
     }
 
@@ -66,7 +112,7 @@ class CalendarViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun showTimePicker(){
+    fun showTimePicker() {
         viewModelScope.launch {
             _event.emit(CalendarEvent.ShowTimePicker)
         }

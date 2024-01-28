@@ -40,12 +40,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
         initEventObserve()
         customCalendar()
 
-        repeatOnStarted {
-            viewModel.recordList.collect { list ->
-                calendarAdapter?.setList(list)
-            }
-        }
-
     }
 
     private fun setRecycler() {
@@ -54,12 +48,21 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
         binding.rvRecord.addItemDecoration(AdapterDecoration())
     }
 
+    private fun initStateObserve(){
+        repeatOnStarted {
+            viewModel.uiState.collect{
+                calendarAdapter?.setList(it.recordList)
+            }
+        }
+    }
+
     private fun initEventObserve() {
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
                     CalendarEvent.NavigateToCreateClimbingRecord -> findNavController().toCreateClimbingRecord()
                     CalendarEvent.ShowTimePicker -> showTimePicker()
+                    is CalendarEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }
