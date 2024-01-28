@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,13 +14,17 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+interface TimerStartedProvider {
+    fun isTimerStarted(): Boolean
+}
 
 @HiltViewModel
-class TimerViewModel @Inject constructor() : ViewModel() {
+class TimerViewModel @Inject constructor() : ViewModel(), TimerStartedProvider {
 
     private val _time = MutableLiveData<Long>().apply { value = 0L }
     val time: LiveData<Long> get() = _time
 
+    var isRunning = MutableLiveData<Boolean>().apply { value = false }
     var isStart = MutableLiveData<Boolean>().apply { value = false }
     var isPaused = MutableLiveData<Boolean>().apply { value = false }
     var isRestart = MutableLiveData<Boolean>().apply { value = false }
@@ -47,6 +52,12 @@ class TimerViewModel @Inject constructor() : ViewModel() {
                 String.format("%02d:%02d", minutes, seconds)
             }
         }
+    }
+
+    // TimerMainAdapter에 현 상태 전달
+    override fun isTimerStarted(): Boolean {
+        Log.d("timer", "[뷰모델] 스톱워치 실행 상태 : ${isRunning.value}")
+        return isRunning.value ?: false
     }
 
     fun registerReceiver(context: Context) {

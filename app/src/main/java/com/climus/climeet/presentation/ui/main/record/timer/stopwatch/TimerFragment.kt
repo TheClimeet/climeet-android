@@ -46,6 +46,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         timerVM.isPaused.value = sharedPreferences.getBoolean(KEY_IS_PAUSE, false)
         timerVM.isRestart.value = sharedPreferences.getBoolean(KEY_IS_RESTART, false)
         timerVM.isStop.value = sharedPreferences.getBoolean(KEY_IS_STOP, true)
+        timerVM.isRunning.value = sharedPreferences.getBoolean(KEY_IS_RUNNING, true)
         // 암장 이름 설정
         if (timerVM.isStop.value == true) {
             binding.tvTitle.text = getString(R.string.timer_crag_set_inform)
@@ -53,24 +54,20 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             binding.tvTitle.text =
                 sharedPreferences.getString("cragName", getString(R.string.timer_crag_set_inform))
         }
+//        setStopStopwatch()
         timerObserve()
         Log.d(
             "timer",
-            "onResume\nisStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}"
+            "onResume\nisStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}, isRunning : ${timerVM.isStart.value}"
         )
     }
 
     override fun onPause() {
         super.onPause()
-        with(sharedPreferences.edit()) {
-            timerVM.isPaused.value?.let { putBoolean(KEY_IS_PAUSE, it) }
-            timerVM.isRestart.value?.let { putBoolean(KEY_IS_RESTART, it) }
-            timerVM.isStop.value?.let { putBoolean(KEY_IS_STOP, it) }
-            apply()
-        }
+        updateStatePref()
         Log.d(
             "timer",
-            "onPause\nisStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}"
+            "onPause\nisStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}, isRunning : ${timerVM.isStart.value}"
         )
     }
 
@@ -79,6 +76,27 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         timerVM.unregisterReceiver(requireContext())
         Log.d("timer", "onDestroy")
     }
+
+    private fun updateStatePref() {
+        with(sharedPreferences.edit()) {
+            timerVM.isStart.value?.let { putBoolean(KEY_IS_START, it) }
+            timerVM.isPaused.value?.let { putBoolean(KEY_IS_PAUSE, it) }
+            timerVM.isRestart.value?.let { putBoolean(KEY_IS_RESTART, it) }
+            timerVM.isStop.value?.let { putBoolean(KEY_IS_STOP, it) }
+            timerVM.isRunning.value?.let { putBoolean(KEY_IS_RUNNING, it) }
+            apply()
+        }
+    }
+
+//    private fun setStopStopwatch() {
+//        val isStart = timerVM.isStart.value
+//        val isPause = timerVM.isPaused.value
+//        val isRestart = timerVM.isRestart.value
+//
+//        if((isStart == true || isPause == true || isRestart == true) && timerVM.timeFormat.value == "00:00") {
+//            stopStopwatch()
+//        }
+//    }
 
     private fun timerObserve() {
         if (timerVM.isPaused.value == true) {
@@ -108,6 +126,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         timerVM.isRestart.observe(viewLifecycleOwner, Observer { isRestart ->
             if (isRestart) {
                 viewMode(ViewMode.RESTART)
+                timerObserve()
                 //Log.d("timer", "화면 초기화 : restart")
             }
         })
@@ -140,7 +159,9 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
                 timerVM.isPaused.value = false
                 timerVM.isRestart.value = false
                 timerVM.isStop.value = false
-                sharedPreferences.edit().putBoolean(KEY_IS_START, true).apply()
+                timerVM.isRunning.postValue(true)
+                updateStatePref()
+                //setTimeVM.setStopwatchRunning(true)
             }
         }
 
@@ -151,7 +172,9 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             timerVM.isPaused.value = true
             timerVM.isRestart.value = false
             timerVM.isStop.value = false
-            sharedPreferences.edit().putBoolean(KEY_IS_START, false).apply()
+            timerVM.isRunning.postValue(false)
+            updateStatePref()
+            //setTimeVM.setStopwatchRunning(false)
             sharedPreferences.edit().putString("pauseTime", timerVM.timeFormat.value).apply()
         }
 
@@ -162,7 +185,9 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             timerVM.isPaused.value = false
             timerVM.isRestart.value = true
             timerVM.isStop.value = false
-            sharedPreferences.edit().putBoolean(KEY_IS_START, true).apply()
+            timerVM.isRunning.postValue(true)
+            updateStatePref()
+            //setTimeVM.setStopwatchRunning(true)
         }
 
         // 정지 버튼 눌림
@@ -176,7 +201,9 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             timerVM.isStart.value = false
             timerVM.isRestart.value = false
             timerVM.isStop.value = true
-            sharedPreferences.edit().putBoolean(KEY_IS_START, false).apply()
+            timerVM.isRunning.postValue(false)
+            updateStatePref()
+            //setTimeVM.setStopwatchRunning(false)
 
             // 완료화면 띄우기
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
@@ -220,6 +247,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
     private fun stopStopwatch() {
         viewMode(ViewMode.STOP)
+        binding.tvTime.text = "00:00"
         val intent = Intent(context, TimerService::class.java).apply {
             putExtra("command", "STOP")
         }
@@ -280,5 +308,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         const val KEY_IS_PAUSE = "isPause"
         const val KEY_IS_RESTART = "isRestart"
         const val KEY_IS_STOP = "isStop"
+        const val KEY_IS_RUNNING = "isRunning"
+        const val KEY_CHECK_START = "timerStart"
     }
 }
