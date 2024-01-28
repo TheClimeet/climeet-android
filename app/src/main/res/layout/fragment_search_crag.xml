@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.main.home.searchcrag.SearchCragFragment">
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ic_popular_routes_back"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_arrow_back"
+                android:layout_gravity="start|center_vertical"/>
+
+            <EditText
+                android:id="@+id/et_search_crag"
+                style="@style/TextSmall"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:textCursorDrawable="@drawable/ic_main_cursor"
+                android:background="@drawable/rect_lightblackfill_nostroke_8radius"
+                android:drawableStart="@drawable/ic_search_grey"
+                android:drawablePadding="5dp"
+                android:hint=" 암장 검색하기"
+                android:textColorHint="#646464"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imageViewClear"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_clear"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
+            app:layout_constraintTop_toTopOf="@+id/linearLayout2" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rect_blackfill_nostroke_10radius"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+            <TextView
+                android:id="@+id/tv_search_menu_crag"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingVertical="3dp"
+                android:background="@drawable/rect_greyfill_nostroke_10radius"
+                android:text="암장"
+                style="@style/TextRegular"
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:layout_weight="1"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="@+id/textView12"
+                app:layout_constraintEnd_toEndOf="@+id/textView12"
+                app:layout_constraintTop_toTopOf="@+id/textView12" />
+
+            <TextView
+                android:id="@+id/tv_search_menu_climer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingVertical="3dp"
+                android:background="@drawable/rect_blackfill_nostroke_10radius"
+                android:text="클라이머"
+                android:textSize="14sp"
+                android:textColor="#B3B3B3"
+                style="@style/TextRegular"
+                android:layout_weight="1"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="@+id/textView12"
+                app:layout_constraintEnd_toEndOf="@+id/textView12"
+                app:layout_constraintTop_toTopOf="@+id/textView12" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_search_crag_homegym"
+            style="@style/TextLargeBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="140dp"
+            android:text="홈짐"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_search_crag_homegym_profile1"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_search_crag_homegym" />
+
+        <TextView
+            android:id="@+id/tv_search_crag_homegym_name1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="클라이머스 클라이밍"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_search_crag_homegym_profile1"
+            app:layout_constraintStart_toEndOf="@+id/iv_search_crag_homegym_profile1"
+            app:layout_constraintTop_toTopOf="@+id/iv_search_crag_homegym_profile1" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_search_crag_routes1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_search_crag_homegym_profile1"
+            tools:listitem="@layout/item_popular_routes" />
+
+        <ImageView
+            android:id="@+id/iv_search_crag_homegym_profile2"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv_search_crag_routes1" />
+
+        <TextView
+            android:id="@+id/tv_search_crag_homegym_name2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="클라이머스 클라이밍"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_search_crag_homegym_profile2"
+            app:layout_constraintStart_toEndOf="@+id/iv_search_crag_homegym_profile2"
+            app:layout_constraintTop_toTopOf="@+id/iv_search_crag_homegym_profile2" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_search_crag_routes2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_search_crag_homegym_profile2"
+            tools:listitem="@layout/item_popular_routes" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

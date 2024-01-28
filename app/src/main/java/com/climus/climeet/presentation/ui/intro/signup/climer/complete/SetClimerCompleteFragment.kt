@@ -16,7 +16,6 @@ import com.climus.climeet.presentation.ui.intro.signup.admin.complete.SetAdminCo
 import com.climus.climeet.presentation.ui.intro.signup.admin.complete.SetAdminCompleteViewModel
 import com.climus.climeet.presentation.ui.main.MainActivity
 import com.climus.climeet.presentation.ui.intro.IntroViewModel
-import com.climus.climeet.presentation.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.climus.climeet.databinding.ItemPopularShortsBinding
 import com.climus.climeet.presentation.ui.main.home.model.PopularShorts
+import kotlin.math.min
 
 
 class PopularShortsRVAdapter (private val shortsList: ArrayList<PopularShorts>) : RecyclerView.Adapter<PopularShortsRVAdapter.ViewHolder>() {
@@ -20,7 +21,10 @@ class PopularShortsRVAdapter (private val shortsList: ArrayList<PopularShorts>) 
         holder.bind(shortsList[position])
     }
 
-    override fun getItemCount(): Int = shortsList.size
+    override fun getItemCount(): Int {
+        // 최대 10개의 아이템으로 제한
+        return min(shortsList.size, 10)
+    }
 
     inner class ViewHolder(val binding: ItemPopularShortsBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(shorts: PopularShorts){

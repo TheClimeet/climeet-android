@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -42,6 +43,18 @@ class PopularShortsFragment : BaseFragment<FragmentPopularShortsBinding>(R.layou
             PopularShorts(null, "피커스 사당", "#000000", "V9", "#FFBEDF22"),
             PopularShorts(null, "더클라임 마포", "#000000", "V3", "#FFBEDF22"),
             PopularShorts(null, "피커스 부평", "#FFFFFF", "V7", "#000FFF"),
+            PopularShorts(null, "더클라임 부천", "#000000", "V2", "#000000"),
+            PopularShorts(null, "피커스 구로", "#000000", "V10", "#FFBEDF22"),
+            PopularShorts(null, "더클라임 양재", "#FFFFFF", "V1", "#FFBEDF22"),
+            PopularShorts(null, "피커스 사당", "#000000", "V9", "#FFBEDF22"),
+            PopularShorts(null, "더클라임 마포", "#000000", "V3", "#FFBEDF22"),
+            PopularShorts(null, "피커스 부평", "#FFFFFF", "V7", "#000FFF"),
+            PopularShorts(null, "더클라임 부천", "#000000", "V2", "#000000"),
+            PopularShorts(null, "피커스 구로", "#000000", "V10", "#FFBEDF22"),
+            PopularShorts(null, "더클라임 양재", "#FFFFFF", "V1", "#FFBEDF22"),
+            PopularShorts(null, "피커스 사당", "#000000", "V9", "#FFBEDF22"),
+            PopularShorts(null, "더클라임 마포", "#000000", "V3", "#FFBEDF22"),
+            PopularShorts(null, "피커스 부평", "#FFFFFF", "V7", "#000FFF"),
             PopularShorts(null, "더클라임 부천", "#000000", "V2", "#000000")
         )
 
@@ -52,8 +65,7 @@ class PopularShortsFragment : BaseFragment<FragmentPopularShortsBinding>(R.layou
     private fun setupRecyclerView(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>) {
         recyclerView.adapter = adapter
         val spanCount = 3
-        val orientation = StaggeredGridLayoutManager.VERTICAL
-        recyclerView.layoutManager = StaggeredGridLayoutManager(spanCount, orientation)
+        recyclerView.layoutManager = GridLayoutManager(requireActivity(), spanCount)
     }
 
 }

@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/ic_popular_shorts_back"
+                android:id="@+id/ic_popular_routes_back"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/ic_back_sign"
@@ -37,12 +37,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="이번주 인기 영상"
+                android:text="이번주 인기 루트"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <ImageView
-                android:id="@+id/ic_popular_shorts_search"
+                android:id="@+id/ic_popular_routes_search"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_search"
@@ -51,19 +51,21 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_popular_shorts"
+            android:id="@+id/rv_popular_routes"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:layout_constraintVertical_bias="0.0"
             app:spanCount="3"
-            tools:listitem="@layout/item_popular_shorts_all" />
+            tools:listitem="@layout/item_popular_routes_all" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

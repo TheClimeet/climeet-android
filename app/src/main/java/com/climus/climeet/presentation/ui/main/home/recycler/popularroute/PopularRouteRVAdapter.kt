@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.climus.climeet.databinding.ItemPopularRoutesBinding
 import com.climus.climeet.presentation.ui.main.home.model.PopularRoute
+import kotlin.math.min
 
 class PopularRouteRVAdapter (private val routeList: ArrayList<PopularRoute>) : RecyclerView.Adapter<PopularRouteRVAdapter.ViewHolder>() {
     override fun onCreateViewHolder(
@@ -21,7 +22,10 @@ class PopularRouteRVAdapter (private val routeList: ArrayList<PopularRoute>) : R
         holder.bind(routeList[position])
     }
 
-    override fun getItemCount(): Int = routeList.size
+    override fun getItemCount(): Int {
+        // 최대 10개의 아이템으로 제한
+        return min(routeList.size, 10)
+    }
 
     inner class ViewHolder(val binding: ItemPopularRoutesBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(route: PopularRoute) {

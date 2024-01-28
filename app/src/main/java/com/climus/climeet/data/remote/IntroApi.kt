@@ -48,5 +48,4 @@ interface IntroApi {
         @Path("gymName") gymName: String
     ): Response<Boolean>
 
-
 }

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.climus.climeet.databinding.ItemPopularCragsBinding
 import com.climus.climeet.presentation.ui.main.home.model.PopularCrag
+import kotlin.math.min
 
 class PopularCragRVAdapter (private val cragList: ArrayList<PopularCrag>) : RecyclerView.Adapter<PopularCragRVAdapter.ViewHolder>(){
     override fun onCreateViewHolder(
@@ -21,7 +22,10 @@ class PopularCragRVAdapter (private val cragList: ArrayList<PopularCrag>) : Recy
         holder.bind(cragList[position])
     }
 
-    override fun getItemCount(): Int = cragList.size
+    override fun getItemCount(): Int {
+        // 최대 10개의 아이템으로 제한
+        return min(cragList.size, 10)
+    }
 
     inner class ViewHolder(val binding: ItemPopularCragsBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(crag: PopularCrag) {

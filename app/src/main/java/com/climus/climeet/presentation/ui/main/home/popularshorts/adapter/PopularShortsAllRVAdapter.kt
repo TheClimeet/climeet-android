@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.climus.climeet.databinding.ItemPopularShortsAllBinding
 import com.climus.climeet.presentation.ui.main.home.model.PopularShorts
+import kotlin.math.min
 
 class PopularShortsAllRVAdapter (private val shortsList: ArrayList<PopularShorts>) : RecyclerView.Adapter<PopularShortsAllRVAdapter.ViewHolder>() {
 

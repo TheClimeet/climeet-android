@@ -1,5 +1,8 @@
 package com.climus.climeet.data.remote
 
+import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
+import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
+import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import okhttp3.MultipartBody
@@ -20,5 +23,20 @@ interface MainApi {
     suspend fun searchGym(
         @Query("gymname") gymName: String
     ): Response<List<SearchGymResponse>>
+
+    @GET("/api/rank/week/climber/clear")
+    suspend fun findClimberRankingOrderClearCount(): Response<List<BestClearClimberSimpleResponse>>
+
+    @GET("/api/rank/week/climber/time")
+    suspend fun findClimberRankingOrderTime(): Response<List<BestTimeClimberSimpleResponse>>
+
+    @GET("/api/rank/week/climber/level")
+    suspend fun findClimberRankingOrderLevel(): Response<List<BestLevelCimberSimpleResponse>>
+
+    @GET("/api/shorts/popular")
+    suspend fun findPopularShorts(
+        @Query("page") page : Int,
+        @Query("size") size : Int
+    ): Response<List<BestLevelCimberSimpleResponse>>
 
 }
