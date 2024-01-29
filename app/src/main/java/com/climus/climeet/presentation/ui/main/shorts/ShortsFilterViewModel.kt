@@ -6,4 +6,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ShortsFilterViewModel @Inject constructor(): ViewModel() {
+
+    var cragId: Long = 0
+    var cragName = ""
+
+    fun setFilterInfo(cragId: Long, cragName: String){
+        this.cragId = cragId
+        this.cragName = cragName
+    }
+
 }

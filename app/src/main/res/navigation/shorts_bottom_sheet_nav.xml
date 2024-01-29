@@ -16,5 +16,15 @@
     <fragment
         android:id="@+id/selectSectorBottomSheetFragment"
         android:name="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector.SelectSectorBottomSheetFragment"
-        android:label="SelectSectorBottomSheetFragment" />
+        android:label="SelectSectorBottomSheetFragment" >
+
+        <argument
+            android:name="cragId"
+            app:argType="long"/>
+
+        <argument
+            android:name="cragName"
+            app:argType="string"/>
+
+    </fragment>
 </navigation>
