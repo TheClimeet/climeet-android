@@ -8,9 +8,9 @@ import com.climus.climeet.databinding.ItemCragSearchTimerBinding
 import com.climus.climeet.presentation.ui.main.record.model.RecordCragData
 
 
-class CragSelectRVAdapter(
+class TimerCragSelectRVAdapter(
     private val onCragSelected: (RecordCragData) -> Unit
-) : RecyclerView.Adapter<CragSelectRVAdapter.CragSelectViewHolder>() {
+) : RecyclerView.Adapter<TimerCragSelectRVAdapter.CragSelectViewHolder>() {
 
     private var searchList: List<RecordCragData> = emptyList()
     private var keyword: String = ""

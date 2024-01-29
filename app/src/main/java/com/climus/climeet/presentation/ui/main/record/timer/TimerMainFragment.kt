@@ -6,13 +6,13 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.R
-import com.climus.climeet.databinding.FragmentTimerVpBinding
+import com.climus.climeet.databinding.FragmentTimerViewPagerBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TimerMainFragment : BaseFragment<FragmentTimerVpBinding>(R.layout.fragment_timer_vp) {
+class TimerMainFragment : BaseFragment<FragmentTimerViewPagerBinding>(R.layout.fragment_timer_view_pager) {
 
     private val viewModel: TimerMainViewModel by viewModels()
     private val timerVM: TimerViewModel by viewModels()

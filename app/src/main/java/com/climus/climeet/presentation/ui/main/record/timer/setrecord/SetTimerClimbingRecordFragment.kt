@@ -1,15 +1,15 @@
-package com.climus.climeet.presentation.ui.main.record.timer.exercise
+package com.climus.climeet.presentation.ui.main.record.timer.setrecord
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.climus.climeet.R
-import com.climus.climeet.databinding.FragmentTimerExerciseBinding
+import com.climus.climeet.databinding.FragmentTimerRecordBinding
 import com.climus.climeet.presentation.base.BaseFragment
 
-class TimerExerciseFragment: BaseFragment<FragmentTimerExerciseBinding>(R.layout.fragment_timer_exercise) {
+class SetTimerClimbingRecordFragment: BaseFragment<FragmentTimerRecordBinding>(R.layout.fragment_timer_record) {
 
-    private val viewModel: TimerExerciseViewModel by viewModels()
+    private val viewModel: SetTimerClimbingRecordViewmodel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

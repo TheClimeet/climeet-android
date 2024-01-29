@@ -14,7 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.climus.climeet.R
-import com.climus.climeet.databinding.FragmentTimerBottomsheetCragBinding
+import com.climus.climeet.databinding.FragmentTimerSelectCragBottomSheetBinding
 import com.climus.climeet.presentation.ui.main.record.model.RecordCragData
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -32,10 +32,10 @@ interface CragSelectionListener {
 class CragSelectBottomFragment : BottomSheetDialogFragment() {
 
     private val viewModel: CragSelectBottomViewModel by viewModels()
-    private lateinit var binding: FragmentTimerBottomsheetCragBinding
+    private lateinit var binding: FragmentTimerSelectCragBottomSheetBinding
     private lateinit var sharedPreferences: SharedPreferences
 
-    private var cragSearchAdapter: CragSelectRVAdapter? = null
+    private var cragSearchAdapter: TimerCragSelectRVAdapter? = null
     var cragSelectionListener: CragSelectionListener? = null
 
     private var searchJob: Job? = null
@@ -44,7 +44,7 @@ class CragSelectBottomFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentTimerBottomsheetCragBinding.inflate(inflater, container, false)
+        binding = FragmentTimerSelectCragBottomSheetBinding.inflate(inflater, container, false)
         binding.vm = viewModel
         sharedPreferences = requireContext().getSharedPreferences(TimerFragment.PREF_NAME, Context.MODE_PRIVATE)
 
@@ -73,7 +73,7 @@ class CragSelectBottomFragment : BottomSheetDialogFragment() {
     }
 
     private fun initRecyclerview() {
-        cragSearchAdapter = CragSelectRVAdapter { cragName ->
+        cragSearchAdapter = TimerCragSelectRVAdapter { cragName ->
             // 선택된 암장 정보 저장
             viewModel.setSelectedItem(cragName)
             cragSelectionListener?.onCragSelected(cragName) // TimerFragment로 데이터 전달
