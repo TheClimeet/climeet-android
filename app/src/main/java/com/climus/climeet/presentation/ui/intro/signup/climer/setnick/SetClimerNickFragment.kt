@@ -10,7 +10,9 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetClimerNickBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SetClimerNickFragment :
     BaseFragment<FragmentSetClimerNickBinding>(R.layout.fragment_set_climer_nick) {
 
@@ -33,6 +35,7 @@ class SetClimerNickFragment :
 
                     is SetClimerNickEvent.NavigateToSetProfile -> findNavController().toSetClimerProfile()
 
+                    is SetClimerNickEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }
