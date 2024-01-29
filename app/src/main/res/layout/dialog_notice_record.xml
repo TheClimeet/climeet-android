@@ -9,6 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minWidth="300dp"
         android:background="@drawable/rect_whitefill_nostroke_10radius"
         android:paddingHorizontal="16dp"
         android:paddingVertical="16dp"
@@ -26,7 +27,7 @@
         <TextView
             android:id="@+id/tv_notice"
             style="@style/TextSmall"
-            android:layout_width="290dp"
+            android:layout_width="225dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:text="알림"
