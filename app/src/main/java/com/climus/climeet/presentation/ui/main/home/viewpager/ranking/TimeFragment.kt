@@ -97,7 +97,7 @@ class TimeFragment : Fragment() {
             viewModel?.let { vm ->
                 vm.uiState.collect { uiState ->
                     uiState.rankingList?.let { rankingList ->
-                        Log.d("Time", rankingList.toString())
+                        Log.d("TimeFragment", rankingList.toString())
                         rankingList.take(3).forEachIndexed { i, bestTimeClimberSimpleResponse ->
                             rankList[i].text = bestTimeClimberSimpleResponse.ranking.toString()
                             nicknameList[i].text = bestTimeClimberSimpleResponse.profileName

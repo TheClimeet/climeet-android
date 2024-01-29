@@ -4,7 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
 
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.home.searchcrag.SearchCragViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,15 +41,15 @@
                 android:layout_height="36dp"
                 android:layout_marginStart="20dp"
                 android:layout_weight="1"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="5dp"
-                android:textCursorDrawable="@drawable/ic_main_cursor"
                 android:background="@drawable/rect_lightblackfill_nostroke_8radius"
                 android:drawableStart="@drawable/ic_search_grey"
                 android:drawablePadding="5dp"
                 android:hint=" 암장 검색하기"
-                android:textColorHint="#646464"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
                 android:textColor="@color/white"
+                android:textColorHint="#646464"
+                android:textCursorDrawable="@drawable/ic_main_cursor"
                 android:textSize="20sp" />
 
         </LinearLayout>
@@ -62,46 +66,94 @@
             app:layout_constraintTop_toTopOf="@+id/linearLayout2" />
 
         <LinearLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/rect_blackfill_nostroke_10radius"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            tools:layout_editor_absoluteX="20dp">
 
             <TextView
                 android:id="@+id/tv_search_menu_crag"
+                style="@style/TextRegular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingVertical="3dp"
-                android:background="@drawable/rect_greyfill_nostroke_10radius"
-                android:text="암장"
-                style="@style/TextRegular"
-                android:textSize="14sp"
-                android:textColor="@color/white"
                 android:layout_weight="1"
+                android:background="@drawable/rect_greyfill_nostroke_10radius"
                 android:gravity="center"
+                android:paddingVertical="3dp"
+                android:text="암장"
+                android:textColor="@color/white"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView12"
                 app:layout_constraintEnd_toEndOf="@+id/textView12"
                 app:layout_constraintTop_toTopOf="@+id/textView12" />
 
             <TextView
                 android:id="@+id/tv_search_menu_climer"
+                style="@style/TextRegular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingVertical="3dp"
-                android:background="@drawable/rect_blackfill_nostroke_10radius"
-                android:text="클라이머"
-                android:textSize="14sp"
-                android:textColor="#B3B3B3"
-                style="@style/TextRegular"
                 android:layout_weight="1"
+                android:background="@drawable/rect_blackfill_nostroke_10radius"
                 android:gravity="center"
+                android:paddingVertical="3dp"
+                android:text="클라이머"
+                android:textColor="#B3B3B3"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView12"
                 app:layout_constraintEnd_toEndOf="@+id/textView12"
                 app:layout_constraintTop_toTopOf="@+id/textView12" />
 
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_follow_search_crags"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_marginTop="30dp"
+            android:visibility="invisible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+            tools:listitem="@layout/item_follow_crags" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:visibility="@{vm.uiState.progressState? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ic_empty_search" />
+
+        <ImageView
+            android:id="@+id/ic_empty_search"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_empty_search"
+            android:layout_marginTop="30dp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/rv_follow_search_crags" />
+
+        <TextView
+            android:id="@+id/tv_empty_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#8B8B8B"
+            android:visibility="invisible"
+            style="@style/TextRegular"
+            android:text="검색 결과가 없어요.\n다른 검색어로 검새개보세요"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ic_empty_search" />
 
         <TextView
             android:id="@+id/tv_search_crag_homegym"

@@ -100,7 +100,7 @@ class CompleteClimbingFragment: Fragment() {
             viewModel?.let { vm ->
                 vm.uiState.collect { uiState ->
                     uiState.rankingList?.let { rankingList ->
-                        Log.d("CompleteClimbing", rankingList.toString())
+                        Log.d("CompleteClimbingFragment", rankingList.toString())
                         rankingList.take(3).forEachIndexed { i, bestClearClimberResponse ->
                             rankList[i].text = bestClearClimberResponse.ranking.toString()
                             nicknameList[i].text = bestClearClimberResponse.profileName

@@ -98,7 +98,7 @@ class LevelFragment : Fragment() {
             viewModel?.let { vm ->
                 vm.uiState.collect { uiState ->
                     uiState.rankingList?.let { rankingList ->
-                        Log.d("CompleteClimbing", rankingList.toString())
+                        Log.d("LevelFragment", rankingList.toString())
                         rankingList.take(3).forEachIndexed { i, bestLevelResponse ->
                             rankList[i].text = bestLevelResponse.ranking.toString()
                             nicknameList[i].text = bestLevelResponse.profileName

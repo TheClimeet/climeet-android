@@ -2,7 +2,7 @@ package com.climus.climeet.data.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class ShortsSimpleInfo(
+data class ShortsSimpleResponse(
     @SerializedName("shortsId")
     val shortsId : Long,
 

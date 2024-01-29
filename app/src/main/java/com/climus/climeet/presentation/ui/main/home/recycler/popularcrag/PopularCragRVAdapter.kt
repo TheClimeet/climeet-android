@@ -5,11 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.databinding.ItemPopularCragsBinding
 import com.climus.climeet.presentation.ui.main.home.model.PopularCrag
 import kotlin.math.min
 
-class PopularCragRVAdapter (private val cragList: ArrayList<PopularCrag>) : RecyclerView.Adapter<PopularCragRVAdapter.ViewHolder>(){
+class PopularCragRVAdapter (private val cragList: List<BestFollowGymSimpleResponse>) : RecyclerView.Adapter<PopularCragRVAdapter.ViewHolder>(){
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -28,19 +29,19 @@ class PopularCragRVAdapter (private val cragList: ArrayList<PopularCrag>) : Recy
     }
 
     inner class ViewHolder(val binding: ItemPopularCragsBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(crag: PopularCrag) {
-            if(crag.profileImg != null) {
+        fun bind(crag: BestFollowGymSimpleResponse) {
+            if(crag.profileImageUrl != null) {
                 Glide.with(binding.root.context)
-                    .load(crag.profileImg)
+                    .load(crag.profileImageUrl)
                     .into(binding.ivPopularCragProfile)
             }
-            binding.tvItemCragName.text = crag.cragName
+            binding.tvItemCragName.text = crag.gymName
             binding.popularCragRanking.text = (position + 1).toString()
-            binding.tvItemFollowers.text = "팔로워 " + crag.followers.toString()
-            if(crag.isSoaring) {
-                binding.ivSoaring.visibility = View.VISIBLE
-                binding.tvSoaring.visibility = View.VISIBLE
-            }
+            binding.tvItemFollowers.text = "팔로워 " + crag.thisWeekFollowerCount.toString()
+//            if(crag.isSoaring) {
+//                binding.ivSoaring.visibility = View.VISIBLE
+//                binding.tvSoaring.visibility = View.VISIBLE
+//            }
         }
     }
 }

@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.climus.climeet.data.model.response.BestRouteSimpleResponse
 import com.climus.climeet.databinding.ItemPopularRoutesBinding
 import com.climus.climeet.presentation.ui.main.home.model.PopularRoute
 import kotlin.math.min
 
-class PopularRouteRVAdapter (private val routeList: ArrayList<PopularRoute>) : RecyclerView.Adapter<PopularRouteRVAdapter.ViewHolder>() {
+class PopularRouteRVAdapter (private val routeList: List<BestRouteSimpleResponse>) : RecyclerView.Adapter<PopularRouteRVAdapter.ViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -28,20 +29,20 @@ class PopularRouteRVAdapter (private val routeList: ArrayList<PopularRoute>) : R
     }
 
     inner class ViewHolder(val binding: ItemPopularRoutesBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(route: PopularRoute) {
-            if(route.routeImg != null) {
+        fun bind(route: BestRouteSimpleResponse) {
+            if(route.routeImageUrl != null) {
                 Glide.with(binding.root.context)
-                    .load(route.routeImg)
+                    .load(route.routeImageUrl)
                     .into(binding.ivPopularRoutesImg)
             }
 
-            binding.tvPopularRoutesLevel.text = route.level
-            val colorCode = route.color
-            val color: Int = Color.parseColor(colorCode)
-            binding.tvPopularRoutesLevel.setTextColor(color)
-            binding.itemPopularRoutesCardView.strokeColor = color
-            binding.tvPopularRoutesLocation.text = route.location
-            binding.tvPopularRoutesSector.text = route.sector
+            binding.tvPopularRoutesLevel.text = route.level.toString()
+//            val colorCode = route.color
+//            val color: Int = Color.parseColor(colorCode)
+//            binding.tvPopularRoutesLevel.setTextColor(color)
+//            binding.itemPopularRoutesCardView.strokeColor = color
+//            binding.tvPopularRoutesLocation.text = route.location
+            binding.tvPopularRoutesSector.text = route.sectorName
         }
     }
 }

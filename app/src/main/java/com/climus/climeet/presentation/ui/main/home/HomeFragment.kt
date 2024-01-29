@@ -1,7 +1,9 @@
 package com.climus.climeet.presentation.ui.main.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentHomeBinding
@@ -10,8 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.MainNavDirections
+import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
+import com.climus.climeet.data.model.response.BestRouteSimpleResponse
+import com.climus.climeet.data.model.response.ShortsSimpleResponse
 import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.ui.intro.signup.climer.noticesetting.NoticeSettingEvent
 import com.climus.climeet.presentation.ui.main.home.recycler.homegym.HomeGymRVAdapter
 import com.climus.climeet.presentation.ui.main.home.model.HomeGym
 import com.climus.climeet.presentation.ui.main.home.model.PopularCrag
@@ -23,17 +29,29 @@ import com.climus.climeet.presentation.ui.main.home.recycler.popularshorts.Popul
 import com.climus.climeet.presentation.ui.main.home.viewpager.best.RankingVPAdapter
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerFragment
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerVPAdapter
+import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingViewModel
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+
+    private val viewModel: HomeViewModel by viewModels()
+    private var recyclerShorts: List<ShortsSimpleResponse> = emptyList()
+    private var recyclerCrag: List<BestFollowGymSimpleResponse> = emptyList()
+    private var recyclerRoute: List<BestRouteSimpleResponse> = emptyList()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getPopularShorts()
+        viewModel.getGymRankingOrderFollowCount()
+        viewModel.getRouteRankingOrderSelectionCount()
+        initEventObserve()
         setupOnClickListener()
         setupIntroduceBanner()
         setupHomeGymList()
@@ -42,6 +60,37 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         setupPopularCrags()
         setupPopularRoutes()
 
+    }
+
+    private fun initEventObserve(){
+        repeatOnStarted {
+            viewModel?.let { vm ->
+                vm.uiState.collect { uiState ->
+                    uiState.shortsList?.let { shortsList ->
+                        Log.d("HomeFragment", shortsList.toString())
+                        recyclerShorts = shortsList
+                    }
+                }
+            }
+
+            viewModel?.let { vm ->
+                vm.uiState.collect { uiState ->
+                    uiState.cragList?.let { cragList ->
+                        Log.d("HomeFragment", cragList.toString())
+                        recyclerCrag = cragList
+                    }
+                }
+            }
+
+            viewModel?.let { vm ->
+                vm.uiState.collect { uiState ->
+                    uiState.routeList?.let { routeList ->
+                        Log.d("HomeFragment", routeList.toString())
+                        recyclerRoute = routeList
+                    }
+                }
+            }
+        }
     }
 
     private fun setupOnClickListener() {
@@ -171,74 +220,74 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private fun setupPopularShorts() {
-        val shortsList = arrayListOf(
-            PopularShorts(null, "피커스 구로", "#000000", "V10", "#FFBEDF22"),
-            PopularShorts(null, "더클라임 양재", "#FFFFFF", "V1", "#FFBEDF22"),
-            PopularShorts(null, "피커스 사당", "#000000", "V9", "#FFBEDF22"),
-            PopularShorts(null, "더클라임 마포", "#000000", "V3", "#FFBEDF22"),
-            PopularShorts(null, "피커스 부평", "#FFFFFF", "V7", "#000FFF"),
-            PopularShorts(null, "더클라임 부천", "#000000", "V2", "#000000"),
-            PopularShorts(null, "피커스 구로", "#000000", "V10", "#FFBEDF22"),
-            PopularShorts(null, "더클라임 양재", "#FFFFFF", "V1", "#FFBEDF22"),
-            PopularShorts(null, "피커스 사당", "#000000", "V9", "#FFBEDF22"),
-            PopularShorts(null, "더클라임 마포", "#000000", "V3", "#FFBEDF22"),
-            PopularShorts(null, "피커스 부평", "#FFFFFF", "V7", "#000FFF"),
-            PopularShorts(null, "더클라임 부천", "#000000", "V2", "#000000"),
-            PopularShorts(null, "피커스 구로", "#000000", "V10", "#FFBEDF22"),
-            PopularShorts(null, "더클라임 양재", "#FFFFFF", "V1", "#FFBEDF22"),
-            PopularShorts(null, "피커스 사당", "#000000", "V9", "#FFBEDF22"),
-            PopularShorts(null, "더클라임 마포", "#000000", "V3", "#FFBEDF22"),
-            PopularShorts(null, "피커스 부평", "#FFFFFF", "V7", "#000FFF"),
-            PopularShorts(null, "더클라임 부천", "#000000", "V2", "#000000")
-        )
+//        val shortsList = arrayListOf(
+//            PopularShorts(null, "피커스 구로", "#000000", "V10", "#FFBEDF22"),
+//            PopularShorts(null, "더클라임 양재", "#FFFFFF", "V1", "#FFBEDF22"),
+//            PopularShorts(null, "피커스 사당", "#000000", "V9", "#FFBEDF22"),
+//            PopularShorts(null, "더클라임 마포", "#000000", "V3", "#FFBEDF22"),
+//            PopularShorts(null, "피커스 부평", "#FFFFFF", "V7", "#000FFF"),
+//            PopularShorts(null, "더클라임 부천", "#000000", "V2", "#000000"),
+//            PopularShorts(null, "피커스 구로", "#000000", "V10", "#FFBEDF22"),
+//            PopularShorts(null, "더클라임 양재", "#FFFFFF", "V1", "#FFBEDF22"),
+//            PopularShorts(null, "피커스 사당", "#000000", "V9", "#FFBEDF22"),
+//            PopularShorts(null, "더클라임 마포", "#000000", "V3", "#FFBEDF22"),
+//            PopularShorts(null, "피커스 부평", "#FFFFFF", "V7", "#000FFF"),
+//            PopularShorts(null, "더클라임 부천", "#000000", "V2", "#000000"),
+//            PopularShorts(null, "피커스 구로", "#000000", "V10", "#FFBEDF22"),
+//            PopularShorts(null, "더클라임 양재", "#FFFFFF", "V1", "#FFBEDF22"),
+//            PopularShorts(null, "피커스 사당", "#000000", "V9", "#FFBEDF22"),
+//            PopularShorts(null, "더클라임 마포", "#000000", "V3", "#FFBEDF22"),
+//            PopularShorts(null, "피커스 부평", "#FFFFFF", "V7", "#000FFF"),
+//            PopularShorts(null, "더클라임 부천", "#000000", "V2", "#000000")
+//        )
 
-        val popularShortsRVAdapter = PopularShortsRVAdapter(shortsList)
+        val popularShortsRVAdapter = PopularShortsRVAdapter(recyclerShorts)
         setupRecyclerView(binding.rvHomeShorts, popularShortsRVAdapter, LinearLayoutManager.HORIZONTAL)
     }
 
     private fun setupPopularCrags() {
-        val cragList = arrayListOf(
-            PopularCrag(null, true, "피커스 구로", 70),
-            PopularCrag(null, false, "송도 비블럭", 125),
-            PopularCrag(null, true, "더클라임 연남", 12),
-            PopularCrag(null, false, "더클라임 마포", 24),
-            PopularCrag(null, true, "더클라임 부천", 54),
-            PopularCrag(null, false, "더클라임 부천", 90),
-            PopularCrag(null, true, "피커스 구로", 70),
-            PopularCrag(null, false, "송도 비블럭", 125),
-            PopularCrag(null, true, "더클라임 연남", 12),
-            PopularCrag(null, false, "더클라임 마포", 24),
-            PopularCrag(null, true, "더클라임 부천", 54),
-            PopularCrag(null, false, "더클라임 부천", 90)
-        )
+//        val cragList = arrayListOf(
+//            PopularCrag(null, true, "피커스 구로", 70),
+//            PopularCrag(null, false, "송도 비블럭", 125),
+//            PopularCrag(null, true, "더클라임 연남", 12),
+//            PopularCrag(null, false, "더클라임 마포", 24),
+//            PopularCrag(null, true, "더클라임 부천", 54),
+//            PopularCrag(null, false, "더클라임 부천", 90),
+//            PopularCrag(null, true, "피커스 구로", 70),
+//            PopularCrag(null, false, "송도 비블럭", 125),
+//            PopularCrag(null, true, "더클라임 연남", 12),
+//            PopularCrag(null, false, "더클라임 마포", 24),
+//            PopularCrag(null, true, "더클라임 부천", 54),
+//            PopularCrag(null, false, "더클라임 부천", 90)
+//        )
 
-        val popularCragRVAdapter = PopularCragRVAdapter(cragList)
+        val popularCragRVAdapter = PopularCragRVAdapter(recyclerCrag)
         setupRecyclerView(binding.rvHomePopularCrags, popularCragRVAdapter, LinearLayoutManager.HORIZONTAL)
     }
 
     private fun setupPopularRoutes() {
-        val routeList = arrayListOf(
-            PopularRoute(null, "V1", "#63B75D", "더클라임 연남", "툇마루"),
-            PopularRoute(null, "V3", "#555522", "볼더프렌즈", "섹터 A"),
-            PopularRoute(null, "V10", "#FFFFFF", "웨이브락 서면", "Sector V"),
-            PopularRoute(null, "V7", "#4C3E2F", "V10 천호점", "락랜드"),
-            PopularRoute(null, "V2", "#333333", "더클라임 부펀", "툇마루"),
-            PopularRoute(null, "V6", "#765665", "웨이브락 구로", "툇마루"),
-            PopularRoute(null, "V1", "#63B75D", "더클라임 연남", "툇마루"),
-            PopularRoute(null, "V3", "#555522", "볼더프렌즈", "섹터 A"),
-            PopularRoute(null, "V10", "#FFFFFF", "웨이브락 서면", "Sector V"),
-            PopularRoute(null, "V7", "#4C3E2F", "V10 천호점", "락랜드"),
-            PopularRoute(null, "V2", "#333333", "더클라임 부펀", "툇마루"),
-            PopularRoute(null, "V6", "#765665", "웨이브락 구로", "툇마루"),
-            PopularRoute(null, "V1", "#63B75D", "더클라임 연남", "툇마루"),
-            PopularRoute(null, "V3", "#555522", "볼더프렌즈", "섹터 A"),
-            PopularRoute(null, "V10", "#FFFFFF", "웨이브락 서면", "Sector V"),
-            PopularRoute(null, "V7", "#4C3E2F", "V10 천호점", "락랜드"),
-            PopularRoute(null, "V2", "#333333", "더클라임 부펀", "툇마루"),
-            PopularRoute(null, "V6", "#765665", "웨이브락 구로", "툇마루")
-        )
+//        val routeList = arrayListOf(
+//            PopularRoute(null, "V1", "#63B75D", "더클라임 연남", "툇마루"),
+//            PopularRoute(null, "V3", "#555522", "볼더프렌즈", "섹터 A"),
+//            PopularRoute(null, "V10", "#FFFFFF", "웨이브락 서면", "Sector V"),
+//            PopularRoute(null, "V7", "#4C3E2F", "V10 천호점", "락랜드"),
+//            PopularRoute(null, "V2", "#333333", "더클라임 부펀", "툇마루"),
+//            PopularRoute(null, "V6", "#765665", "웨이브락 구로", "툇마루"),
+//            PopularRoute(null, "V1", "#63B75D", "더클라임 연남", "툇마루"),
+//            PopularRoute(null, "V3", "#555522", "볼더프렌즈", "섹터 A"),
+//            PopularRoute(null, "V10", "#FFFFFF", "웨이브락 서면", "Sector V"),
+//            PopularRoute(null, "V7", "#4C3E2F", "V10 천호점", "락랜드"),
+//            PopularRoute(null, "V2", "#333333", "더클라임 부펀", "툇마루"),
+//            PopularRoute(null, "V6", "#765665", "웨이브락 구로", "툇마루"),
+//            PopularRoute(null, "V1", "#63B75D", "더클라임 연남", "툇마루"),
+//            PopularRoute(null, "V3", "#555522", "볼더프렌즈", "섹터 A"),
+//            PopularRoute(null, "V10", "#FFFFFF", "웨이브락 서면", "Sector V"),
+//            PopularRoute(null, "V7", "#4C3E2F", "V10 천호점", "락랜드"),
+//            PopularRoute(null, "V2", "#333333", "더클라임 부펀", "툇마루"),
+//            PopularRoute(null, "V6", "#765665", "웨이브락 구로", "툇마루")
+//        )
 
-        val popularRouteRVAdapter = PopularRouteRVAdapter(routeList)
+        val popularRouteRVAdapter = PopularRouteRVAdapter(recyclerRoute)
         setupRecyclerView(binding.rvHomePopularRoutes, popularRouteRVAdapter, LinearLayoutManager.HORIZONTAL)
     }
 

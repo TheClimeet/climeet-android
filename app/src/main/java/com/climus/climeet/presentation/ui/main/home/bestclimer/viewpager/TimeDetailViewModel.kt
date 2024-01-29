@@ -28,7 +28,7 @@ class TimeDetailViewModel @Inject constructor(private val repository: MainReposi
 
     fun getClimberRankingOrderTime() {
         viewModelScope.launch {
-            repository.findClimberRankingOrderTime().let {
+            repository.findClimberRankingOrderTime("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzA2NDI0OTY5LCJleHAiOjE3MjE5NzY5Njl9.BzA3Cj_KPcLuKsusBDFaoVlz5ltnrwsZHo_lCcfHBk-nNqG643v40GwnrZIYDRVK2H0A6SvXMBurYiklIAmGqg").let {
                 when(it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
