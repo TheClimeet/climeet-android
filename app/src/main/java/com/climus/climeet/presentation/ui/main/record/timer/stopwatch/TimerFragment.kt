@@ -7,7 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentTimerBinding
@@ -24,7 +24,7 @@ enum class ViewMode {
 class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer),
     CragSelectionListener {
 
-    private val timerVM: TimerViewModel by viewModels()
+    private val timerVM: TimerViewModel by activityViewModels()
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,23 +58,20 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         timerObserve()
         Log.d(
             "timer",
-            "onResume\nisStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}, isRunning : ${timerVM.isStart.value}"
+            "timer onResume\nisStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}, isRunning : ${timerVM.isStart.value}"
         )
     }
 
     override fun onPause() {
         super.onPause()
         updateStatePref()
-        Log.d(
-            "timer",
-            "onPause\nisStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}, isRunning : ${timerVM.isStart.value}"
-        )
+        Log.d("timer", "timer onPause")
     }
 
     override fun onDestroy() {
         super.onDestroy()
         timerVM.unregisterReceiver(requireContext())
-        Log.d("timer", "onDestroy")
+        Log.d("timer", "timer onDestroy")
     }
 
     private fun updateStatePref() {
@@ -85,6 +82,10 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             timerVM.isStop.value?.let { putBoolean(KEY_IS_STOP, it) }
             timerVM.isRunning.value?.let { putBoolean(KEY_IS_RUNNING, it) }
             apply()
+            Log.d(
+                "timer",
+                "[중간 저장] isStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}, isRunning : ${timerVM.isStart.value}"
+            )
         }
     }
 
