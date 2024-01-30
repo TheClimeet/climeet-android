@@ -141,23 +141,25 @@
                 android:id="@+id/rv_sector_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_sector" />
+                app:layout_constraintTop_toBottomOf="@id/iv_sector"
+                tools:listitem="@layout/item_sector_name" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_level_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_sector_name" />
+                app:layout_constraintTop_toBottomOf="@id/rv_sector_name"
+                tools:listitem="@layout/item_sector_level" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_sector_image"
@@ -179,6 +181,7 @@
             android:layout_width="100dp"
             android:layout_height="120dp"
             android:layout_marginTop="20dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_main" />
