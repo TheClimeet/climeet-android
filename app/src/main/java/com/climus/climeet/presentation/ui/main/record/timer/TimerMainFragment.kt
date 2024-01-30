@@ -5,12 +5,12 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.R
+import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.databinding.FragmentTimerViewPagerBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerClimbingRecordFragment
-import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerFragment
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,6 +28,13 @@ class TimerMainFragment :
 
         setViewPager()
         setObserver()
+        timerObserve()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timerVM.unregisterReceiver(requireContext())
+        Log.d("timer", "루트기록 unregistered")
     }
 
     private fun setViewPager() {
@@ -59,6 +66,17 @@ class TimerMainFragment :
                 binding.vpTimer.isUserInputEnabled = false  // 화면 넘길 수 없음
                 Log.d("timer", "indicator 안 보임")
             }
+        }
+    }
+
+    private fun timerObserve() {
+        if (timerVM.isPaused.value == true) {
+            val time = sharedPreferences.getString("pauseTime", timerVM.timeFormat.value)
+            binding.tvTime.text = time
+        } else {
+            timerVM.timeFormat.observe(viewLifecycleOwner, Observer { timeFormat ->
+                binding.tvTime.text = timeFormat
+            })
         }
     }
 }
