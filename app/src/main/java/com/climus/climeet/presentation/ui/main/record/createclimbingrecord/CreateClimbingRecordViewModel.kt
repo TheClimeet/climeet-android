@@ -42,10 +42,8 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun setDate(){
+    fun setDate(date: LocalDate){
         viewModelScope.launch(Dispatchers.Main) {
-            Log.d("dateTest", "vm ${CreateRecordData.selectedDate}")
-            val date = CreateRecordData.selectedDate
             val koreanDayOfWeek = when (date.dayOfWeek.value) {
                 1 -> "(월)"
                 2 -> "(화)"
@@ -60,7 +58,6 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
             val month = date.month.value
             val day = date.dayOfMonth
             datePickText.value = "${year}년 ${month}월 ${day}일 $koreanDayOfWeek"
-            Log.d("dateTest", "dhks ${datePickText.value}")
         }
     }
 

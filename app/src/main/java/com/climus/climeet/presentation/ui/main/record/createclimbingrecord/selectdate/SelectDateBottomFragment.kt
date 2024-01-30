@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectdate
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSelectDateBottomBinding
@@ -22,7 +24,7 @@ import java.util.Calendar
 @AndroidEntryPoint
 class SelectDateBottomFragment : BottomSheetDialogFragment() {
 
-    private val parentViewModel: CreateClimbingRecordViewModel by viewModels()
+    private lateinit var sharedModel: SharedBottomSheetViewModel
     private val viewModel: SelectDateBottomViewModel by viewModels()
     private var _binding: FragmentSelectDateBottomBinding? = null
     private val binding get() = _binding!!
@@ -50,10 +52,11 @@ class SelectDateBottomFragment : BottomSheetDialogFragment() {
         initDatePicker()
         initEventObserve()
 
-        dialog?.setOnDismissListener {
-            parentViewModel.setDate() // BottomSheet가 닫힐 때 setDate() 호출
-        }
+    }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        sharedModel = ViewModelProvider(requireActivity()).get(SharedBottomSheetViewModel::class.java)
     }
 
     private fun initEventObserve() {
@@ -77,6 +80,11 @@ class SelectDateBottomFragment : BottomSheetDialogFragment() {
             )
         )
         dismiss()
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        sharedModel.selectedDate.value = CreateRecordData.selectedDate
     }
 
     private fun updateDateToday() {
