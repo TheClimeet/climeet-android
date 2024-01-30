@@ -2,7 +2,6 @@ package com.climus.climeet.presentation.ui.main.record.timer.stopwatch
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +9,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.climus.climeet.R
+import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.databinding.FragmentTimerBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.NoticePopup
@@ -25,7 +25,6 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
     CragSelectionListener {
 
     private val timerVM: TimerViewModel by activityViewModels()
-    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,7 +36,20 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         initTimerLayout()
         initClickListener()
         timerObserve()
-        Log.d("timer", "onViewCreated")
+
+        // 서비스 강제 종료시 stop 상태로 reset
+        val serviceState = TimerService.serviceRunning
+        Log.d("timer", "서비스 실행중? : ${serviceState.value}")
+
+        if(serviceState.value == null){
+            stopStopwatch()
+            timerVM.isPaused.value = false
+            timerVM.isStart.value = false
+            timerVM.isRestart.value = false
+            timerVM.isStop.value = true
+            timerVM.isRunning.value = false
+            updateStatePref()
+        }
     }
 
     override fun onResume() {
@@ -64,13 +76,13 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
     override fun onPause() {
         super.onPause()
         updateStatePref()
-        Log.d("timer", "timer onPause")
+        //Log.d("timer", "timer onPause")
     }
 
     override fun onDestroy() {
         super.onDestroy()
         timerVM.unregisterReceiver(requireContext())
-        Log.d("timer", "timer onDestroy")
+        //Log.d("timer", "timer onDestroy")
     }
 
     private fun updateStatePref() {
@@ -83,7 +95,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             apply()
             Log.d(
                 "timer",
-                "[중간 저장] isStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}, isRunning : ${timerVM.isStart.value}"
+                "[값 저장] isStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}, isRunning : ${timerVM.isStart.value}"
             )
         }
     }

@@ -16,6 +16,7 @@ import java.util.Timer
 import java.util.TimerTask
 import java.util.concurrent.TimeUnit
 import android.app.NotificationChannelGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.climus.climeet.presentation.ui.main.MainActivity
 
@@ -50,6 +51,8 @@ class TimerService : Service() {
                 Log.d("timer", "서비스 종료")
             }
         }
+        // 서비스 실행중
+        serviceRunning.postValue(true)
 
         return START_STICKY
     }
@@ -92,6 +95,8 @@ class TimerService : Service() {
                 PendingIntent.getService(this, 0, restartIntent, PendingIntent.FLAG_MUTABLE)
             // 재시작 액션 추가
             notification.addAction(R.drawable.ic_notification, "재시작", restartPendingIntent)
+
+            // todo : TimerFragment로 ViewMode 바꿀 수 있게 값 전달
         } else {
             val pauseIntent = Intent(this, TimerService::class.java).apply {
                 putExtra("command", "PAUSE")
@@ -100,14 +105,16 @@ class TimerService : Service() {
                 PendingIntent.getService(this, 1, pauseIntent, PendingIntent.FLAG_MUTABLE)
             // 일시정지 액션 추가
             notification.addAction(R.drawable.ic_notification, "일시중지", pausePendingIntent)
+
+            // todo : TimerFragment로 ViewMode 바꿀 수 있게 값 전달
         }
 
         // 루트 기록 액션 추가
         val recordIntent = Intent(this, MainActivity::class.java).apply {
-            putExtra("showTimerFragment", true)
+            putExtra("showTimerRecordFragment", true)
         }
         val recordPendingIntent: PendingIntent = PendingIntent.getActivity(
-            this, 2, recordIntent, PendingIntent.FLAG_IMMUTABLE
+            this, 2, recordIntent, PendingIntent.FLAG_MUTABLE
         )
         notification.addAction(R.drawable.ic_notification, "루트 기록", recordPendingIntent)
 
@@ -155,7 +162,7 @@ class TimerService : Service() {
                         getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                     notificationManager.notify(1, notification) // 새로운 알림 생성
 
-                    // 브로드캐스트 보내기
+                    // 시간 브로드캐스트로 보내기
                     val intent = Intent("StopwatchUpdate")
                     intent.putExtra("elapsedTime", elapsedTime)
                     LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(intent)
@@ -169,7 +176,7 @@ class TimerService : Service() {
     private fun startTimer() {
         isStopped = false
         setTimer()
-        Log.d("timer", "서비스 타이머 시작")
+        //Log.d("timer", "서비스 타이머 시작")
     }
 
     private fun pauseTimer() {
@@ -181,14 +188,14 @@ class TimerService : Service() {
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(1, notification)
-        Log.d("timer", "서비스 타이머 일시정지")
+        //Log.d("timer", "서비스 타이머 일시정지")
     }
 
     private fun restartTimer() {
         isPaused = false
         // 타이머 재시작
         setTimer()
-        Log.d("timer", "서비스 타이머 재시작")
+        //Log.d("timer", "서비스 타이머 재시작")
     }
 
     private fun stopTimer() {
@@ -200,16 +207,11 @@ class TimerService : Service() {
         intent.putExtra("elapsedTime", 0L)
         LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(intent)
 
-        Log.d("timer", "서비스 타이머 종료")
+        //Log.d("timer", "서비스 타이머 종료")
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("timer", "서비스 삭제")
-    }
-
-    companion object {
-        private const val CHANNEL_ID = "stopwatch_channel"
+    companion object {private const val CHANNEL_ID = "stopwatch_channel"
         private const val GROUP_ID = "exercise_record_group"
+        val serviceRunning = MutableLiveData<Boolean>()
     }
 }

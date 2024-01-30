@@ -14,12 +14,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-interface TimerStartedProvider {
-    fun isTimerStarted(): Boolean
-}
-
 @HiltViewModel
-class TimerViewModel @Inject constructor() : ViewModel(), TimerStartedProvider {
+class TimerViewModel @Inject constructor() : ViewModel(){
 
     private val _time = MutableLiveData<Long>().apply { value = 0L }
     val time: LiveData<Long> get() = _time
@@ -52,12 +48,6 @@ class TimerViewModel @Inject constructor() : ViewModel(), TimerStartedProvider {
                 String.format("%02d:%02d", minutes, seconds)
             }
         }
-    }
-
-    // TimerMainAdapter에 현 상태 전달
-    override fun isTimerStarted(): Boolean {
-        Log.d("timer", "[뷰모델] 스톱워치 실행 상태 : ${isRunning.value}")
-        return isRunning.value ?: false
     }
 
     fun registerReceiver(context: Context) {

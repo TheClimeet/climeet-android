@@ -34,7 +34,7 @@ class TimerMainFragment :
     override fun onDestroy() {
         super.onDestroy()
         timerVM.unregisterReceiver(requireContext())
-        Log.d("timer", "루트기록 unregistered")
+        Log.d("timer", "루트 기록 unregistered")
     }
 
     private fun setViewPager() {
@@ -46,7 +46,7 @@ class TimerMainFragment :
         binding.vpTimer.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                // 루트기록 페이지에서는 indicator 자리에 시간을 보여준다
+                // 루트 기록 화면에서는 indicator 자리에 시간을 보여준다
                 when (position) {
                     0 -> binding.layoutIdcTime.visibility = View.INVISIBLE
                     1 -> binding.layoutIdcTime.visibility = View.VISIBLE
@@ -60,11 +60,11 @@ class TimerMainFragment :
             if (stopwatchState) {
                 binding.idcTimer.visibility = View.VISIBLE
                 binding.vpTimer.isUserInputEnabled = true   // 화면 넘길 수 있음
-                Log.d("timer", "indicator 보임")
+                //Log.d("timer", "indicator 보임")
             } else {
                 binding.idcTimer.visibility = View.INVISIBLE
                 binding.vpTimer.isUserInputEnabled = false  // 화면 넘길 수 없음
-                Log.d("timer", "indicator 안 보임")
+                //Log.d("timer", "indicator 안 보임")
             }
         }
     }
