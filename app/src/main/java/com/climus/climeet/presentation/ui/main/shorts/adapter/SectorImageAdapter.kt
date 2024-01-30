@@ -50,7 +50,6 @@ class SectorImageViewHolder(private val binding: ItemSectorImageBinding) :
 
     fun bind(item: SectorImageUiData) {
         binding.item = item
-        binding.tvLevel.setTextColor(item.levelColor.toColorInt())
         if (item.isSelected) {
             binding.vStroke.setBackgroundResource(R.drawable.rect_nofill_mainstroke_6radius)
         } else {

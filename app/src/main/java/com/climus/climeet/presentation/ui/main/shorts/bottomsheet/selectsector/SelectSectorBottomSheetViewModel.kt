@@ -26,6 +26,14 @@ data class SelectSectorBottomSheetUiState(
     val sectorNameList: List<SectorNameUiData> = emptyList(),
     val sectorLevelList: List<SectorLevelUiData> = emptyList(),
     val sectorImageList: List<SectorImageUiData> = emptyList(),
+    val selectedSector: SelectedSector = SelectedSector()
+)
+
+data class SelectedSector(
+    val sectorId: Long = -1,
+    val levelName: String = "",
+    val levelColor: String = "",
+    val sectorImg: String = "",
 )
 
 sealed class FloorBtnState {
@@ -110,28 +118,28 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
                     ),
                     SectorImageUiData(
                         1,
-                        "VB",
-                        "#BBBBBB",
+                        "V2",
+                        "#456213",
                         sectorImg = TEST_IMG,
                         onClickListener = ::selectImage
                     ),
                     SectorImageUiData(
                         2,
-                        "VB",
+                        "V3",
                         "#BBBBBB",
                         sectorImg = TEST_IMG,
                         onClickListener = ::selectImage
                     ),
                     SectorImageUiData(
                         3,
-                        "VB",
-                        "#BBBBBB",
+                        "V4",
+                        "#456213",
                         sectorImg = TEST_IMG,
                         onClickListener = ::selectImage
                     ),
                     SectorImageUiData(
                         4,
-                        "VB",
+                        "V8",
                         "#BBBBBB",
                         sectorImg = TEST_IMG,
                         onClickListener = ::selectImage
@@ -166,13 +174,23 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
     }
 
     private fun selectImage(id: Long) {
+        var selectedData = SelectedSector()
         _uiState.update { state ->
             state.copy(
                 sectorImageList = state.sectorImageList.map {
-                    it.copy(
-                        isSelected = it.sectorId == id
-                    )
+                    if(it.sectorId == id){
+                        selectedData = SelectedSector( it.sectorId, it.levelName, it.levelColor, it.sectorImg )
+                        it.copy(
+                            isSelected = true
+                        )
+                    } else {
+                        it.copy(
+                            isSelected = false
+                        )
+                    }
+
                 },
+                selectedSector = selectedData
             )
         }
     }

@@ -17,6 +17,7 @@
         style="@style/TextRegularSemiBold"
         android:layout_width="36dp"
         android:text="@{item.levelName}"
+        app:textHexColor="@{item.levelColor}"
         android:onClick="@{() -> item.onClickListener.invoke(item.levelName)}"
         android:layout_height="36dp"
         android:background="@drawable/oval_silver2fill_nostroke"

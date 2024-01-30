@@ -50,7 +50,6 @@ class SectorLevelViewHolder(private val binding: ItemSectorLevelBinding) :
 
     fun bind(item: SectorLevelUiData) {
         binding.item = item
-        binding.tvLevel.setTextColor(item.levelColor.toColorInt())
         if (item.isSelected) {
             binding.tvLevel.setBackgroundResource(R.drawable.oval_silver2fill_mainstroke)
         } else {
