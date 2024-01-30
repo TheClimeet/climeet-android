@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -81,17 +82,56 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_date_title" />
 
-        <DatePicker
-            android:id="@+id/dp_date"
+        <View
+            android:layout_width="0dp"
+            android:layout_height="28dp"
+            android:background="@drawable/rect_silverfill_nostroke_5radius"
+            app:layout_constraintTop_toTopOf="@id/layout_rv"
+            app:layout_constraintBottom_toBottomOf="@id/layout_rv"
+            app:layout_constraintStart_toStartOf="@id/layout_rv"
+            app:layout_constraintEnd_toEndOf="@id/layout_rv"/>
+        
+        <LinearLayout
+            android:id="@+id/layout_rv"
             android:layout_width="0dp"
             android:layout_height="150dp"
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="15dp"
-            android:calendarViewShown="false"
-            android:datePickerMode="spinner"
+            android:background="@android:color/transparent"
+            android:weightSum="3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_today_off" />
+            app:layout_constraintTop_toBottomOf="@id/tv_today_off">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_year"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_date" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_month"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_date" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_day"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_date" />
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -102,7 +142,7 @@
             android:weightSum="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dp_date">
+            app:layout_constraintTop_toBottomOf="@id/layout_rv">
 
             <TextView
                 android:id="@+id/tv_cancel"
@@ -117,7 +157,6 @@
                 android:text="취소"
                 android:textSize="18sp" />
 
-
             <TextView
                 android:id="@+id/tv_ok"
                 style="@style/TextMediumSemiBold"
@@ -131,10 +170,7 @@
                 android:text="확인"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
-
-
         </LinearLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
