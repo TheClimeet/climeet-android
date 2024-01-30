@@ -48,7 +48,7 @@ class NoticePopup(
 
         // 중앙 정렬
         val x = (context.resources.displayMetrics.widthPixels - popupView.measuredWidth) / 2
-        val y = 100
+        val y = 140
 
         popupWindow.showAtLocation(
             anchorView,
@@ -57,7 +57,7 @@ class NoticePopup(
             y
         )
 
-        // 5초가 지나면 자동으로 사라진다
-        handler.postDelayed(dismissRunnable, 5000)
+        // 3초가 지나면 자동으로 사라진다
+        handler.postDelayed(dismissRunnable, 3000)
     }
 }
