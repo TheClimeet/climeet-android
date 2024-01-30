@@ -73,7 +73,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/rect_grey8fill_nostroke_10radius"
-            android:paddingHorizontal="12dp"
             android:paddingVertical="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,6 +82,7 @@
                 android:id="@+id/layout_toggle_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
                 android:background="@drawable/rect_silver2fill_nostroke_20radius"
                 android:paddingHorizontal="4dp"
                 android:paddingVertical="3dp"
@@ -140,6 +140,7 @@
                 android:id="@+id/iv_sector"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginHorizontal="12dp"
                 android:layout_marginTop="16dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintDimensionRatio="2.3:1"
@@ -154,12 +155,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:clipToPadding="false"
                 android:orientation="horizontal"
-                app:list="@{vm.uiState.sectorNameList}"
+                android:paddingStart="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_sector"
+                app:list="@{vm.uiState.sectorNameList}"
                 tools:listitem="@layout/item_sector_name" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -167,12 +170,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:list="@{vm.uiState.sectorLevelList}"
+                android:clipToPadding="false"
                 android:orientation="horizontal"
+                android:paddingStart="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rv_sector_name"
+                app:list="@{vm.uiState.sectorLevelList}"
                 tools:listitem="@layout/item_sector_level" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -180,11 +185,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:clipToPadding="false"
                 android:orientation="horizontal"
+                android:paddingStart="10dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rv_sector_level"
+                app:list="@{vm.uiState.sectorImageList}"
                 tools:listitem="@layout/item_sector_image" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -212,6 +220,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/select_sector" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_accept" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
