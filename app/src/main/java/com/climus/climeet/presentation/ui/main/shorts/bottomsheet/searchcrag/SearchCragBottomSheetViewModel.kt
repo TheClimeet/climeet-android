@@ -123,7 +123,7 @@ class SearchCragBottomSheetViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToSelectSectorBottomSheet(cragId: Long, cragName: String, cragImgUrl: String){
+    fun navigateToSelectSectorBottomSheet(cragId: Long, cragName: String, cragImgUrl: String){
 
         viewModelScope.launch {
             _event.emit(SearchCragBottomSheetEvent.NavigateToSelectSectorBottomSheet(cragId, cragName))

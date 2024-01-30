@@ -11,6 +11,7 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSelectSectorBottomSheetBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.shorts.ShortsFilterViewModel
+import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorImageAdapter
 import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorLevelAdapter
 import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorNameAdapter
 
@@ -26,16 +27,18 @@ class SelectSectorBottomSheetFragment: BaseFragment<FragmentSelectSectorBottomSh
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
-        setRecyclerView()
         viewModel.setCragInfo(cragId, cragName)
+        setRecyclerView()
         initEventObserve()
     }
 
     private fun setRecyclerView(){
         binding.rvSectorName.adapter = SectorNameAdapter()
         binding.rvSectorLevel.adapter = SectorLevelAdapter()
+        binding.rvSectorImage.adapter = SectorImageAdapter()
         binding.rvSectorName.itemAnimator = null
         binding.rvSectorLevel.itemAnimator = null
+        binding.rvSectorImage.itemAnimator = null
     }
 
     private fun initEventObserve(){

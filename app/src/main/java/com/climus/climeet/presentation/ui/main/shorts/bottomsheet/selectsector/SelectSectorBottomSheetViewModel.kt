@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.climus.climeet.presentation.ui.main.shorts.model.SectorImageUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.SectorLevelUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.SectorNameUiData
+import com.climus.climeet.presentation.util.Constants.TEST_IMG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,10 +22,10 @@ data class SelectSectorBottomSheetUiState(
     val isSingleFloor: Boolean = false,
     val firstFloorBtnState: FloorBtnState = FloorBtnState.FloorSelected,
     val secondFloorBtnState: FloorBtnState = FloorBtnState.FloorUnSelected,
-    val sectorImg: String = "",
+    val backgroundImage: String = "",
     val sectorNameList: List<SectorNameUiData> = emptyList(),
     val sectorLevelList: List<SectorLevelUiData> = emptyList(),
-    val sectorImgList: List<SectorImageUiData> = emptyList()
+    val sectorImageList: List<SectorImageUiData> = emptyList(),
 )
 
 sealed class FloorBtnState {
@@ -81,9 +82,9 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
         setFloorInfo(floor)
     }
 
-    private fun setFloorInfo(floor: Int){
+    private fun setFloorInfo(floor: Int) {
 
-        _uiState.update{ state ->
+        _uiState.update { state ->
             state.copy(
                 sectorNameList = listOf(
                     SectorNameUiData("Cheesegrater", onClickListener = ::selectName),
@@ -91,23 +92,59 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
                     SectorNameUiData("The Wallus", onClickListener = ::selectName),
                 ),
                 sectorLevelList = listOf(
-                    SectorLevelUiData("VB","#BBBBBB", onClickListener = ::selectLevel),
-                    SectorLevelUiData("V1","#FFFFFF", onClickListener = ::selectLevel),
-                    SectorLevelUiData("V2","#DDDDDD", onClickListener = ::selectLevel),
-                    SectorLevelUiData("V3","#CCCCCC", onClickListener = ::selectLevel),
-                    SectorLevelUiData("V4","#BBBBBB", onClickListener = ::selectLevel),
-                    SectorLevelUiData("V5","#EEEEEE", onClickListener = ::selectLevel),
-                    SectorLevelUiData("V6","#555555", onClickListener = ::selectLevel),
-
+                    SectorLevelUiData("VB", "#BBBBBB", onClickListener = ::selectLevel),
+                    SectorLevelUiData("V1", "#FFFFFF", onClickListener = ::selectLevel),
+                    SectorLevelUiData("V2", "#DDDDDD", onClickListener = ::selectLevel),
+                    SectorLevelUiData("V3", "#CCCCCC", onClickListener = ::selectLevel),
+                    SectorLevelUiData("V4", "#BBBBBB", onClickListener = ::selectLevel),
+                    SectorLevelUiData("V5", "#EEEEEE", onClickListener = ::selectLevel),
+                    SectorLevelUiData("V6", "#555555", onClickListener = ::selectLevel),
+                ),
+                sectorImageList = listOf(
+                    SectorImageUiData(
+                        0,
+                        "VB",
+                        "#BBBBBB",
+                        sectorImg = TEST_IMG,
+                        onClickListener = ::selectImage
+                    ),
+                    SectorImageUiData(
+                        1,
+                        "VB",
+                        "#BBBBBB",
+                        sectorImg = TEST_IMG,
+                        onClickListener = ::selectImage
+                    ),
+                    SectorImageUiData(
+                        2,
+                        "VB",
+                        "#BBBBBB",
+                        sectorImg = TEST_IMG,
+                        onClickListener = ::selectImage
+                    ),
+                    SectorImageUiData(
+                        3,
+                        "VB",
+                        "#BBBBBB",
+                        sectorImg = TEST_IMG,
+                        onClickListener = ::selectImage
+                    ),
+                    SectorImageUiData(
+                        4,
+                        "VB",
+                        "#BBBBBB",
+                        sectorImg = TEST_IMG,
+                        onClickListener = ::selectImage
+                    )
                 )
             )
         }
     }
 
-    private fun selectName(name: String){
+    private fun selectName(name: String) {
         _uiState.update { state ->
             state.copy(
-                sectorNameList = state.sectorNameList.map{
+                sectorNameList = state.sectorNameList.map {
                     it.copy(
                         isSelected = it.name == name
                     )
@@ -116,14 +153,26 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
         }
     }
 
-    private fun selectLevel(name: String){
+    private fun selectLevel(name: String) {
         _uiState.update { state ->
             state.copy(
-                sectorLevelList = state.sectorLevelList.map{
+                sectorLevelList = state.sectorLevelList.map {
                     it.copy(
                         isSelected = it.levelName == name
                     )
                 }
+            )
+        }
+    }
+
+    private fun selectImage(id: Long) {
+        _uiState.update { state ->
+            state.copy(
+                sectorImageList = state.sectorImageList.map {
+                    it.copy(
+                        isSelected = it.sectorId == id
+                    )
+                },
             )
         }
     }
