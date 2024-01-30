@@ -5,6 +5,12 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector.SelectSectorBottomSheetViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,6 +58,7 @@
                 style="@style/TextRegularSemiBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{vm.cragName}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_map"
@@ -79,6 +86,7 @@
                 android:background="@drawable/rect_silver2fill_nostroke_20radius"
                 android:paddingHorizontal="4dp"
                 android:paddingVertical="3dp"
+                android:visibility="@{vm.uiState.oneFloor? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
