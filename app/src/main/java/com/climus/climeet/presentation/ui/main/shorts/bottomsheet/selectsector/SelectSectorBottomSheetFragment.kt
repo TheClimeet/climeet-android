@@ -11,6 +11,7 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSelectSectorBottomSheetBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.shorts.ShortsFilterViewModel
+import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorLevelAdapter
 import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorNameAdapter
 
 class SelectSectorBottomSheetFragment: BaseFragment<FragmentSelectSectorBottomSheetBinding>(R.layout.fragment_select_sector_bottom_sheet) {
@@ -32,7 +33,9 @@ class SelectSectorBottomSheetFragment: BaseFragment<FragmentSelectSectorBottomSh
 
     private fun setRecyclerView(){
         binding.rvSectorName.adapter = SectorNameAdapter()
+        binding.rvSectorLevel.adapter = SectorLevelAdapter()
         binding.rvSectorName.itemAnimator = null
+        binding.rvSectorLevel.itemAnimator = null
     }
 
     private fun initEventObserve(){

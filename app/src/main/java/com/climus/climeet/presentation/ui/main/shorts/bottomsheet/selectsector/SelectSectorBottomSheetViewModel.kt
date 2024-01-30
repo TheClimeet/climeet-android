@@ -89,6 +89,16 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
                     SectorNameUiData("Cheesegrater", onClickListener = ::selectName),
                     SectorNameUiData("Jaws", onClickListener = ::selectName),
                     SectorNameUiData("The Wallus", onClickListener = ::selectName),
+                ),
+                sectorLevelList = listOf(
+                    SectorLevelUiData("VB","#BBBBBB", onClickListener = ::selectLevel),
+                    SectorLevelUiData("V1","#FFFFFF", onClickListener = ::selectLevel),
+                    SectorLevelUiData("V2","#DDDDDD", onClickListener = ::selectLevel),
+                    SectorLevelUiData("V3","#CCCCCC", onClickListener = ::selectLevel),
+                    SectorLevelUiData("V4","#BBBBBB", onClickListener = ::selectLevel),
+                    SectorLevelUiData("V5","#EEEEEE", onClickListener = ::selectLevel),
+                    SectorLevelUiData("V6","#555555", onClickListener = ::selectLevel),
+
                 )
             )
         }
@@ -100,6 +110,18 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
                 sectorNameList = state.sectorNameList.map{
                     it.copy(
                         isSelected = it.name == name
+                    )
+                }
+            )
+        }
+    }
+
+    private fun selectLevel(name: String){
+        _uiState.update { state ->
+            state.copy(
+                sectorLevelList = state.sectorLevelList.map{
+                    it.copy(
+                        isSelected = it.levelName == name
                     )
                 }
             )

@@ -163,10 +163,11 @@
                 tools:listitem="@layout/item_sector_name" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_level_name"
+                android:id="@+id/rv_sector_level"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                app:list="@{vm.uiState.sectorLevelList}"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -183,7 +184,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_level_name"
+                app:layout_constraintTop_toBottomOf="@id/rv_sector_level"
                 tools:listitem="@layout/item_sector_image" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

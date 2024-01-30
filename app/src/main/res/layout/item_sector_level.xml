@@ -5,12 +5,19 @@
 
     <data>
 
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.shorts.model.SectorLevelUiData" />
+
+
     </data>
 
     <TextView
         android:id="@+id/tv_level"
         style="@style/TextRegularSemiBold"
         android:layout_width="36dp"
+        android:text="@{item.levelName}"
+        android:onClick="@{() -> item.onClickListener.invoke(item.levelName)}"
         android:layout_height="36dp"
         android:background="@drawable/oval_silver2fill_nostroke"
         android:gravity="center"
