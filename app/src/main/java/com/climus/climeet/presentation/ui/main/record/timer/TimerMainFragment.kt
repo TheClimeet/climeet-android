@@ -37,15 +37,14 @@ class TimerMainFragment :
         binding.idcTimer.setViewPager(binding.vpTimer)
 
         binding.vpTimer.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                // 루트기록 페이지에서는 indicator 자리에 시간을 보여준다
+                when (position) {
+                    0 -> binding.layoutIdcTime.visibility = View.INVISIBLE
+                    1 -> binding.layoutIdcTime.visibility = View.VISIBLE
+                }
             }
-
-            override fun onPageScrollStateChanged(state: Int) {}
-            override fun onPageSelected(position: Int) {}
         })
     }
 
