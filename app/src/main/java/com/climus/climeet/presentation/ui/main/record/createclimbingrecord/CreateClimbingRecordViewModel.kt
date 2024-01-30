@@ -1,6 +1,6 @@
 package com.climus.climeet.presentation.ui.main.record.createclimbingrecord
 
-import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,8 +26,14 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
     val event: SharedFlow<CreateClimbingRecordEvent> = _event.asSharedFlow()
 
     val datePickText = MutableStateFlow("날짜를 선택해주세요")
+    val selectedDate = MutableLiveData<LocalDate>()
+
     init {
 
+    }
+
+    fun setSelectedDate(date: LocalDate) {
+        selectedDate.value = date
     }
 
     fun showDatePicker() {
@@ -36,15 +42,16 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun showTimePicker(){
+    fun showTimePicker() {
         viewModelScope.launch {
             _event.emit(CreateClimbingRecordEvent.ShowTimePicker)
         }
     }
 
-    fun setDate(date: LocalDate){
+    fun setDate() {
+        val date = selectedDate.value
         viewModelScope.launch(Dispatchers.Main) {
-            val koreanDayOfWeek = when (date.dayOfWeek.value) {
+            val koreanDayOfWeek = when (date?.dayOfWeek?.value) {
                 1 -> "(월)"
                 2 -> "(화)"
                 3 -> "(수)"
@@ -61,8 +68,8 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun navigateToSelectCrag(){
-        viewModelScope.launch{
+    fun navigateToSelectCrag() {
+        viewModelScope.launch {
             _event.emit(CreateClimbingRecordEvent.NavigateToSelectCrag)
         }
     }

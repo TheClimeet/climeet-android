@@ -17,7 +17,7 @@ sealed class SelectDateBottomEvent {
 }
 
 @HiltViewModel
-class SelectDateBottomViewModel @Inject constructor() : ViewModel() {
+class SelectDateBottomSheetViewModel @Inject constructor() : ViewModel() {
     private val _event = MutableSharedFlow<SelectDateBottomEvent>()
     val event: SharedFlow<SelectDateBottomEvent> = _event.asSharedFlow()
 

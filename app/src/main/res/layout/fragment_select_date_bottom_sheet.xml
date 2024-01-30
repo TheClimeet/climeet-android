@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -9,7 +8,7 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectdate.SelectDateBottomViewModel" />
+            type="com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectdate.SelectDateBottomSheetViewModel" />
 
     </data>
 
@@ -128,10 +127,10 @@
                 android:layout_weight="1"
                 android:background="@drawable/rect_mainfill_nostroke_5radius"
                 android:gravity="center"
+                android:onClick="@{()->vm.setDate()}"
                 android:text="확인"
                 android:textColor="@color/black"
-                android:textSize="18sp"
-                android:onClick="@{()->vm.setDate()}"/>
+                android:textSize="18sp" />
 
 
         </LinearLayout>
