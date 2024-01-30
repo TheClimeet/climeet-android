@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.shorts.model.SectorNameUiData" />
+
     </data>
 
     <com.google.android.material.chip.Chip
@@ -13,6 +17,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
+        android:text="@{item.name}"
+        android:onClick="@{() -> item.onClickListener.invoke(item.name)}"
         app:chipBackgroundColor="@color/cm_silver2"
         app:chipStrokeWidth="0dp"
         tools:text="Jaws" />
