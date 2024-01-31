@@ -36,12 +36,13 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         initTimerLayout()
         initClickListener()
         timerObserve()
+        //noticeObserve()
 
         // 서비스 강제 종료시 stop 상태로 reset
         val serviceState = TimerService.serviceRunning
-        Log.d("timer", "서비스 실행중? : ${serviceState.value}")
+        //Log.d("timer", "서비스 실행중? : ${serviceState.value}")
 
-        if(serviceState.value == null){
+        if (serviceState.value == null) {
             stopStopwatch()
             timerVM.isPaused.value = false
             timerVM.isStart.value = false
@@ -108,9 +109,30 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         } else {
             timerVM.timeFormat.observe(viewLifecycleOwner, Observer { timeFormat ->
                 binding.tvTime.text = timeFormat
+                Log.d("timer", "timerObserve 호출2 : ${timerVM.isPaused.value}")
             })
         }
     }
+
+//    private fun noticeObserve() {
+//        // 알림창에서 일시정지, 재시작 버튼 눌리면 상태값 반영
+//        val state = sharedPreferences.getBoolean("pause", false)
+//        if (state){
+//            timerVM.isStart.value = false
+//            timerVM.isPaused.value = true
+//            timerVM.isRestart.value = false
+//            timerVM.isStop.value = false
+//            timerVM.isRunning.value = false
+//            Log.d("timer", "true일 때 pause값 변경?")
+//        } else {
+//            timerVM.isStart.value = false
+//            timerVM.isPaused.value = false
+//            timerVM.isRestart.value = true
+//            timerVM.isStop.value = false
+//            timerVM.isRunning.value = true
+//            Log.d("timer", "false일 때 pause값 변경?")
+//        }
+//    }
 
     private fun initTimerLayout() {
         timerVM.isStart.observe(viewLifecycleOwner, Observer { isStart ->
@@ -122,14 +144,14 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         timerVM.isPaused.observe(viewLifecycleOwner, Observer { isPaused ->
             if (isPaused) {
                 viewMode(ViewMode.PAUSE)
-                //Log.d("timer", "화면 초기화 : paused")
+                Log.d("timer", "화면 초기화 : paused")
             }
         })
         timerVM.isRestart.observe(viewLifecycleOwner, Observer { isRestart ->
             if (isRestart) {
                 viewMode(ViewMode.RESTART)
                 timerObserve()
-                //Log.d("timer", "화면 초기화 : restart")
+                Log.d("timer", "화면 초기화 : restart")
             }
         })
         timerVM.isStop.observe(viewLifecycleOwner, Observer { isStop ->

@@ -26,10 +26,11 @@ class TimerViewModel @Inject constructor() : ViewModel(){
     var isRestart = MutableLiveData<Boolean>().apply { value = false }
     var isStop = MutableLiveData<Boolean>().apply { value = true }
 
-    // 스톱워치 경과시간 전달받음
+    // 스톱워치 경과시간과 정지 여부 전달받음
     private val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             _time.value = intent.getLongExtra("elapsedTime", 0L)
+            isPaused.value = intent.getBooleanExtra("pause", false)
         }
     }
 

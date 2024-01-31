@@ -25,8 +25,8 @@ class TimerService : Service() {
     private var startTime = 0L
     private var pauseTime = 0L
     private var elapsedTime = 0L
-    private var isPaused = false
-    private var isStopped = true
+    private var isPaused = MutableLiveData(false)
+    private var isStopped = MutableLiveData(true)
     private var timer: Timer? = null
 
     override fun onBind(intent: Intent): IBinder? {
@@ -42,6 +42,7 @@ class TimerService : Service() {
                 val notification = createNotification(0L)
                 startForeground(1, notification)
             }
+
             "PAUSE" -> pauseTimer()
             "RESTART" -> restartTimer()
             "STOP" -> {
@@ -87,7 +88,7 @@ class TimerService : Service() {
         }
 
         // 알림창 재시작, 일시중지 버튼
-        if (isPaused) {
+        if (isPaused.value == true) {
             val restartIntent = Intent(this, TimerService::class.java).apply {
                 putExtra("command", "RESTART")
             }
@@ -95,8 +96,6 @@ class TimerService : Service() {
                 PendingIntent.getService(this, 0, restartIntent, PendingIntent.FLAG_MUTABLE)
             // 재시작 액션 추가
             notification.addAction(R.drawable.ic_notification, "재시작", restartPendingIntent)
-
-            // todo : TimerFragment로 ViewMode 바꿀 수 있게 값 전달
         } else {
             val pauseIntent = Intent(this, TimerService::class.java).apply {
                 putExtra("command", "PAUSE")
@@ -105,18 +104,7 @@ class TimerService : Service() {
                 PendingIntent.getService(this, 1, pauseIntent, PendingIntent.FLAG_MUTABLE)
             // 일시정지 액션 추가
             notification.addAction(R.drawable.ic_notification, "일시중지", pausePendingIntent)
-
-            // todo : TimerFragment로 ViewMode 바꿀 수 있게 값 전달
         }
-
-        // 루트 기록 액션 추가
-        val recordIntent = Intent(this, MainActivity::class.java).apply {
-            putExtra("showTimerRecordFragment", true)
-        }
-        val recordPendingIntent: PendingIntent = PendingIntent.getActivity(
-            this, 2, recordIntent, PendingIntent.FLAG_MUTABLE
-        )
-        notification.addAction(R.drawable.ic_notification, "루트 기록", recordPendingIntent)
 
         return notification.build()
     }
@@ -150,7 +138,7 @@ class TimerService : Service() {
     }
 
     private fun setTimer(){
-        if (!isPaused) {
+        if (isPaused.value == false) {
             startTime = System.currentTimeMillis()
         }
         timer = Timer().apply {
@@ -174,13 +162,13 @@ class TimerService : Service() {
     }
 
     private fun startTimer() {
-        isStopped = false
+        isStopped.value = false
         setTimer()
         //Log.d("timer", "서비스 타이머 시작")
     }
 
     private fun pauseTimer() {
-        isPaused = true
+        isPaused.value = true
         timer?.cancel()
         pauseTime = elapsedTime
         // 알림창 재생성
@@ -188,18 +176,25 @@ class TimerService : Service() {
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(1, notification)
-        //Log.d("timer", "서비스 타이머 일시정지")
+
+        // TimeFragment에 전달
+        val intent = Intent("StopwatchUpdate")
+        intent.putExtra("pause", isPaused.value)
+        intent.putExtra("pauseTime", pauseTime)
+        LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(intent)
+
+        Log.d("timer", "서비스 타이머 일시정지")
     }
 
     private fun restartTimer() {
-        isPaused = false
+        isPaused.value = false
         // 타이머 재시작
         setTimer()
         //Log.d("timer", "서비스 타이머 재시작")
     }
 
     private fun stopTimer() {
-        isStopped = true
+        isStopped.value = true
         timer?.cancel()
 
         // 스톱워치 화면 시간 0으로 바꿔주기
@@ -210,7 +205,8 @@ class TimerService : Service() {
         //Log.d("timer", "서비스 타이머 종료")
     }
 
-    companion object {private const val CHANNEL_ID = "stopwatch_channel"
+    companion object {
+        private const val CHANNEL_ID = "stopwatch_channel"
         private const val GROUP_ID = "exercise_record_group"
         val serviceRunning = MutableLiveData<Boolean>()
     }
