@@ -1,5 +1,7 @@
 package com.climus.climeet.data.remote
 
+import com.climus.climeet.data.model.response.RefreshTokenResponse
+import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
@@ -14,13 +16,27 @@ import retrofit2.http.Query
 interface MainApi {
 
     @Multipart
-    @POST("/file")
+    @POST("api/file")
     suspend fun uploadImage(@Part file: MultipartBody.Part): Response<UploadImgResponse>
 
-    @GET("/gym/search/all")
+    @GET("api/gym/search/all")
     suspend fun searchGym(
-        @Query("gymname") gymName: String
-    ): Response<List<SearchGymResponse>>
+        @Query("gymname") gymName: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<SearchGymResponse>
+
+    @GET("api/gym/search")
+    suspend fun searchAvailableGym(
+        @Query("gymname") gymName: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<SearchAvailableGymResponse>
+
+    @GET("refresh-token")
+    suspend fun refreshToken(
+        @Query("refreshToken") refreshToken: String
+    ): Response<RefreshTokenResponse>
 
     @GET("/api/shorts/latest")
     suspend fun getRecentShorts(

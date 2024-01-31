@@ -64,7 +64,7 @@ object AdminSignupForm {
     }
 
     fun getSignupRequest(): ManagerSignUpRequest = ManagerSignUpRequest(
-        gymName = cragName,
+        gymId = cragId,
         loginId = id,
         password = pw,
         name = name,
