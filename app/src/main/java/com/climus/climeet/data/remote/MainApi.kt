@@ -13,7 +13,7 @@ import retrofit2.http.Query
 interface MainApi {
 
     @Multipart
-    @POST("/file")
+    @POST("/api/file")
     suspend fun uploadImage(@Part file: MultipartBody.Part): Response<UploadImgResponse>
 
     @GET("api/gym/search/all")

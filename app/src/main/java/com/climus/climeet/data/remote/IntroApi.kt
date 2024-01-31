@@ -15,35 +15,35 @@ import retrofit2.http.Query
 
 interface IntroApi {
 
-    @POST("/climber/login")
+    @POST("/api/climber/login")
     suspend fun climerSignUp(
         @Query("provider") provider: String,
         @Header("Authorization") accessToken: String,
         @Body params: ClimerSignupRequest
     ): Response<ClimerSignupResponse>
 
-    @POST("/manager/signup")
+    @POST("/api/manager/signup")
     suspend fun managerSignUp(
         @Body params: ManagerSignUpRequest
     ): Response<Unit>
 
-    @POST("/climber/login")
+    @POST("/api/climber/login")
     suspend fun climerLogin(
         @Query("provider") provider: String,
         @Header("Authorization") accessToken: String,
     ): Response<ClimerSignupResponse>
 
-    @POST("/manager/login")
+    @POST("/api/manager/login")
     suspend fun managerLogin(
         @Body params: ManagerLoginRequest
     ): Response<ManagerLoginResponse>
 
-    @GET("/manager/check-id/{loginId}")
+    @GET("/api/manager/check-id/{loginId}")
     suspend fun managerIdCheck(
         @Path("loginId") loginId: String
     ): Response<Boolean>
 
-    @GET("/manager/isRegistered/{gymName}")
+    @GET("/api/manager/isRegistered/{gymName}")
     suspend fun managerGymNameCheck(
         @Path("gymName") gymName: String
     ): Response<Boolean>
