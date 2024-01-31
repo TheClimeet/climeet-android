@@ -27,10 +27,10 @@ data class FollowCragUiState(
     val emptyResultState: Boolean = false
 )
 
-sealed class FollowCragEvent{
-    data object NavigateToBack: FollowCragEvent()
-    data object NavigateToHowToKnow: FollowCragEvent()
-    data class ShowToastMessage(val msg: String): FollowCragEvent()
+sealed class FollowCragEvent {
+    data object NavigateToBack : FollowCragEvent()
+    data object NavigateToHowToKnow : FollowCragEvent()
+    data class ShowToastMessage(val msg: String) : FollowCragEvent()
 }
 
 @HiltViewModel
@@ -72,7 +72,7 @@ class FollowCragViewModel @Inject constructor(
 
                 curJob = viewModelScope.launch {
                     delay(500)
-                    repository.searchGym(it,0,15).let { result ->
+                    repository.searchAvailableGym(it, 0, 15).let { result ->
                         when (result) {
                             is BaseState.Success -> {
                                 if (result.body.result.isNotEmpty()) {
@@ -126,7 +126,7 @@ class FollowCragViewModel @Inject constructor(
         }
     }
 
-    fun navigateToBack(){
+    fun navigateToBack() {
         viewModelScope.launch {
             _event.emit(FollowCragEvent.NavigateToBack)
         }

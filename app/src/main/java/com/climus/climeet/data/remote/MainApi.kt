@@ -1,5 +1,7 @@
 package com.climus.climeet.data.remote
 
+import com.climus.climeet.data.model.response.SearchAvailableGymItem
+import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import okhttp3.MultipartBody
@@ -22,5 +24,12 @@ interface MainApi {
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<SearchGymResponse>
+
+    @GET("api/gym/search")
+    suspend fun searchAvailableGym(
+        @Query("gymname") gymName: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<SearchAvailableGymResponse>
 
 }
