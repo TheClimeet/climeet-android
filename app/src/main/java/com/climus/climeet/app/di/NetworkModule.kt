@@ -2,6 +2,7 @@ package com.climus.climeet.app.di
 
 import com.climus.climeet.BuildConfig
 import com.climus.climeet.config.AccessTokenInterceptor
+import com.climus.climeet.config.BearerInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,20 +20,18 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-
-        return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_DEV_URL)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+        .baseUrl(BuildConfig.BASE_DEV_URL)
+        .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
 
     @Provides
     @Singleton
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply {
-            level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
+            level =
+                if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
         }
     }
 
@@ -40,14 +39,13 @@ object NetworkModule {
     @Provides
     fun provideOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor
-    ): OkHttpClient {
+    ): OkHttpClient = OkHttpClient.Builder()
+        .readTimeout(30000, TimeUnit.MILLISECONDS)
+        .connectTimeout(30000, TimeUnit.MILLISECONDS)
+        .addInterceptor(httpLoggingInterceptor)
+        .addNetworkInterceptor(AccessTokenInterceptor())
+        .addInterceptor(BearerInterceptor())
+        .build()
 
-        return OkHttpClient.Builder()
-            .readTimeout(30000, TimeUnit.MILLISECONDS)
-            .connectTimeout(30000, TimeUnit.MILLISECONDS)
-            .addInterceptor(httpLoggingInterceptor)
-            .addNetworkInterceptor(AccessTokenInterceptor())
-            .build()
-    }
 
 }

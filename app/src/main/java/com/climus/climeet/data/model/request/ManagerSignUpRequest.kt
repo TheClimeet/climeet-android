@@ -3,7 +3,7 @@ package com.climus.climeet.data.model.request
 data class ManagerSignUpRequest(
     val backGroundImageUri: String,
     val email: String,
-    val gymName: String,
+    val gymId: Long,
     val isAllowAdNotification: Boolean,
     val isAllowCommentNotification: Boolean,
     val isAllowFollowNotification: Boolean,

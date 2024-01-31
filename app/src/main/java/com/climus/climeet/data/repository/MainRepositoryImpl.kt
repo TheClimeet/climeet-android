@@ -1,6 +1,7 @@
 package com.climus.climeet.data.repository
 
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.runRemote
@@ -16,6 +17,17 @@ class MainRepositoryImpl @Inject constructor(
         image: MultipartBody.Part
     ): BaseState<UploadImgResponse> = runRemote { api.uploadImage(image) }
 
-    override suspend fun searchGym(gymName: String): BaseState<List<SearchGymResponse>> = runRemote { api.searchGym(gymName) }
+    override suspend fun searchGym(
+        gymName: String,
+        page: Int,
+        size: Int
+    ): BaseState<SearchGymResponse> =
+        runRemote { api.searchGym(gymName, page, size) }
 
+    override suspend fun searchAvailableGym(
+        gymName: String,
+        page: Int,
+        size: Int
+    ): BaseState<SearchAvailableGymResponse> =
+        runRemote { api.searchAvailableGym(gymName, page, size) }
 }
