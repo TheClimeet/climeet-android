@@ -37,4 +37,7 @@ interface IntroRepository {
         gymName: String
     ): BaseState<Boolean>
 
+    suspend fun climberNickNameCheck(
+        nickName: String
+    ): BaseState<Boolean>
 }

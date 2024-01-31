@@ -48,5 +48,9 @@ interface IntroApi {
         @Path("gymName") gymName: String
     ): Response<Boolean>
 
+    @GET("/api/climber/check-nickname/{nickName}")
+    suspend fun climberNickNameCheck(
+        @Path("nickName") nickName: String
+    ): Response<Boolean>
 
 }
