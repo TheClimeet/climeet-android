@@ -16,6 +16,11 @@ class MainRepositoryImpl @Inject constructor(
         image: MultipartBody.Part
     ): BaseState<UploadImgResponse> = runRemote { api.uploadImage(image) }
 
-    override suspend fun searchGym(gymName: String): BaseState<List<SearchGymResponse>> = runRemote { api.searchGym(gymName) }
+    override suspend fun searchGym(
+        gymName: String,
+        page: Int,
+        size: Int
+    ): BaseState<SearchGymResponse> =
+        runRemote { api.searchGym(gymName, page, size) }
 
 }

@@ -72,13 +72,13 @@ class FollowCragViewModel @Inject constructor(
 
                 curJob = viewModelScope.launch {
                     delay(500)
-                    repository.searchGym(it).let { result ->
+                    repository.searchGym(it,0,15).let { result ->
                         when (result) {
                             is BaseState.Success -> {
-                                if (result.body.isNotEmpty()) {
+                                if (result.body.result.isNotEmpty()) {
                                     _uiState.update { state ->
                                         state.copy(
-                                            searchList = result.body.map { item ->
+                                            searchList = result.body.result.map { item ->
                                                 item.toFollowCrag(it)
                                             },
                                             progressState = false
