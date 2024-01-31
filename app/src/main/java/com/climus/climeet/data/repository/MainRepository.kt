@@ -24,8 +24,6 @@ interface MainRepository {
         page: Int,
         size: Int
     ): BaseState<SearchAvailableGymResponse>
-        gymName: String
-    ): BaseState<List<SearchGymResponse>>
 
     suspend fun getSelectDateRecord(
         startDate: String,

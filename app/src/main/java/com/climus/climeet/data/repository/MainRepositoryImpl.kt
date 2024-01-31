@@ -31,9 +31,10 @@ class MainRepositoryImpl @Inject constructor(
         size: Int
     ): BaseState<SearchAvailableGymResponse> =
         runRemote { api.searchAvailableGym(gymName, page, size) }
-    override suspend fun searchGym(gymName: String): BaseState<List<SearchGymResponse>> = runRemote { api.searchGym(gymName) }
+
     override suspend fun getSelectDateRecord(
         startDate: String,
         endDate: String
-    ): BaseState<List<GetSelectDateRecordResponse>> = runRemote { api.getSelectDateRecord(startDate, endDate) }
+    ): BaseState<List<GetSelectDateRecordResponse>> =
+        runRemote { api.getSelectDateRecord(startDate, endDate) }
 }
