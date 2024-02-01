@@ -37,10 +37,11 @@ class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
     private var dayAdapter: SelectDateAdapter? = null
 
     private val today = LocalDate.now()
-    private val mid = Int.MAX_VALUE / 2
-    private val curYear = mid + today.year - 2075
-    private val curMonth = mid + today.monthValue - 6
-    private val curDay = mid + today.dayOfMonth - 3
+    private val minYear = 2011
+    private val maxDay = 29
+    private val curYear = today.year - minYear - 2
+    private val curMonth = today.monthValue + 9
+    private val curDay = today.dayOfMonth + maxDay - 3
     private var yearPosition = 0
     private var monthPosition = 0
     private var dayPosition = 0
@@ -64,8 +65,6 @@ class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         setRV()
         initEventObserve()
 
@@ -123,16 +122,10 @@ class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun updateDateToday() {
-        with(binding){
-            // mid만 넣으면 2073년 4월 1일이 됨
-            // year은 63빼고, month는 3뺌
-            // 하지만 가운데로 하기 위해서는 -2를 해줘야함
-            // 따라서 year은 mid+today.year-2071
-            // month는 mid+today.monthValue-2
-            // day는 mid+today.dayOfMonth+1
-            yearAdapter = SelectDateAdapter((2010..2099).map { "${it}년" })
+        with(binding) {
+            yearAdapter = SelectDateAdapter((2011..2100).map { "${it}년" })
             monthAdapter = SelectDateAdapter((1..12).map { "${it}월" })
-            dayAdapter = SelectDateAdapter((1..31).map { "${it}일" })
+            dayAdapter = SelectDateAdapter((1..29).map { "${it}일" })
             rvYear.adapter = yearAdapter
             rvMonth.adapter = monthAdapter
             rvDay.adapter = dayAdapter
@@ -144,8 +137,6 @@ class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
             Log.d("dateTest", "연도 $curYear")
             Log.d("dateTest", "달 $curMonth")
             Log.d("dateTest", "일 $curDay")
-
-
 
             val snapHelperYear = LinearSnapHelper()
             val snapHelperMonth = LinearSnapHelper()
@@ -164,7 +155,7 @@ class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
                 snapHelperDay.attachToRecyclerView(rvDay)
             }
 
-            rvYear.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            rvYear.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     if (newState == RecyclerView.SCROLL_STATE_IDLE) {
@@ -172,13 +163,13 @@ class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
                         val position = layoutManager.findFirstVisibleItemPosition()
                         yearPosition = position
                         Log.d("dateTest", "년position $yearPosition")
-                        if(yearPosition != curYear || monthPosition != curMonth || dayPosition != curDay){
+                        if (yearPosition != curYear || monthPosition != curMonth || dayPosition != curDay) {
                             viewModel.setIsTodayToFalse()
                         }
                     }
                 }
             })
-            rvMonth.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            rvMonth.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     if (newState == RecyclerView.SCROLL_STATE_IDLE) {
@@ -186,13 +177,13 @@ class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
                         val position = layoutManager.findFirstVisibleItemPosition()
                         monthPosition = position
                         Log.d("dateTest", "월position $monthPosition")
-                        if(yearPosition != curYear || monthPosition != curMonth || dayPosition != curDay){
+                        if (yearPosition != curYear || monthPosition != curMonth || dayPosition != curDay) {
                             viewModel.setIsTodayToFalse()
                         }
                     }
                 }
             })
-            rvDay.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            rvDay.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     if (newState == RecyclerView.SCROLL_STATE_IDLE) {
@@ -200,14 +191,12 @@ class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
                         val position = layoutManager.findFirstVisibleItemPosition()
                         dayPosition = position
                         Log.d("dateTest", "일position $dayPosition")
-                        if(yearPosition != curYear || monthPosition != curMonth || dayPosition != curDay){
+                        if (yearPosition != curYear || monthPosition != curMonth || dayPosition != curDay) {
                             viewModel.setIsTodayToFalse()
                         }
                     }
                 }
             })
         }
-
     }
-
 }

@@ -14,7 +14,7 @@ interface OnDateItemClickListener {
 class SelectDateAdapter(private val list: List<String>) :
     RecyclerView.Adapter<SelectDateAdapter.SelectDateYearViewHolder>() {
 
-    private var dateList: List<String> = list
+    var dateList: List<String> = list
     var onDateItemClickListener: OnDateItemClickListener? = null
     var curPosition = 0
 
@@ -33,9 +33,8 @@ class SelectDateAdapter(private val list: List<String>) :
         holder.bind(dateList[realPosition])
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun setList(list: List<String>) {
-        dateList = list
+    fun updateList(newList: List<String>) {
+        dateList = newList
         notifyDataSetChanged()
     }
 
