@@ -100,17 +100,17 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/tv_crag_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="20dp"
-            android:text="총 n개의 검색 결과가 있습니다."
-            android:textColor="@color/cm_grey6"
-            android:visibility="@{vm.uiState.emptyTextState? View.VISIBLE : View.INVISIBLE}"
-            app:layout_constraintStart_toStartOf="@id/layout_topbar"
-            app:layout_constraintTop_toBottomOf="@id/layout_topbar" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_crag_num"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="15dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:text="총 n개의 검색 결과가 있습니다."-->
+<!--            android:textColor="@color/cm_grey6"-->
+<!--            android:visibility="@{vm.uiState.emptyTextState? View.VISIBLE : View.INVISIBLE}"-->
+<!--            app:layout_constraintStart_toStartOf="@id/layout_topbar"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/layout_topbar" />-->
 
         <TextView
             android:id="@+id/tv_crag_home"
@@ -136,7 +136,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_crag_num"
+            app:layout_constraintTop_toBottomOf="@id/tv_crag_home"
             tools:listitem="@layout/item_crag_search_calendar" />
 
         <ProgressBar
@@ -147,7 +147,7 @@
             android:visibility="@{vm.uiState.progressState? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_crag_num" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_crag_home" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_search_none"
@@ -156,7 +156,7 @@
             android:layout_marginTop="60dp"
             android:visibility="@{vm.uiState.emptyResultState? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_crag_num">
+            app:layout_constraintTop_toBottomOf="@id/tv_crag_home">
 
             <ImageView
                 android:id="@+id/iv_none"
