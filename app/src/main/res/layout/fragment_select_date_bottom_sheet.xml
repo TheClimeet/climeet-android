@@ -103,32 +103,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_today_off">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_year"
+            <NumberPicker
+                android:id="@+id/np_year"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_date" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_month"
+                android:theme="@style/ThemeOverlay.NumberPicker"/>
+            <NumberPicker
+                android:id="@+id/np_month"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_date" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_day"
+                android:theme="@style/ThemeOverlay.NumberPicker"/>
+            <NumberPicker
+                android:id="@+id/np_day"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@android:color/transparent"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_date" />
+                android:theme="@style/ThemeOverlay.NumberPicker"/>
 
         </LinearLayout>
 

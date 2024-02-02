@@ -1,22 +1,15 @@
 package com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selecttime
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.NumberPicker
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSelectTimeBottomBinding
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selecttime.adapter.AMPMAdapter
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selecttime.adapter.SelectTimeAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -31,10 +24,6 @@ class SelectTimeBottomFragment : BottomSheetDialogFragment() {
     private val meridiemArr = arrayOf("오전", "오후") // am, pm
     private val hoursArr = arrayOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
     private val minutesArr = Array(60) { i -> i.toString() }
-
-//    private val ampmAdapter = AMPMAdapter()
-//    private var hourAdapter: SelectTimeAdapter? = null
-//    private var minAdapter: SelectTimeAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,

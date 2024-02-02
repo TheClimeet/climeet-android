@@ -4,25 +4,22 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.NumberPicker
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSelectDateBottomSheetBinding
 import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateClimbingRecordViewModel
 import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateRecordData
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectdate.adpater.SelectDateAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.util.Calendar
 
 @AndroidEntryPoint
 class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
@@ -32,29 +29,16 @@ class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
     private var _binding: FragmentSelectDateBottomSheetBinding? = null
     private val binding get() = _binding!!
 
-    private var yearAdapter: SelectDateAdapter? = null
-    private var monthAdapter: SelectDateAdapter? = null
-    private var dayAdapter: SelectDateAdapter? = null
-
     private val today = LocalDate.now()
-    private val minYear = 2011
-//    private var maxDay = LocalDate.of(today.year, today.month, 1).lengthOfMonth()
-    private var maxDay = 31
+    private var maxDay = today.lengthOfMonth()
+    private val todayYearPos = today.year - 2011
+    private val todayMonthPos = today.monthValue - 1
+    private val todayDayPos = today.dayOfMonth - 1
 
-    // 오늘 날짜의 포지션
-    private val curYear = 90 * 10000 + today.year - minYear - 2
-    private val curMonth = 12 * 10000 + today.monthValue + 9
-    private var curDay = maxDay * 10000 + today.dayOfMonth + maxDay - 3
+    private val yearsArr = Array(90) { i -> "${2011 + i}년" }
+    private val monthsArr = Array(12) { i -> "${i + 1}월" }
+    private var daysArr = Array(maxDay) { i -> "${i + 1}일" }
 
-    // 설정된 날짜의 포지션
-    private var yearPosition = curYear + 10
-    private var monthPosition = curMonth + 10
-    private var dayPosition = curDay + 10
-
-    // 선택된 실제 날짜
-    private var selectedYear = today.year
-    private var selectedMonth = today.monthValue
-    private var selectedDay = today.dayOfMonth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,9 +59,8 @@ class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setRV()
         initEventObserve()
-
+        setNp()
     }
 
     private fun initEventObserve() {
@@ -85,43 +68,91 @@ class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
             viewModel.event.collect {
                 when (it) {
                     SelectDateBottomEvent.CloseFragment -> dismiss()
-                    SelectDateBottomEvent.UpdateIsToday -> updateDateToday()
+                    SelectDateBottomEvent.UpdateIsToday -> setNpToday()
                     SelectDateBottomEvent.SetDate -> setDate()
                 }
             }
         }
     }
 
-    private fun setRV() {
-        updateDateToday()
-
-        // 독립적인 스크롤을 위한 코드
-        val onTouchListener = object : RecyclerView.OnItemTouchListener {
-            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                rv.parent.requestDisallowInterceptTouchEvent(true)
-                return false
-            }
-
-            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
-
-            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
-        }
-
-        binding.rvYear.addOnItemTouchListener(onTouchListener)
-        binding.rvMonth.addOnItemTouchListener(onTouchListener)
-        binding.rvDay.addOnItemTouchListener(onTouchListener)
-    }
-
     private fun setDate() {
         CreateRecordData.setSelectedDate(
             LocalDate.of(
-                selectedYear,
-                selectedMonth,
-                selectedDay
+                binding.npYear.value + 2011,
+                binding.npMonth.value + 1,
+                binding.npDay.value + 1
             )
         )
 
         dismiss()
+    }
+
+    private fun setNp() {
+        with(binding) {
+            npYear.wrapSelectorWheel = true
+            npYear.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+
+            npMonth.wrapSelectorWheel = true
+            npMonth.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+
+            npDay.wrapSelectorWheel = true
+            npDay.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+
+            npYear.minValue = 0
+            npMonth.minValue = 0
+            npDay.minValue = 0
+
+            npYear.maxValue = yearsArr.size - 1
+            npMonth.maxValue = monthsArr.size - 1
+            npDay.maxValue = daysArr.size - 1
+
+            npYear.displayedValues = yearsArr
+            npMonth.displayedValues = monthsArr
+            npDay.displayedValues = daysArr
+
+            setNpToday()
+
+            npYear.setOnValueChangedListener { picker, oldVal, newVal ->
+                val selectedYear = yearsArr[newVal]
+                if (oldVal != newVal) {
+                    viewModel.setIsTodayToFalse()
+                    updateDayPicker(selectedYear.dropLast(1).toInt(), npMonth.value + 1)
+                }
+            }
+            npMonth.setOnValueChangedListener { picker, oldVal, newVal ->
+                val selectedMonth = monthsArr[newVal]
+                if (oldVal != newVal) {
+                    viewModel.setIsTodayToFalse()
+                    updateDayPicker(npYear.value + 2011, selectedMonth.dropLast(1).toInt())
+                }
+            }
+            npDay.setOnValueChangedListener { picker, oldVal, newVal ->
+                if (oldVal != newVal) {
+                    viewModel.setIsTodayToFalse()
+                }
+            }
+        }
+    }
+
+    private fun setNpToday() {
+        with(binding) {
+            npYear.value = todayYearPos
+            npMonth.value = todayMonthPos
+            npDay.value = todayDayPos
+        }
+    }
+
+    private fun updateDayPicker(year: Int, month: Int) {
+        with(binding) {
+            val curDay = npDay.value
+            maxDay = LocalDate.of(year, month, 1).lengthOfMonth()
+            npDay.displayedValues = null
+            npDay.maxValue = maxDay - 1
+            npDay.displayedValues = Array(maxDay) { i -> "${i + 1}일" }
+            if (curDay >= maxDay) {
+                npDay.value = maxDay - 1
+            }
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -131,78 +162,4 @@ class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun updateDateToday() {
-        with(binding) {
-            yearAdapter = SelectDateAdapter((2011..2100).map { "${it}년" })
-            monthAdapter = SelectDateAdapter((1..12).map { "${it}월" })
-            dayAdapter = SelectDateAdapter((1..31).map { "${it}일" })
-            rvYear.adapter = yearAdapter
-            rvMonth.adapter = monthAdapter
-            rvDay.adapter = dayAdapter
-
-            rvYear.scrollToPosition(curYear)
-            rvMonth.scrollToPosition(curMonth)
-            rvDay.scrollToPosition(curDay)
-
-            val snapHelperYear = LinearSnapHelper()
-            val snapHelperMonth = LinearSnapHelper()
-            val snapHelperDay = LinearSnapHelper()
-
-            rvYear.onFlingListener = null
-            rvMonth.onFlingListener = null
-            rvDay.onFlingListener = null
-            rvYear.post {
-                snapHelperYear.attachToRecyclerView(rvYear)
-            }
-            rvMonth.post {
-                snapHelperMonth.attachToRecyclerView(rvMonth)
-            }
-            rvDay.post {
-                snapHelperDay.attachToRecyclerView(rvDay)
-            }
-
-            rvYear.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                        val position = layoutManager.findFirstVisibleItemPosition()
-                        yearPosition = position
-                        if (yearPosition != curYear || monthPosition != curMonth || dayPosition != curDay) {
-                            viewModel.setIsTodayToFalse()
-                            selectedYear = yearPosition % 90 + 2013
-                        }
-                    }
-                }
-            })
-            rvMonth.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                        val position = layoutManager.findFirstVisibleItemPosition()
-                        monthPosition = position
-                        if (yearPosition != curYear || monthPosition != curMonth || dayPosition != curDay) {
-                            viewModel.setIsTodayToFalse()
-                            selectedMonth = ((monthPosition - 9) % 12).takeIf { it != 0 } ?: 12
-                        }
-                    }
-                }
-            })
-            rvDay.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                        val position = layoutManager.findFirstVisibleItemPosition()
-                        dayPosition = position
-                        if (yearPosition != curYear || monthPosition != curMonth || dayPosition != curDay) {
-                            viewModel.setIsTodayToFalse()
-                            selectedDay = (dayPosition % maxDay) + 3
-                        }
-                    }
-                }
-            })
-        }
-    }
 }
