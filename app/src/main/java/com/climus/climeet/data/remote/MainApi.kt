@@ -39,7 +39,7 @@ interface MainApi {
         @Query("refreshToken") refreshToken: String
     ): Response<RefreshTokenResponse>
 
-    @GET("/api/climbing-record/between-dates")
+    @GET("/api/climbing-records/between-dates")
     suspend fun getSelectDateRecord(
         @Query("startDate") startDate: String,
         @Query("endDate") endDate: String
