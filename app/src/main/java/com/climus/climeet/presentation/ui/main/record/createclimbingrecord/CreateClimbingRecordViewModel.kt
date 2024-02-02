@@ -25,8 +25,9 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
     private val _event = MutableSharedFlow<CreateClimbingRecordEvent>()
     val event: SharedFlow<CreateClimbingRecordEvent> = _event.asSharedFlow()
 
-    val datePickText = MutableStateFlow("날짜를 선택해주세요")
-    val selectedDate = MutableLiveData<LocalDate>()
+    val initDate = CreateRecordData.selectedDate
+    val datePickText = MutableStateFlow("${initDate.year}년 ${initDate.monthValue}월 ${initDate.dayOfMonth}일 (${initDate.dayOfWeek})")
+    val selectedDate = MutableLiveData<LocalDate>(initDate)
 
     init {
 

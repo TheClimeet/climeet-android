@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.climus.climeet.R
+import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateRecordData
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.view.ViewContainer
 import java.time.LocalDate
@@ -19,13 +20,12 @@ class DayViewContainer(view: View, val viewModel: CalendarViewModel) : ViewConta
 
     init {
         view.setOnClickListener {
-            if (selectedDay != this) {
-                selectedDay?.deselect()
-                select()
-                viewModel.setIsToday(day.date == LocalDate.now())
-                viewModel.setRecord(day.date)
-                selectedDay = this
-            }
+            DayViewContainer.selectedDay?.deselect()  // 기존 선택된 날짜 deselect
+            select()  // 새로 선택된 날짜 select
+            DayViewContainer.selectedDay = this  // selectedDay 업데이트
+            viewModel.setIsToday(day.date == LocalDate.now())
+            viewModel.setRecord(day.date)
+            viewModel.setSelectedDate(day.date)
         }
     }
 
@@ -33,6 +33,8 @@ class DayViewContainer(view: View, val viewModel: CalendarViewModel) : ViewConta
         textView.setTextColor(Color.BLACK)
         textView.setBackgroundResource(R.drawable.rect_mainfill_nostroke_5radius)
         squareView.setBackgroundResource(R.drawable.rect_grey6fill_nostroke_5radius)
+        viewModel.setSelectedDate(day.date)
+        CreateRecordData.setSelectedDate(day.date)
     }
 
     fun deselect() {

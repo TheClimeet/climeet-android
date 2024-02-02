@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSelectDateBottomSheetBinding
+import com.climus.climeet.presentation.ui.main.record.calendar.CalendarViewModel
 import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateClimbingRecordViewModel
 import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateRecordData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -24,7 +25,8 @@ import java.util.Calendar
 @AndroidEntryPoint
 class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
 
-    private val parentViewModel: CreateClimbingRecordViewModel by activityViewModels()
+    private val recordViewModel: CreateClimbingRecordViewModel by activityViewModels()
+    private val calendarViewModel: CalendarViewModel by activityViewModels()
     private val viewModel: SelectDateBottomSheetViewModel by viewModels()
     private var _binding: FragmentSelectDateBottomSheetBinding? = null
     private val binding get() = _binding!!
@@ -158,7 +160,8 @@ class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         if (CreateRecordData.selectedDate.year != 9999) {
-            parentViewModel.setSelectedDate(CreateRecordData.selectedDate)
+            recordViewModel.setSelectedDate(CreateRecordData.selectedDate)
+            calendarViewModel.setSelectedDate(CreateRecordData.selectedDate)
         }
     }
 

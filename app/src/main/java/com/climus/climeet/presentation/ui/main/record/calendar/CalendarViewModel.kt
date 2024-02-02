@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.record.calendar
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
@@ -28,7 +29,7 @@ data class CalendarUiState(
 sealed class CalendarEvent {
     data object NavigateToCreateClimbingRecord : CalendarEvent()
 
-    data object ShowTimePicker : CalendarEvent()
+    data object ShowDatePicker : CalendarEvent()
 
     data class ShowToastMessage(val msg: String): CalendarEvent()
 }
@@ -51,6 +52,8 @@ class CalendarViewModel @Inject constructor(
     val isToday = MutableStateFlow(true)
     val isRecordVisible = MutableStateFlow(false)
 
+    val selectedDate = MutableLiveData(LocalDate.now())
+
     init {
     }
 
@@ -61,6 +64,10 @@ class CalendarViewModel @Inject constructor(
 
     fun setIsToday(today: Boolean) {
         isToday.value = today
+    }
+
+    fun setSelectedDate(date: LocalDate) {
+        selectedDate.value = date
     }
 
     fun setRecord(date: LocalDate) {
@@ -112,9 +119,9 @@ class CalendarViewModel @Inject constructor(
         }
     }
 
-    fun showTimePicker() {
+    fun showDatePicker() {
         viewModelScope.launch {
-            _event.emit(CalendarEvent.ShowTimePicker)
+            _event.emit(CalendarEvent.ShowDatePicker)
         }
     }
 

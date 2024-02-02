@@ -1,11 +1,14 @@
 package com.climus.climeet.presentation.ui.main.record.calendar
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.children
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
@@ -13,6 +16,7 @@ import com.climus.climeet.databinding.FragmentCalendarBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.signup.climer.setlevel.AdapterDecoration
 import com.climus.climeet.presentation.ui.main.record.calendar.DayViewContainer.Companion.selectedDay
+import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectdate.SelectDateBottomSheetFragment
 import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selecttime.SelectTimeBottomFragment
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.DayPosition
@@ -28,7 +32,7 @@ import java.util.Locale
 @AndroidEntryPoint
 class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment_calendar) {
 
-    private val viewModel: CalendarViewModel by viewModels()
+    private val viewModel: CalendarViewModel by activityViewModels()
     private var calendarAdapter: CalendarAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,7 +42,15 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
 
         setRecycler()
         initEventObserve()
+        initStateObserve()
         customCalendar()
+
+        viewModel.selectedDate.observe(viewLifecycleOwner, Observer { date ->
+            val yearMonth = YearMonth.of(date.year, date.monthValue)
+
+            binding.calendarView.scrollToMonth(yearMonth)  // 새로 선택된 날짜가 있는 월로 이동
+            binding.calendarView.scrollToMonth(yearMonth)
+        })
 
     }
 
@@ -61,7 +73,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
             viewModel.event.collect {
                 when (it) {
                     CalendarEvent.NavigateToCreateClimbingRecord -> findNavController().toCreateClimbingRecord()
-                    CalendarEvent.ShowTimePicker -> showTimePicker()
+                    CalendarEvent.ShowDatePicker -> showDatePicker()
                     is CalendarEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
@@ -74,9 +86,9 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
         navigate(action)
     }
 
-    private fun showTimePicker() {
-        val selectTimeBottomFragment = SelectTimeBottomFragment()
-        selectTimeBottomFragment.show(parentFragmentManager, "SelectTimePickerBottomSheet")
+    private fun showDatePicker() {
+        val selectDateBottomSheetFragment = SelectDateBottomSheetFragment()
+        selectDateBottomSheetFragment.show(parentFragmentManager, "SelectDateBottomSheetFragment")
     }
 
     private fun customCalendar() {
@@ -130,13 +142,9 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
                     container.titlesContainer.visibility = View.INVISIBLE
                 }
 
-                if (data.date == LocalDate.now()) {
-                    if (selectedDay == null) {
-                        selectedDay = container
-                        selectedDay?.select()
-                    } else {
-                        container.deselect()
-                    }
+                if (data.date == viewModel.selectedDate.value) {
+                    container.select()
+                    DayViewContainer.selectedDay = container
                 } else {
                     container.deselect()
                 }
