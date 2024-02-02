@@ -10,8 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCreateClimbingRecordBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectdate.SelectDateBottomSheetFragment
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selecttime.SelectTimeBottomFragment
+import com.climus.climeet.presentation.ui.toSelectDateBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,22 +35,18 @@ class CreateClimbingRecordFragment :
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
-                    CreateClimbingRecordEvent.ShowDatePicker -> showDatePicker()
-                    CreateClimbingRecordEvent.ShowTimePicker -> showTimePicker()
+                    CreateClimbingRecordEvent.ShowDatePicker -> findNavController().toSelectDateBottomSheetFragment()
+                    CreateClimbingRecordEvent.ShowTimePicker -> findNavController().toSelectTimeBottomSheetFragment()
                     CreateClimbingRecordEvent.NavigateToSelectCrag -> findNavController().toSelectCrag()
                 }
             }
         }
     }
 
-    private fun showDatePicker() {
-        val selectDateBottomSheetFragment = SelectDateBottomSheetFragment()
-        selectDateBottomSheetFragment.show(parentFragmentManager, "SelectDatePickerBottomSheet")
-    }
-
-    private fun showTimePicker() {
-        val selectTimeBottomFragment = SelectTimeBottomFragment()
-        selectTimeBottomFragment.show(parentFragmentManager, "SelectTimePickerBottomSheet")
+    private fun NavController.toSelectTimeBottomSheetFragment() {
+        val action =
+            CreateClimbingRecordFragmentDirections.actionCreateClimbingRecordFragmentToSelectTimeBottomFragment()
+        navigate(action)
     }
 
     private fun NavController.toSelectCrag() {

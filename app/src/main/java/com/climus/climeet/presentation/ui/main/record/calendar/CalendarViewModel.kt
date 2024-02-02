@@ -29,7 +29,7 @@ data class CalendarUiState(
 sealed class CalendarEvent {
     data object NavigateToCreateClimbingRecord : CalendarEvent()
 
-    data object ShowDatePicker : CalendarEvent()
+    data object NavigateToSelectDateBottomSheetFragment : CalendarEvent()
 
     data class ShowToastMessage(val msg: String): CalendarEvent()
 }
@@ -119,9 +119,9 @@ class CalendarViewModel @Inject constructor(
         }
     }
 
-    fun showDatePicker() {
+    fun navigateToSelectDateBottomSheetFragment() {
         viewModelScope.launch {
-            _event.emit(CalendarEvent.ShowDatePicker)
+            _event.emit(CalendarEvent.NavigateToSelectDateBottomSheetFragment)
         }
     }
 

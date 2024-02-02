@@ -43,10 +43,25 @@
         <action
             android:id="@+id/action_create_climbing_record_fragment_to_createSelectCragFragment"
             app:destination="@id/fragment_create_select_crag" />
+        <action
+            android:id="@+id/action_create_climbing_record_fragment_to_selectTimeBottomFragment"
+            app:destination="@id/select_time_bottom_fragment" />
     </fragment>
     <fragment
         android:id="@+id/fragment_create_select_crag"
         android:name="com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectcrag.CreateSelectCragFragment"
         android:label="CreateSelectCragFragment" />
+    <dialog
+        android:id="@+id/select_date_bottom_sheet_fragment"
+        android:name="com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectdate.SelectDateBottomSheetFragment"
+        android:label="SelectDateBottomSheetFragment" />
+
+    <action
+        android:id="@+id/globalActionToSelectDateBottomSheetFragment"
+        app:destination="@id/select_date_bottom_sheet_fragment"/>
+    <dialog
+        android:id="@+id/select_time_bottom_fragment"
+        android:name="com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selecttime.SelectTimeBottomSheetFragment"
+        android:label="SelectTimeBottomFragment" />
 
 </navigation>

@@ -1,13 +1,11 @@
 package com.climus.climeet.presentation.ui.main.record.calendar
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.children
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -15,16 +13,13 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCalendarBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.signup.climer.setlevel.AdapterDecoration
-import com.climus.climeet.presentation.ui.main.record.calendar.DayViewContainer.Companion.selectedDay
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectdate.SelectDateBottomSheetFragment
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selecttime.SelectTimeBottomFragment
+import com.climus.climeet.presentation.ui.toSelectDateBottomSheetFragment
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.DayPosition
 import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.view.MonthDayBinder
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.DayOfWeek
-import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
@@ -60,9 +55,9 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
         binding.rvRecord.addItemDecoration(AdapterDecoration())
     }
 
-    private fun initStateObserve(){
+    private fun initStateObserve() {
         repeatOnStarted {
-            viewModel.uiState.collect{
+            viewModel.uiState.collect {
                 calendarAdapter?.setList(it.recordList)
             }
         }
@@ -73,7 +68,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
             viewModel.event.collect {
                 when (it) {
                     CalendarEvent.NavigateToCreateClimbingRecord -> findNavController().toCreateClimbingRecord()
-                    CalendarEvent.ShowDatePicker -> showDatePicker()
+                    CalendarEvent.NavigateToSelectDateBottomSheetFragment -> findNavController().toSelectDateBottomSheetFragment()
                     is CalendarEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
@@ -84,11 +79,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
         val action =
             CalendarFragmentDirections.actionCalendarFragmentToCreateClimbingRecordFragment()
         navigate(action)
-    }
-
-    private fun showDatePicker() {
-        val selectDateBottomSheetFragment = SelectDateBottomSheetFragment()
-        selectDateBottomSheetFragment.show(parentFragmentManager, "SelectDateBottomSheetFragment")
     }
 
     private fun customCalendar() {
