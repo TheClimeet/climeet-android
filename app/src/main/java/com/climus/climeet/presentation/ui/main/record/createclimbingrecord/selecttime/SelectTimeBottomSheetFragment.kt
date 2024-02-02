@@ -9,16 +9,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.climus.climeet.R
-import com.climus.climeet.databinding.FragmentSelectTimeBottomBinding
+import com.climus.climeet.databinding.FragmentSelectTimeBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SelectTimeBottomFragment : BottomSheetDialogFragment() {
+class SelectTimeBottomSheetFragment : BottomSheetDialogFragment() {
 
     private val viewModel: SelectTimeBottomViewModel by viewModels()
-    private var _binding: FragmentSelectTimeBottomBinding? = null
+    private var _binding: FragmentSelectTimeBottomSheetBinding? = null
     private val binding get() = _binding!!
 
     private val meridiemArr = arrayOf("오전", "오후") // am, pm
@@ -32,7 +32,7 @@ class SelectTimeBottomFragment : BottomSheetDialogFragment() {
     ): View? {
         _binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_select_time_bottom,
+            R.layout.fragment_select_time_bottom_sheet,
             container,
             false
         )
@@ -60,8 +60,8 @@ class SelectTimeBottomFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun setNP(){
-        with(binding){
+    private fun setNP() {
+        with(binding) {
             npMeridiem.wrapSelectorWheel = false // 순환 막기
             npMeridiem.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
             npHour.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS

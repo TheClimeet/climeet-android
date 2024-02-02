@@ -61,7 +61,7 @@
         app:destination="@id/select_date_bottom_sheet_fragment"/>
     <dialog
         android:id="@+id/select_time_bottom_fragment"
-        android:name="com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selecttime.SelectTimeBottomFragment"
+        android:name="com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selecttime.SelectTimeBottomSheetFragment"
         android:label="SelectTimeBottomFragment" />
 
 </navigation>

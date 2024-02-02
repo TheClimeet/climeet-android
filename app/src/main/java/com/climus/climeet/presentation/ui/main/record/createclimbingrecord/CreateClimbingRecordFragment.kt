@@ -10,8 +10,6 @@ import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCreateClimbingRecordBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectdate.SelectDateBottomSheetFragment
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selecttime.SelectTimeBottomFragment
 import com.climus.climeet.presentation.ui.toSelectDateBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 
