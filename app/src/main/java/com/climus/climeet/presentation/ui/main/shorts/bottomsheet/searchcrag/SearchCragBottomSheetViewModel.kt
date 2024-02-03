@@ -53,6 +53,12 @@ class SearchCragBottomSheetViewModel @Inject constructor(
     init {
         observeKeyword()
     }
+    
+    fun getHomeGym(){
+        viewModelScope.launch { 
+            // todo 최초 키워드 입력 전 홈짐 불러오기
+        }
+    }
 
     private fun observeKeyword() {
         keyword.onEach {

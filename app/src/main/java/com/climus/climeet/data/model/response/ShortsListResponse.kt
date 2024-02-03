@@ -3,7 +3,7 @@ package com.climus.climeet.data.model.response
 data class ShortsListResponse(
     val hasNext: Boolean,
     val page: Int,
-    val shortsListItem: List<ShortsItem>
+    val result: List<ShortsItem>
 )
 
 data class ShortsItem(

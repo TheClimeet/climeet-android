@@ -22,6 +22,7 @@ class SearchCragBottomSheetFragment : BaseFragment<FragmentSearchCragBottomSheet
 
         binding.vm = viewModel
         setRecycler()
+        viewModel.getHomeGym()
         initStateObserve()
         initEventObserve()
     }
