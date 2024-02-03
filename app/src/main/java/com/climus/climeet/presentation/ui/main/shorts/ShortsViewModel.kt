@@ -88,13 +88,13 @@ class ShortsViewModel @Inject constructor(
                     when (it) {
                         is BaseState.Success -> {
 
-                            val shortsThumbnailUiData = it.body.result.map { data ->
+                            val shortsThumbnailUiData = it.body.shortsListItem.map { data ->
                                 data.toShortsThumbnailUiData(
                                     ::navigateToShortsDetail
                                 )
                             }
 
-                            val shortsUiData = it.body.result.map { data ->
+                            val shortsUiData = it.body.shortsListItem.map { data ->
                                 data.toShortsUiData()
                             }
 
@@ -143,7 +143,7 @@ class ShortsViewModel @Inject constructor(
         }
     }
 
-    fun applyFilter(sectorInfo: SelectedSector){
+    fun applyFilter(sectorInfo: SelectedSector) {
         _uiState.update { state ->
             state.copy(
                 page = 0,
@@ -153,7 +153,7 @@ class ShortsViewModel @Inject constructor(
         }
     }
 
-    fun deleteFilter(){
+    fun deleteFilter() {
         _uiState.update { state ->
             state.copy(
                 page = 0,
