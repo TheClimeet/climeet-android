@@ -29,7 +29,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         navController.addOnDestinationChangedListener { _,destination,_ ->
             if(destination.id == R.id.home_fragment || destination.id == R.id.shorts_fragment || destination.id == R.id.upload_fragment
-                || destination.id == R.id.record_fragment || destination.id == R.id.myPage_fragment){
+                || destination.id == R.id.record_fragment || destination.id == R.id.myPage_fragment || destination.id == R.id.shortsBottomSheetFragment){
                 // todo bnv show 해야되는 frag
                 binding.mainBnv.visibility = View.VISIBLE
             }else{

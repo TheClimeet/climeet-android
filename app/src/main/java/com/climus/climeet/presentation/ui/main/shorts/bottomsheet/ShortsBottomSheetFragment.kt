@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.shorts.bottomsheet
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentShortsBottomSheetBinding
 import com.climus.climeet.presentation.ui.main.shorts.ShortsViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -44,6 +47,21 @@ class ShortsBottomSheetFragment : BottomSheetDialogFragment() {
         )
         return binding.root
     }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.setOnShowListener { dialogInterface ->
+            val bottomSheetDialog = dialogInterface as BottomSheetDialog
+            setupRatio(bottomSheetDialog)
+        }
+        return dialog
+    }
+
+    private fun setupRatio(bottomSheetDialog: BottomSheetDialog){
+        val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as View
+        BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
