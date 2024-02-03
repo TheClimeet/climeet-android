@@ -4,6 +4,7 @@ import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
+import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -38,16 +39,19 @@ interface MainApi {
         @Query("refreshToken") refreshToken: String
     ): Response<RefreshTokenResponse>
 
-    @GET("/api/shorts/latest")
+    @GET("api/shorts/latest")
     suspend fun getRecentShorts(
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<ShortsListResponse>
 
-    @GET("/api/shorts/popular")
+    @GET("api/shorts/popular")
     suspend fun getPopularShorts(
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<ShortsListResponse>
+
+    @GET("api/shorts/profile")
+    suspend fun getShortsUpdatedFollow(): Response<List<ShortsUpdatedFollowResponse>>
 
 }

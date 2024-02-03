@@ -4,6 +4,7 @@ import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
+import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import okhttp3.MultipartBody
 
@@ -34,5 +35,7 @@ interface MainRepository {
         page: Int,
         size: Int
     ): BaseState<ShortsListResponse>
+
+    suspend fun getShortsUpdatedFollow(): BaseState<List<ShortsUpdatedFollowResponse>>
 
 }
