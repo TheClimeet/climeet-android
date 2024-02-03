@@ -82,7 +82,14 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
     private fun getCragInfo(id: Long) {
 
         viewModelScope.launch {
-            // todo 암장 정보 가져오기
+            //todo 암장 정보 가져오기
+            // - floor 1개인지 두개인지 도 적용
+
+            _uiState.update { state ->
+                state.copy(
+                    isSingleFloor = false
+                )
+            }
 
             setFloorInfo(1)
         }
