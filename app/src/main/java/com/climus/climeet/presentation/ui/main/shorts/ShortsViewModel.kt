@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsDetailListener
+import com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector.SelectedSector
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.UpdatedFollowUiData
@@ -26,6 +27,7 @@ data class ShortsUiState(
     val shortsList: List<ShortsUiData> = emptyList(),
     val shortsThumbnailList: List<ShortsThumbnailUiData> = emptyList(),
     val sortType: SortType = SortType.POPULAR,
+    val curFilter: SelectedSector = SelectedSector(),
     val page: Int = 0,
     val hasNext: Boolean = true
 )
@@ -66,48 +68,23 @@ class ShortsViewModel @Inject constructor(
         }
     }
 
-    fun getPopularShorts(option: ShortsOption) {
+    fun getShorts(option: ShortsOption) {
+
+        // todo API 업데이트 되면, 필터 적용해서 API CALL
 
         viewModelScope.launch {
             if (uiState.value.hasNext) {
-                repository.getPopularShorts(uiState.value.page, 10).let {
-                    when (it) {
-                        is BaseState.Success -> {
+                val result = when (uiState.value.sortType) {
+                    SortType.POPULAR -> {
+                        repository.getPopularShorts(uiState.value.page, 10)
+                    }
 
-                            val shortsThumbnailUiData = it.body.result.map { data ->
-                                data.toShortsThumbnailUiData(
-                                    ::navigateToShortsDetail
-                                )
-                            }
-
-                            val shortsUiData = it.body.result.map { data ->
-                                data.toShortsUiData()
-                            }
-
-                            _uiState.update { state ->
-                                state.copy(
-                                    page = uiState.value.page + 1,
-                                    hasNext = it.body.hasNext,
-                                    shortsThumbnailList = if (option == ShortsOption.NEXT_PAGE) uiState.value.shortsThumbnailList + shortsThumbnailUiData else shortsThumbnailUiData,
-                                    shortsList = if (option == ShortsOption.NEXT_PAGE) uiState.value.shortsList + shortsUiData else shortsUiData
-                                )
-                            }
-                        }
-
-                        is BaseState.Error -> {
-                            _event.emit(ShortsEvent.ShowToastMessage(it.msg))
-                        }
+                    SortType.RECENT -> {
+                        repository.getRecentShorts(uiState.value.page, 10)
                     }
                 }
-            }
-        }
-    }
 
-    private fun getRecentShorts(option: ShortsOption) {
-
-        viewModelScope.launch {
-            if (uiState.value.hasNext) {
-                repository.getRecentShorts(uiState.value.page, 10).let {
+                result.let {
                     when (it) {
                         is BaseState.Success -> {
 
@@ -141,7 +118,6 @@ class ShortsViewModel @Inject constructor(
     }
 
     fun changeSortType() {
-
         when (uiState.value.sortType) {
             SortType.POPULAR -> {
                 _uiState.update { state ->
@@ -151,7 +127,7 @@ class ShortsViewModel @Inject constructor(
                         sortType = SortType.RECENT
                     )
                 }
-                getRecentShorts(ShortsOption.NEW_SORT)
+                getShorts(ShortsOption.NEW_SORT)
             }
 
             SortType.RECENT -> {
@@ -162,20 +138,28 @@ class ShortsViewModel @Inject constructor(
                         sortType = SortType.POPULAR
                     )
                 }
-                getPopularShorts(ShortsOption.NEW_SORT)
+                getShorts(ShortsOption.NEW_SORT)
             }
         }
     }
 
-    fun callNextList() {
-        when (uiState.value.sortType) {
-            SortType.POPULAR -> {
-                getPopularShorts(ShortsOption.NEXT_PAGE)
-            }
+    fun applyFilter(sectorInfo: SelectedSector){
+        _uiState.update { state ->
+            state.copy(
+                page = 0,
+                hasNext = true,
+                curFilter = sectorInfo
+            )
+        }
+    }
 
-            SortType.RECENT -> {
-                getRecentShorts(ShortsOption.NEXT_PAGE)
-            }
+    fun deleteFilter(){
+        _uiState.update { state ->
+            state.copy(
+                page = 0,
+                hasNext = true,
+                curFilter = SelectedSector()
+            )
         }
     }
 

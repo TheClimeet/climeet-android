@@ -14,18 +14,6 @@ interface MainRepository {
     ): BaseState<UploadImgResponse>
 
     suspend fun searchGym(
-        gymName: String
-    ): BaseState<SearchGymResponse>
-
-    suspend fun getRecentShorts(
-        page: Int,
-        size: Int
-    ): BaseState<ShortsListResponse>
-
-    suspend fun getPopularShorts(
-        page: Int,
-        size: Int
-    ): BaseState<ShortsListResponse>
         gymName: String,
         page: Int,
         size: Int
@@ -36,4 +24,15 @@ interface MainRepository {
         page: Int,
         size: Int
     ): BaseState<SearchAvailableGymResponse>
+
+    suspend fun getRecentShorts(
+        page: Int,
+        size: Int
+    ): BaseState<ShortsListResponse>
+
+    suspend fun getPopularShorts(
+        page: Int,
+        size: Int
+    ): BaseState<ShortsListResponse>
+
 }

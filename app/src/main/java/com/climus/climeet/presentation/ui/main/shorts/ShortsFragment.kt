@@ -29,7 +29,7 @@ class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_sho
         binding.rvUpdatedFollow.adapter = UpdatedFollowAdapter()
 
         sharedViewModel.getUpdatedFollow()
-        sharedViewModel.getPopularShorts(ShortsOption.NEW_SORT)
+        sharedViewModel.getShorts(ShortsOption.NEW_SORT)
         addOnScrollListener()
         initEventObserve()
     }
@@ -38,7 +38,7 @@ class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_sho
 
         binding.layoutScrollview.setOnScrollChangeListener { v, _, scrollY, _, _ ->
             if (scrollY == binding.layoutScrollview.getChildAt(0).measuredHeight - v.measuredHeight) {
-                sharedViewModel.callNextList()
+                sharedViewModel.getShorts(ShortsOption.NEXT_PAGE)
             }
         }
     }
@@ -51,6 +51,12 @@ class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_sho
                     is ShortsEvent.NavigateToShortsDetail -> {}
                     is ShortsEvent.NavigateToSearchCragBottomSheet -> findNavController().toSearchCragBottomSheet()
                 }
+            }
+        }
+
+        repeatOnStarted {
+            shortsFilterViewModel.applyFilter.collect{
+                sharedViewModel.applyFilter(it)
             }
         }
     }

@@ -14,11 +14,13 @@ import com.climus.climeet.presentation.ui.main.shorts.ShortsFilterViewModel
 import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorImageAdapter
 import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorLevelAdapter
 import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorNameAdapter
+import com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsBottomSheetViewModel
 
 class SelectSectorBottomSheetFragment: BaseFragment<FragmentSelectSectorBottomSheetBinding>(R.layout.fragment_select_sector_bottom_sheet) {
 
-    private val shortsFilterViewModel: ShortsFilterViewModel by activityViewModels()
+    private val parentViewModel: ShortsBottomSheetViewModel by activityViewModels()
     private val viewModel: SelectSectorBottomSheetViewModel by viewModels()
+
     private val args: SelectSectorBottomSheetFragmentArgs by navArgs()
     private val cragId by lazy { args.cragId }
     private val cragName by lazy { args.cragName }
@@ -46,6 +48,7 @@ class SelectSectorBottomSheetFragment: BaseFragment<FragmentSelectSectorBottomSh
             viewModel.event.collect{
                 when(it){
                     is SelectSectorBottomSheetEvent.NavigateToBack -> findNavController().toBack()
+                    is SelectSectorBottomSheetEvent.ApplyFilter -> parentViewModel.applyFilter(it.sector)
                 }
             }
         }

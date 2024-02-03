@@ -25,6 +25,9 @@
         <argument
             android:name="cragName"
             app:argType="string"/>
+        <action
+            android:id="@+id/action_selectSectorBottomSheetFragment_to_searchCragBottomSheetFragment"
+            app:destination="@id/searchCragBottomSheetFragment" />
 
     </fragment>
 </navigation>

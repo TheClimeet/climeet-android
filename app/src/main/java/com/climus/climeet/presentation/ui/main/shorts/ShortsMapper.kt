@@ -1,8 +1,21 @@
 package com.climus.climeet.presentation.ui.main.shorts
 
+import com.climus.climeet.data.model.response.SearchAvailableGymItem
 import com.climus.climeet.data.model.response.ShortsItem
+import com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
+
+fun SearchAvailableGymItem.toSearchCragUiData(
+    keyword: String,
+    onClickListener: (Long, String, String) -> Unit
+) = SearchCragUiData(
+    id = id,
+    imgUrl = profileImageUrl,
+    name = name,
+    keyword = keyword,
+    onClickListener = onClickListener
+)
 
 fun ShortsItem.toShortsThumbnailUiData(
     onClickListener: (Long) -> Unit
@@ -14,7 +27,6 @@ fun ShortsItem.toShortsThumbnailUiData(
     climeetLevelColor = "#DDDDDD",
     onClickListener = onClickListener
 )
-
 
 fun ShortsItem.toShortsUiData() = ShortsUiData(
     shortsId = shortsId,

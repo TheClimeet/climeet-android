@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiData
-import com.climus.climeet.presentation.ui.intro.signup.admin.searchname.SearchCragNameEvent
 import com.climus.climeet.presentation.ui.intro.signup.admin.toSearchCragUiData
+import com.climus.climeet.presentation.ui.main.shorts.toSearchCragUiData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -28,15 +28,17 @@ data class SearchCragBottomSheetUiState(
     val emptyResultState: Boolean = false
 )
 
-sealed class SearchCragBottomSheetEvent{
-    data class NavigateToSelectSectorBottomSheet(val id: Long, val name: String): SearchCragBottomSheetEvent()
-    data class ShowToastMessage(val msg: String): SearchCragBottomSheetEvent()
+sealed class SearchCragBottomSheetEvent {
+    data class NavigateToSelectSectorBottomSheet(val id: Long, val name: String) :
+        SearchCragBottomSheetEvent()
+
+    data class ShowToastMessage(val msg: String) : SearchCragBottomSheetEvent()
 }
 
 @HiltViewModel
 class SearchCragBottomSheetViewModel @Inject constructor(
     private val repository: MainRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchCragBottomSheetUiState())
     val uiState: StateFlow<SearchCragBottomSheetUiState> = _uiState.asStateFlow()
@@ -73,13 +75,13 @@ class SearchCragBottomSheetViewModel @Inject constructor(
 
                 curJob = viewModelScope.launch {
                     delay(500)
-                    repository.searchGym(it).let { result ->
+                    repository.searchAvailableGym(it, 0, 15).let { result ->
                         when (result) {
                             is BaseState.Success -> {
-                                if (result.body.isNotEmpty()) {
+                                if (result.body.result.isNotEmpty()) {
                                     _uiState.update { state ->
                                         state.copy(
-                                            searchList = result.body.map { item ->
+                                            searchList = result.body.result.map { item ->
                                                 item.toSearchCragUiData(
                                                     it, ::navigateToSelectSectorBottomSheet
                                                 )
@@ -123,10 +125,15 @@ class SearchCragBottomSheetViewModel @Inject constructor(
         }
     }
 
-    fun navigateToSelectSectorBottomSheet(cragId: Long, cragName: String, cragImgUrl: String){
+    fun navigateToSelectSectorBottomSheet(cragId: Long, cragName: String, cragImgUrl: String) {
 
         viewModelScope.launch {
-            _event.emit(SearchCragBottomSheetEvent.NavigateToSelectSectorBottomSheet(cragId, cragName))
+            _event.emit(
+                SearchCragBottomSheetEvent.NavigateToSelectSectorBottomSheet(
+                    cragId,
+                    cragName
+                )
+            )
         }
     }
 }

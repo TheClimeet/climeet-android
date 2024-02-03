@@ -8,23 +8,23 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.databinding.ItemSectorNameBinding
-import com.climus.climeet.presentation.ui.main.shorts.model.SectorNameUiData
+import com.climus.climeet.presentation.ui.main.shorts.model.WallNameUiData
 
 class SectorNameAdapter :
-    ListAdapter<SectorNameUiData, SectorNameViewHolder>(diffCallback) {
+    ListAdapter<WallNameUiData, SectorNameViewHolder>(diffCallback) {
 
     companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<SectorNameUiData>() {
+        val diffCallback = object : DiffUtil.ItemCallback<WallNameUiData>() {
             override fun areItemsTheSame(
-                oldItem: SectorNameUiData,
-                newItem: SectorNameUiData
+                oldItem: WallNameUiData,
+                newItem: WallNameUiData
             ): Boolean {
                 return oldItem.name == newItem.name
             }
 
             override fun areContentsTheSame(
-                oldItem: SectorNameUiData,
-                newItem: SectorNameUiData
+                oldItem: WallNameUiData,
+                newItem: WallNameUiData
             ): Boolean {
                 return oldItem == newItem
             }
@@ -48,7 +48,7 @@ class SectorNameAdapter :
 class SectorNameViewHolder(private val binding: ItemSectorNameBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: SectorNameUiData) {
+    fun bind(item: WallNameUiData) {
         binding.item = item
         if (item.isSelected) {
             binding.chipText.setChipBackgroundColorResource(R.color.cm_main)
