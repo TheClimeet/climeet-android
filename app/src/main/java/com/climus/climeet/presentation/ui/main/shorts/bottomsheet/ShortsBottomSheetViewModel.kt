@@ -8,12 +8,12 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-class ShortsBottomSheetViewModel: ViewModel() {
+class ShortsBottomSheetViewModel : ViewModel() {
 
-    private val _applyFilter =  MutableSharedFlow<SelectedSector>()
+    private val _applyFilter = MutableSharedFlow<SelectedSector>()
     val applyFilter: SharedFlow<SelectedSector> = _applyFilter.asSharedFlow()
 
-    fun applyFilter(selectedSector: SelectedSector){
+    fun applyFilter(selectedSector: SelectedSector) {
         viewModelScope.launch {
             _applyFilter.emit(selectedSector)
         }

@@ -1,10 +1,12 @@
 package com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.presentation.ui.main.shorts.model.SectorImageUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.SectorLevelUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.WallNameUiData
+import com.climus.climeet.presentation.util.Constants.TAG
 import com.climus.climeet.presentation.util.Constants.TEST_IMG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -34,6 +36,7 @@ data class SelectSectorBottomSheetUiState(
 data class SelectedSector(
     val sectorId: Long = -1,
     val sectorName: String = "",
+    val cragName: String = "",
     val levelName: String = "",
     val levelColor: String = "",
     val sectorImg: String = "",
@@ -212,7 +215,7 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
                 sectorImageList = state.sectorImageList.map {
                     if (it.sectorId == id) {
                         selectedData =
-                            SelectedSector(it.sectorId, it.sectorName, it.levelName, it.levelColor, it.sectorImg)
+                            SelectedSector(it.sectorId, it.sectorName, cragName, it.levelName, it.levelColor, it.sectorImg)
                         it.copy(
                             isSelected = true
                         )

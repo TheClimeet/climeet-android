@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.main.shorts.ShortsViewModel" />
@@ -45,6 +47,28 @@
                 app:list="@{vm.uiState.updatedFollowList}"
                 tools:listitem="@layout/item_updated_follow" />
 
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/cg_sector_filter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                app:layout_constraintBottom_toBottomOf="@id/btn_filter_toggle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/btn_filter_toggle">
+
+                <TextView
+                    android:id="@+id/tv_sector_filter"
+                    style="@style/TextSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rect_nofill_mainstroke_20radius"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="2dp"
+                    android:text="@{vm.uiState.curFilter.sectorName}"
+                    android:visibility="@{vm.uiState.curFilter.levelName.empty? View.GONE : View.VISIBLE}" />
+
+            </com.google.android.material.chip.ChipGroup>
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_filter_toggle"
                 style="@style/TextSmall"
@@ -67,8 +91,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:onClick="@{() -> vm.navigateToSearchCragBottomSheet()}"
                 android:background="@android:color/transparent"
+                android:onClick="@{() -> vm.navigateToSearchCragBottomSheet()}"
                 android:paddingHorizontal="2dp"
                 android:paddingVertical="8dp"
                 android:scaleType="centerCrop"

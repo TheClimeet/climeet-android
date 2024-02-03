@@ -18,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_shorts) {
 
     private val sharedViewModel: ShortsViewModel by activityViewModels()
-    private val shortsFilterViewModel: ShortsFilterViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,12 +50,6 @@ class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_sho
                     is ShortsEvent.NavigateToShortsDetail -> {}
                     is ShortsEvent.NavigateToSearchCragBottomSheet -> findNavController().toSearchCragBottomSheet()
                 }
-            }
-        }
-
-        repeatOnStarted {
-            shortsFilterViewModel.applyFilter.collect{
-                sharedViewModel.applyFilter(it)
             }
         }
     }
