@@ -2,9 +2,11 @@ package com.climus.climeet.presentation.ui.main.shorts
 
 import com.climus.climeet.data.model.response.SearchAvailableGymItem
 import com.climus.climeet.data.model.response.ShortsItem
+import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
+import com.climus.climeet.presentation.ui.main.shorts.model.UpdatedFollowUiData
 
 fun SearchAvailableGymItem.toSearchCragUiData(
     keyword: String,
@@ -48,4 +50,11 @@ fun ShortsItem.toShortsUiData() = ShortsUiData(
     isSoundEnabled = shortsDetailInfo.isSoundEnabled,
     isLiked = shortsDetailInfo.liked,
     isBookMarked = shortsDetailInfo.bookmarked
+)
+
+fun ShortsUpdatedFollowResponse.toUpdatedFollowUiData(onClickListener: (Long) -> Unit) = UpdatedFollowUiData(
+    userId = followingUserId,
+    profileImg = followingUserProfileUrl,
+    name = followingUserName,
+    onClickListener = onClickListener
 )

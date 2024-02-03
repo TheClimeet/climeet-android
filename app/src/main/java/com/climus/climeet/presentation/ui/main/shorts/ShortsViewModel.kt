@@ -9,7 +9,6 @@ import com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector.S
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.UpdatedFollowUiData
-import com.climus.climeet.presentation.util.Constants.TEST_IMG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,18 +51,23 @@ class ShortsViewModel @Inject constructor(
     fun getUpdatedFollow() {
 
         viewModelScope.launch {
+            repository.getShortsUpdatedFollow().let {
+                when (it) {
+                    is BaseState.Success -> {
 
-            _uiState.update { state ->
-                state.copy(
-                    updatedFollowList = listOf(
-                        UpdatedFollowUiData(
-                            1,
-                            TEST_IMG,
-                            "파커스 강남",
-                            ::navigateToUpdatedFollowShorts
-                        )
-                    )
-                )
+                        _uiState.update { state ->
+                            state.copy(
+                                updatedFollowList = it.body.map { data ->
+                                    data.toUpdatedFollowUiData(::navigateToUpdatedFollowShorts)
+                                }
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> {
+                        _event.emit(ShortsEvent.ShowToastMessage(it.msg))
+                    }
+                }
             }
         }
     }
@@ -84,17 +88,19 @@ class ShortsViewModel @Inject constructor(
                     }
                 }
 
+
+
                 result.let {
                     when (it) {
                         is BaseState.Success -> {
 
-                            val shortsThumbnailUiData = it.body.shortsListItem.map { data ->
+                            val shortsThumbnailUiData = it.body.result.map { data ->
                                 data.toShortsThumbnailUiData(
                                     ::navigateToShortsDetail
                                 )
                             }
 
-                            val shortsUiData = it.body.shortsListItem.map { data ->
+                            val shortsUiData = it.body.result.map { data ->
                                 data.toShortsUiData()
                             }
 
