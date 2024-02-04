@@ -56,6 +56,8 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             timerVM.isStop.value = true
             timerVM.isRunning.value = false
             timerVM.pauseTime.value = 0L
+            timerVM.pauseState.value = ""
+            updateStatePref()
             Log.d("timer", "서비스 종료 상태라 값 초기화")
         } else {
             initViewModel()
@@ -149,7 +151,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             apply()
             Log.d(
                 "timer",
-                "[값 업데이트] isStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}, isRunning : ${timerVM.isRunning.value}"
+                "[spf값 업데이트] isStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}, isRunning : ${timerVM.isRunning.value}"
             )
         }
     }
@@ -173,7 +175,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             timerVM.timeFormat.observe(viewLifecycleOwner, Observer { timeFormat ->
                 // 시간 흘러감
                 binding.tvTime.text = timeFormat
-                //Log.d("timer", "[진행중] timerObserve 호출 : $timeFormat")
+                Log.d("timer", "[진행중] timerObserve 호출 : $timeFormat")
             })
         }
     }
@@ -181,11 +183,19 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
     private fun pauseObserve(){
         timerVM.pauseState.observe(viewLifecycleOwner, Observer { state ->
             if (state == "yes") {
+                Log.d("timer", "pauseObserve yes")
                 viewMode(ViewMode.PAUSE)
                 timerVM.isRunning.value = false
+                timerVM.isPaused.value = true
+                timerVM.isRestart.value = false
+                updateStatePref()
             } else if (state == "no") {
+                Log.d("timer", "pauseObserve no")
                 viewMode(ViewMode.RESTART)
                 timerVM.isRunning.value = true
+                timerVM.isPaused.value = false
+                timerVM.isRestart.value = true
+                updateStatePref()
             }
         })
     }
@@ -305,8 +315,13 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         } else {
             context?.startService(intent)
         }
-        //updateStatePref()
+
         timerVM.isRunning.value = true
+        timerVM.isStart.value = true
+        timerVM.isPaused.value = false
+        timerVM.isRestart.value = false
+        timerVM.isStop.value = false
+        updateStatePref()
         //Log.d("timer", "startStopwatch 호출")
     }
 
@@ -316,10 +331,15 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             putExtra("command", "PAUSE")
         }
         context?.startService(intent)
-        //updateStatePref()
 
         timerVM.pauseTime.value = sharedPreferences.getLong("pauseTime", 0L)
         timerVM.isRunning.value = false
+        timerVM.isStart.value = false
+        timerVM.isPaused.value = true
+        timerVM.isRestart.value = false
+        timerVM.isStop.value = false
+        updateStatePref()
+
 //        if(timerVM.timeFormat.value != "00:00"){
 //            sharedPreferences.edit().putString(PAUSE_TIME, timerVM.timeFormat.value).apply()
 //            binding.tvTime.text = timerVM.timeFormat.value
@@ -334,9 +354,14 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             putExtra("command", "RESTART")
         }
         context?.startService(intent)
+
         timerVM.isRunning.value = true
         timerVM.isPaused.value = false
-        //updateStatePref()
+        timerVM.isStart.value = false
+        timerVM.isPaused.value = false
+        timerVM.isRestart.value = true
+        timerVM.isStop.value = false
+        updateStatePref()
         //Log.d("timer", "restartStopwatch 호출")
     }
 
@@ -347,6 +372,14 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             putExtra("command", "STOP")
         }
         context?.startService(intent)
+
+        timerVM.isStart.value = false
+        timerVM.isPaused.value = false
+        timerVM.isRestart.value = false
+        timerVM.isStop.value = true
+        timerVM.isRunning.value = false
+        timerVM.pauseTime.value = 0L
+        updateStatePref()
         //Log.d("stopStopwatch", "stopStopwatch 호출")
     }
 
