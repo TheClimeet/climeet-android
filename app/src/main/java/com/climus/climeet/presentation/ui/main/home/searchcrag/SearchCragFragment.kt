@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
+import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteSimpleResponse
 import com.climus.climeet.databinding.FragmentSearchCragBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -32,7 +33,7 @@ class SearchCragFragment : BaseFragment<FragmentSearchCragBinding>(R.layout.frag
 
     private val parentViewModel: IntroViewModel by activityViewModels()
     private val viewModel: SearchCragViewModel by viewModels()
-    private var recyclerRoute: List<BestRouteSimpleResponse> = emptyList()
+    private var recyclerRoute: List<BestRouteDetailInfoResponse> = emptyList()
     private var adapter: FollowCragRVAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

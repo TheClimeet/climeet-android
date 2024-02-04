@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteSimpleResponse
 import com.climus.climeet.databinding.ItemPopularRoutesBinding
 import com.climus.climeet.presentation.ui.main.home.model.PopularRoute
 import kotlin.math.min
 
-class PopularRouteRVAdapter (private val routeList: List<BestRouteSimpleResponse>) : RecyclerView.Adapter<PopularRouteRVAdapter.ViewHolder>() {
+class PopularRouteRVAdapter (private val routeList: List<BestRouteDetailInfoResponse>) : RecyclerView.Adapter<PopularRouteRVAdapter.ViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -29,7 +30,7 @@ class PopularRouteRVAdapter (private val routeList: List<BestRouteSimpleResponse
     }
 
     inner class ViewHolder(val binding: ItemPopularRoutesBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(route: BestRouteSimpleResponse) {
+        fun bind(route: BestRouteDetailInfoResponse) {
             if(route.routeImageUrl != null) {
                 Glide.with(binding.root.context)
                     .load(route.routeImageUrl)

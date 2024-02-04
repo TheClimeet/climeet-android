@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.MainNavDirections
+import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
+import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteSimpleResponse
 import com.climus.climeet.data.model.response.ShortsSimpleResponse
 import com.climus.climeet.data.repository.IntroRepository
@@ -41,56 +43,81 @@ import javax.inject.Inject
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private val viewModel: HomeViewModel by viewModels()
+    private var vpBanner: List<BannerDetailInfoResponse> = emptyList()
     private var recyclerShorts: List<ShortsSimpleResponse> = emptyList()
     private var recyclerCrag: List<BestFollowGymSimpleResponse> = emptyList()
-    private var recyclerRoute: List<BestRouteSimpleResponse> = emptyList()
+    private var recyclerRoute: List<BestRouteDetailInfoResponse> = emptyList()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.getBannerListBetweenDates()
         viewModel.getPopularShorts()
         viewModel.getGymRankingOrderFollowCount()
         viewModel.getRouteRankingOrderSelectionCount()
         initEventObserve()
         setupOnClickListener()
-        setupIntroduceBanner()
         setupHomeGymList()
         setupBestRanking()
         setupPopularShorts()
         setupPopularCrags()
-        setupPopularRoutes()
-
     }
 
     private fun initEventObserve(){
         repeatOnStarted {
-
             viewModel?.let { vm ->
                 vm.uiState.collect { uiState ->
+                    uiState.bannerList?.let { bannerList ->
+                        Log.d("bannerList", bannerList.toString())
+                        vpBanner = bannerList
+                        setupIntroduceBanner(vpBanner)
+                    }
+
                     uiState.shortsList?.let { shortsList ->
                         Log.d("HomeFragment", shortsList.toString())
                         recyclerShorts = shortsList
                     }
-                }
-            }
 
-            viewModel?.let { vm ->
-                vm.uiState.collect { uiState ->
                     uiState.cragList?.let { cragList ->
                         Log.d("HomeFragment", cragList.toString())
                         recyclerCrag = cragList
                     }
-                }
-            }
 
-            viewModel?.let { vm ->
-                vm.uiState.collect { uiState ->
                     uiState.routeList?.let { routeList ->
-                        Log.d("HomeFragment", routeList.toString())
+                        Log.d("RouteList", "called")
+                        Log.d("RouteList", recyclerRoute.toString())
                         recyclerRoute = routeList
+                        setupPopularRoutes()
                     }
                 }
             }
+//            viewModel?.let { vm ->
+//                vm.uiState.collect { uiState ->
+//                    uiState.shortsList?.let { shortsList ->
+//                        Log.d("HomeFragment", shortsList.toString())
+//                        recyclerShorts = shortsList
+//                    }
+//                }
+//            }
+//
+//            viewModel?.let { vm ->
+//                vm.uiState.collect { uiState ->
+//                    uiState.cragList?.let { cragList ->
+//                        Log.d("HomeFragment", cragList.toString())
+//                        recyclerCrag = cragList
+//                    }
+//                }
+//            }
+//
+//            viewModel?.let { vm ->
+//                vm.uiState.collect { uiState ->
+//                    uiState.routeList?.let { routeList ->
+//                        Log.d("RouteList", "called")
+//                        Log.d("RouteList", recyclerRoute.toString())
+//                        recyclerRoute = routeList
+//                        setupPopularRoutes()
+//                    }
+//                }
+//            }
         }
     }
 
@@ -142,12 +169,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         findNavController().navigate(action)
     }
 
-    private fun setupIntroduceBanner() {
+    private fun setupIntroduceBanner(vpBanner : List<BannerDetailInfoResponse>) {
         val bannerAdapter = BannerVPAdapter(this, binding.vpHomeIntroduceBanner)
 
-        bannerAdapter.addFragment(BannerFragment(R.drawable.img_introduce_banner))
-        bannerAdapter.addFragment(BannerFragment(R.drawable.img_introduce_banner))
-        bannerAdapter.addFragment(BannerFragment(R.drawable.img_introduce_banner))
+        for (bannerInfo in vpBanner) {
+            val bannerFragment = BannerFragment(bannerInfo)
+            Log.d("Banner", bannerInfo.toString())
+            bannerAdapter.addFragment(bannerFragment)
+        }
 
         val viewPager = binding.vpHomeIntroduceBanner
         val itemCount = bannerAdapter.itemCount
@@ -163,7 +192,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 currentPos = position
-                indicator.text = getString(R.string.viewpager2_banner, position + 1, itemCount)
+                val currentPageNumber = position + 1
+                val totalPages = viewPager.adapter?.itemCount ?: 0
+                indicator.text = getString(R.string.viewpager2_banner, currentPageNumber, totalPages)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -177,12 +208,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 positionOffsetPixels: Int
             ) {
                 if (currentState == ViewPager2.SCROLL_STATE_DRAGGING && currentPos == position) {
-                    if (currentPos == 0) viewPager.currentItem = itemCount - 1
-                    else if (currentPos == itemCount - 1) viewPager.currentItem = 0
+                    // 현재 위치가 0이고, 좌측으로 스와이프하는 경우
+                    if (currentPos == 0 && positionOffsetPixels > 0) {
+                        viewPager.currentItem = 1
+                    }
+                    // 현재 위치가 마지막 페이지이고, 좌측으로 스와이프하는 경우
+                    else if (currentPos == viewPager.adapter?.itemCount ?: 0 - 1 && positionOffsetPixels > 0) {
+                        viewPager.currentItem = 0
+                    }
                 }
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels)
             }
         })
+
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>, orientation: Int) {

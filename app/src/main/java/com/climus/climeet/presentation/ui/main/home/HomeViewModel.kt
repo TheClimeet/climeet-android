@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
+import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteSimpleResponse
 import com.climus.climeet.data.model.response.ShortsSimpleResponse
 import com.climus.climeet.data.repository.MainRepository
@@ -25,7 +26,7 @@ data class HomeUiState(
     val homegymList: List<HomeGym> = emptyList(),
     val shortsList: List<ShortsSimpleResponse> = emptyList(),
     val cragList: List<BestFollowGymSimpleResponse> = emptyList(),
-    val routeList: List<BestRouteSimpleResponse> = emptyList()
+    val routeList: List<BestRouteDetailInfoResponse> = emptyList()
 )
 
 @HiltViewModel
@@ -34,9 +35,29 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
+    fun getBannerListBetweenDates() {
+        viewModelScope.launch {
+            repository.findBannerListBetweenDates("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNSttYW5hZ2VyIiwiaWF0IjoxNzA2NzQzMjczLCJleHAiOjE3MDcxMDMyNzN9.6IKq29hpSLSPw06TVHoN-gq3EP24MjtYlDwirrrYr3U").let {
+                when(it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                bannerList = it.body
+                            )
+                        }
+                    }
+                    is BaseState.Error -> {
+                        it.msg // 서버 에러 메시지
+                        Log.d("Banner List API", it.msg)
+                    }
+                }
+            }
+        }
+    }
+
     fun getPopularShorts() {
         viewModelScope.launch {
-            repository.findPopularShorts("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzA2NDI0OTY5LCJleHAiOjE3MjE5NzY5Njl9.BzA3Cj_KPcLuKsusBDFaoVlz5ltnrwsZHo_lCcfHBk-nNqG643v40GwnrZIYDRVK2H0A6SvXMBurYiklIAmGqg", 0, 20).let {
+            repository.findPopularShorts(0, 20).let {
                 when(it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
@@ -56,7 +77,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
 
     fun getGymRankingOrderFollowCount() {
         viewModelScope.launch {
-            repository.findGymRankingOrderFollowCount("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzA2NDI0OTY5LCJleHAiOjE3MjE5NzY5Njl9.BzA3Cj_KPcLuKsusBDFaoVlz5ltnrwsZHo_lCcfHBk-nNqG643v40GwnrZIYDRVK2H0A6SvXMBurYiklIAmGqg").let {
+            repository.findGymRankingOrderFollowCount().let {
                 when(it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
@@ -76,7 +97,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
 
     fun getRouteRankingOrderSelectionCount() {
         viewModelScope.launch {
-            repository.findRouteRankingOrderSelectionCount("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzA2NDI0OTY5LCJleHAiOjE3MjE5NzY5Njl9.BzA3Cj_KPcLuKsusBDFaoVlz5ltnrwsZHo_lCcfHBk-nNqG643v40GwnrZIYDRVK2H0A6SvXMBurYiklIAmGqg").let {
+            repository.findRouteRankingOrderSelectionCount("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNSttYW5hZ2VyIiwiaWF0IjoxNzA2NzQzMjczLCJleHAiOjE3MDcxMDMyNzN9.6IKq29hpSLSPw06TVHoN-gq3EP24MjtYlDwirrrYr3U").let {
                 when(it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->

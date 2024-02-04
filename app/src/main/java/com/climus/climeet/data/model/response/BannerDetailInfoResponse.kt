@@ -14,13 +14,13 @@ data class BannerDetailInfoResponse(
     val title : String,
 
     @SerializedName("bannerTargetUrl")
-    val bannerTargetUrl : Int,
+    val bannerTargetUrl : String,
 
     @SerializedName("bannerStartDate")
-    val bannerStartDate : LocalDate,
+    val bannerStartDate : String,
 
     @SerializedName("bannerEndDate")
-    val bannerEndDate : LocalDate,
+    val bannerEndDate : String,
 
     @SerializedName("isPopup")
     val isPopup : Boolean,

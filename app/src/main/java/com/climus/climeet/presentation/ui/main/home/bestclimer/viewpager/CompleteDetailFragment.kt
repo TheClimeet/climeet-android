@@ -15,6 +15,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.climus.climeet.R
+import com.climus.climeet.data.model.response.BannerDetailInfoResponse
+import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.databinding.FragmentCompleteClimbingBinding
 import com.climus.climeet.databinding.FragmentCompleteDetailBinding
 import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingViewModel
@@ -27,6 +29,7 @@ class CompleteDetailFragment : Fragment() {
 
     private lateinit var binding : FragmentCompleteDetailBinding
     private val viewModel: CompleteDetailViewModel by viewModels()
+    private var rankingList: List<BestClearClimberSimpleResponse> = emptyList()
 
     private lateinit var profileImg1 : ImageView
     private lateinit var profileImg2 : ImageView

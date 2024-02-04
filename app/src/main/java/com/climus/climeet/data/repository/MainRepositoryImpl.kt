@@ -6,6 +6,7 @@ import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
+import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteSimpleResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
@@ -32,8 +33,6 @@ class MainRepositoryImpl @Inject constructor(
         size: Int
     ): BaseState<SearchGymResponse> =
         runRemote { api.searchGym(gymName, page, size) }
-    override suspend fun searchGym(gymName: String)
-    : BaseState<List<SearchGymResponse>> = runRemote { api.searchGym(gymName) }
 
     override suspend fun findBannerListBetweenDates(@Header("Authorization") accessToken : String)
     : BaseState<List<BannerDetailInfoResponse>> = runRemote { api.findBannerListBetweenDates(accessToken) }
@@ -48,16 +47,15 @@ class MainRepositoryImpl @Inject constructor(
     : BaseState<List<BestLevelCimberSimpleResponse>> = runRemote { api.findClimberRankingOrderLevel(accessToken) }
 
     override suspend fun findPopularShorts(
-        @Header("Authorization") accessToken : String,
         @Query("page") page : Int,
         @Query("size") size : Int)
-    : BaseState<List<ShortsSimpleResponse>> = runRemote { api.findPopularShorts(accessToken, page, size) }
+    : BaseState<List<ShortsSimpleResponse>> = runRemote { api.findPopularShorts(page, size) }
 
-    override suspend fun findGymRankingOrderFollowCount(@Header("Authorization") accessToken : String)
-    : BaseState<List<BestFollowGymSimpleResponse>> = runRemote { api.findGymRankingOrderFollowCount(accessToken) }
+    override suspend fun findGymRankingOrderFollowCount()
+    : BaseState<List<BestFollowGymSimpleResponse>> = runRemote { api.findGymRankingOrderFollowCount() }
 
     override suspend fun findRouteRankingOrderSelectionCount(@Header("Authorization") accessToken : String)
-    : BaseState<List<BestRouteSimpleResponse>> = runRemote { api.findRouteRankingOrderSelectionCount(accessToken) }
+    : BaseState<List<BestRouteDetailInfoResponse>> = runRemote { api.findRouteRankingOrderSelectionCount(accessToken) }
 
     override suspend fun searchAvailableGym(
         gymName: String,

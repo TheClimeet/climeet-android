@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
+import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteSimpleResponse
 import com.climus.climeet.data.model.response.ShortsSimpleResponse
 import com.climus.climeet.data.repository.MainRepository
@@ -29,7 +30,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class SearchCragUiState(
-    val routeList: List<BestRouteSimpleResponse> = emptyList(),
+    val routeList: List<BestRouteDetailInfoResponse> = emptyList(),
     val searchList: List<FollowCrag> = emptyList(),
     val progressState: Boolean = false,
     val emptyResultState: Boolean = false
@@ -53,12 +54,12 @@ class SearchCragViewModel @Inject constructor(private val repository: MainReposi
     val keyword = MutableStateFlow("")
 
     init {
-        observeKeyword()
+        //observeKeyword()
     }
 
     fun getRouteRankingOrderSelectionCount() {
         viewModelScope.launch {
-            repository.findRouteRankingOrderSelectionCount("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzA2NDI0OTY5LCJleHAiOjE3MjE5NzY5Njl9.BzA3Cj_KPcLuKsusBDFaoVlz5ltnrwsZHo_lCcfHBk-nNqG643v40GwnrZIYDRVK2H0A6SvXMBurYiklIAmGqg").let {
+            repository.findRouteRankingOrderSelectionCount("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNSttYW5hZ2VyIiwiaWF0IjoxNzA2NzQzMjczLCJleHAiOjE3MDcxMDMyNzN9.6IKq29hpSLSPw06TVHoN-gq3EP24MjtYlDwirrrYr3U").let {
                 when(it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
@@ -76,64 +77,64 @@ class SearchCragViewModel @Inject constructor(private val repository: MainReposi
         }
     }
 
-    private fun observeKeyword() {
-        keyword.onEach {
-            if (it.isBlank()) {
-                _uiState.update { state ->
-                    state.copy(
-                        searchList = emptyList(),
-                        emptyResultState = false
-                    )
-                }
-            } else {
-                curJob?.cancel()
-
-                _uiState.update { state ->
-                    state.copy(
-                        progressState = true,
-                        emptyResultState = false
-                    )
-                }
-
-                curJob = viewModelScope.launch {
-                    delay(500)
-                    repository.searchGym(it).let { result ->
-                        when (result) {
-                            is BaseState.Success -> {
-                                if (result.body.isNotEmpty()) {
-                                    _uiState.update { state ->
-                                        state.copy(
-                                            searchList = result.body.map { item ->
-                                                item.toFollowCrag(it)
-                                            },
-                                            progressState = false
-                                        )
-                                    }
-                                } else {
-                                    _uiState.update { state ->
-                                        state.copy(
-                                            searchList = emptyList(),
-                                            progressState = false,
-                                            emptyResultState = true
-                                        )
-                                    }
-                                }
-                            }
-
-                            is BaseState.Error -> {
-                                _uiState.update { state ->
-                                    state.copy(
-                                        progressState = false,
-                                        emptyResultState = true
-                                    )
-                                }
-                                _event.emit(FollowCragEvent.ShowToastMessage(result.msg))
-                            }
-                        }
-                    }
-                }
-            }
-        }.launchIn(viewModelScope)
-    }
+//    private fun observeKeyword() {
+//        keyword.onEach {
+//            if (it.isBlank()) {
+//                _uiState.update { state ->
+//                    state.copy(
+//                        searchList = emptyList(),
+//                        emptyResultState = false
+//                    )
+//                }
+//            } else {
+//                curJob?.cancel()
+//
+//                _uiState.update { state ->
+//                    state.copy(
+//                        progressState = true,
+//                        emptyResultState = false
+//                    )
+//                }
+//
+//                curJob = viewModelScope.launch {
+//                    delay(500)
+//                    repository.searchGym(it).let { result ->
+//                        when (result) {
+//                            is BaseState.Success -> {
+//                                if (result.body.isNotEmpty()) {
+//                                    _uiState.update { state ->
+//                                        state.copy(
+//                                            searchList = result.body.map { item ->
+//                                                item.toFollowCrag(it)
+//                                            },
+//                                            progressState = false
+//                                        )
+//                                    }
+//                                } else {
+//                                    _uiState.update { state ->
+//                                        state.copy(
+//                                            searchList = emptyList(),
+//                                            progressState = false,
+//                                            emptyResultState = true
+//                                        )
+//                                    }
+//                                }
+//                            }
+//
+//                            is BaseState.Error -> {
+//                                _uiState.update { state ->
+//                                    state.copy(
+//                                        progressState = false,
+//                                        emptyResultState = true
+//                                    )
+//                                }
+//                                _event.emit(FollowCragEvent.ShowToastMessage(result.msg))
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }.launchIn(viewModelScope)
+//    }
 
 }

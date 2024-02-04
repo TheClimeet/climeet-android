@@ -17,6 +17,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.MainNavDirections
 import com.climus.climeet.R
+import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.databinding.FragmentCompleteClimbingBinding
 import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -104,7 +105,7 @@ class CompleteClimbingFragment: Fragment() {
                         rankingList.take(3).forEachIndexed { i, bestClearClimberResponse ->
                             rankList[i].text = bestClearClimberResponse.ranking.toString()
                             nicknameList[i].text = bestClearClimberResponse.profileName
-                            problemsList[i].text = bestClearClimberResponse.thisWeekClearCount.toString()
+                            problemsList[i].text = "완등한 문제 " + bestClearClimberResponse.thisWeekClearCount.toString()
                         }
                     }
                 }
@@ -112,29 +113,4 @@ class CompleteClimbingFragment: Fragment() {
         }
     }
 
-    //    private fun initObserve(
-//        profileList: List<ImageView>,
-//        nicknameList: List<TextView>,
-//        problemsList: List<TextView>,
-//        rankList: List<TextView>
-//    ) {
-//        viewModel.rankingList.observe(viewLifecycleOwner){
-//            // rankingList 데이터가 바뀌었을때 여기가 호출됨
-//
-//            if(it?.isNotEmpty() == true){
-//
-//                // 아마 변수가 몇가지 존재할 수 있음
-//                // LivdData 사용시  List의 원소 하나만 바꾸면은 Observe 호출이 안됨
-//                Log.d("API", "Called")
-//                it.take(3).forEachIndexed { i, bestClearClimberResponse ->
-//                    Log.d("API", bestClearClimberResponse.toString())
-//                    rankList[i].text = bestClearClimberResponse.ranking.toString()
-//                    nicknameList[i].text = bestClearClimberResponse.profileName
-//                    problemsList[i].text = bestClearClimberResponse.thisWeekClearCount.toString()
-//                }
-//
-//
-//            }
-//        }
-//    }
 }

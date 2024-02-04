@@ -23,13 +23,10 @@ class CompleteClimbingViewModel @Inject constructor(private val repository: Main
 
     private val _uiState = MutableStateFlow(CompleteClimbingUiState())
     val uiState: StateFlow<CompleteClimbingUiState> = _uiState.asStateFlow()
-    // MutableLiveData를 LiveData로 변경
-//    private val _rankingList = MutableLiveData<List<BestClearClimberResponse>?>()
-//    val rankingList: LiveData<List<BestClearClimberResponse>?> get() = _rankingList
 
     fun getClimberRankingOrderClearCount() {
         viewModelScope.launch {
-            repository.findClimberRankingOrderClearCount("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzA2NDI0OTY5LCJleHAiOjE3MjE5NzY5Njl9.BzA3Cj_KPcLuKsusBDFaoVlz5ltnrwsZHo_lCcfHBk-nNqG643v40GwnrZIYDRVK2H0A6SvXMBurYiklIAmGqg").let {
+            repository.findClimberRankingOrderClearCount("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNSttYW5hZ2VyIiwiaWF0IjoxNzA2NzQzMjczLCJleHAiOjE3MDcxMDMyNzN9.6IKq29hpSLSPw06TVHoN-gq3EP24MjtYlDwirrrYr3U").let {
                 when(it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->

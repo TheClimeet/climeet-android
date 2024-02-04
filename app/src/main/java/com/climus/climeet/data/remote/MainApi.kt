@@ -6,6 +6,7 @@ import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
+import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteSimpleResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
@@ -48,31 +49,28 @@ interface MainApi {
     @GET("/api/banners")
     suspend fun findBannerListBetweenDates(@Header("Authorization") accessToken : String): Response<List<BannerDetailInfoResponse>>
 
-
-    @GET("/api/rank/week/climber/clear")
+    @GET("/api/home/rank/weeks/climbers/clear")
     suspend fun findClimberRankingOrderClearCount(@Header("Authorization") accessToken : String): Response<List<BestClearClimberSimpleResponse>>
 
-    @GET("/api/rank/week/climber/time")
+    @GET("/api/home/rank/weeks/climber/time")
     suspend fun findClimberRankingOrderTime(@Header("Authorization") accessToken : String): Response<List<BestTimeClimberSimpleResponse>>
 
-    @GET("/api/rank/week/climber/level")
+    @GET("/api/home/rank/weeks/climber/level")
     suspend fun findClimberRankingOrderLevel(@Header("Authorization") accessToken : String): Response<List<BestLevelCimberSimpleResponse>>
 
     @GET("/api/shorts/popular")
     suspend fun findPopularShorts(
-        @Header("Authorization") accessToken : String,
         @Query("page") page : Int,
         @Query("size") size : Int,
     ): Response<List<ShortsSimpleResponse>>
 
     @GET("/api/rank/week/gym/follow")
     suspend fun findGymRankingOrderFollowCount(
-        @Header("Authorization") accessToken : String
     ): Response<List<BestFollowGymSimpleResponse>>
 
-    @GET("/api/rank/week/routes")
+    @GET("/api/home/rank/weeks/routes")
     suspend fun findRouteRankingOrderSelectionCount(
         @Header("Authorization") accessToken : String
-    ): Response<List<BestRouteSimpleResponse>>
+    ): Response<List<BestRouteDetailInfoResponse>>
 
 }
