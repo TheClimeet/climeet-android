@@ -52,9 +52,15 @@ fun ShortsItem.toShortsUiData() = ShortsUiData(
     isBookMarked = shortsDetailInfo.bookmarked
 )
 
-fun ShortsUpdatedFollowResponse.toUpdatedFollowUiData(onClickListener: (Long) -> Unit) = UpdatedFollowUiData(
+fun ShortsUpdatedFollowResponse.toUpdatedFollowUiData(
+    viewType: Int,
+    onClickListener: (Long) -> Unit,
+    navigateToAddFollow: () -> Unit
+) = UpdatedFollowUiData(
     userId = followingUserId,
+    viewType = viewType,
     profileImg = followingUserProfileUrl,
     name = followingUserName,
-    onClickListener = onClickListener
+    onClickListener = onClickListener,
+    navigateToAddFollow = navigateToAddFollow
 )

@@ -4,5 +4,8 @@ data class UpdatedFollowUiData(
     val userId: Long = 0,
     val profileImg: String = "",
     val name: String = "",
-    val onClickListener: (Long) -> Unit
+    val viewType: Int= 0,
+    val onClickListener: (Long) -> Unit,
+    val navigateToAddFollow: () -> Unit
 )
+

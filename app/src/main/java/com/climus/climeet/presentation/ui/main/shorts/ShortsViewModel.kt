@@ -48,6 +48,11 @@ class ShortsViewModel @Inject constructor(
     private val _event = MutableSharedFlow<ShortsEvent>()
     val event: SharedFlow<ShortsEvent> = _event.asSharedFlow()
 
+    companion object {
+        const val ITEM = 0
+        const val GOTO_FOLLOW = 1
+    }
+
     fun getUpdatedFollow() {
 
         viewModelScope.launch {
@@ -58,8 +63,16 @@ class ShortsViewModel @Inject constructor(
                         _uiState.update { state ->
                             state.copy(
                                 updatedFollowList = it.body.map { data ->
-                                    data.toUpdatedFollowUiData(::navigateToUpdatedFollowShorts)
-                                }
+                                    data.toUpdatedFollowUiData(
+                                        ITEM,
+                                        ::navigateToFollowerPage,
+                                        ::navigateToAddFollow
+                                    )
+                                } + UpdatedFollowUiData(
+                                    viewType = GOTO_FOLLOW,
+                                    onClickListener = ::navigateToFollowerPage,
+                                    navigateToAddFollow = ::navigateToAddFollow
+                                )
                             )
                         }
                     }
@@ -173,7 +186,11 @@ class ShortsViewModel @Inject constructor(
 
     }
 
-    private fun navigateToUpdatedFollowShorts(id: Long) {
+    private fun navigateToFollowerPage(id: Long) {
+
+    }
+
+    private fun navigateToAddFollow() {
 
     }
 
