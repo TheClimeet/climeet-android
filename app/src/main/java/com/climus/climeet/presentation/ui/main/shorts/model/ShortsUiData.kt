@@ -13,7 +13,7 @@ data class ShortsUiData(
     val description: String = "",
     val sectorId: Long = 0,
     val sectorName: String = "",
-    val sectorImgUrl: String = "",
+    val sectorImgUrl: String? = "",
     val likeCount: Int = 0,
     val commentCount: Int = 0,
     val bookMarkCount: Int = 0,

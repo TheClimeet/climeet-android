@@ -28,7 +28,7 @@ data class ShortsDetailInfo(
     val isSoundEnabled: Boolean,
     val likeCount: Int,
     val liked: Boolean,
-    val routeImageUrl: String,
+    val routeImageUrl: String? = "",
     val sectorId: Long,
     val sectorName: String,
     val shareCount: Int,

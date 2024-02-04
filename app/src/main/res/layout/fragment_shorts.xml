@@ -47,27 +47,93 @@
                 app:list="@{vm.uiState.updatedFollowList}"
                 tools:listitem="@layout/item_updated_follow" />
 
-            <com.google.android.material.chip.ChipGroup
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cg_sector_filter"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                android:background="@drawable/rect_grey8fill_nostroke_5radius"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="2dp"
+                android:visibility="@{vm.uiState.curFilter.levelName.empty? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@id/btn_filter_toggle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/btn_filter_toggle">
+
+                <TextView
+                    android:id="@+id/tv_wall_filter"
+                    style="@style/TextSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.uiState.curFilter.cragName}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="더클라임 연남" />
+
+                <View
+                    android:id="@+id/dv_wall_filter"
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_marginVertical="4dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@color/cm_grey6"
+                    android:visibility="@{vm.uiState.curFilter.sectorName.empty? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_wall_filter"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_sector_filter"
                     style="@style/TextSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rect_nofill_mainstroke_20radius"
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="2dp"
+                    android:layout_marginStart="8dp"
                     android:text="@{vm.uiState.curFilter.sectorName}"
-                    android:visibility="@{vm.uiState.curFilter.levelName.empty? View.GONE : View.VISIBLE}" />
+                    android:visibility="@{vm.uiState.curFilter.sectorName.empty? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/dv_wall_filter"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="SECTOR 2-2" />
 
-            </com.google.android.material.chip.ChipGroup>
+                <View
+                    android:id="@+id/dv_sector_filter"
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:layout_marginVertical="4dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@color/cm_grey6"
+                    android:visibility="@{vm.uiState.curFilter.levelName.empty? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_sector_filter"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_level_filter"
+                    style="@style/TextSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@{vm.uiState.curFilter.levelName}"
+                    android:visibility="@{vm.uiState.curFilter.levelName.empty? View.GONE : View.VISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/dv_sector_filter"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="V8" />
+
+                <ImageButton
+                    android:id="@+id/btn_remove_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:background="@android:color/transparent"
+                    android:onClick="@{() -> vm.deleteFilter()}"
+                    android:src="@drawable/ic_main_exit"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_level_filter"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_filter_toggle"
