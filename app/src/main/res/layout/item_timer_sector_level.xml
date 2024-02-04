@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.record.model.RecordSectorData" />
+    </data>
+
+    <TextView
+        android:id="@+id/tv_level"
+        style="@style/TextRegularSemiBold"
+        android:layout_width="36dp"
+        android:text="@{item.levelName}"
+        app:textHexColor="@{item.levelColor}"
+        android:onClick="@{() -> item.onClickListener.invoke(item.levelName)}"
+        android:layout_height="36dp"
+        android:background="@drawable/oval_silver2fill_nostroke"
+        android:gravity="center"
+        android:layout_marginEnd="10dp"
+        android:textAlignment="center"
+        tools:text="VB" />
+</layout>
