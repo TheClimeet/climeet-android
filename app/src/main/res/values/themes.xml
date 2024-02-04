@@ -29,7 +29,6 @@
 
     <style name="ThemeOverlay.NumberPicker" parent="">
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="selectableItemBackground">@color/cm_main</item>
         <item name="android:fontFamily">@font/pretendard_medium</item>
         <item name="android:textSize">18sp</item>
         <item name="colorControlNormal">@android:color/transparent</item>

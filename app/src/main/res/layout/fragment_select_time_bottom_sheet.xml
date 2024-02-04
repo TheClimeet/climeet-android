@@ -65,7 +65,8 @@
                 android:layout_height="75dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:background="@drawable/rect_grey7fill_nostroke_15radius">
+                android:background="@drawable/rect_grey7fill_nostroke_15radius"
+                android:onClick="@{()->vm.clickStart()}">
 
                 <TextView
                     style="@style/TextMedium"
@@ -83,12 +84,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="6dp"
-                    android:text="오전 11시"
+                    android:text="@{vm.startTimeString}"
                     android:textColor="@color/cm_main"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:selectedColor="@{vm.selectState}" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -98,7 +100,8 @@
                 android:layout_height="75dp"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:background="@drawable/rect_grey7fill_nostroke_15radius">
+                android:background="@drawable/rect_grey7fill_nostroke_15radius"
+                android:onClick="@{()->vm.clickEnd()}">
 
                 <TextView
                     style="@style/TextMedium"
@@ -116,12 +119,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="6dp"
-                    android:text="오후 6시"
+                    android:text="@{vm.endTimeString}"
                     android:textColor="@color/cm_main"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:selectedColor="@{!vm.selectState}" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -132,45 +136,26 @@
             android:layout_width="0dp"
             android:layout_height="28dp"
             android:background="@drawable/rect_silverfill_nostroke_5radius"
-            app:layout_constraintTop_toTopOf="@id/layout_rv"
-            app:layout_constraintBottom_toBottomOf="@id/layout_rv"
-            app:layout_constraintStart_toStartOf="@id/layout_rv"
-            app:layout_constraintEnd_toEndOf="@id/layout_rv"/>
+            app:layout_constraintBottom_toBottomOf="@id/timepicker"
+            app:layout_constraintEnd_toEndOf="@id/timepicker"
+            app:layout_constraintStart_toStartOf="@id/timepicker"
+            app:layout_constraintTop_toTopOf="@id/timepicker" />
 
-        <LinearLayout
-            android:id="@+id/layout_rv"
+        <TimePicker
+            android:id="@+id/timepicker"
             android:layout_width="0dp"
             android:layout_height="150dp"
             android:layout_marginHorizontal="30dp"
             android:layout_marginTop="15dp"
             android:background="@android:color/transparent"
-            android:weightSum="3"
+            android:theme="@style/ThemeOverlay.NumberPicker"
+            android:timePickerMode="spinner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_start_end">
-
-            <NumberPicker
-                android:id="@+id/np_meridiem"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:theme="@style/ThemeOverlay.NumberPicker"/>
-            <NumberPicker
-                android:id="@+id/np_hour"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:theme="@style/ThemeOverlay.NumberPicker"/>
-            <NumberPicker
-                android:id="@+id/np_min"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:theme="@style/ThemeOverlay.NumberPicker"/>
-
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@id/layout_start_end" />
 
         <LinearLayout
+            android:id="@+id/testst"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -179,7 +164,7 @@
             android:weightSum="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_rv">
+            app:layout_constraintTop_toBottomOf="@id/timepicker">
 
             <TextView
                 android:id="@+id/tv_cancel"
@@ -210,7 +195,6 @@
 
 
         </LinearLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
