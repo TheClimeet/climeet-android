@@ -167,7 +167,7 @@
                             style="@style/TextRegular"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="클라이밍 암장을 선택해주세요"
+                            android:text="@{vm.selectedCragEvent.second}"
                             android:textColor="#C6C6C6"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

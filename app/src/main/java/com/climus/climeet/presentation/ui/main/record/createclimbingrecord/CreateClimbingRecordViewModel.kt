@@ -36,8 +36,11 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
     val selectedStartTime = MutableLiveData(CreateRecordData.selectedStartTime)
     val selectedEndTime = MutableLiveData(CreateRecordData.selectedEndTime)
 
-    init {
+    val isSelectedCrag = MutableStateFlow(false)
+    val selectedCragEvent = MutableLiveData<Pair<Long, String>>()
 
+    init {
+        selectCrag(-1, "클라이밍 암장을 선택해주세요")
     }
 
     fun setSelectedDate(date: LocalDate) {
@@ -115,6 +118,10 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
             }
         }
         timePickText.value = "$startString - $endString"
+    }
+
+    fun selectCrag(id: Long, name: String) {
+        selectedCragEvent.value = Pair(id, name)
     }
 
     fun navigateToSelectCrag() {

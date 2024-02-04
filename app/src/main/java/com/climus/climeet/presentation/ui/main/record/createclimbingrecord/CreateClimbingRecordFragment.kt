@@ -40,6 +40,13 @@ class CreateClimbingRecordFragment :
                 binding.tvChoiceTime.setTextColor(Color.WHITE)
             }
         })
+        viewModel.selectedCragEvent.observe(viewLifecycleOwner, Observer { event ->
+            event?.let { (id, name) ->
+                if(viewModel.isSelectedCrag.value){
+                    binding.tvGym.setTextColor(Color.WHITE)
+                }
+            }
+        })
 
         initEventObserve()
 
