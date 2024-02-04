@@ -1,6 +1,7 @@
 package com.climus.climeet.data.repository
 
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -25,6 +26,12 @@ class MainRepositoryImpl @Inject constructor(
         image: MultipartBody.Part
     ): BaseState<UploadImgResponse> = runRemote { api.uploadImage(image) }
 
+    override suspend fun searchGym(
+        gymName: String,
+        page: Int,
+        size: Int
+    ): BaseState<SearchGymResponse> =
+        runRemote { api.searchGym(gymName, page, size) }
     override suspend fun searchGym(gymName: String)
     : BaseState<List<SearchGymResponse>> = runRemote { api.searchGym(gymName) }
 
@@ -52,4 +59,10 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun findRouteRankingOrderSelectionCount(@Header("Authorization") accessToken : String)
     : BaseState<List<BestRouteSimpleResponse>> = runRemote { api.findRouteRankingOrderSelectionCount(accessToken) }
 
+    override suspend fun searchAvailableGym(
+        gymName: String,
+        page: Int,
+        size: Int
+    ): BaseState<SearchAvailableGymResponse> =
+        runRemote { api.searchAvailableGym(gymName, page, size) }
 }

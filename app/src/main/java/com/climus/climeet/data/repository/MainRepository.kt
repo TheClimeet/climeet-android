@@ -1,6 +1,7 @@
 package com.climus.climeet.data.repository
 
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -15,6 +16,7 @@ import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface MainRepository {
+
     suspend fun uploadImage(
         image: MultipartBody.Part
     ): BaseState<UploadImgResponse>
@@ -40,4 +42,14 @@ interface MainRepository {
     suspend fun findGymRankingOrderFollowCount(@Header("Authorization") accessToken : String) : BaseState<List<BestFollowGymSimpleResponse>>
 
     suspend fun findRouteRankingOrderSelectionCount(@Header("Authorization") accessToken : String) : BaseState<List<BestRouteSimpleResponse>>
+        gymName: String,
+        page: Int,
+        size: Int
+    ): BaseState<SearchGymResponse>
+
+    suspend fun searchAvailableGym(
+        gymName: String,
+        page: Int,
+        size: Int
+    ): BaseState<SearchAvailableGymResponse>
 }
