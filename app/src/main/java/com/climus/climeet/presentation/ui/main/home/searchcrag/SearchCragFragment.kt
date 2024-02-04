@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import com.climus.climeet.R
 import com.climus.climeet.data.model.response.BestRouteSimpleResponse
 import com.climus.climeet.databinding.FragmentSearchCragBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.intro.IntroViewModel
 import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragEvent
 import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.adapter.FollowCragRVAdapter
 import com.climus.climeet.presentation.ui.main.home.HomeViewModel
@@ -28,6 +30,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 @AndroidEntryPoint
 class SearchCragFragment : BaseFragment<FragmentSearchCragBinding>(R.layout.fragment_search_crag) {
 
+    private val parentViewModel: IntroViewModel by activityViewModels()
     private val viewModel: SearchCragViewModel by viewModels()
     private var recyclerRoute: List<BestRouteSimpleResponse> = emptyList()
     private var adapter: FollowCragRVAdapter? = null
@@ -35,6 +38,7 @@ class SearchCragFragment : BaseFragment<FragmentSearchCragBinding>(R.layout.frag
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parentViewModel.climerSignUpProgress(4)
         binding.vm = viewModel
         adapter = FollowCragRVAdapter()
         binding.rvFollowSearchCrags.adapter = adapter
@@ -77,7 +81,8 @@ class SearchCragFragment : BaseFragment<FragmentSearchCragBinding>(R.layout.frag
                     }
                 }
             }
-
+        }
+        repeatOnStarted {
             viewModel.uiState.collect {
                 adapter?.setList(it.searchList, viewModel.keyword.value)
             }

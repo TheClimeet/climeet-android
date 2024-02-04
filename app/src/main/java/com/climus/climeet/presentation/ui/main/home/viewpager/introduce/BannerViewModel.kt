@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingUiState
@@ -16,12 +17,31 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class BannerUiState(
-    val bannerList: List<String> = emptyList()
+    val bannerList: List<BannerDetailInfoResponse> = emptyList()
 )
 
 @HiltViewModel
 class BannerViewModel @Inject constructor(private val repository: MainRepository): ViewModel() {
-    private val _uiState = MutableStateFlow(CompleteClimbingUiState())
-    val uiState: StateFlow<CompleteClimbingUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(BannerUiState())
+    val uiState: StateFlow<BannerUiState> = _uiState.asStateFlow()
 
+    fun getBannerListBetweenDates() {
+        viewModelScope.launch {
+            repository.findBannerListBetweenDates("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxK2NsaW1iZXIiLCJpYXQiOjE3MDY4NTkzNDQsImV4cCI6MTcwNzIxOTM0NH0.XDHZlOUDY-C8Ac99JHRB5Oi3YjBf--cTpHhwSM09lpU").let {
+                when(it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                bannerList = it.body
+                            )
+                        }
+                    }
+                    is BaseState.Error -> {
+                        it.msg // 서버 에러 메시지
+                        Log.d("Banner List API", it.msg)
+                    }
+                }
+            }
+        }
+    }
 }

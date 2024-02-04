@@ -1,6 +1,7 @@
 package com.climus.climeet.data.repository
 
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
@@ -26,6 +27,9 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun searchGym(gymName: String)
     : BaseState<List<SearchGymResponse>> = runRemote { api.searchGym(gymName) }
+
+    override suspend fun findBannerListBetweenDates(@Header("Authorization") accessToken : String)
+    : BaseState<List<BannerDetailInfoResponse>> = runRemote { api.findBannerListBetweenDates(accessToken) }
 
     override suspend fun findClimberRankingOrderClearCount(@Header("Authorization") accessToken : String)
     : BaseState<List<BestClearClimberSimpleResponse>> = runRemote { api.findClimberRankingOrderClearCount(accessToken) }

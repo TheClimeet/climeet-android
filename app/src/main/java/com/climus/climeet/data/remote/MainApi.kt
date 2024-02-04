@@ -1,5 +1,6 @@
 package com.climus.climeet.data.remote
 
+import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
@@ -27,6 +28,10 @@ interface MainApi {
     suspend fun searchGym(
         @Query("gymname") gymName: String
     ): Response<List<SearchGymResponse>>
+
+    @GET("/api/banners")
+    suspend fun findBannerListBetweenDates(@Header("Authorization") accessToken : String): Response<List<BannerDetailInfoResponse>>
+
 
     @GET("/api/rank/week/climber/clear")
     suspend fun findClimberRankingOrderClearCount(@Header("Authorization") accessToken : String): Response<List<BestClearClimberSimpleResponse>>

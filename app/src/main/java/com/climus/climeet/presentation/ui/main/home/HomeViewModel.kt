@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestRouteSimpleResponse
 import com.climus.climeet.data.model.response.ShortsSimpleResponse
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class HomeUiState(
+    val bannerList : List<BannerDetailInfoResponse> = emptyList(),
     val homegymList: List<HomeGym> = emptyList(),
     val shortsList: List<ShortsSimpleResponse> = emptyList(),
     val cragList: List<BestFollowGymSimpleResponse> = emptyList(),

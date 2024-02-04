@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.climus.climeet.databinding.FragmentBannerBinding
+import com.climus.climeet.presentation.ui.main.home.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -19,6 +21,7 @@ import kotlinx.coroutines.launch
 class BannerFragment(val imgRes : Int) : Fragment() {
 
     lateinit var binding : FragmentBannerBinding
+    private val viewModel: BannerViewModel by viewModels()
 
     fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -37,25 +40,21 @@ class BannerFragment(val imgRes : Int) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // api
         super.onViewCreated(view, savedInstanceState)
-        // viewModel.
+
+        viewModel.getBannerListBetweenDates()
         initStateObserve()
 
     }
 
     private fun initStateObserve() {
         repeatOnStarted {
-//            viewModel?.let { vm ->
-//                vm.uiState.collect { uiState ->
-//                    uiState.rankingList?.let { rankingList ->
-//                        Log.d("CompleteClimbing", rankingList.toString())
-//                        rankingList.take(3).forEachIndexed { i, bestClearClimberResponse ->
-//                            rankList[i].text = bestClearClimberResponse.ranking.toString()
-//                            nicknameList[i].text = bestClearClimberResponse.profileName
-//                            problemsList[i].text = bestClearClimberResponse.thisWeekClearCount.toString()
-//                        }
-//                    }
-//                }
-//            }
+            viewModel?.let { vm ->
+                vm.uiState.collect { uiState ->
+                    uiState.bannerList?.let { bannerList ->
+                        Log.d("bannerList", bannerList.toString())
+                    }
+                }
+            }
         }
     }
 }

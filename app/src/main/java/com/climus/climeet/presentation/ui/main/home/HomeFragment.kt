@@ -64,6 +64,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private fun initEventObserve(){
         repeatOnStarted {
+
             viewModel?.let { vm ->
                 vm.uiState.collect { uiState ->
                     uiState.shortsList?.let { shortsList ->
