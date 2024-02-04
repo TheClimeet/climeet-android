@@ -191,7 +191,8 @@
                 android:gravity="center"
                 android:text="확인"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:onClick="@{()->vm.setTime()}"/>
 
 
         </LinearLayout>

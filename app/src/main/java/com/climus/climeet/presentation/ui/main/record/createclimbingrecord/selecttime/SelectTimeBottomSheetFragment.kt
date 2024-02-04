@@ -1,14 +1,20 @@
 package com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selecttime
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSelectTimeBottomSheetBinding
+import com.climus.climeet.presentation.ui.main.record.calendar.CalendarViewModel
+import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateClimbingRecordViewModel
+import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateRecordData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -18,6 +24,7 @@ import java.time.LocalTime
 @AndroidEntryPoint
 class SelectTimeBottomSheetFragment : BottomSheetDialogFragment() {
 
+    private val parentViewModel: CreateClimbingRecordViewModel by activityViewModels()
     private val viewModel: SelectTimeBottomViewModel by viewModels()
     private var _binding: FragmentSelectTimeBottomSheetBinding? = null
     private val binding get() = _binding!!
@@ -53,8 +60,19 @@ class SelectTimeBottomSheetFragment : BottomSheetDialogFragment() {
                     SelectTimeBottomEvent.CloseFragment -> dismiss()
                     SelectTimeBottomEvent.ClickStart -> setTimePicker(viewModel.startTime.value)
                     SelectTimeBottomEvent.ClickEnd -> setTimePicker(viewModel.endTime.value)
+                    SelectTimeBottomEvent.SetTime -> {
+                        setTime()
+                    }
                 }
             }
+        }
+    }
+
+    private fun setTime() {
+        if (viewModel.startTime.value.isBefore(viewModel.endTime.value)) {
+            dismiss()
+        } else {
+            Toast.makeText(requireActivity(), "시간의 범위를 다시 설정해주세요!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -81,9 +99,10 @@ class SelectTimeBottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
         viewModel.selectState.value = false
+        parentViewModel.setSelectedTime(viewModel.startTime.value, viewModel.endTime.value)
     }
 
 }

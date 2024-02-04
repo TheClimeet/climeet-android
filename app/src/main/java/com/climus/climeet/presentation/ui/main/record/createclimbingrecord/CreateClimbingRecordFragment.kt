@@ -18,6 +18,8 @@ class CreateClimbingRecordFragment :
     BaseFragment<FragmentCreateClimbingRecordBinding>(R.layout.fragment_create_climbing_record) {
 
     private val viewModel: CreateClimbingRecordViewModel by activityViewModels()
+    private var isTimeSet = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -25,6 +27,18 @@ class CreateClimbingRecordFragment :
         viewModel.selectedDate.observe(viewLifecycleOwner, Observer { date ->
             viewModel.setDate()
             binding.tvChoiceDate.setTextColor(Color.WHITE)
+        })
+        viewModel.selectedStartTime.observe(viewLifecycleOwner, Observer { date ->
+            if (isTimeSet) {
+                viewModel.setTime()
+                binding.tvChoiceTime.setTextColor(Color.WHITE)
+            }
+        })
+        viewModel.selectedEndTime.observe(viewLifecycleOwner, Observer { date ->
+            if (isTimeSet) {
+                viewModel.setTime()
+                binding.tvChoiceTime.setTextColor(Color.WHITE)
+            }
         })
 
         initEventObserve()
@@ -36,7 +50,10 @@ class CreateClimbingRecordFragment :
             viewModel.event.collect {
                 when (it) {
                     CreateClimbingRecordEvent.ShowDatePicker -> findNavController().toSelectDateBottomSheetFragment()
-                    CreateClimbingRecordEvent.ShowTimePicker -> findNavController().toSelectTimeBottomSheetFragment()
+                    CreateClimbingRecordEvent.ShowTimePicker -> {
+                        isTimeSet = true
+                        findNavController().toSelectTimeBottomSheetFragment()
+                    }
                     CreateClimbingRecordEvent.NavigateToSelectCrag -> findNavController().toSelectCrag()
                 }
             }
