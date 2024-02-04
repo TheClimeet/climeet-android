@@ -8,14 +8,25 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.room.Room
 import com.climus.climeet.R
 import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.databinding.FragmentTimerBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.NoticePopup
 import com.climus.climeet.presentation.ui.main.record.model.RecordCragData
+import com.climus.climeet.presentation.ui.main.record.timer.data.ClimbingDatabase
+import com.climus.climeet.presentation.ui.main.record.timer.data.StopwatchStatesDao
+import com.climus.climeet.presentation.ui.main.record.timer.data.StopwatchStatesData
+import com.climus.climeet.presentation.ui.main.record.timer.data.StopwatchStatesRepository
+import com.climus.climeet.presentation.ui.main.record.timer.data.StopwatchStatesRepositoryImpl
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.CragSelectBottomFragment
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.CragSelectionListener
+import com.navercorp.nid.NaverIdLoginSDK.applicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 enum class ViewMode {
     START, PAUSE, RESTART, STOP
@@ -33,33 +44,49 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         timerVM.registerReceiver(requireContext())
         sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
-        initTimerLayout()
-        initClickListener()
-        timerObserve()
-        //noticeObserve()
-
         // 서비스 강제 종료시 stop 상태로 reset
         val serviceState = TimerService.serviceRunning
-        //Log.d("timer", "서비스 실행중? : ${serviceState.value}")
+        Log.d("timer", "서비스 실행중? : ${serviceState.value}")
 
         if (serviceState.value == null) {
             stopStopwatch()
-            timerVM.isPaused.value = false
             timerVM.isStart.value = false
+            timerVM.isPaused.value = false
             timerVM.isRestart.value = false
             timerVM.isStop.value = true
             timerVM.isRunning.value = false
-            updateStatePref()
+            timerVM.pauseTime.value = 0L
+            Log.d("timer", "서비스 종료 상태라 값 초기화")
+        } else {
+            initViewModel()
         }
+
+        initTimerLayout()
+        initClickListener()
+        timerObserve()
+        pauseObserve()
+        //updateStatePref()
+        //setStates()
+        //noticeObserve()
+
+//            CoroutineScope(Dispatchers.IO).launch {
+//                val state = StopwatchStatesData(
+//                    id = 0,
+//                    isStart = false,
+//                    isPaused = false,
+//                    isRestart = false,
+//                    isStop = true,
+//                    isRunning = false
+//                )
+//                timerVM.updateState(state) // TimerViewModel의 updateState 함수 호출
+//                Log.d("timer", "서비스 종료 상태라 값 초기화")
+//            }
+            //updateStatePref()
     }
 
     override fun onResume() {
         super.onResume()
-        timerVM.isStart.value = sharedPreferences.getBoolean(KEY_IS_START, false)
-        timerVM.isPaused.value = sharedPreferences.getBoolean(KEY_IS_PAUSE, false)
-        timerVM.isRestart.value = sharedPreferences.getBoolean(KEY_IS_RESTART, false)
-        timerVM.isStop.value = sharedPreferences.getBoolean(KEY_IS_STOP, true)
-        timerVM.isRunning.value = sharedPreferences.getBoolean(KEY_IS_RUNNING, true)
+
         // 암장 이름 설정
         if (timerVM.isStop.value == true) {
             binding.tvTitle.text = getString(R.string.timer_crag_set_inform)
@@ -76,7 +103,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
     override fun onPause() {
         super.onPause()
-        updateStatePref()
+        //updateStatePref()
         //Log.d("timer", "timer onPause")
     }
 
@@ -84,6 +111,32 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         super.onDestroy()
         timerVM.unregisterReceiver(requireContext())
         //Log.d("timer", "timer onDestroy")
+    }
+
+//    private fun setStates() {
+//        Log.d("timer", "timerfragment db값 불러오기")
+//        val data = stopwatchDB.StopwatchStatesDao().getState(0)
+//        if(data == null){
+//            stopwatchDB.StopwatchStatesDao().initialize()
+//            Log.d("timer", "db 초기화")
+//        } else {
+//            timerVM.isStart.value = data.isStart
+//            timerVM.isPaused.value = data.isPaused
+//            timerVM.isRestart.value = data.isRestart
+//            timerVM.isStop.value = data.isStop
+//            timerVM.isRunning.value = data.isRunning
+//            Log.d("timer", "db값 변수에 저장")
+//        }
+//    }
+
+    private fun initViewModel(){
+        timerVM.isStart.value = sharedPreferences.getBoolean(KEY_IS_START, false)
+        timerVM.isPaused.value = sharedPreferences.getBoolean(KEY_IS_PAUSE, false)
+        timerVM.isRestart.value = sharedPreferences.getBoolean(KEY_IS_RESTART, false)
+        timerVM.isStop.value = sharedPreferences.getBoolean(KEY_IS_STOP, true)
+        timerVM.isRunning.value = sharedPreferences.getBoolean(KEY_IS_RUNNING, true)
+        timerVM.pauseTime.value = sharedPreferences.getLong(PAUSE_TIME, 0L)
+        Log.d("timer", "뷰 변수 초기화\nisStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}, isRunning : ${timerVM.isStart.value}, pauseTime = ${timerVM.pauseTime.value}")
     }
 
     private fun updateStatePref() {
@@ -96,54 +149,72 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             apply()
             Log.d(
                 "timer",
-                "[값 저장] isStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}, isRunning : ${timerVM.isStart.value}"
+                "[값 업데이트] isStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}, isRunning : ${timerVM.isRunning.value}"
             )
         }
     }
 
     private fun timerObserve() {
+        // pause 시간 계산
+        timerVM.pauseTimeFormat.observe(viewLifecycleOwner, Observer { pauseTime ->
+            if (pauseTime != null && pauseTime != "00:00") {
+                sharedPreferences.edit().putString("pauseTimeFormat", pauseTime).apply()
+                binding.tvTime.text = pauseTime
+                Log.d("timer", "[일시정지] timerObserve 일시정지 시간 업데이트 : $pauseTime")
+            }
+        })
+
         if (timerVM.isPaused.value == true) {
-            val time = sharedPreferences.getString("pauseTime", timerVM.timeFormat.value)
+            // 재실행 시 pause 일 때 시간 보여주기
+            val time = sharedPreferences.getString("pauseTimeFormat", "00:00")
             binding.tvTime.text = time
-            //Log.d("timer", "timerObserve 호출 : $time")
+            Log.d("timer", "[일시정지] timerObserve 호출 : $time")
         } else {
             timerVM.timeFormat.observe(viewLifecycleOwner, Observer { timeFormat ->
+                // 시간 흘러감
                 binding.tvTime.text = timeFormat
-                Log.d("timer", "timerObserve 호출2 : ${timerVM.isPaused.value}")
+                //Log.d("timer", "[진행중] timerObserve 호출 : $timeFormat")
             })
         }
     }
 
-//    private fun noticeObserve() {
-//        // 알림창에서 일시정지, 재시작 버튼 눌리면 상태값 반영
-//        val state = sharedPreferences.getBoolean("pause", false)
-//        if (state){
-//            timerVM.isStart.value = false
-//            timerVM.isPaused.value = true
-//            timerVM.isRestart.value = false
-//            timerVM.isStop.value = false
-//            timerVM.isRunning.value = false
-//            Log.d("timer", "true일 때 pause값 변경?")
-//        } else {
-//            timerVM.isStart.value = false
-//            timerVM.isPaused.value = false
-//            timerVM.isRestart.value = true
-//            timerVM.isStop.value = false
-//            timerVM.isRunning.value = true
-//            Log.d("timer", "false일 때 pause값 변경?")
-//        }
-//    }
+    private fun pauseObserve(){
+        timerVM.pauseState.observe(viewLifecycleOwner, Observer { state ->
+            if (state == "yes") {
+                viewMode(ViewMode.PAUSE)
+                timerVM.isRunning.value = false
+            } else if (state == "no") {
+                viewMode(ViewMode.RESTART)
+                timerVM.isRunning.value = true
+            }
+        })
+    }
 
     private fun initTimerLayout() {
         timerVM.isStart.observe(viewLifecycleOwner, Observer { isStart ->
             if (isStart) {
                 viewMode(ViewMode.START)
-                //Log.d("timer", "화면 초기화 : start")
+
+//                timerVM.isPaused.value = false
+//                timerVM.isRestart.value = false
+//                timerVM.isStop.value = false
+//                timerVM.isRunning.value = true
+//                updateStatePref()
+                Log.d("timer", "화면 초기화 : start")
             }
         })
         timerVM.isPaused.observe(viewLifecycleOwner, Observer { isPaused ->
             if (isPaused) {
                 viewMode(ViewMode.PAUSE)
+
+//                timerVM.isStart.value = false
+//                timerVM.isRestart.value = false
+//                timerVM.isStop.value = false
+//                timerVM.isRunning.value = false
+//                updateStatePref()
+
+//                val time = sharedPreferences.getString("pauseTimeFormat", "null값")
+//                binding.tvTime.text = time
                 Log.d("timer", "화면 초기화 : paused")
             }
         })
@@ -151,13 +222,25 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             if (isRestart) {
                 viewMode(ViewMode.RESTART)
                 timerObserve()
+
+//                timerVM.isStart.value = false
+//                timerVM.isPaused.value = false
+//                timerVM.isStop.value = false
+//                timerVM.isRunning.value = true
+//                updateStatePref()
                 Log.d("timer", "화면 초기화 : restart")
             }
         })
         timerVM.isStop.observe(viewLifecycleOwner, Observer { isStop ->
             if (isStop) {
                 viewMode(ViewMode.STOP)
-                //Log.d("timer", "화면 초기화 : stop")
+
+//                timerVM.isPaused.value = false
+//                timerVM.isStart.value = false
+//                timerVM.isRestart.value = false
+//                timerVM.isRunning.value = false
+//                updateStatePref()
+                Log.d("timer", "화면 초기화 : stop")
             }
         })
     }
@@ -178,36 +261,20 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
                 NoticePopup.make(it, "운동 전, 암장을 먼저 선택해주세요.").show()
             } else {
                 startStopwatch()    // 스톱워치 서비스 시작
-                timerVM.isStart.value = true
-                timerVM.isPaused.value = false
-                timerVM.isRestart.value = false
-                timerVM.isStop.value = false
-                timerVM.isRunning.value = true
-                updateStatePref()
+                //timerVM.isStart.value = true
             }
         }
 
         // 스톱워치 일시정지
         binding.ivPause.setOnClickListener {
             pauseStopwatch()
-            timerVM.isStart.value = false
-            timerVM.isPaused.value = true
-            timerVM.isRestart.value = false
-            timerVM.isStop.value = false
-            timerVM.isRunning.value = false
-            updateStatePref()
-            sharedPreferences.edit().putString("pauseTime", timerVM.timeFormat.value).apply()
+            //timerVM.isPaused.value = true
         }
 
         // 스톱워치 재시작
         binding.ivRestart.setOnClickListener {
             restartStopwatch()
-            timerVM.isStart.value = false
-            timerVM.isPaused.value = false
-            timerVM.isRestart.value = true
-            timerVM.isStop.value = false
-            timerVM.isRunning.value = true
-            updateStatePref()
+            //timerVM.isRestart.value = true
         }
 
         // 정지 버튼 눌림
@@ -217,12 +284,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
         binding.ivStop.setOnLongClickListener {
             stopStopwatch()
-            timerVM.isPaused.value = false
-            timerVM.isStart.value = false
-            timerVM.isRestart.value = false
-            timerVM.isStop.value = true
-            timerVM.isRunning.value = false
-            updateStatePref()
+            //timerVM.isStop.value = true
 
             // 완료화면 띄우기
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
@@ -243,6 +305,8 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         } else {
             context?.startService(intent)
         }
+        //updateStatePref()
+        timerVM.isRunning.value = true
         //Log.d("timer", "startStopwatch 호출")
     }
 
@@ -252,7 +316,16 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             putExtra("command", "PAUSE")
         }
         context?.startService(intent)
-        //Log.d("timer", "pauseStopwatch 호출")
+        //updateStatePref()
+
+        timerVM.pauseTime.value = sharedPreferences.getLong("pauseTime", 0L)
+        timerVM.isRunning.value = false
+//        if(timerVM.timeFormat.value != "00:00"){
+//            sharedPreferences.edit().putString(PAUSE_TIME, timerVM.timeFormat.value).apply()
+//            binding.tvTime.text = timerVM.timeFormat.value
+//            Log.d("timer", "정지 시간 설정 = ${timerVM.timeFormat.value}")
+//        }
+        Log.d("timer", "pauseStopwatch 호출")
     }
 
     private fun restartStopwatch() {
@@ -261,6 +334,9 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             putExtra("command", "RESTART")
         }
         context?.startService(intent)
+        timerVM.isRunning.value = true
+        timerVM.isPaused.value = false
+        //updateStatePref()
         //Log.d("timer", "restartStopwatch 호출")
     }
 
@@ -323,6 +399,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
     companion object {
         const val PREF_NAME = "timer_prefs"
+        const val PAUSE_TIME = "pauseTime"
         const val KEY_IS_START = "isStart"
         const val KEY_IS_PAUSE = "isPause"
         const val KEY_IS_RESTART = "isRestart"

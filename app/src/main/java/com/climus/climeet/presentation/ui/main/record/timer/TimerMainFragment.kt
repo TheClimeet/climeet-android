@@ -27,8 +27,22 @@ class TimerMainFragment :
         binding.vm = viewModel
 
         setViewPager()
+        initClickListener()
         setObserver()
         timerObserve()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (timerVM.isRunning.value == true) {
+            binding.idcTimer.visibility = View.VISIBLE
+            binding.vpTimer.isUserInputEnabled = true   // 화면 넘길 수 있음
+            Log.d("timer", "[메인 프레그먼트 onResume] indicator 보임")
+        } else {
+            binding.idcTimer.visibility = View.INVISIBLE
+            binding.vpTimer.isUserInputEnabled = false  // 화면 넘길 수 없음
+            Log.d("timer", "[메인 프레그먼트 onResume] indicator 안 보임")
+        }
     }
 
     override fun onDestroy() {
@@ -55,6 +69,12 @@ class TimerMainFragment :
         })
     }
 
+    private fun initClickListener() {
+        binding.layoutIdcTime.setOnClickListener {
+            binding.vpTimer.setCurrentItem(0, true)
+        }
+    }
+
     private fun setObserver() {
         timerVM.isRunning.observe(viewLifecycleOwner) { stopwatchState ->
             if (stopwatchState) {
@@ -71,12 +91,7 @@ class TimerMainFragment :
 
     private fun timerObserve() {
         timerVM.timeFormat.observe(viewLifecycleOwner, Observer { timeFormat ->
-            if(timerVM.isPaused.value == true) {
-                val time = sharedPreferences.getString("pauseTime", timerVM.timeFormat.value)
-                binding.tvTime.text = time
-            } else {
-                binding.tvTime.text = timeFormat
-            }
+            binding.tvTime.text = timeFormat
         })
     }
 }

@@ -16,17 +16,33 @@ import java.util.Timer
 import java.util.TimerTask
 import java.util.concurrent.TimeUnit
 import android.app.NotificationChannelGroup
+import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.climus.climeet.presentation.ui.main.MainActivity
+import com.climus.climeet.presentation.ui.main.record.timer.data.StopwatchStatesData
+import com.climus.climeet.presentation.ui.main.record.timer.data.StopwatchStatesRepository
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class TimerService : Service() {
+//    @Inject
+//    lateinit var repository: StopwatchStatesRepository
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
+
     private var startTime = 0L
     private var pauseTime = 0L
     private var elapsedTime = 0L
-    private var isPaused = MutableLiveData(false)
-    private var isStopped = MutableLiveData(true)
+    private var isStart = false
+    private var isPaused = false
+    private var isRestart = false
+    private var isStopped = true
+    private var isRunning = false
     private var timer: Timer? = null
 
     override fun onBind(intent: Intent): IBinder? {
@@ -88,7 +104,7 @@ class TimerService : Service() {
         }
 
         // 알림창 재시작, 일시중지 버튼
-        if (isPaused.value == true) {
+        if (isPaused) {
             val restartIntent = Intent(this, TimerService::class.java).apply {
                 putExtra("command", "RESTART")
             }
@@ -135,10 +151,13 @@ class TimerService : Service() {
     override fun onCreate() {
         super.onCreate()
         createNotificationChannelAndGroup()
+
+        sharedPreferences = applicationContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        editor = sharedPreferences.edit()
     }
 
-    private fun setTimer(){
-        if (isPaused.value == false) {
+    private fun setTimer() {
+        if (!isPaused) {
             startTime = System.currentTimeMillis()
         }
         timer = Timer().apply {
@@ -162,15 +181,51 @@ class TimerService : Service() {
     }
 
     private fun startTimer() {
-        isStopped.value = false
         setTimer()
-        //Log.d("timer", "서비스 타이머 시작")
+        isStart = true
+        isPaused = false
+        isRestart = false
+        isStopped = false
+        isRunning = true
+
+//        val intent = Intent("StopwatchUpdate")
+//        intent.putExtra(KEY_IS_START, isStart)
+//        intent.putExtra(KEY_IS_PAUSE, isPaused)
+//        intent.putExtra(KEY_IS_RESTART, isRestart)
+//        intent.putExtra(KEY_IS_STOP, isStopped)
+//        intent.putExtra(KEY_IS_RUNNING, isRunning)
+//        LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(intent)
+
+        editor.putBoolean(KEY_IS_START, isStart)
+        editor.putBoolean(KEY_IS_PAUSE, isPaused)
+        editor.putBoolean(KEY_IS_RESTART, isRestart)
+        editor.putBoolean(KEY_IS_STOP, isStopped)
+        editor.putBoolean(KEY_IS_RUNNING, isRunning)
+        editor.apply()
+
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val state = StopwatchStatesData(
+//                id = 0,
+//                isStart = true,
+//                isPaused = false,
+//                isRestart = false,
+//                isStop = false,
+//                isRunning = true
+//            )
+//            repository.updateState(state)
+//        }
+        Log.d("timer", "서비스 타이머 시작")
     }
 
     private fun pauseTimer() {
-        isPaused.value = true
+        isStart = false
+        isPaused = true
+        isRestart = false
+        isStopped = false
+        isRunning = false
         timer?.cancel()
         pauseTime = elapsedTime
+
         // 알림창 재생성
         val notification = createNotification(elapsedTime)
         val notificationManager =
@@ -179,35 +234,128 @@ class TimerService : Service() {
 
         // TimeFragment에 전달
         val intent = Intent("StopwatchUpdate")
-        intent.putExtra("pause", isPaused.value)
-        intent.putExtra("pauseTime", pauseTime)
+        intent.putExtra("pauseState", "yes")
+//        intent.putExtra("pause", isPaused)
+        //intent.putExtra("pauseTime", pauseTime)
+//        intent.putExtra(KEY_IS_START, isStart)
+//        intent.putExtra(KEY_IS_PAUSE, isPaused)
+//        intent.putExtra(KEY_IS_RESTART, isRestart)
+//        intent.putExtra(KEY_IS_STOP, isStopped)
+//        intent.putExtra(KEY_IS_RUNNING, isRunning)
         LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(intent)
 
-        Log.d("timer", "서비스 타이머 일시정지")
+        editor.putLong("pauseTime", pauseTime)
+        editor.putBoolean(KEY_IS_START, isStart)
+        editor.putBoolean(KEY_IS_PAUSE, isPaused)
+        editor.putBoolean(KEY_IS_RESTART, isRestart)
+        editor.putBoolean(KEY_IS_STOP, isStopped)
+        editor.putBoolean(KEY_IS_RUNNING, isRunning)
+        editor.apply()
+
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val state = StopwatchStatesData(
+//                id = 0,
+//                isStart = false,
+//                isPaused = true,
+//                isRestart = false,
+//                isStop = false,
+//                isRunning = false
+//            )
+//            repository.updateState(state)
+//        }
+        Log.d("timer", "서비스 타이머 일시정지 : $pauseTime")
     }
 
     private fun restartTimer() {
-        isPaused.value = false
+        isStart = false
+        isPaused = false
+        isRestart = true
+        isStopped = false
+        isRunning = true
         // 타이머 재시작
         setTimer()
-        //Log.d("timer", "서비스 타이머 재시작")
+
+        val intent = Intent("StopwatchUpdate")
+//        intent.putExtra(KEY_IS_START, isStart)
+//        intent.putExtra(KEY_IS_PAUSE, isPaused)
+        intent.putExtra("pauseState", "no")
+//        intent.putExtra(KEY_IS_STOP, isStopped)
+//        intent.putExtra(KEY_IS_RUNNING, isRunning)
+        LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(intent)
+
+        editor.putLong(PAUSE_TIME, 0L)
+        editor.putString("pauseTimeFormat", "00:00")
+        editor.putBoolean(KEY_IS_START, isStart)
+        editor.putBoolean(KEY_IS_PAUSE, isPaused)
+        editor.putBoolean(KEY_IS_RESTART, isRestart)
+        editor.putBoolean(KEY_IS_STOP, isStopped)
+        editor.putBoolean(KEY_IS_RUNNING, isRunning)
+        editor.apply()
+
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val state = StopwatchStatesData(
+//                id = 0,
+//                isStart = false,
+//                isPaused = false,
+//                isRestart = true,
+//                isStop = false,
+//                isRunning = true
+//            )
+//            repository.updateState(state)
+//        }
+        Log.d("timer", "서비스 타이머 재시작")
     }
 
     private fun stopTimer() {
-        isStopped.value = true
+        isStart = false
+        isPaused = false
+        isRestart = false
+        isStopped = true
+        isRunning = false
         timer?.cancel()
 
         // 스톱워치 화면 시간 0으로 바꿔주기
         val intent = Intent("StopwatchUpdate")
         intent.putExtra("elapsedTime", 0L)
+
+//        intent.putExtra(KEY_IS_START, isStart)
+//        intent.putExtra(KEY_IS_PAUSE, isPaused)
+//        intent.putExtra(KEY_IS_RESTART, isRestart)
+//        intent.putExtra(KEY_IS_STOP, isStopped)
+//        intent.putExtra(KEY_IS_RUNNING, isRunning)
         LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(intent)
 
+        editor.putBoolean(KEY_IS_START, isStart)
+        editor.putBoolean(KEY_IS_PAUSE, isPaused)
+        editor.putBoolean(KEY_IS_RESTART, isRestart)
+        editor.putBoolean(KEY_IS_STOP, isStopped)
+        editor.putBoolean(KEY_IS_RUNNING, isRunning)
+        editor.apply()
+
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val state = StopwatchStatesData(
+//                id = 0,
+//                isStart = false,
+//                isPaused = false,
+//                isRestart = false,
+//                isStop = true,
+//                isRunning = false
+//            )
+//            repository.updateState(state)
+//        }
         //Log.d("timer", "서비스 타이머 종료")
     }
 
     companion object {
+        const val PREF_NAME = "timer_prefs"
         private const val CHANNEL_ID = "stopwatch_channel"
         private const val GROUP_ID = "exercise_record_group"
         val serviceRunning = MutableLiveData<Boolean>()
+        const val PAUSE_TIME = "pauseTime"
+        const val KEY_IS_START = "isStart"
+        const val KEY_IS_PAUSE = "isPause"
+        const val KEY_IS_RESTART = "isRestart"
+        const val KEY_IS_STOP = "isStop"
+        const val KEY_IS_RUNNING = "isRunning"
     }
 }
