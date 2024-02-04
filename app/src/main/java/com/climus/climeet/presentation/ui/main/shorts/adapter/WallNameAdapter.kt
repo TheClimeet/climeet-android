@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
-import com.climus.climeet.databinding.ItemSectorNameBinding
+import com.climus.climeet.databinding.ItemWallNameBinding
 import com.climus.climeet.presentation.ui.main.shorts.model.WallNameUiData
 
-class SectorNameAdapter :
-    ListAdapter<WallNameUiData, SectorNameViewHolder>(diffCallback) {
+class WallNameAdapter :
+    ListAdapter<WallNameUiData, WallNameViewHolder>(diffCallback) {
 
     companion object {
         val diffCallback = object : DiffUtil.ItemCallback<WallNameUiData>() {
@@ -31,13 +31,13 @@ class SectorNameAdapter :
         }
     }
 
-    override fun onBindViewHolder(holder: SectorNameViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: WallNameViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SectorNameViewHolder =
-        SectorNameViewHolder(
-            ItemSectorNameBinding.inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WallNameViewHolder =
+        WallNameViewHolder(
+            ItemWallNameBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -45,7 +45,7 @@ class SectorNameAdapter :
         )
 }
 
-class SectorNameViewHolder(private val binding: ItemSectorNameBinding) :
+class WallNameViewHolder(private val binding: ItemWallNameBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: WallNameUiData) {

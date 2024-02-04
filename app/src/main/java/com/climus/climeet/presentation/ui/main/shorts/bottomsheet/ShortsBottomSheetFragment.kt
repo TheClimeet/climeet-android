@@ -71,9 +71,14 @@ class ShortsBottomSheetFragment : BottomSheetDialogFragment() {
 
     private fun initEventObserve() {
         repeatOnStarted {
-            viewModel.applyFilter.collect {
-                parentViewModel.applyFilter(it)
-                dismiss()
+            viewModel.event.collect {
+                when(it){
+                    is ShortsBottomSheetEvent.DismissDialog -> dismiss()
+                    is ShortsBottomSheetEvent.ApplyFilter -> {
+                        parentViewModel.applyFilter(it.selectedSector)
+                        dismiss()
+                    }
+                }
             }
         }
     }

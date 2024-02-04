@@ -24,8 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:background="@android:color/transparent"
-            android:scaleType="centerCrop"
             android:onClick="@{() -> vm.navigateToBack()}"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_back"
             app:layout_constraintBottom_toBottomOf="@id/layout_header"
             app:layout_constraintStart_toStartOf="parent"
@@ -164,7 +164,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_sector"
                 app:list="@{vm.uiState.wallNameList}"
-                tools:listitem="@layout/item_sector_name" />
+                tools:listitem="@layout/item_wall_name" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_sector_level"
@@ -255,18 +255,32 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_cancel"
+            style="@style/TextMediumBold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/rect_silver2fill_nostroke_8radius"
+            android:onClick="@{() -> vm.dismissDialog()}"
+            android:text="취소"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@id/btn_accept"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/select_sector" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_accept"
             style="@style/TextMediumBold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:enabled="@{vm.uiState.selectedSector.levelName.empty? false : true}"
-            android:background="@drawable/selector_submit_btn"
-            android:text="적용하기"
+            android:background="@drawable/rect_mainfill_nostroke_8radius"
             android:onClick="@{() -> vm.applySectorFilter()}"
+            android:text="적용하기"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_cancel"
             app:layout_constraintTop_toBottomOf="@id/select_sector" />
 
         <View

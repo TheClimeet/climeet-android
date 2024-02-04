@@ -8,14 +8,25 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
+sealed class ShortsBottomSheetEvent{
+    data object DismissDialog: ShortsBottomSheetEvent()
+    data class ApplyFilter(val selectedSector: SelectedSector): ShortsBottomSheetEvent()
+}
+
 class ShortsBottomSheetViewModel : ViewModel() {
 
-    private val _applyFilter = MutableSharedFlow<SelectedSector>()
-    val applyFilter: SharedFlow<SelectedSector> = _applyFilter.asSharedFlow()
+    private val _event = MutableSharedFlow<ShortsBottomSheetEvent>()
+    val event: SharedFlow<ShortsBottomSheetEvent> = _event.asSharedFlow()
 
     fun applyFilter(selectedSector: SelectedSector) {
         viewModelScope.launch {
-            _applyFilter.emit(selectedSector)
+            _event.emit(ShortsBottomSheetEvent.ApplyFilter(selectedSector))
+        }
+    }
+
+    fun dismissDialog(){
+        viewModelScope.launch {
+            _event.emit(ShortsBottomSheetEvent.DismissDialog)
         }
     }
 }

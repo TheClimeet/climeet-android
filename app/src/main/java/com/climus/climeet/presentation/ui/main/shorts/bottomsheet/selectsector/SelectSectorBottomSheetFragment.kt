@@ -12,10 +12,11 @@ import com.climus.climeet.databinding.FragmentSelectSectorBottomSheetBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorImageAdapter
 import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorLevelAdapter
-import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorNameAdapter
+import com.climus.climeet.presentation.ui.main.shorts.adapter.WallNameAdapter
 import com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsBottomSheetViewModel
 
-class SelectSectorBottomSheetFragment: BaseFragment<FragmentSelectSectorBottomSheetBinding>(R.layout.fragment_select_sector_bottom_sheet) {
+class SelectSectorBottomSheetFragment :
+    BaseFragment<FragmentSelectSectorBottomSheetBinding>(R.layout.fragment_select_sector_bottom_sheet) {
 
     private val parentViewModel: ShortsBottomSheetViewModel by activityViewModels()
     private val viewModel: SelectSectorBottomSheetViewModel by viewModels()
@@ -33,8 +34,8 @@ class SelectSectorBottomSheetFragment: BaseFragment<FragmentSelectSectorBottomSh
         initEventObserve()
     }
 
-    private fun setRecyclerView(){
-        binding.rvSectorName.adapter = SectorNameAdapter()
+    private fun setRecyclerView() {
+        binding.rvSectorName.adapter = WallNameAdapter()
         binding.rvSectorLevel.adapter = SectorLevelAdapter()
         binding.rvSectorImage.adapter = SectorImageAdapter()
         binding.rvSectorName.itemAnimator = null
@@ -42,19 +43,21 @@ class SelectSectorBottomSheetFragment: BaseFragment<FragmentSelectSectorBottomSh
         binding.rvSectorImage.itemAnimator = null
     }
 
-    private fun initEventObserve(){
+    private fun initEventObserve() {
         repeatOnStarted {
-            viewModel.event.collect{
-                when(it){
+            viewModel.event.collect {
+                when (it) {
                     is SelectSectorBottomSheetEvent.NavigateToBack -> findNavController().toBack()
                     is SelectSectorBottomSheetEvent.ApplyFilter -> parentViewModel.applyFilter(it.sector)
+                    is SelectSectorBottomSheetEvent.DismissDialog -> parentViewModel.dismissDialog()
                 }
             }
         }
     }
 
-    private fun NavController.toBack(){
-        val action = SelectSectorBottomSheetFragmentDirections.actionSelectSectorBottomSheetFragmentToSearchCragBottomSheetFragment()
+    private fun NavController.toBack() {
+        val action =
+            SelectSectorBottomSheetFragmentDirections.actionSelectSectorBottomSheetFragmentToSearchCragBottomSheetFragment()
         navigate(action)
     }
 

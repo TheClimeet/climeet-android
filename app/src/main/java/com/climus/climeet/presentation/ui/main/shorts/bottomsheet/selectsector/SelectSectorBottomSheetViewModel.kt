@@ -51,6 +51,7 @@ sealed class SelectSectorBottomSheetEvent {
     data object NavigateToBack : SelectSectorBottomSheetEvent()
     data class ApplyFilter(val sector: SelectedSector) :
         SelectSectorBottomSheetEvent()
+    data object DismissDialog : SelectSectorBottomSheetEvent()
 }
 
 @HiltViewModel
@@ -240,10 +241,17 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
 
     fun applySectorFilter(){
         viewModelScope.launch {
-            _event.emit(SelectSectorBottomSheetEvent.ApplyFilter(
-                uiState.value.selectedSector
+            _event.emit(
+                SelectSectorBottomSheetEvent.ApplyFilter(
+                    uiState.value.selectedSector
+                )
             )
-            )
+        }
+    }
+
+    fun dismissDialog(){
+        viewModelScope.launch {
+            _event.emit(SelectSectorBottomSheetEvent.DismissDialog)
         }
     }
 }
