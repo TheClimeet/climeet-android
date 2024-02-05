@@ -15,6 +15,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.climus.climeet.MainNavDirections
 import com.climus.climeet.R
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
@@ -102,7 +103,14 @@ class CompleteClimbingFragment: Fragment() {
                 vm.uiState.collect { uiState ->
                     uiState.rankingList?.let { rankingList ->
                         Log.d("CompleteClimbingFragment", rankingList.toString())
-                        rankingList.take(3).forEachIndexed { i, bestClearClimberResponse ->
+                        val iterationCount = minOf(rankingList.size, 3)
+
+                        rankingList.take(iterationCount).forEachIndexed { i, bestClearClimberResponse ->
+                            if(bestClearClimberResponse.profileImageUrl != null) {
+                                Glide.with(binding.root)
+                                    .load(bestClearClimberResponse.profileImageUrl)
+                                    .into(profileImgList[i])
+                            }
                             rankList[i].text = bestClearClimberResponse.ranking.toString()
                             nicknameList[i].text = bestClearClimberResponse.profileName
                             problemsList[i].text = "완등한 문제 " + bestClearClimberResponse.thisWeekClearCount.toString()

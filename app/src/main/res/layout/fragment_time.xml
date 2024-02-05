@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         tools:context=".presentation.ui.main.home.viewpager.best.TimeFragment">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_time_ranking1"
             android:layout_width="62dp"
             android:layout_height="62dp"
@@ -41,6 +41,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="나는야 헤일"
+            android:maxWidth="80dp"
+            android:maxHeight="15dp"
+            android:ellipsize="end"
+            android:singleLine="true"
             style="@style/TextSmallSemiBold"
             android:textSize="12sp"
             android:layout_marginTop="5dp"
@@ -55,13 +59,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="완등한 문제 12"
+            android:maxWidth="80dp"
+            android:maxHeight="15dp"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:textSize="10sp"
             android:textColor="@color/cm_grey6"
             app:layout_constraintEnd_toEndOf="@+id/iv_time_ranking1"
             app:layout_constraintStart_toStartOf="@+id/iv_time_ranking1"
             app:layout_constraintTop_toBottomOf="@+id/tv_time_ranking1_nickname" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_time_ranking2"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -89,6 +97,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="켈리"
+            android:maxWidth="80dp"
+            android:maxHeight="15dp"
+            android:ellipsize="end"
+            android:singleLine="true"
             style="@style/TextSmallSemiBold"
             android:textSize="12sp"
             android:textColor="@color/cm_stargrey"
@@ -103,13 +115,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="완등한 문제 10"
+            android:maxWidth="80dp"
+            android:maxHeight="15dp"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:textSize="10sp"
             android:textColor="@color/cm_grey6"
             app:layout_constraintEnd_toEndOf="@+id/iv_time_ranking2"
             app:layout_constraintStart_toStartOf="@+id/iv_time_ranking2"
             app:layout_constraintTop_toBottomOf="@+id/tv_time_ranking2_nickname" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_time_ranking3"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -137,6 +153,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="클밋짱"
+            android:maxWidth="80dp"
+            android:maxHeight="15dp"
+            android:ellipsize="end"
+            android:singleLine="true"
             style="@style/TextSmallSemiBold"
             android:textSize="12sp"
             android:layout_marginTop="5dp"
@@ -151,6 +171,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="완등한 문제 9"
+            android:maxWidth="80dp"
+            android:maxHeight="15dp"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:textSize="10sp"
             android:textColor="@color/cm_grey6"
             app:layout_constraintEnd_toEndOf="@+id/iv_time_ranking3"

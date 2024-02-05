@@ -52,10 +52,10 @@ interface MainApi {
     @GET("/api/home/rank/weeks/climbers/clear")
     suspend fun findClimberRankingOrderClearCount(@Header("Authorization") accessToken : String): Response<List<BestClearClimberSimpleResponse>>
 
-    @GET("/api/home/rank/weeks/climber/time")
+    @GET("/api/home/rank/weeks/climbers/time")
     suspend fun findClimberRankingOrderTime(@Header("Authorization") accessToken : String): Response<List<BestTimeClimberSimpleResponse>>
 
-    @GET("/api/home/rank/weeks/climber/level")
+    @GET("/api/home/rank/weeks/climbers/level")
     suspend fun findClimberRankingOrderLevel(@Header("Authorization") accessToken : String): Response<List<BestLevelCimberSimpleResponse>>
 
     @GET("/api/shorts/popular")

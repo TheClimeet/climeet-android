@@ -14,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
@@ -143,11 +144,26 @@ class CompleteDetailFragment : Fragment() {
                 vm.uiState.collect { uiState ->
                     uiState.rankingList?.let { rankingList ->
                         Log.d("CompleteDetail", rankingList.toString())
-                        rankingList.take(3).forEachIndexed { i, bestClearClimberResponse ->
-                            rankList[i].text = bestClearClimberResponse.ranking.toString()
+                        val iterationCount = minOf(rankingList.size, 9)
+
+                        rankingList.take(iterationCount).forEachIndexed { i, bestClearClimberResponse ->
+                            if (bestClearClimberResponse.profileImageUrl != null) {
+                                Glide.with(binding.root)
+                                    .load(bestClearClimberResponse.profileImageUrl)
+                                    .into(profileImgList[i])
+                            }
+                            if(i < 3) {
+                                rankList[i].text = bestClearClimberResponse.ranking.toString()
+                                rankList[i].visibility = View.VISIBLE
+                            }
                             nicknameList[i].text = bestClearClimberResponse.profileName
-                            problemsList[i].text = bestClearClimberResponse.thisWeekClearCount.toString()
+                            problemsList[i].text = "완등한 문제 " + bestClearClimberResponse.thisWeekClearCount.toString()
+
+                            profileImgList[i].visibility = View.VISIBLE
+                            nicknameList[i].visibility = View.VISIBLE
+                            problemsList[i].visibility = View.VISIBLE
                         }
+
                     }
                 }
             }

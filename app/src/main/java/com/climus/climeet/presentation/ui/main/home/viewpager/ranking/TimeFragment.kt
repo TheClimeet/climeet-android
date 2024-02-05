@@ -14,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCompleteClimbingBinding
 import com.climus.climeet.databinding.FragmentTimeBinding
@@ -98,7 +99,14 @@ class TimeFragment : Fragment() {
                 vm.uiState.collect { uiState ->
                     uiState.rankingList?.let { rankingList ->
                         Log.d("TimeFragment", rankingList.toString())
-                        rankingList.take(3).forEachIndexed { i, bestTimeClimberSimpleResponse ->
+                        val iterationCount = minOf(rankingList.size, 3)
+
+                        rankingList.take(iterationCount).forEachIndexed { i, bestTimeClimberSimpleResponse ->
+                            if(bestTimeClimberSimpleResponse.profileImageUrl != null) {
+                                Glide.with(binding.root)
+                                    .load(bestTimeClimberSimpleResponse.profileImageUrl)
+                                    .into(profileImgList[i])
+                            }
                             rankList[i].text = bestTimeClimberSimpleResponse.ranking.toString()
                             nicknameList[i].text = bestTimeClimberSimpleResponse.profileName
                             recordTimeList[i].text = bestTimeClimberSimpleResponse.thisWeekTotalClimbingTime.toString()
