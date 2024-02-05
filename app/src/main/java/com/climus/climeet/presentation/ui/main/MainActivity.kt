@@ -21,6 +21,7 @@ import com.climus.climeet.databinding.ActivityMainBinding
 import com.climus.climeet.presentation.base.BaseActivity
 import com.climus.climeet.presentation.customview.Permission
 import com.climus.climeet.presentation.ui.toMultiPart
+import com.climus.climeet.presentation.ui.toVideoMultiPart
 import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION
 import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
@@ -78,6 +79,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             viewModel.event.collect{
                 when(it){
                     is MainEvent.GoToGalleryForVideo -> onCheckStoragePermissions()
+                    is MainEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }
@@ -134,6 +136,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
                 uri?.let {
                     viewModel.setVideoUri(it)
+                    viewModel.fileToUrl(it.toVideoMultiPart(this))
                 }
             }
         }

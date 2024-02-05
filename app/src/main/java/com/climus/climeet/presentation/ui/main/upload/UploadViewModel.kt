@@ -9,26 +9,29 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class UploadUiState(
-    val publicState: PublicType = PublicType.EMPTY,
+    val publicState: PublicType = PublicType.PUBLIC,
     val selectedSector: SelectedSector = SelectedSector()
 )
 
-sealed class UploadEvent{
-    data class ShowPublicBottomSheet(val type: PublicType): UploadEvent()
+sealed class UploadEvent {
+    data class ShowPublicBottomSheet(val type: PublicType) : UploadEvent()
     data object NavigateToSearchCragBottomSheet : UploadEvent()
-    data class ShowToastMessage(val msg: String): UploadEvent()
+    data class ShowToastMessage(val msg: String) : UploadEvent()
 }
 
 @HiltViewModel
-class UploadViewModel @Inject constructor(): ViewModel() {
+class UploadViewModel @Inject constructor() : ViewModel() {
 
     private val _event = MutableSharedFlow<UploadEvent>()
     val event: SharedFlow<UploadEvent> = _event.asSharedFlow()
@@ -38,26 +41,26 @@ class UploadViewModel @Inject constructor(): ViewModel() {
 
     val description = MutableStateFlow("")
     val soundEnabled = MutableStateFlow(false)
-    private var thumbnailUri : Uri? = null
+    private var thumbnailUri: Uri? = null
     private var videoUri: Uri? = null
 
-    fun setVideoUri(uri: Uri){
+    fun setVideoUri(uri: Uri) {
         videoUri = uri
     }
 
-    fun showPublicBottomSheet(){
+    fun showPublicBottomSheet() {
         viewModelScope.launch {
             _event.emit(UploadEvent.ShowPublicBottomSheet(uiState.value.publicState))
         }
     }
 
-    fun navigateToSearchCragBottomSheet(){
+    fun navigateToSearchCragBottomSheet() {
         viewModelScope.launch {
             _event.emit(UploadEvent.NavigateToSearchCragBottomSheet)
         }
     }
 
-    fun setPublicState(type: PublicType){
+    fun setPublicState(type: PublicType) {
         _uiState.update { state ->
             state.copy(
                 publicState = type
@@ -65,7 +68,7 @@ class UploadViewModel @Inject constructor(): ViewModel() {
         }
     }
 
-    fun applyFilter(data: SelectedSector){
+    fun applyFilter(data: SelectedSector) {
 
         viewModelScope.launch {
             _uiState.update { state ->
