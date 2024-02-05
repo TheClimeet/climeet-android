@@ -9,11 +9,13 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
+import com.climus.climeet.app.App
 import com.climus.climeet.databinding.FragmentClimerLoginBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroViewModel
 import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
 import com.climus.climeet.presentation.ui.main.MainActivity
+import com.climus.climeet.presentation.util.Constants
 import com.climus.climeet.presentation.util.Constants.KAKAO
 import com.climus.climeet.presentation.util.Constants.NAVER
 import com.climus.climeet.presentation.util.Constants.TAG
@@ -38,6 +40,10 @@ class ClimerLoginFragment :
         parentViewModel.signUpProgressStop()
         binding.vm = viewModel
         initEventObserve()
+
+        binding.btnTestLogin.setOnClickListener {
+            testLogin()
+        }
     }
 
     private fun initEventObserve() {
@@ -111,6 +117,17 @@ class ClimerLoginFragment :
         } else if (token != null) {
             viewModel.login(KAKAO, token.accessToken)
         }
+    }
+
+    private fun testLogin(){
+        App.sharedPreferences.edit()
+            .putString(Constants.X_ACCESS_TOKEN, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxK2NsaW1iZXIiLCJpYXQiOjE3MDY4NTkzNDQsImV4cCI6MTcwNzIxOTM0NH0.XDHZlOUDY-C8Ac99JHRB5Oi3YjBf--cTpHhwSM09lpU")
+            .putString(Constants.X_MODE, "CLIMER")
+            .apply()
+
+        val intent = Intent(requireContext(), MainActivity::class.java)
+            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     private fun naverLogin() {
