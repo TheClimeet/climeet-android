@@ -1,11 +1,14 @@
 package com.climus.climeet.data.remote
 
+import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
+import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
+import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
@@ -16,10 +19,12 @@ import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MainApi {
@@ -93,6 +98,17 @@ interface MainApi {
     @GET("/api/home/rank/weeks/routes")
     suspend fun findRouteRankingOrderSelectionCount(
     ): Response<List<BestRouteDetailInfoResponse>>
+
+    @GET("/api/gyms/{gymId}/version/key")
+    suspend fun getGymFilteringKey(
+        @Path("gymId") gymId: Long,
+    ): Response<GetGymFilteringKeyResponse>
+
+    @POST("/api/gyms/{gymId}/version/route")
+    suspend fun getGymRouteInfoList(
+        @Path("gymId") gymId: Long,
+        @Body params: GetGymRouteInfoRequest
+    ): Response<GetGymRouteInfoResponse>
 
 
 }

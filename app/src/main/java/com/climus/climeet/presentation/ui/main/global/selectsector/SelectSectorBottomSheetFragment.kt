@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector
+package com.climus.climeet.presentation.ui.main.global.selectsector
 
 import android.os.Bundle
 import android.view.View
@@ -10,15 +10,19 @@ import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSelectSectorBottomSheetBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorImageAdapter
-import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorLevelAdapter
-import com.climus.climeet.presentation.ui.main.shorts.adapter.WallNameAdapter
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLevelAdapter
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.SectorNameAdapter
 import com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsBottomSheetViewModel
+import com.climus.climeet.presentation.ui.main.upload.bottomsheet.UploadBottomSheetViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SelectSectorBottomSheetFragment :
     BaseFragment<FragmentSelectSectorBottomSheetBinding>(R.layout.fragment_select_sector_bottom_sheet) {
 
-    private val parentViewModel: ShortsBottomSheetViewModel by activityViewModels()
+    private val parentShortsViewModel: ShortsBottomSheetViewModel by activityViewModels()
+    private val parentUploadViewModel: UploadBottomSheetViewModel by activityViewModels()
     private val viewModel: SelectSectorBottomSheetViewModel by viewModels()
 
     private val args: SelectSectorBottomSheetFragmentArgs by navArgs()
@@ -35,9 +39,9 @@ class SelectSectorBottomSheetFragment :
     }
 
     private fun setRecyclerView() {
-        binding.rvSectorName.adapter = WallNameAdapter()
-        binding.rvSectorLevel.adapter = SectorLevelAdapter()
-        binding.rvSectorImage.adapter = SectorImageAdapter()
+        binding.rvSectorName.adapter = SectorNameAdapter()
+        binding.rvSectorLevel.adapter = GymLevelAdapter()
+        binding.rvSectorImage.adapter = RouteImageAdapter()
         binding.rvSectorName.itemAnimator = null
         binding.rvSectorLevel.itemAnimator = null
         binding.rvSectorImage.itemAnimator = null
@@ -48,8 +52,19 @@ class SelectSectorBottomSheetFragment :
             viewModel.event.collect {
                 when (it) {
                     is SelectSectorBottomSheetEvent.NavigateToBack -> findNavController().toBack()
-                    is SelectSectorBottomSheetEvent.ApplyFilter -> parentViewModel.applyFilter(it.sector)
-                    is SelectSectorBottomSheetEvent.DismissDialog -> parentViewModel.dismissDialog()
+                    is SelectSectorBottomSheetEvent.ApplyFilter -> {
+                        if(BottomSheetState.state == "UPLOAD"){
+                            parentUploadViewModel.applyFilter(it.filter)
+                        } else {
+                            parentShortsViewModel.applyFilter(it.filter)
+                        }
+                    }
+                    is SelectSectorBottomSheetEvent.DismissDialog -> {
+                        parentShortsViewModel.dismissDialog()
+                        parentUploadViewModel.dismissDialog()
+                    }
+
+                    is SelectSectorBottomSheetEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }

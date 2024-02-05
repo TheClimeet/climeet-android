@@ -14,6 +14,12 @@ internal fun Uri.toMultiPart(context: Context): MultipartBody.Part {
     return MultipartBody.Part.createFormData("file", file.name, requestFile)
 }
 
+internal fun Uri.toVideoMultiPart(context: Context): MultipartBody.Part {
+    val file = File(getRealPathFromUri(this, context) ?: "")
+    val requestFile = file.asRequestBody("video/mp4".toMediaTypeOrNull())
+    return MultipartBody.Part.createFormData("file", file.name, requestFile)
+}
+
 
 // 절대경로 변환
 private fun getRealPathFromUri(uri: Uri, context: Context): String? {

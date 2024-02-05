@@ -352,7 +352,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/rv_sector_name"
                             app:list="@{vm.uiState.sectorLevelList}"
-                            tools:listitem="@layout/item_sector_level" />
+                            tools:listitem="@layout/item_gym_level" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_sector_image"
@@ -368,7 +368,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/rv_sector_level"
                             app:list="@{vm.uiState.sectorImageList}"
-                            tools:listitem="@layout/item_sector_image" />
+                            tools:listitem="@layout/item_route_image" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/layout_setting"

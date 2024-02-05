@@ -1,12 +1,15 @@
 package com.climus.climeet.data.repository
 
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
+import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
+import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
@@ -69,5 +72,14 @@ interface MainRepository {
         startDate: String,
         endDate: String
     ): BaseState<List<GetSelectDateRecordResponse>>
+
+    suspend fun getGymFilteringKey(
+        gymId: Long,
+    ): BaseState<GetGymFilteringKeyResponse>
+
+    suspend fun getGymRouteInfoList(
+        gymId: Long,
+        body: GetGymRouteInfoRequest
+    ): BaseState<GetGymRouteInfoResponse>
 
 }

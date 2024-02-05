@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.home.viewpager.best
+package com.climus.climeet.presentation.ui.main.home.viewpager.ranking
 
 import android.os.Bundle
 import android.util.Log
@@ -14,12 +14,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
-import com.climus.climeet.MainNavDirections
 import com.climus.climeet.R
-import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.databinding.FragmentCompleteClimbingBinding
-import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

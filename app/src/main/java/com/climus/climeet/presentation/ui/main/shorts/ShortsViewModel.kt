@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedFilter
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsDetailListener
-import com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector.SelectedSector
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.UpdatedFollowUiData
@@ -26,7 +26,7 @@ data class ShortsUiState(
     val shortsList: List<ShortsUiData> = emptyList(),
     val shortsThumbnailList: List<ShortsThumbnailUiData> = emptyList(),
     val sortType: SortType = SortType.POPULAR,
-    val curFilter: SelectedSector = SelectedSector(),
+    val curFilter: SelectedFilter = SelectedFilter(),
     val page: Int = 0,
     val hasNext: Boolean = true
 )
@@ -160,7 +160,7 @@ class ShortsViewModel @Inject constructor(
         }
     }
 
-    fun applyFilter(sectorInfo: SelectedSector) {
+    fun applyFilter(sectorInfo: SelectedFilter) {
         _uiState.update { state ->
             state.copy(
                 page = 0,
@@ -175,7 +175,7 @@ class ShortsViewModel @Inject constructor(
             state.copy(
                 page = 0,
                 hasNext = true,
-                curFilter = SelectedSector()
+                curFilter = SelectedFilter()
             )
         }
     }

@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.shorts.adapter
+package com.climus.climeet.presentation.ui.main.global.selectsector.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,24 +6,24 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
-import com.climus.climeet.databinding.ItemSectorLevelBinding
-import com.climus.climeet.presentation.ui.main.shorts.model.SectorLevelUiData
+import com.climus.climeet.databinding.ItemGymLevelBinding
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.GymLevelUiData
 
-class SectorLevelAdapter :
-    ListAdapter<SectorLevelUiData, SectorLevelViewHolder>(diffCallback) {
+class GymLevelAdapter :
+    ListAdapter<GymLevelUiData, SectorLevelViewHolder>(diffCallback) {
 
     companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<SectorLevelUiData>() {
+        val diffCallback = object : DiffUtil.ItemCallback<GymLevelUiData>() {
             override fun areItemsTheSame(
-                oldItem: SectorLevelUiData,
-                newItem: SectorLevelUiData
+                oldItem: GymLevelUiData,
+                newItem: GymLevelUiData
             ): Boolean {
                 return oldItem.levelName == newItem.levelName
             }
 
             override fun areContentsTheSame(
-                oldItem: SectorLevelUiData,
-                newItem: SectorLevelUiData
+                oldItem: GymLevelUiData,
+                newItem: GymLevelUiData
             ): Boolean {
                 return oldItem == newItem
             }
@@ -36,7 +36,7 @@ class SectorLevelAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SectorLevelViewHolder =
         SectorLevelViewHolder(
-            ItemSectorLevelBinding.inflate(
+            ItemGymLevelBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -44,11 +44,14 @@ class SectorLevelAdapter :
         )
 }
 
-class SectorLevelViewHolder(private val binding: ItemSectorLevelBinding) :
+class SectorLevelViewHolder(private val binding: ItemGymLevelBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: SectorLevelUiData) {
+    fun bind(item: GymLevelUiData) {
         binding.item = item
+        binding.root.setOnClickListener {
+            item.onClickListener(item)
+        }
         if (item.isSelected) {
             binding.tvLevel.setBackgroundResource(R.drawable.oval_silver2fill_mainstroke)
         } else {

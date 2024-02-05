@@ -40,7 +40,6 @@
         android:textSize="12sp"
         android:layout_marginTop="5dp"
         android:textColor="@color/cm_stargrey"
-        app:layout_constraintEnd_toEndOf="@+id/iv_followers_ranking1"
         app:layout_constraintStart_toStartOf="@+id/iv_record_ranking1"
         app:layout_constraintTop_toBottomOf="@+id/iv_record_ranking1" />
 
@@ -52,9 +51,9 @@
         android:text="팔로워 1210"
         android:textColor="@color/cm_grey6"
         android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="@+id/iv_followers_ranking1"
         app:layout_constraintStart_toStartOf="@+id/iv_record_ranking1"
-        app:layout_constraintTop_toBottomOf="@+id/tv_record_ranking1_nickname" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_record_ranking1_nickname"
+        tools:ignore="UnknownIdInLayout" />
 
     <ImageView
         android:id="@+id/iv_record_ranking2"

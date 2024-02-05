@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.ui.main.home.viewpager.best.TimeFragment">
+        tools:context=".presentation.ui.main.home.viewpager.ranking.TimeFragment">
 
         <ImageView
             android:id="@+id/iv_time_ranking1"

@@ -11,8 +11,8 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCreateClimbingRecordBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.record.adapter.RouteRecordAdapter
-import com.climus.climeet.presentation.ui.main.record.adapter.SectorImageAdapter
-import com.climus.climeet.presentation.ui.main.record.adapter.SectorLevelAdapter
+import com.climus.climeet.presentation.ui.main.record.adapter.RouteAdapter
+import com.climus.climeet.presentation.ui.main.record.adapter.GymLevelAdapter
 import com.climus.climeet.presentation.ui.main.record.adapter.SectorNameAdapter
 import com.climus.climeet.presentation.ui.toSelectDateBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,8 +68,8 @@ class CreateClimbingRecordFragment :
 
     private fun setRecyclerView() {
         binding.rvSectorName.adapter = SectorNameAdapter()
-        binding.rvSectorLevel.adapter = SectorLevelAdapter()
-        binding.rvSectorImage.adapter = SectorImageAdapter()
+        binding.rvSectorLevel.adapter = GymLevelAdapter()
+        binding.rvSectorImage.adapter = RouteAdapter()
         binding.rvRouteRecord.adapter = itemAdapter
         binding.rvSectorName.itemAnimator = null
         binding.rvSectorLevel.itemAnimator = null

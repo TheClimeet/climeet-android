@@ -7,11 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm.cragName
+import com.climus.climeet.presentation.ui.main.global.selectsector.FloorBtnState
 import com.climus.climeet.presentation.ui.main.record.model.RouteRecordUiData
-import com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector.FloorBtnState
-import com.climus.climeet.presentation.ui.main.shorts.model.SectorImageUiData
-import com.climus.climeet.presentation.ui.main.shorts.model.SectorLevelUiData
-import com.climus.climeet.presentation.ui.main.shorts.model.WallNameUiData
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.RouteUiData
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.GymLevelUiData
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.SectorNameUiData
 import com.climus.climeet.presentation.util.Constants.TEST_IMG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -33,11 +33,11 @@ data class CreateClimbingRecordUiState(
     val firstFloorBtnState: FloorBtnState = FloorBtnState.FloorSelected,
     val secondFloorBtnState: FloorBtnState = FloorBtnState.FloorUnSelected,
     val backgroundImage: String = "",
-    val wallNameList: List<WallNameUiData> = emptyList(),
-    val sectorLevelList: List<SectorLevelUiData> = emptyList(),
-    val sectorImageList: List<SectorImageUiData> = emptyList(),
-    val selectedSectorName: WallNameUiData = WallNameUiData {},
-    val selectedSectorLevel: SectorLevelUiData = SectorLevelUiData {},
+    val wallNameList: List<SectorNameUiData> = emptyList(),
+    val sectorLevelList: List<GymLevelUiData> = emptyList(),
+    val sectorImageList: List<RouteUiData> = emptyList(),
+    val selectedSectorName: SectorNameUiData = SectorNameUiData {},
+    val selectedSectorLevel: GymLevelUiData = GymLevelUiData {},
     val selectedSector: SelectedSector = SelectedSector(),
     val clearBtnState: Boolean = false
 )
@@ -208,58 +208,58 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
         _uiState.update { state ->
             state.copy(
                 wallNameList = listOf(
-                    WallNameUiData("Cheesegrater", onClickListener = ::selectWallName),
-                    WallNameUiData("Jaws", onClickListener = ::selectWallName),
-                    WallNameUiData("The Wallus", onClickListener = ::selectWallName),
+                    SectorNameUiData(0,name = "Cheesegrater", onClickListener = ::selectWallName),
+                    SectorNameUiData(1, name = "Jaws", onClickListener = ::selectWallName),
+                    SectorNameUiData(2,name = "The Wallus", onClickListener = ::selectWallName),
                 ),
                 sectorLevelList = listOf(
-                    SectorLevelUiData("VB", "#BBBBBB", onClickListener = ::selectSectorLevel),
-                    SectorLevelUiData("V1", "#FFFFFF", onClickListener = ::selectSectorLevel),
-                    SectorLevelUiData("V2", "#DDDDDD", onClickListener = ::selectSectorLevel),
-                    SectorLevelUiData("V3", "#CCCCCC", onClickListener = ::selectSectorLevel),
-                    SectorLevelUiData("V4", "#BBBBBB", onClickListener = ::selectSectorLevel),
-                    SectorLevelUiData("V5", "#EEEEEE", onClickListener = ::selectSectorLevel),
-                    SectorLevelUiData("V6", "#555555", onClickListener = ::selectSectorLevel),
+                    GymLevelUiData("VB", "#BBBBBB", onClickListener = ::selectSectorLevel),
+                    GymLevelUiData("V1", "#FFFFFF", onClickListener = ::selectSectorLevel),
+                    GymLevelUiData("V2", "#DDDDDD", onClickListener = ::selectSectorLevel),
+                    GymLevelUiData("V3", "#CCCCCC", onClickListener = ::selectSectorLevel),
+                    GymLevelUiData("V4", "#BBBBBB", onClickListener = ::selectSectorLevel),
+                    GymLevelUiData("V5", "#EEEEEE", onClickListener = ::selectSectorLevel),
+                    GymLevelUiData("V6", "#555555", onClickListener = ::selectSectorLevel),
                 ),
                 sectorImageList = listOf(
-                    SectorImageUiData(
+                    RouteUiData(
                         0,
                         sectorName = "SECTOR 2-2",
-                        levelName = "VB",
-                        levelColor = "#BBBBBB",
-                        sectorImg = TEST_IMG,
+                        gymLevelName = "VB",
+                        gymLevelColor = "#BBBBBB",
+                        routeImg = TEST_IMG,
                         onClickListener = ::selectSectorImage
                     ),
-                    SectorImageUiData(
+                    RouteUiData(
                         1,
                         sectorName = "SECTOR 2-2",
-                        levelName = "V2",
-                        levelColor = "#456213",
-                        sectorImg = TEST_IMG,
+                        gymLevelName = "V2",
+                        gymLevelColor = "#456213",
+                        routeImg = TEST_IMG,
                         onClickListener = ::selectSectorImage
                     ),
-                    SectorImageUiData(
+                    RouteUiData(
                         2,
                         sectorName = "SECTOR 2-2",
-                        levelName = "V3",
-                        levelColor = "#BBBBBB",
-                        sectorImg = TEST_IMG,
+                        gymLevelName = "V3",
+                        gymLevelColor = "#BBBBBB",
+                        routeImg = TEST_IMG,
                         onClickListener = ::selectSectorImage
                     ),
-                    SectorImageUiData(
+                    RouteUiData(
                         3,
                         sectorName = "SECTOR 2-2",
-                        levelName = "V4",
-                        levelColor = "#456213",
-                        sectorImg = TEST_IMG,
+                        gymLevelName = "V4",
+                        gymLevelColor = "#456213",
+                        routeImg = TEST_IMG,
                         onClickListener = ::selectSectorImage
                     ),
-                    SectorImageUiData(
+                    RouteUiData(
                         4,
                         sectorName = "SECTOR 2-2",
-                        levelName = "V8",
-                        levelColor = "#BBBBBB",
-                        sectorImg = TEST_IMG,
+                        gymLevelName = "V8",
+                        gymLevelColor = "#BBBBBB",
+                        routeImg = TEST_IMG,
                         onClickListener = ::selectSectorImage
                     )
                 )
@@ -267,17 +267,17 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun selectWallName(name: String) {
+    private fun selectWallName(item: SectorNameUiData) {
 
         _uiState.update { state ->
             state.copy(
                 wallNameList = state.wallNameList.map {
                     it.copy(
-                        isSelected = it.name == name
+                        isSelected = it.sectorId == item.sectorId
                     )
                 },
                 selectedSectorName = state.wallNameList.filter {
-                    it.name == name
+                    it.sectorId == item.sectorId
                 }[0]
             )
         }
@@ -289,16 +289,16 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
 
     }
 
-    private fun selectSectorLevel(name: String) {
+    private fun selectSectorLevel(item: GymLevelUiData) {
         _uiState.update { state ->
             state.copy(
                 sectorLevelList = state.sectorLevelList.map {
                     it.copy(
-                        isSelected = it.levelName == name
+                        isSelected = it.difficulty == item.difficulty
                     )
                 },
                 selectedSectorLevel = state.sectorLevelList.filter {
-                    it.levelName == name
+                    it.difficulty == item.difficulty
                 }[0]
             )
         }
@@ -310,20 +310,20 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun selectSectorImage(id: Long) {
+    private fun selectSectorImage(item: RouteUiData) {
         var selectedData = SelectedSector()
         _uiState.update { state ->
             state.copy(
                 sectorImageList = state.sectorImageList.map {
-                    if (it.sectorId == id) {
+                    if (it.sectorId == item.sectorId) {
                         selectedData =
                             SelectedSector(
                                 it.sectorId,
                                 it.sectorName,
                                 cragName,
-                                it.levelName,
-                                it.levelColor,
-                                it.sectorImg
+                                it.gymLevelName,
+                                it.gymLevelColor,
+                                it.routeImg
                             )
                         it.copy(
                             isSelected = true

@@ -91,5 +91,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_kakao_login" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_test_login"
+            style="@style/TextRegular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="테스트 계정으로 로그인"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_naver_login" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
