@@ -2,6 +2,7 @@ package com.climus.climeet.data.remote
 
 import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
+import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -20,6 +21,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Query
+import java.time.LocalDate
 
 interface MainApi {
 
@@ -46,6 +48,11 @@ interface MainApi {
         @Query("refreshToken") refreshToken: String
     ): Response<RefreshTokenResponse>
 
+    @GET("/api/climbing-records/between-dates")
+    suspend fun getSelectDateRecord(
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): Response<List<GetSelectDateRecordResponse>>
     @GET("/api/banners")
     suspend fun findBannerListBetweenDates(@Header("Authorization") accessToken : String): Response<List<BannerDetailInfoResponse>>
 

@@ -1,6 +1,7 @@
 package com.climus.climeet.data.repository
 
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
@@ -63,4 +64,10 @@ class MainRepositoryImpl @Inject constructor(
         size: Int
     ): BaseState<SearchAvailableGymResponse> =
         runRemote { api.searchAvailableGym(gymName, page, size) }
+
+    override suspend fun getSelectDateRecord(
+        startDate: String,
+        endDate: String
+    ): BaseState<List<GetSelectDateRecordResponse>> =
+        runRemote { api.getSelectDateRecord(startDate, endDate) }
 }
