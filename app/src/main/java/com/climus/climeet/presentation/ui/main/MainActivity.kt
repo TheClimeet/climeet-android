@@ -2,7 +2,6 @@ package com.climus.climeet.presentation.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -10,10 +9,6 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.ActivityMainBinding
 import com.climus.climeet.presentation.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
-import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerService
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
