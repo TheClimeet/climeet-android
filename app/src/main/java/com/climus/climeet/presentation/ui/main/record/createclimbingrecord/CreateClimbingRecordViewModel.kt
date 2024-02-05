@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.record.createclimbingrecord
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -33,7 +34,8 @@ data class CreateClimbingRecordUiState(
     val sectorImageList: List<SectorImageUiData> = emptyList(),
     val selectedSectorName: WallNameUiData = WallNameUiData {},
     val selectedSectorLevel: SectorLevelUiData = SectorLevelUiData {},
-    val selectedSector: SelectedSector = SelectedSector()
+    val selectedSector: SelectedSector = SelectedSector(),
+    val clearBtnState: Boolean = false
 )
 
 data class SelectedSector(
@@ -68,7 +70,7 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
     val initDate = CreateRecordData.selectedDate
     val datePickText =
         MutableStateFlow("${initDate.year}년 ${initDate.monthValue}월 ${initDate.dayOfMonth}일 (${initDate.dayOfWeek})")
-    val selectedDate = MutableLiveData<LocalDate>(initDate)
+    val selectedDate = MutableLiveData(initDate)
 
     val timePickText = MutableStateFlow("시간을 입력해주세요 (선택)")
     val selectedStartTime = MutableLiveData(CreateRecordData.selectedStartTime)
@@ -76,6 +78,9 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
 
     val isSelectedCrag = MutableStateFlow(false)
     val selectedCragEvent = MutableLiveData<Pair<Long, String>>()
+
+    private val _challengeNumber = MutableLiveData(0)
+    val challengeNumber: LiveData<Int> = _challengeNumber
 
     init {
         selectCrag(0, "클라이밍 암장을 선택해주세요")
@@ -305,7 +310,14 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
                 sectorImageList = state.sectorImageList.map {
                     if (it.sectorId == id) {
                         selectedData =
-                            SelectedSector(it.sectorId, it.sectorName, cragName, it.levelName, it.levelColor, it.sectorImg)
+                            SelectedSector(
+                                it.sectorId,
+                                it.sectorName,
+                                cragName,
+                                it.levelName,
+                                it.levelColor,
+                                it.sectorImg
+                            )
                         it.copy(
                             isSelected = true
                         )
@@ -321,7 +333,24 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun addChallengeNum() {
+        _challengeNumber.value = (_challengeNumber.value ?: 0) + 1
+    }
 
+    fun subChallengeNum() {
+        val currentValue = _challengeNumber.value ?: 0
+        if (currentValue > 0) {
+            _challengeNumber.value = currentValue - 1
+        }
+    }
+
+    fun setClear() {
+        _uiState.update { state ->
+            state.copy(
+                clearBtnState = !state.clearBtnState
+            )
+        }
+    }
 
     fun navigateToSelectCrag() {
         viewModelScope.launch {
