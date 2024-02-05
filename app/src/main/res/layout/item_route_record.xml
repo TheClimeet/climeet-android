@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.shorts.model.SectorImageUiData" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/rect_grey8fill_nostroke_10radius"
+        android:padding="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main_item"
+            android:layout_width="50dp"
+            android:layout_height="60dp"
+            android:background="@drawable/rect_blackfill_nostroke_8radius"
+            android:clipToPadding="false"
+            android:onClick="@{() -> item.onClickListener.invoke(item.sectorId)}"
+            android:paddingBottom="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.75" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:imgUrl="@{item.sectorImg}"
+                app:layout_constraintBottom_toBottomOf="@id/guideline_item"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/Top8RadiusImageView"
+                tools:src="@drawable/test" />
+
+            <TextView
+                android:id="@+id/tv_level"
+                style="@style/TextTiny"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@{item.levelName}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_image"
+                app:textHexColor="@{item.levelColor}"
+                tools:text="V1" />
+
+            <View
+                android:id="@+id/v_stroke"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/rect_nofill_mainstroke_6radius"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tv_challenge_title"
+            style="@style/TextRegularBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="30dp"
+            android:text="도전 횟수"
+            app:layout_constraintStart_toEndOf="@id/main_item"
+            app:layout_constraintTop_toTopOf="@id/main_item" />
+
+        <TextView
+            android:id="@+id/tv_challenge"
+            style="@style/TextRegularBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="@id/tv_challenge_title"
+            app:layout_constraintStart_toStartOf="@id/tv_challenge_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_challenge_title" />
+
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
+            android:src="@drawable/ic_horizontal_line_grey9"
+            app:layout_constraintBottom_toBottomOf="@id/tv_challenge"
+            app:layout_constraintEnd_toStartOf="@id/tv_challenge"
+            app:layout_constraintTop_toTopOf="@id/tv_challenge" />
+
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
+            android:src="@drawable/ic_add_gray9"
+            app:layout_constraintBottom_toBottomOf="@id/tv_challenge"
+            app:layout_constraintStart_toEndOf="@id/tv_challenge"
+            app:layout_constraintTop_toTopOf="@id/tv_challenge" />
+
+        <TextView
+            android:id="@+id/tv_clear_title"
+            style="@style/TextRegularBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="완등"
+            app:layout_constraintEnd_toStartOf="@+id/iv_delete"
+            app:layout_constraintStart_toEndOf="@id/tv_challenge_title"
+            app:layout_constraintTop_toTopOf="@id/main_item" />
+
+        <ImageView
+            android:id="@+id/iv_clear"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_check"
+            app:layout_constraintEnd_toEndOf="@+id/tv_clear_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_clear_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_clear_title" />
+
+        <ImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_trash_can"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_clear_title" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

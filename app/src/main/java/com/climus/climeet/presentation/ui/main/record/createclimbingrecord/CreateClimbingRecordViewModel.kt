@@ -82,6 +82,8 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
     private val _challengeNumber = MutableLiveData(0)
     val challengeNumber: LiveData<Int> = _challengeNumber
 
+    val isToggleOn = MutableLiveData(true)
+
     init {
         selectCrag(0, "클라이밍 암장을 선택해주세요")
     }
@@ -350,6 +352,10 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
                 clearBtnState = !state.clearBtnState
             )
         }
+    }
+
+    fun setToggle() {
+        isToggleOn.value = !(isToggleOn.value ?: false)
     }
 
     fun navigateToSelectCrag() {

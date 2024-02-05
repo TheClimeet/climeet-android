@@ -190,6 +190,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
                     android:layout_marginTop="25dp"
+                    android:paddingBottom="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layout_climbing_gym">
@@ -244,7 +245,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:background="@drawable/rect_grey8fill_nostroke_10radius"
-                        android:paddingVertical="20dp"
+                        android:paddingTop="20dp"
                         android:visibility="@{vm.isSelectedCrag()? View.VISIBLE : View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -360,6 +361,7 @@
                             android:clipToPadding="false"
                             android:orientation="horizontal"
                             android:paddingStart="10dp"
+                            android:paddingBottom="10dp"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -372,7 +374,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="10dp"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="10dp"
                             android:visibility="@{vm.uiState.selectedSector.sectorId == -1 ? View.GONE : View.VISIBLE}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -508,8 +510,103 @@
                             app:layout_constraintEnd_toEndOf="@+id/layout_setting"
                             app:layout_constraintStart_toStartOf="@+id/layout_setting" />
 
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_toggle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="@{vm.isSelectedCrag()? View.VISIBLE : View.GONE}"
+                        app:layout_constraintTop_toBottomOf="@id/layout_main">
+
+                        <TextView
+                            android:id="@+id/tv_route_record_more"
+                            style="@style/TextRegularBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="루트 기록 더보기"
+                            android:textSize="18sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageButton
+                            android:id="@+id/btn_toggle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:onClick="@{() -> vm.setToggle()}"
+                            android:padding="10dp"
+                            android:src="@{vm.isToggleOn() ? @drawable/ic_toggle_on : @drawable/ic_toggle_off}"
+                            android:textOff=""
+                            android:textOn=""
+                            app:layout_constraintBottom_toBottomOf="@id/tv_route_record_more"
+                            app:layout_constraintStart_toEndOf="@id/tv_route_record_more"
+                            app:layout_constraintTop_toTopOf="@id/tv_route_record_more" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_toggle_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="@{vm.isToggleOn() ? View.VISIBLE : View.GONE}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_route_record_more">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_route_record"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:clipToPadding="false"
+                                android:orientation="horizontal"
+                                android:paddingStart="10dp"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:list="@{vm.uiState.sectorImageList}"
+                                tools:listitem="@layout/item_route_record"
+                                tools:itemCount="3"/>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/layout_no_route"
+                                android:layout_width="match_parent"
+                                android:layout_height="83dp"
+                                android:layout_marginTop="15dp"
+                                android:visibility="gone"
+                                android:background="@drawable/rect_grey8fill_nostroke_10radius"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:src="@drawable/ic_record"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    style="@style/TextTiny"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="10dp"
+                                    android:text="루트를 선택하여 도전해보세요!"
+                                    android:textColor="@color/cm_grey6"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btn_accept"
@@ -524,7 +621,8 @@
                         android:visibility="@{vm.isSelectedCrag()? View.VISIBLE : View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/layout_main" />
+                        app:layout_constraintTop_toBottomOf="@id/layout_toggle" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
