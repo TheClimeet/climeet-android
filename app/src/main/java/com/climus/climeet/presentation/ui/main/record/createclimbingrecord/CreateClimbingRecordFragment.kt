@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCreateClimbingRecordBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.main.record.adapter.RouteRecordAdapter
 import com.climus.climeet.presentation.ui.main.record.adapter.SectorImageAdapter
 import com.climus.climeet.presentation.ui.main.record.adapter.SectorLevelAdapter
 import com.climus.climeet.presentation.ui.main.record.adapter.SectorNameAdapter
@@ -20,13 +22,17 @@ import dagger.hilt.android.AndroidEntryPoint
 class CreateClimbingRecordFragment :
     BaseFragment<FragmentCreateClimbingRecordBinding>(R.layout.fragment_create_climbing_record) {
 
-    private val viewModel: CreateClimbingRecordViewModel by activityViewModels()
+    private lateinit var viewModel: CreateClimbingRecordViewModel
     private var isTimeSet = false
+    private lateinit var itemAdapter: RouteRecordAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = ViewModelProvider(requireActivity()).get(CreateClimbingRecordViewModel::class.java)
+        itemAdapter = RouteRecordAdapter(viewModel)
         binding.vm = viewModel
+
         viewModel.selectedDate.observe(viewLifecycleOwner, Observer { date ->
             viewModel.setDate()
             binding.tvChoiceDate.setTextColor(Color.WHITE)
@@ -56,6 +62,7 @@ class CreateClimbingRecordFragment :
         viewModel.selectedCragEvent.value?.let { viewModel.getCragInfo(it.first) }
         setRecyclerView()
         initEventObserve()
+        initItemObserve()
 
     }
 
@@ -63,9 +70,11 @@ class CreateClimbingRecordFragment :
         binding.rvSectorName.adapter = SectorNameAdapter()
         binding.rvSectorLevel.adapter = SectorLevelAdapter()
         binding.rvSectorImage.adapter = SectorImageAdapter()
+        binding.rvRouteRecord.adapter = itemAdapter
         binding.rvSectorName.itemAnimator = null
         binding.rvSectorLevel.itemAnimator = null
         binding.rvSectorImage.itemAnimator = null
+        binding.rvRouteRecord.itemAnimator = null
     }
 
     private fun initEventObserve() {
@@ -79,6 +88,15 @@ class CreateClimbingRecordFragment :
                     }
                     CreateClimbingRecordEvent.NavigateToSelectCrag -> findNavController().toSelectCrag()
                 }
+            }
+        }
+    }
+
+    private fun initItemObserve() {
+        repeatOnStarted {
+            viewModel.items.collect{items ->
+                itemAdapter.items = items
+                itemAdapter.notifyDataSetChanged()
             }
         }
     }

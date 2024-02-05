@@ -1,10 +1,13 @@
 package com.climus.climeet.presentation.ui.main.record.createclimbingrecord
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm.cragName
+import com.climus.climeet.presentation.ui.main.record.model.RouteRecordUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.SectorImageUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.SectorLevelUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.WallNameUiData
@@ -66,6 +69,10 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
 
     private val _event = MutableSharedFlow<CreateClimbingRecordEvent>()
     val event: SharedFlow<CreateClimbingRecordEvent> = _event.asSharedFlow()
+
+    private val _items = MutableStateFlow<List<RouteRecordUiData>>(emptyList())
+    val items: StateFlow<List<RouteRecordUiData>> = _items.asStateFlow()
+    val itemsLiveData: LiveData<List<RouteRecordUiData>> = _items.asLiveData()
 
     val initDate = CreateRecordData.selectedDate
     val datePickText =
@@ -333,6 +340,7 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
                 selectedSector = selectedData
             )
         }
+        addItem(selectedData)
     }
 
     fun addChallengeNum() {
@@ -356,6 +364,39 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
 
     fun setToggle() {
         isToggleOn.value = !(isToggleOn.value ?: false)
+    }
+
+    fun addItem(item: SelectedSector) {
+        Log.d("itemcheck", _items.value.toString())
+        if (_items.value.none { it.sectorId == item.sectorId }) {
+            val newItem = RouteRecordUiData(
+                sectorId = item.sectorId,
+                sectorName = item.sectorName,
+                levelName = item.levelName,
+                levelColor = item.levelColor,
+                sectorImg = item.sectorImg,
+                onClickListener = { id -> itemClicked(id) }
+            )
+            _items.value = _items.value + newItem
+        } else {
+
+        }
+    }
+
+    fun itemIncrease(id: Long) {
+        _items.value = _items.value.map {
+            if (it.sectorId == id) it.copy(challengeNum = it.challengeNum + 1) else it
+        }
+    }
+
+    fun itemDecrease(id: Long) {
+        _items.value = _items.value.map {
+            if (it.sectorId == id && it.challengeNum > 0) it.copy(challengeNum = it.challengeNum - 1) else it
+        }
+    }
+
+    private fun itemClicked(id: Long) {
+        // 여기에 아이템 클릭 시 실행할 코드를 추가하세요
     }
 
     fun navigateToSelectCrag() {
