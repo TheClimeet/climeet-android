@@ -8,6 +8,7 @@ plugins {
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("androidx.navigation.safeargs.kotlin")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -125,4 +126,7 @@ dependencies {
 
     // View Pager
     implementation ("androidx.viewpager2:viewpager2:1.0.0")
+
+    // firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
 }

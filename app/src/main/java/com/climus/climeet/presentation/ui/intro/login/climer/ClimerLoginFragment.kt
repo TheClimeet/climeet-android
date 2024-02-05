@@ -46,6 +46,17 @@ class ClimerLoginFragment :
         }
     }
 
+    private fun testLogin(){
+        App.sharedPreferences.edit()
+            .putString(Constants.X_ACCESS_TOKEN, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxK2NsaW1iZXIiLCJpYXQiOjE3MDY4NTkzNDQsImV4cCI6MTcwNzIxOTM0NH0.XDHZlOUDY-C8Ac99JHRB5Oi3YjBf--cTpHhwSM09lpU")
+            .putString(Constants.X_MODE, "CLIMER")
+            .apply()
+
+        val intent = Intent(requireContext(), MainActivity::class.java)
+            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+    }
+
     private fun initEventObserve() {
         repeatOnStarted {
             viewModel.event.collect {
@@ -119,16 +130,6 @@ class ClimerLoginFragment :
         }
     }
 
-    private fun testLogin(){
-        App.sharedPreferences.edit()
-            .putString(Constants.X_ACCESS_TOKEN, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxK2NsaW1iZXIiLCJpYXQiOjE3MDY4NTkzNDQsImV4cCI6MTcwNzIxOTM0NH0.XDHZlOUDY-C8Ac99JHRB5Oi3YjBf--cTpHhwSM09lpU")
-            .putString(Constants.X_MODE, "CLIMER")
-            .apply()
-
-        val intent = Intent(requireContext(), MainActivity::class.java)
-            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
-    }
 
     private fun naverLogin() {
         val oauthLoginCallback = object : OAuthLoginCallback {

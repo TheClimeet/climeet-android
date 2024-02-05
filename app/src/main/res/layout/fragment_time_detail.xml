@@ -93,9 +93,9 @@
             android:textSize="12sp"
             android:textColor="@color/cm_stargrey"
             android:layout_marginTop="5dp"
-            app:layout_constraintEnd_toEndOf="@+id/iv_level_ranking2"
             app:layout_constraintStart_toStartOf="@+id/iv_time_ranking2"
-            app:layout_constraintTop_toBottomOf="@+id/iv_time_ranking2" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_time_ranking2"
+            tools:ignore="UnknownIdInLayout" />
 
         <TextView
             android:id="@+id/tv_time_ranking2"
