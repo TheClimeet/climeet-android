@@ -27,9 +27,11 @@ class TimerMainFragment :
         binding.vm = viewModel
 
         setViewPager()
-        initClickListener()
         setObserver()
-        timerObserve()
+    }
+
+    fun goToStopwatch() {
+        binding.vpTimer.setCurrentItem(0, true)
     }
 
     override fun onResume() {
@@ -60,19 +62,13 @@ class TimerMainFragment :
         binding.vpTimer.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                // 루트 기록 화면에서는 indicator 자리에 시간을 보여준다
+                // 루트 기록 화면에서는 indicator를 안 보여준다
                 when (position) {
-                    0 -> binding.layoutIdcTime.visibility = View.INVISIBLE
-                    1 -> binding.layoutIdcTime.visibility = View.VISIBLE
+                    0 -> binding.idcTimer.visibility = View.VISIBLE
+                    1 -> binding.idcTimer.visibility = View.INVISIBLE
                 }
             }
         })
-    }
-
-    private fun initClickListener() {
-        binding.layoutIdcTime.setOnClickListener {
-            binding.vpTimer.setCurrentItem(0, true)
-        }
     }
 
     private fun setObserver() {
@@ -87,11 +83,5 @@ class TimerMainFragment :
                 Log.d("timer", "indicator 안 보임")
             }
         }
-    }
-
-    private fun timerObserve() {
-        timerVM.timeFormat.observe(viewLifecycleOwner, Observer { timeFormat ->
-            binding.tvTime.text = timeFormat
-        })
     }
 }

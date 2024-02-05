@@ -1,28 +1,35 @@
 package com.climus.climeet.presentation.ui.main.record.timer.setrecord
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.presentation.ui.intro.signup.admin.idpw.SetAdminIdPwEvent
 import com.climus.climeet.presentation.ui.main.record.model.RecordLevelData
 import com.climus.climeet.presentation.ui.main.record.model.RecordSectorData
 import com.climus.climeet.presentation.ui.main.record.model.RecordWallData
 import com.climus.climeet.presentation.util.Constants.TEST_IMG
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import okhttp3.Challenge
 import javax.inject.Inject
 
 data class AddRecordUiState(
-    val isSingleFloor: Boolean = false,
     val backgroundImage: String = "",
     val wallNameList: List<RecordWallData> = emptyList(),
     val sectorLevelList: List<RecordLevelData> = emptyList(),
     val sectorImageList: List<RecordSectorData> = emptyList(),
     val selectedSectorName: RecordWallData = RecordWallData {},
     val selectedSectorLevel: RecordLevelData = RecordLevelData {},
-    val selectedSector: SelectedSector = SelectedSector()
+    val selectedSector: SelectedSector = SelectedSector(),
+    val clearBtnState: Boolean = false,
+    //val challengeNum: Int = 0
 )
 data class SelectedSector(
     val sectorId: Long = -1,
@@ -44,23 +51,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(): ViewModel() {
     fun setCragInfo(id: Long, name: String) {
         cragId = id
         cragName = name
-        getCragInfo(cragId)
-    }
-
-    private fun getCragInfo(id: Long) {
-
-        viewModelScope.launch {
-            //todo 암장 정보 가져오기
-            // - floor 1개인지 두개인지 도 적용
-
-            _uiState.update { state ->
-                state.copy(
-                    isSingleFloor = false
-                )
-            }
-
-            setSectorInfo()
-        }
+        setSectorInfo()
     }
 
     private fun setSectorInfo() {
@@ -83,6 +74,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(): ViewModel() {
                     RecordLevelData("V4", "#BBBBBB", onClickListener = ::selectSectorLevel),
                     RecordLevelData("V5", "#EEEEEE", onClickListener = ::selectSectorLevel),
                     RecordLevelData("V6", "#555555", onClickListener = ::selectSectorLevel),
+                    RecordLevelData("V7", "#a3f0ff", onClickListener = ::selectSectorLevel),
                 ),
                 sectorImageList = listOf(
                     RecordSectorData(
@@ -122,6 +114,14 @@ class SetTimerClimbingRecordViewModel @Inject constructor(): ViewModel() {
                         sectorName = "SECTOR 2-2",
                         levelName = "V8",
                         levelColor = "#BBBBBB",
+                        sectorImg = TEST_IMG,
+                        onClickListener = ::selectSectorImage
+                    ),
+                    RecordSectorData(
+                        5,
+                        sectorName = "SECTOR 2-2",
+                        levelName = "V9",
+                        levelColor = "#a3f0ff",
                         sectorImg = TEST_IMG,
                         onClickListener = ::selectSectorImage
                     )
@@ -192,6 +192,36 @@ class SetTimerClimbingRecordViewModel @Inject constructor(): ViewModel() {
 
                 },
                 selectedSector = selectedData
+            )
+        }
+    }
+
+    fun addChallengeNum() {
+//        _uiState.update { state ->
+//            state.copy(
+//                challengeNum = state.challengeNum + 1
+//            )
+//        }
+        Log.d("timer", "add")
+    }
+
+    fun subChallengeNum() {
+//        _uiState.update { state ->
+//            if (state.challengeNum > 0) {
+//                state.copy(
+//                    challengeNum = state.challengeNum - 1
+//                )
+//            } else {
+//                state
+//            }
+//        }
+        Log.d("timer", "sub")
+    }
+
+    fun setClear() {
+        _uiState.update { state ->
+            state.copy(
+                clearBtnState = !state.clearBtnState
             )
         }
     }

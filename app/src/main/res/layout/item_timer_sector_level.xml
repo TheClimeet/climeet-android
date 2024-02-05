@@ -6,7 +6,7 @@
     <data>
         <variable
             name="item"
-            type="com.climus.climeet.presentation.ui.main.record.model.RecordSectorData" />
+            type="com.climus.climeet.presentation.ui.main.record.model.RecordLevelData" />
     </data>
 
     <TextView

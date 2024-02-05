@@ -1,204 +1,549 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
+
         <variable
-            name="vm"
+            name="mainVm"
             type="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerViewModel" />
+
+        <variable
+            name="recordVM"
+            type="com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerClimbingRecordViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.65"/>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_top_record"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="30dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <TextView
-                android:id="@+id/tv_challenge_value"
-                style="@style/TextMediumBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="--"
-                android:textSize="30sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="@id/tv_challenge"
-                app:layout_constraintEnd_toEndOf="@id/tv_challenge"/>
-
-            <TextView
-                android:id="@+id/tv_challenge"
-                style="@style/TextMediumBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="도전"
-                app:layout_constraintTop_toBottomOf="@id/tv_challenge_value"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-
-            <TextView
-                android:id="@+id/tv_complete_value"
-                style="@style/TextMediumBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="--"
-                android:textSize="30sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="@id/tv_complete"
-                app:layout_constraintEnd_toEndOf="@id/tv_complete"/>
-
-            <TextView
-                android:id="@+id/tv_complete"
-                style="@style/TextMediumBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:text="완등"
-                app:layout_constraintTop_toBottomOf="@id/tv_complete_value"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <TextView
-                android:id="@+id/tv_avg_level_value"
-                style="@style/TextMediumBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="--"
-                android:textSize="30sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="@id/tv_avg_level"
-                app:layout_constraintEnd_toEndOf="@id/tv_avg_level"/>
-
-            <TextView
-                android:id="@+id/tv_avg_level"
-                style="@style/TextMediumBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="평균 레벨"
-                app:layout_constraintTop_toBottomOf="@id/tv_avg_level_value"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!--    암장 선택    -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_select_crag"
-            android:layout_width="246dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="60dp"
-            android:background="@drawable/rect_grey8fill_nostroke_5radius"
-            app:layout_constraintTop_toBottomOf="@id/layout_top_record"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <ImageView
-                android:id="@+id/iv_map"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_map"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_title"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <TextView
-                android:id="@+id/tv_title"
-                style="@style/TextSmallSemiBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="@string/timer_crag_set_inform"
-                app:layout_constraintStart_toEndOf="@id/iv_map"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!--    시간    -->
-        <TextView
-            android:id="@+id/tv_time"
-            style="@style/TextTimer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:gravity="center"
-            android:text="00:00"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintTop_toBottomOf="@id/layout_select_crag"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <TextView
-            style="@style/TextMediumBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="시간"
-            app:layout_constraintTop_toBottomOf="@id/tv_time"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <ImageView
-            android:id="@+id/iv_start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_record_start"
-            android:visibility="visible"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guide"/>
-
-        <ImageView
-            android:id="@+id/iv_stop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_record_stop"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/layout_pause_restart"
-            app:layout_constraintTop_toBottomOf="@id/guide"/>
+            app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/layout_pause_restart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/iv_stop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guide">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/iv_pause"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_record_pause"
-                android:visibility="gone"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_top_record"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginTop="30dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/iv_restart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_record_start"
-                android:visibility="gone"/>
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_challenge_value"
+                        style="@style/TextMediumBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textSize="30sp"
+                        app:layout_constraintEnd_toEndOf="@id/tv_challenge"
+                        app:layout_constraintStart_toStartOf="@id/tv_challenge"
+                        app:layout_constraintTop_toTopOf="parent" />
 
+                    <TextView
+                        android:id="@+id/tv_challenge"
+                        style="@style/TextMediumBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="도전"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_challenge_value" />
+
+
+                    <TextView
+                        android:id="@+id/tv_complete_value"
+                        style="@style/TextMediumBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textSize="30sp"
+                        app:layout_constraintEnd_toEndOf="@id/tv_complete"
+                        app:layout_constraintStart_toStartOf="@id/tv_complete"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_complete"
+                        style="@style/TextMediumBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="완등"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_complete_value" />
+
+                    <TextView
+                        android:id="@+id/tv_avg_level_value"
+                        style="@style/TextMediumBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="--"
+                        android:textSize="30sp"
+                        app:layout_constraintEnd_toEndOf="@id/tv_avg_level"
+                        app:layout_constraintStart_toStartOf="@id/tv_avg_level"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_avg_level"
+                        style="@style/TextMediumBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="평균 레벨"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_avg_level_value" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--    암장 선택    -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_select_crag"
+                    android:layout_width="246dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/rect_grey8fill_nostroke_5radius"
+                    app:layout_constraintBottom_toTopOf="@id/tv_time_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_top_record">
+
+                    <ImageView
+                        android:id="@+id/iv_map"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_map"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tv_title"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_title"
+                        style="@style/TextSmallSemiBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/timer_crag_set_inform"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/iv_map"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/tv_time_title"
+                    style="@style/TextRegularBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="총 운동 시간"
+                    android:textSize="18sp"
+                    android:visibility="@{mainVm.isPaused ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toTopOf="@id/tv_time"
+                    app:layout_constraintStart_toStartOf="@id/layout_top_record"
+                    app:layout_constraintTop_toBottomOf="@id/layout_select_crag"/>
+
+                <!--    시간    -->
+                <TextView
+                    android:id="@+id/tv_time"
+                    style="@style/TextTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:gravity="center"
+                    android:text="00:00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_select_crag"/>
+
+                <TextView
+                    style="@style/TextMediumBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="5dp"
+                    android:text="시간"
+                    android:visibility="@{mainVm.isPaused ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_time"
+                    app:layout_constraintBottom_toTopOf="@id/layout_buttons"/>
+
+                <!--    평균 완등률    -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_avg_complete"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:visibility="@{mainVm.isPaused ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@id/layout_top_record"
+                    app:layout_constraintStart_toStartOf="@id/layout_top_record"
+                    app:layout_constraintTop_toBottomOf="@id/tv_time">
+
+                    <TextView
+                        android:id="@+id/tv_avg_complete"
+                        style="@style/TextRegularBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="평균 완등률"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/ic_white_drop_down"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_avg_complete"
+                        app:layout_constraintStart_toEndOf="@id/tv_avg_complete"
+                        app:layout_constraintTop_toTopOf="@id/tv_avg_complete" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/ic_white_up"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_avg_complete"
+                        app:layout_constraintStart_toEndOf="@id/tv_avg_complete"
+                        app:layout_constraintTop_toTopOf="@id/tv_avg_complete" />
+
+            <!--    통계    -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rect_grey8fill_nostroke_10radius"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_avg_complete">
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--    루트 기록    -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_root_record"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:visibility="@{mainVm.isPaused ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@id/layout_top_record"
+                    app:layout_constraintStart_toStartOf="@id/layout_top_record"
+                    app:layout_constraintTop_toBottomOf="@id/layout_avg_complete">
+
+                    <TextView
+                        android:id="@+id/tv_route_record"
+                        style="@style/TextRegularBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="루트기록"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_main"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rect_grey8fill_nostroke_10radius"
+                        android:paddingVertical="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_route_record">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/iv_sector"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginHorizontal="12dp"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintDimensionRatio="2.3:1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:shapeAppearanceOverlay="@style/All10RadiusImageView"
+                            tools:src="@drawable/sector_map" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_sector_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
+                            android:layout_marginTop="8dp"
+                            android:clipToPadding="false"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/iv_sector"
+                            app:list="@{recordVM.uiState.wallNameList}"
+                            tools:listitem="@layout/item_timer_sector_name" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_sector_level"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
+                            android:layout_marginTop="8dp"
+                            android:clipToPadding="false"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/rv_sector_name"
+                            app:list="@{recordVM.uiState.sectorLevelList}"
+                            tools:listitem="@layout/item_timer_sector_level" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_sector_image"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:clipToPadding="false"
+                            android:orientation="horizontal"
+                            android:paddingStart="10dp"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/rv_sector_level"
+                            app:list="@{recordVM.uiState.sectorImageList}"
+                            tools:listitem="@layout/item_timer_sector_image" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_marginTop="20dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/rv_sector_image">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/select_sector"
+                                android:layout_width="100dp"
+                                android:layout_height="120dp"
+                                android:background="@drawable/rect_blackfill_nostroke_8radius"
+                                android:visibility="@{recordVM.uiState.selectedSector.sectorId == -1 ? View.GONE : View.VISIBLE}"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline_item"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    app:layout_constraintGuide_percent="0.75" />
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/iv_image"
+                                    android:layout_width="0dp"
+                                    android:layout_height="0dp"
+                                    android:scaleType="centerCrop"
+                                    app:imgUrl="@{recordVM.uiState.selectedSector.sectorImg}"
+                                    app:layout_constraintBottom_toBottomOf="@id/guideline_item"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:shapeAppearanceOverlay="@style/Top8RadiusImageView"
+                                    tools:src="@drawable/test" />
+
+                                <TextView
+                                    android:id="@+id/tv_level"
+                                    style="@style/TextSmall"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="12dp"
+                                    android:text="@{recordVM.uiState.selectedSector.levelName}"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/iv_image"
+                                    app:textHexColor="@{recordVM.uiState.selectedSector.levelColor}"
+                                    tools:text="V1" />
+
+                                <View
+                                    android:id="@+id/v_stroke"
+                                    android:layout_width="0dp"
+                                    android:layout_height="0dp"
+                                    android:background="@drawable/rect_nofill_mainstroke_6radius"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <TextView
+                                android:id="@+id/tv_challenge_title"
+                                style="@style/TextRegularBold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="도전 횟수"
+                                android:visibility="@{recordVM.uiState.selectedSector.sectorId == -1 ? View.GONE : View.VISIBLE}"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/select_sector"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="@{recordVM.uiState.selectedSector.sectorId == -1 ? View.GONE : View.VISIBLE}"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/select_sector"
+                                app:layout_constraintTop_toBottomOf="@id/tv_challenge_title">
+
+                                <TextView
+                                    android:id="@+id/tv_challenge_num"
+                                    style="@style/TextRegularBold"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:text="0"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <ImageButton
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
+                                    android:src="@drawable/ic_horizontal_line_grey9"
+                                    android:onClick="@{()->recordVM.subChallengeNum()}"
+                                    app:layout_constraintBottom_toBottomOf="@id/tv_challenge_num"
+                                    app:layout_constraintEnd_toStartOf="@id/tv_challenge_num"
+                                    app:layout_constraintTop_toTopOf="@id/tv_challenge_num" />
+
+                                <ImageButton
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginStart="10dp"
+                                    android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
+                                    android:src="@drawable/ic_add_gray9"
+                                    android:onClick="@{()->recordVM.addChallengeNum()}"
+                                    app:layout_constraintBottom_toBottomOf="@id/tv_challenge_num"
+                                    app:layout_constraintStart_toEndOf="@id/tv_challenge_num"
+                                    app:layout_constraintTop_toTopOf="@id/tv_challenge_num" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/btn_clear"
+                                style="@style/TextSmallSemiBold"
+                                android:layout_width="0dp"
+                                android:layout_height="35dp"
+                                android:layout_marginHorizontal="15dp"
+                                android:background="@drawable/rect_lightgrayfill_nostroke_10radius"
+                                android:text="완등했어요"
+                                android:textColor="@color/cm_grey9"
+                                app:clearBtnState="@{recordVM.uiState.clearBtnState}"
+                                android:visibility="@{recordVM.uiState.selectedSector.sectorId == -1 ? View.GONE : View.VISIBLE}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/select_sector" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_celebrate"
+                        android:layout_width="105dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/img_celebrate"
+                        android:layout_marginEnd="55dp"
+                        android:visibility="@{recordVM.uiState.clearBtnState ? View.VISIBLE : View.GONE}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/layout_main" />
+
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--    버튼    -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="50dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_root_record"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <ImageView
+                        android:id="@+id/iv_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="50dp"
+                        android:src="@drawable/ic_record_start"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <ImageView
+                        android:id="@+id/iv_stop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="50dp"
+                        android:src="@drawable/ic_record_stop"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toStartOf="@id/layout_pause_restart"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <LinearLayout
+                        android:id="@+id/layout_pause_restart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="50dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/iv_stop"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <ImageView
+                            android:id="@+id/iv_pause"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_record_pause"
+                            android:visibility="gone" />
+
+                        <ImageView
+                            android:id="@+id/iv_restart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_record_start"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

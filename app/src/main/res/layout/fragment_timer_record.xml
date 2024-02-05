@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerClimbingRecordViewModel" />
@@ -24,7 +26,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <!--    암장 선택    -->
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,20 +35,20 @@
                     android:layout_height="35dp"
                     android:layout_marginTop="30dp"
                     android:background="@drawable/rect_grey8fill_nostroke_5radius"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:id="@+id/iv_map"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_map"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tv_title"
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/tv_title"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tv_title"
@@ -55,15 +57,15 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:text="@string/timer_crag_set_inform"
-                        app:layout_constraintStart_toEndOf="@id/iv_map"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintStart_toEndOf="@id/iv_map"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_route_record"
+                    android:id="@+id/layout_root_record"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
@@ -104,16 +106,16 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:shapeAppearanceOverlay="@style/All10RadiusImageView"
-                            tools:src="@drawable/test" />
+                            tools:src="@drawable/sector_map" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_sector_name"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
                             android:layout_marginTop="8dp"
                             android:clipToPadding="false"
                             android:orientation="horizontal"
-                            android:paddingStart="10dp"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -125,10 +127,10 @@
                             android:id="@+id/rv_sector_level"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
                             android:layout_marginTop="8dp"
                             android:clipToPadding="false"
                             android:orientation="horizontal"
-                            android:paddingStart="10dp"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -154,10 +156,10 @@
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
                             android:layout_marginHorizontal="10dp"
-                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginTop="20dp"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/rv_sector_image">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
@@ -221,40 +223,51 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:text="도전 횟수"
-                                app:layout_constraintStart_toEndOf="@id/select_sector"
+                                android:visibility="@{vm.uiState.selectedSector.sectorId == -1 ? View.GONE : View.VISIBLE}"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"/>
+                                app:layout_constraintStart_toEndOf="@id/select_sector"
+                                app:layout_constraintTop_toTopOf="parent" />
 
-                            <TextView
-                                android:id="@+id/tv_challenge"
-                                style="@style/TextRegularBold"
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="0"
-                                app:layout_constraintStart_toStartOf="@id/tv_challenge_title"
-                                app:layout_constraintEnd_toEndOf="@id/tv_challenge_title"
-                                app:layout_constraintTop_toBottomOf="@id/tv_challenge_title"/>
+                                android:visibility="@{vm.uiState.selectedSector.sectorId == -1 ? View.GONE : View.VISIBLE}"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/select_sector"
+                                app:layout_constraintTop_toBottomOf="@id/tv_challenge_title">
 
-                            <ImageButton
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="10dp"
-                                android:src="@drawable/ic_horizontal_line_grey9"
-                                android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
-                                app:layout_constraintTop_toTopOf="@id/tv_challenge"
-                                app:layout_constraintBottom_toBottomOf="@id/tv_challenge"
-                                app:layout_constraintEnd_toStartOf="@id/tv_challenge"/>
+                                <TextView
+                                    android:id="@+id/tv_challenge"
+                                    style="@style/TextRegularBold"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:text="0"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
-                            <ImageButton
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginStart="10dp"
-                                android:src="@drawable/ic_add_gray9"
-                                android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
-                                app:layout_constraintTop_toTopOf="@id/tv_challenge"
-                                app:layout_constraintBottom_toBottomOf="@id/tv_challenge"
-                                app:layout_constraintStart_toEndOf="@id/tv_challenge"/>
+                                <ImageButton
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
+                                    android:src="@drawable/ic_horizontal_line_grey9"
+                                    app:layout_constraintBottom_toBottomOf="@id/tv_challenge"
+                                    app:layout_constraintEnd_toStartOf="@id/tv_challenge"
+                                    app:layout_constraintTop_toTopOf="@id/tv_challenge" />
+
+                                <ImageButton
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_marginStart="10dp"
+                                    android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
+                                    android:src="@drawable/ic_add_gray9"
+                                    app:layout_constraintBottom_toBottomOf="@id/tv_challenge"
+                                    app:layout_constraintStart_toEndOf="@id/tv_challenge"
+                                    app:layout_constraintTop_toTopOf="@id/tv_challenge" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/btn_clear"
@@ -262,9 +275,10 @@
                                 android:layout_width="0dp"
                                 android:layout_height="35dp"
                                 android:layout_marginHorizontal="15dp"
+                                android:background="@drawable/rect_lightgrayfill_nostroke_10radius"
                                 android:text="완등했어요"
                                 android:textColor="@color/cm_grey9"
-                                android:background="@drawable/rect_lightgrayfill_nostroke_10radius"
+                                android:visibility="@{vm.uiState.selectedSector.sectorId == -1 ? View.GONE : View.VISIBLE}"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/select_sector" />
@@ -272,6 +286,53 @@
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_celebrate"
+                        android:layout_width="105dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/img_celebrate"
+                        android:layout_marginEnd="70dp"
+                        android:visibility="@{vm.uiState.clearBtnState ? View.VISIBLE : View.GONE}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/layout_main" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_idc_time"
+                    android:layout_width="135dp"
+                    android:layout_height="45dp"
+                    android:layout_marginVertical="30dp"
+                    android:background="@drawable/rect_mainfill_nostroke_999radius"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_root_record"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <ImageView
+                        android:id="@+id/iv_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_back_grey9"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/tv_time"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        style="@style/TextRegularBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="00:00:00"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/iv_back"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
