@@ -83,7 +83,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     }
 
                     uiState.routeList?.let { routeList ->
-                        Log.d("RouteList", "called")
                         Log.d("RouteList", recyclerRoute.toString())
                         recyclerRoute = routeList
                         setupPopularRoutes()
