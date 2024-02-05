@@ -58,3 +58,12 @@ fun bindTextHexColor(tv: TextView, hexColor: String) {
         tv.setTextColor(hexColor.toColorInt())
     }
 }
+
+@BindingAdapter("selectedColor")
+fun bindSelectedColor(tv: TextView, state: Boolean) {
+    if(state){
+        tv.setTextColor(ContextCompat.getColor(tv.context, R.color.cm_main))
+    }else{
+        tv.setTextColor(ContextCompat.getColor(tv.context, R.color.white))
+    }
+}

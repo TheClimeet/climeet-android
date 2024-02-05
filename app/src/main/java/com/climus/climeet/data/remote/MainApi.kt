@@ -1,9 +1,17 @@
 package com.climus.climeet.data.remote
 
+import com.climus.climeet.data.model.response.BannerDetailInfoResponse
+import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
+import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
+import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
+import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
+import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
+import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
+import com.climus.climeet.data.model.response.ShortsSimpleResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import okhttp3.MultipartBody
@@ -53,5 +61,38 @@ interface MainApi {
 
     @GET("api/shorts/profile")
     suspend fun getShortsUpdatedFollow(): Response<List<ShortsUpdatedFollowResponse>>
+
+    @GET("/api/climbing-records/between-dates")
+    suspend fun getSelectDateRecord(
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): Response<List<GetSelectDateRecordResponse>>
+
+    @GET("/api/banners")
+    suspend fun findBannerListBetweenDates(): Response<List<BannerDetailInfoResponse>>
+
+    @GET("/api/home/rank/weeks/climbers/clear")
+    suspend fun findClimberRankingOrderClearCount(): Response<List<BestClearClimberSimpleResponse>>
+
+    @GET("/api/home/rank/weeks/climber/time")
+    suspend fun findClimberRankingOrderTime(): Response<List<BestTimeClimberSimpleResponse>>
+
+    @GET("/api/home/rank/weeks/climber/level")
+    suspend fun findClimberRankingOrderLevel(): Response<List<BestLevelCimberSimpleResponse>>
+
+    @GET("/api/shorts/popular")
+    suspend fun findPopularShorts(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+    ): Response<List<ShortsSimpleResponse>>
+
+    @GET("/api/rank/week/gym/follow")
+    suspend fun findGymRankingOrderFollowCount(
+    ): Response<List<BestFollowGymSimpleResponse>>
+
+    @GET("/api/home/rank/weeks/routes")
+    suspend fun findRouteRankingOrderSelectionCount(
+    ): Response<List<BestRouteDetailInfoResponse>>
+
 
 }

@@ -19,3 +19,12 @@ fun bindFloorBtnState(btn: Button, state: FloorBtnState) {
         }
     }
 }
+
+@BindingAdapter("clearBtnState")
+fun bindClearBtn(btn: Button, state: Boolean) {
+    if(state) {
+        btn.setBackgroundResource(R.drawable.rect_mainfill_nostroke_10radius)
+    } else {
+        btn.setBackgroundResource(R.drawable.rect_lightgrayfill_nostroke_10radius)
+    }
+}

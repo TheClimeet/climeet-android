@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.record.calendar.CalendarViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="82dp"
+        tools:context=".presentation.ui.main.record.calendar.CalendarFragment">
+
+        <TextView
+            android:id="@+id/tv_record"
+            style="@style/TextMediumSemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:text="기록"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_statistics"
+            style="@style/TextMediumSemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="통계"
+            android:textColor="#676767"
+            app:layout_constraintStart_toEndOf="@id/tv_record"
+            app:layout_constraintTop_toTopOf="@id/tv_record" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_record">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_yearmonth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_month">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_year"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:listitem="@layout/item_calendar_date" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/rv_year"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:listitem="@layout/item_calendar_date" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_month"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:id="@+id/layout_date_group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{()->vm.navigateToSelectDateBottomSheetFragment()}"
+                        app:layout_constraintEnd_toStartOf="@id/iv_date_next"
+                        app:layout_constraintStart_toEndOf="@+id/iv_date_pre"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/tv_year"
+                            style="@style/TextMediumSemiBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.currentYear}" />
+
+                        <TextView
+                            android:id="@+id/tv_dot"
+                            style="@style/TextMediumSemiBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:text="." />
+
+                        <TextView
+                            android:id="@+id/tv_month"
+                            style="@style/TextMediumSemiBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="@{vm.currentMonth}" />
+
+                    </LinearLayout>
+
+
+                    <ImageView
+                        android:id="@+id/iv_date_pre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="23dp"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_date_pre"
+                        app:layout_constraintBottom_toBottomOf="@id/layout_date_group"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/layout_date_group" />
+
+                    <ImageView
+                        android:id="@+id/iv_date_next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="23dp"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_date_next"
+                        app:layout_constraintBottom_toBottomOf="@id/layout_date_group"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/layout_date_group" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_calendar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:paddingHorizontal="18dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_month">
+
+                    <include
+                        android:id="@+id/container_titles"
+                        layout="@layout/item_calendar_week"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="parent" />
+
+                    <com.kizitonwose.calendar.view.CalendarView
+                        android:id="@+id/calendar_view"
+                        android:layout_width="0dp"
+                        android:layout_height="370dp"
+                        android:layout_marginTop="10dp"
+                        app:cv_daySize="rectangle"
+                        app:cv_dayViewResource="@layout/item_calendar_date"
+                        app:cv_orientation="horizontal"
+                        app:cv_outDateStyle="endOfRow"
+                        app:cv_scrollPaged="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/container_titles" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_no_record"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/rect_grey8fill_nostroke_8radius"
+                    android:paddingVertical="15dp"
+                    android:visibility="@{vm.isRecordVisible()? View.INVISIBLE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_calendar">
+
+                    <ImageView
+                        android:id="@+id/iv_no_record"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_record"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        style="@style/TextTiny"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:text="아직 운동 기록이 없네요!'\n'클밋과 함께 운동해요 :)"
+                        android:textColor="@color/cm_grey6"
+                        app:layout_constraintEnd_toEndOf="@+id/iv_no_record"
+                        app:layout_constraintStart_toStartOf="@+id/iv_no_record"
+                        app:layout_constraintTop_toBottomOf="@id/iv_no_record" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_record"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="10dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_calendar"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_record" />
+
+                <ImageButton
+                    android:id="@+id/btn_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@android:color/transparent"
+                    android:onClick="@{()->vm.navigateToCreateClimbingRecord()}"
+                    android:src="@drawable/oval_mainfill_nostroke_noradius"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_no_record" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_add"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_add"
+                    app:layout_constraintEnd_toEndOf="@id/btn_add"
+                    app:layout_constraintStart_toStartOf="@id/btn_add"
+                    app:layout_constraintTop_toTopOf="@id/btn_add" />
+
+                <ImageButton
+                    android:id="@+id/btn_exercise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:background="@android:color/transparent"
+                    android:onClick="@{() -> vm.navigateToTimerMain()}"
+                    android:src="@drawable/oval_mainfill_nostroke_noradius"
+                    android:visibility="@{vm.isToday ? View.VISIBLE : View.INVISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_add"
+                    app:layout_constraintEnd_toStartOf="@id/btn_add" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_play"
+                    android:visibility="@{vm.isToday ? View.VISIBLE : View.INVISIBLE}"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_exercise"
+                    app:layout_constraintEnd_toEndOf="@id/btn_exercise"
+                    app:layout_constraintStart_toStartOf="@id/btn_exercise"
+                    app:layout_constraintTop_toTopOf="@id/btn_exercise" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
