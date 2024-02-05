@@ -208,9 +208,9 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
         _uiState.update { state ->
             state.copy(
                 wallNameList = listOf(
-                    SectorNameUiData("Cheesegrater", onClickListener = ::selectWallName),
-                    SectorNameUiData("Jaws", onClickListener = ::selectWallName),
-                    SectorNameUiData("The Wallus", onClickListener = ::selectWallName),
+                    SectorNameUiData(0,name = "Cheesegrater", onClickListener = ::selectWallName),
+                    SectorNameUiData(1, name = "Jaws", onClickListener = ::selectWallName),
+                    SectorNameUiData(2,name = "The Wallus", onClickListener = ::selectWallName),
                 ),
                 sectorLevelList = listOf(
                     GymLevelUiData("VB", "#BBBBBB", onClickListener = ::selectSectorLevel),
@@ -267,17 +267,17 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun selectWallName(name: String) {
+    private fun selectWallName(sectorId: Long) {
 
         _uiState.update { state ->
             state.copy(
                 wallNameList = state.wallNameList.map {
                     it.copy(
-                        isSelected = it.name == name
+                        isSelected = it.sectorId == sectorId
                     )
                 },
                 selectedSectorName = state.wallNameList.filter {
-                    it.name == name
+                    it.sectorId == sectorId
                 }[0]
             )
         }
@@ -289,16 +289,16 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
 
     }
 
-    private fun selectSectorLevel(name: String) {
+    private fun selectSectorLevel(difficulty: Int) {
         _uiState.update { state ->
             state.copy(
                 sectorLevelList = state.sectorLevelList.map {
                     it.copy(
-                        isSelected = it.levelName == name
+                        isSelected = it.difficulty == difficulty
                     )
                 },
                 selectedSectorLevel = state.sectorLevelList.filter {
-                    it.levelName == name
+                    it.difficulty == difficulty
                 }[0]
             )
         }

@@ -27,14 +27,15 @@ import javax.inject.Inject
 data class SelectSectorBottomSheetUiState(
     val isSingleFloor: Boolean = false,
     val curFloor: Int = 0,
+    val layoutImg: String? = "",
     val firstFloorBtnState: FloorBtnState = FloorBtnState.FloorSelected,
     val secondFloorBtnState: FloorBtnState = FloorBtnState.FloorUnSelected,
     val backgroundImage: String = "",
     val sectorNameList: List<SectorNameUiData> = emptyList(),
     val gymLevelList: List<GymLevelUiData> = emptyList(),
     val routeList: List<RouteUiData> = emptyList(),
-    val selectedSectorName: SectorNameUiData = SectorNameUiData {},
-    val selectedGymLevel: GymLevelUiData = GymLevelUiData {},
+    val selectedSectorId: Long = -1,
+    val selectedDifficulty: Int = -1,
     val selectedRoute: SelectedRoute = SelectedRoute()
 )
 
@@ -95,6 +96,22 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
                             data.toGymLevelUiData(::selectGymLevel)
                         }
 
+                        if(it.body.maxFloor == 1){
+                            _uiState.update { state ->
+                                state.copy(
+                                    isSingleFloor = true,
+                                    layoutImg = it.body.layoutImageUrl
+                                )
+                            }
+                        } else {
+                            _uiState.update { state ->
+                                state.copy(
+                                    isSingleFloor = false,
+                                    layoutImg = it.body.layoutImageUrl
+                                )
+                            }
+                        }
+
                         setFloorInfo(1)
                     }
 
@@ -112,15 +129,16 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
             state.copy(
                 secondFloorBtnState = if (floor == 2) FloorBtnState.FloorSelected else FloorBtnState.FloorUnSelected,
                 firstFloorBtnState = if (floor == 1) FloorBtnState.FloorSelected else FloorBtnState.FloorUnSelected,
-                curFloor = floor
+                curFloor = floor,
+                sectorNameList = sectorNameList.filter {
+                    it.floor == floor
+                }
             )
         }
         setFloorInfo(floor)
     }
 
     private fun setFloorInfo(floor: Int) {
-
-        // todo sectorImageList 는 인기순 10개 최초로 받아오기
 
         viewModelScope.launch {
             repository.getGymRouteInfoList(cragId, GetGymRouteInfoRequest(0, 10)).let { it ->
@@ -146,31 +164,41 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
         }
     }
 
-    private fun getRouteList() {
+    private fun getRouteList(
+        floor: Int,
+        sectorId: Long?,
+        difficulty: Int?,
+    ) {
         viewModelScope.launch {
             repository.getGymRouteInfoList(
                 cragId, GetGymRouteInfoRequest(
-                    0, 10,
+                    0, 10, floor, sectorId, difficulty
                 )
             ).let {
+                when(it){
+                    is BaseState.Success -> {
 
+                    }
+
+                    is BaseState.Error -> {
+
+                    }
+                }
 
             }
         }
     }
 
-    private fun selectSectorName(name: String) {
+    private fun selectSectorName(sectorId: Long) {
 
         _uiState.update { state ->
             state.copy(
                 sectorNameList = state.sectorNameList.map {
                     it.copy(
-                        isSelected = it.name == name
+                        isSelected = it.sectorId == sectorId
                     )
                 },
-                selectedSectorName = state.sectorNameList.filter {
-                    it.name == name
-                }[0]
+                selectedSectorId = sectorId
             )
         }
 
@@ -181,17 +209,15 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
 
     }
 
-    private fun selectGymLevel(name: String) {
+    private fun selectGymLevel(difficulty: Int) {
         _uiState.update { state ->
             state.copy(
                 gymLevelList = state.gymLevelList.map {
                     it.copy(
-                        isSelected = it.levelName == name
+                        isSelected = it.difficulty == difficulty
                     )
                 },
-                selectedGymLevel = state.gymLevelList.filter {
-                    it.levelName == name
-                }[0]
+                selectedDifficulty = difficulty
             )
         }
 

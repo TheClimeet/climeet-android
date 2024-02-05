@@ -2,9 +2,9 @@ package com.climus.climeet.data.model.response
 
 data class GetGymFilteringKeyResponse(
     val difficultyList: List<DifficultyItem>,
-    val floorList: List<Int>,
+    val maxFloor: Int,
     val gymId: Int,
-    val layoutImageUrl: String?="",
+    val layoutImageUrl: String? = "",
     val sectorList: List<SectorItem>,
     val timePoint: String
 )
@@ -17,6 +17,7 @@ data class DifficultyItem(
 )
 
 data class SectorItem(
+    val sectorId: Long,
     val floor: Int,
     val name: String,
     val sectorImageUrl: String

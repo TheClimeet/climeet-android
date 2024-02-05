@@ -144,6 +144,7 @@
                 android:layout_marginHorizontal="12dp"
                 android:layout_marginTop="16dp"
                 android:scaleType="centerCrop"
+                app:imgUrl="@{vm.uiState.layoutImg}"
                 app:layout_constraintDimensionRatio="2.3:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -198,16 +199,28 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/select_sector"
-            android:layout_width="100dp"
-            android:layout_height="120dp"
+        <View
+            android:id="@+id/v_stroke"
+            android:layout_width="104dp"
+            android:layout_height="124dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/rect_blackfill_nostroke_8radius"
             android:visibility="@{vm.uiState.selectedRoute.sectorId == -1 ? View.GONE : View.VISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_main">
+            app:layout_constraintTop_toBottomOf="@id/layout_main"
+            app:viewHexColor="@{vm.uiState.selectedRoute.gymLevelColor}" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/select_sector"
+            android:layout_width="100dp"
+            android:layout_height="120dp"
+            android:background="@drawable/rect_blackfill_nostroke_8radius"
+            android:visibility="@{vm.uiState.selectedRoute.sectorId == -1 ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@id/v_stroke"
+            app:layout_constraintEnd_toEndOf="@id/v_stroke"
+            app:layout_constraintStart_toStartOf="@id/v_stroke"
+            app:layout_constraintTop_toTopOf="@id/v_stroke">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_item"
@@ -241,16 +254,6 @@
                 app:layout_constraintTop_toBottomOf="@id/iv_image"
                 app:textHexColor="@{vm.uiState.selectedRoute.gymLevelColor}"
                 tools:text="V1" />
-
-            <View
-                android:id="@+id/v_stroke"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/rect_nofill_mainstroke_6radius"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
