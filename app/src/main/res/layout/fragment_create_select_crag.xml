@@ -9,13 +9,13 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectcrag.CreateSelectCragViewModel" />
+            type="com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag.CreateSelectCragViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.ui.main.record.createclimbingrecord.selectcrag.CreateSelectCragFragment">
+        tools:context=".presentation.ui.main.record.bottomsheet.selectcrag.CreateSelectCragFragment">
 
         <TextView
             android:id="@+id/tv_title"

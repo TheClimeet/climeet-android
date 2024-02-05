@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.record.createclimbingrecord
+package com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord
 
 import android.util.Log
 import androidx.lifecycle.LiveData

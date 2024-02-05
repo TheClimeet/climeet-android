@@ -1,10 +1,10 @@
-package com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selecttime
+package com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag.selecttime
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragUiState
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateRecordData
+import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateRecordData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

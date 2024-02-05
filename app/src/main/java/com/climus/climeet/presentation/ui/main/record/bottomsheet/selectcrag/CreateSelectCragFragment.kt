@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectcrag
+package com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag
 
 import android.os.Bundle
 import android.view.View
@@ -10,7 +10,7 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCreateSelectCragBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroViewModel
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateClimbingRecordViewModel
+import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateClimbingRecordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

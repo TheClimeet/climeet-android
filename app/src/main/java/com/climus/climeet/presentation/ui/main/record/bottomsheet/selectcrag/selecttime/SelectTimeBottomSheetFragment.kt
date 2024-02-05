@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selecttime
+package com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag.selecttime
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -13,8 +13,8 @@ import androidx.lifecycle.lifecycleScope
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSelectTimeBottomSheetBinding
 import com.climus.climeet.presentation.ui.main.record.calendar.CalendarViewModel
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateClimbingRecordViewModel
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateRecordData
+import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateClimbingRecordViewModel
+import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateRecordData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

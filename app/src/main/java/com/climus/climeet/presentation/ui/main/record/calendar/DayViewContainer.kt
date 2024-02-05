@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.climus.climeet.R
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateClimbingRecordViewModel
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateRecordData
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectdate.SelectDateBottomSheetViewModel
+import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateClimbingRecordViewModel
+import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateRecordData
+import com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag.selectdate.SelectDateBottomSheetViewModel
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.view.ViewContainer
 import java.time.LocalDate

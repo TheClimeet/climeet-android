@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectcrag
+package com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

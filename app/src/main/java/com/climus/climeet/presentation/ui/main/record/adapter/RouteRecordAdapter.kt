@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.databinding.ItemRouteRecordBinding
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateClimbingRecordViewModel
+import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateClimbingRecordViewModel
 import com.climus.climeet.presentation.ui.main.record.model.RouteRecordUiData
 
 class RouteRecordAdapter(private val viewModel: CreateClimbingRecordViewModel) :

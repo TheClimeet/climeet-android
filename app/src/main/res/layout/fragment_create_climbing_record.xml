@@ -9,14 +9,14 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateClimbingRecordViewModel" />
+            type="com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateClimbingRecordViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.ui.main.record.createclimbingrecord.CreateClimbingRecordFragment">
+        tools:context=".presentation.ui.main.record.calendar.createclimbingrecord.CreateClimbingRecordFragment">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

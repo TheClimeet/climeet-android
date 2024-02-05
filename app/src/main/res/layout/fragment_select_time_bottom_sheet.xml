@@ -9,7 +9,7 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selecttime.SelectTimeBottomViewModel" />
+            type="com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag.selecttime.SelectTimeBottomViewModel" />
 
     </data>
 

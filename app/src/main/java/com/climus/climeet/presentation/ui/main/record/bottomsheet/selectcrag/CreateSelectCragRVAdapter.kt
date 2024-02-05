@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectcrag
+package com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -8,8 +8,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.databinding.ItemCragSearchCalendarBinding
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateClimbingRecordViewModel
-import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateRecordData
+import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateClimbingRecordViewModel
+import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateRecordData
 
 class CreateSelectCragRVAdapter(
     private val viewModel: CreateSelectCragViewModel,
