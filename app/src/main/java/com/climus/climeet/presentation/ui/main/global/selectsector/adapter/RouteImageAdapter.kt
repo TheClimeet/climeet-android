@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.shorts.adapter
+package com.climus.climeet.presentation.ui.main.global.selectsector.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,37 +6,37 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
-import com.climus.climeet.databinding.ItemSectorImageBinding
-import com.climus.climeet.presentation.ui.main.shorts.model.SectorImageUiData
+import com.climus.climeet.databinding.ItemRouteImageBinding
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.RouteUiData
 
-class SectorImageAdapter :
-    ListAdapter<SectorImageUiData, SectorImageViewHolder>(diffCallback) {
+class RouteImageAdapter :
+    ListAdapter<RouteUiData, RouteImageViewHolder>(diffCallback) {
 
     companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<SectorImageUiData>() {
+        val diffCallback = object : DiffUtil.ItemCallback<RouteUiData>() {
             override fun areItemsTheSame(
-                oldItem: SectorImageUiData,
-                newItem: SectorImageUiData
+                oldItem: RouteUiData,
+                newItem: RouteUiData
             ): Boolean {
                 return oldItem.sectorId == newItem.sectorId
             }
 
             override fun areContentsTheSame(
-                oldItem: SectorImageUiData,
-                newItem: SectorImageUiData
+                oldItem: RouteUiData,
+                newItem: RouteUiData
             ): Boolean {
                 return oldItem == newItem
             }
         }
     }
 
-    override fun onBindViewHolder(holder: SectorImageViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RouteImageViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SectorImageViewHolder =
-        SectorImageViewHolder(
-            ItemSectorImageBinding.inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteImageViewHolder =
+        RouteImageViewHolder(
+            ItemRouteImageBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -44,10 +44,10 @@ class SectorImageAdapter :
         )
 }
 
-class SectorImageViewHolder(private val binding: ItemSectorImageBinding) :
+class RouteImageViewHolder(private val binding: ItemRouteImageBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: SectorImageUiData) {
+    fun bind(item: RouteUiData) {
         binding.item = item
         if (item.isSelected) {
             binding.vStroke.setBackgroundResource(R.drawable.rect_nofill_mainstroke_6radius)

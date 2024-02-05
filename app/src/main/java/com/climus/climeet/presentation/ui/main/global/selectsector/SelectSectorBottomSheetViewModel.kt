@@ -2,10 +2,16 @@ package com.climus.climeet.presentation.ui.main.global.selectsector
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.climus.climeet.presentation.ui.main.shorts.model.SectorImageUiData
-import com.climus.climeet.presentation.ui.main.shorts.model.SectorLevelUiData
-import com.climus.climeet.presentation.ui.main.shorts.model.WallNameUiData
-import com.climus.climeet.presentation.util.Constants.TEST_IMG
+import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
+import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.GymLevelUiData
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.RouteUiData
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.SectorNameUiData
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedRoute
+import com.climus.climeet.presentation.ui.main.global.toGymLevelUiData
+import com.climus.climeet.presentation.ui.main.global.toRouteUiData
+import com.climus.climeet.presentation.ui.main.global.toSectorNameUiData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,24 +26,16 @@ import javax.inject.Inject
 
 data class SelectSectorBottomSheetUiState(
     val isSingleFloor: Boolean = false,
+    val curFloor: Int = 0,
     val firstFloorBtnState: FloorBtnState = FloorBtnState.FloorSelected,
     val secondFloorBtnState: FloorBtnState = FloorBtnState.FloorUnSelected,
     val backgroundImage: String = "",
-    val wallNameList: List<WallNameUiData> = emptyList(),
-    val sectorLevelList: List<SectorLevelUiData> = emptyList(),
-    val sectorImageList: List<SectorImageUiData> = emptyList(),
-    val selectedSectorName: WallNameUiData = WallNameUiData {},
-    val selectedSectorLevel: SectorLevelUiData = SectorLevelUiData {},
-    val selectedSector: SelectedSector = SelectedSector()
-)
-
-data class SelectedSector(
-    val sectorId: Long = -1,
-    val sectorName: String = "",
-    val cragName: String = "",
-    val levelName: String = "",
-    val levelColor: String = "",
-    val sectorImg: String = "",
+    val sectorNameList: List<SectorNameUiData> = emptyList(),
+    val gymLevelList: List<GymLevelUiData> = emptyList(),
+    val routeList: List<RouteUiData> = emptyList(),
+    val selectedSectorName: SectorNameUiData = SectorNameUiData {},
+    val selectedGymLevel: GymLevelUiData = GymLevelUiData {},
+    val selectedRoute: SelectedRoute = SelectedRoute()
 )
 
 sealed class FloorBtnState {
@@ -47,14 +45,16 @@ sealed class FloorBtnState {
 
 sealed class SelectSectorBottomSheetEvent {
     data object NavigateToBack : SelectSectorBottomSheetEvent()
-    data class ApplyFilter(val sector: SelectedSector) :
+    data class ApplyFilter(val sector: SelectedRoute) :
         SelectSectorBottomSheetEvent()
+
     data object DismissDialog : SelectSectorBottomSheetEvent()
+    data class ShowToastMessage(val msg: String) : SelectSectorBottomSheetEvent()
 }
 
 @HiltViewModel
 class SelectSectorBottomSheetViewModel @Inject constructor(
-
+    private val repository: MainRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SelectSectorBottomSheetUiState())
@@ -62,6 +62,9 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
 
     private val _event = MutableSharedFlow<SelectSectorBottomSheetEvent>()
     val event: SharedFlow<SelectSectorBottomSheetEvent> = _event.asSharedFlow()
+
+    private var sectorNameList = listOf<SectorNameUiData>()
+    private var gymLevelList = listOf<GymLevelUiData>()
 
     var cragId: Long = 0
     var cragName: String = ""
@@ -81,16 +84,26 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
     private fun getCragInfo(id: Long) {
 
         viewModelScope.launch {
-            //todo 암장 정보 가져오기
-            // - floor 1개인지 두개인지 도 적용
+            repository.getGymFilteringKey(id).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        sectorNameList = it.body.sectorList.map { data ->
+                            data.toSectorNameUiData(::selectSectorName)
+                        }
 
-            _uiState.update { state ->
-                state.copy(
-                    isSingleFloor = false
-                )
+                        gymLevelList = it.body.difficultyList.map { data ->
+                            data.toGymLevelUiData(::selectGymLevel)
+                        }
+
+                        setFloorInfo(1)
+                    }
+
+                    is BaseState.Error -> {
+                        _event.emit(SelectSectorBottomSheetEvent.ShowToastMessage(it.msg))
+                    }
+                }
             }
 
-            setFloorInfo(1)
         }
     }
 
@@ -98,7 +111,8 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
         _uiState.update { state ->
             state.copy(
                 secondFloorBtnState = if (floor == 2) FloorBtnState.FloorSelected else FloorBtnState.FloorUnSelected,
-                firstFloorBtnState = if (floor == 1) FloorBtnState.FloorSelected else FloorBtnState.FloorUnSelected
+                firstFloorBtnState = if (floor == 1) FloorBtnState.FloorSelected else FloorBtnState.FloorUnSelected,
+                curFloor = floor
             )
         }
         setFloorInfo(floor)
@@ -106,81 +120,55 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
 
     private fun setFloorInfo(floor: Int) {
 
-        // todo floor 별 초기데이터 삽입 
         // todo sectorImageList 는 인기순 10개 최초로 받아오기
 
-        _uiState.update { state ->
-            state.copy(
-                wallNameList = listOf(
-                    WallNameUiData("Cheesegrater", onClickListener = ::selectWallName),
-                    WallNameUiData("Jaws", onClickListener = ::selectWallName),
-                    WallNameUiData("The Wallus", onClickListener = ::selectWallName),
-                ),
-                sectorLevelList = listOf(
-                    SectorLevelUiData("VB", "#BBBBBB", onClickListener = ::selectSectorLevel),
-                    SectorLevelUiData("V1", "#FFFFFF", onClickListener = ::selectSectorLevel),
-                    SectorLevelUiData("V2", "#DDDDDD", onClickListener = ::selectSectorLevel),
-                    SectorLevelUiData("V3", "#CCCCCC", onClickListener = ::selectSectorLevel),
-                    SectorLevelUiData("V4", "#BBBBBB", onClickListener = ::selectSectorLevel),
-                    SectorLevelUiData("V5", "#EEEEEE", onClickListener = ::selectSectorLevel),
-                    SectorLevelUiData("V6", "#555555", onClickListener = ::selectSectorLevel),
-                ),
-                sectorImageList = listOf(
-                    SectorImageUiData(
-                        0,
-                        sectorName = "SECTOR 2-2",
-                        levelName = "VB",
-                        levelColor = "#BBBBBB",
-                        sectorImg = TEST_IMG,
-                        onClickListener = ::selectSectorImage
-                    ),
-                    SectorImageUiData(
-                        1,
-                        sectorName = "SECTOR 2-2",
-                        levelName = "V2",
-                        levelColor = "#456213",
-                        sectorImg = TEST_IMG,
-                        onClickListener = ::selectSectorImage
-                    ),
-                    SectorImageUiData(
-                        2,
-                        sectorName = "SECTOR 2-2",
-                        levelName = "V3",
-                        levelColor = "#BBBBBB",
-                        sectorImg = TEST_IMG,
-                        onClickListener = ::selectSectorImage
-                    ),
-                    SectorImageUiData(
-                        3,
-                        sectorName = "SECTOR 2-2",
-                        levelName = "V4",
-                        levelColor = "#456213",
-                        sectorImg = TEST_IMG,
-                        onClickListener = ::selectSectorImage
-                    ),
-                    SectorImageUiData(
-                        4,
-                        sectorName = "SECTOR 2-2",
-                        levelName = "V8",
-                        levelColor = "#BBBBBB",
-                        sectorImg = TEST_IMG,
-                        onClickListener = ::selectSectorImage
-                    )
-                )
-            )
+        viewModelScope.launch {
+            repository.getGymRouteInfoList(cragId, GetGymRouteInfoRequest(0, 10)).let { it ->
+                when (it) {
+                    is BaseState.Success -> {
+
+                        _uiState.update { state ->
+                            state.copy(
+                                sectorNameList = sectorNameList.filter { data -> data.floor == floor },
+                                gymLevelList = gymLevelList,
+                                routeList = it.body.result.map { data ->
+                                    data.toRouteUiData(::selectRoute)
+                                }
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> {
+                        _event.emit(SelectSectorBottomSheetEvent.ShowToastMessage(it.msg))
+                    }
+                }
+            }
         }
     }
 
-    private fun selectWallName(name: String) {
+    private fun getRouteList() {
+        viewModelScope.launch {
+            repository.getGymRouteInfoList(
+                cragId, GetGymRouteInfoRequest(
+                    0, 10,
+                )
+            ).let {
+
+
+            }
+        }
+    }
+
+    private fun selectSectorName(name: String) {
 
         _uiState.update { state ->
             state.copy(
-                wallNameList = state.wallNameList.map {
+                sectorNameList = state.sectorNameList.map {
                     it.copy(
                         isSelected = it.name == name
                     )
                 },
-                selectedSectorName = state.wallNameList.filter {
+                selectedSectorName = state.sectorNameList.filter {
                     it.name == name
                 }[0]
             )
@@ -193,15 +181,15 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
 
     }
 
-    private fun selectSectorLevel(name: String) {
+    private fun selectGymLevel(name: String) {
         _uiState.update { state ->
             state.copy(
-                sectorLevelList = state.sectorLevelList.map {
+                gymLevelList = state.gymLevelList.map {
                     it.copy(
                         isSelected = it.levelName == name
                     )
                 },
-                selectedSectorLevel = state.sectorLevelList.filter {
+                selectedGymLevel = state.gymLevelList.filter {
                     it.levelName == name
                 }[0]
             )
@@ -214,14 +202,23 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
         }
     }
 
-    private fun selectSectorImage(id: Long) {
-        var selectedData = SelectedSector()
+    private fun selectRoute(id: Long) {
+        var selectedData = SelectedRoute()
         _uiState.update { state ->
             state.copy(
-                sectorImageList = state.sectorImageList.map {
+                routeList = state.routeList.map {
                     if (it.sectorId == id) {
                         selectedData =
-                            SelectedSector(it.sectorId, it.sectorName, cragName, it.levelName, it.levelColor, it.sectorImg)
+                            SelectedRoute(
+                                routeId = it.routeId,
+                                sectorId = it.sectorId,
+                                sectorName = it.sectorName,
+                                cragName = cragName,
+                                gymLevelName = it.gymLevelName,
+                                gymLevelColor = it.gymLevelColor,
+                                climeetLevelName = it.climeetLevelName,
+                                routeImg = it.routeImg
+                            )
                         it.copy(
                             isSelected = true
                         )
@@ -232,22 +229,22 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
                     }
 
                 },
-                selectedSector = selectedData
+                selectedRoute = selectedData
             )
         }
     }
 
-    fun applySectorFilter(){
+    fun applySectorFilter() {
         viewModelScope.launch {
             _event.emit(
                 SelectSectorBottomSheetEvent.ApplyFilter(
-                    uiState.value.selectedSector
+                    uiState.value.selectedRoute
                 )
             )
         }
     }
 
-    fun dismissDialog(){
+    fun dismissDialog() {
         viewModelScope.launch {
             _event.emit(SelectSectorBottomSheetEvent.DismissDialog)
         }

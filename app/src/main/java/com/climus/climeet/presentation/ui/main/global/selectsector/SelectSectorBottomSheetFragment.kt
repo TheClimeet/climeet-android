@@ -10,12 +10,14 @@ import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSelectSectorBottomSheetBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorImageAdapter
-import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorLevelAdapter
-import com.climus.climeet.presentation.ui.main.shorts.adapter.WallNameAdapter
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLevelAdapter
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.WallNameAdapter
 import com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsBottomSheetViewModel
 import com.climus.climeet.presentation.ui.main.upload.bottomsheet.UploadBottomSheetViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SelectSectorBottomSheetFragment :
     BaseFragment<FragmentSelectSectorBottomSheetBinding>(R.layout.fragment_select_sector_bottom_sheet) {
 
@@ -38,8 +40,8 @@ class SelectSectorBottomSheetFragment :
 
     private fun setRecyclerView() {
         binding.rvSectorName.adapter = WallNameAdapter()
-        binding.rvSectorLevel.adapter = SectorLevelAdapter()
-        binding.rvSectorImage.adapter = SectorImageAdapter()
+        binding.rvSectorLevel.adapter = GymLevelAdapter()
+        binding.rvSectorImage.adapter = RouteImageAdapter()
         binding.rvSectorName.itemAnimator = null
         binding.rvSectorLevel.itemAnimator = null
         binding.rvSectorImage.itemAnimator = null
@@ -61,6 +63,8 @@ class SelectSectorBottomSheetFragment :
                         parentShortsViewModel.dismissDialog()
                         parentUploadViewModel.dismissDialog()
                     }
+
+                    is SelectSectorBottomSheetEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }

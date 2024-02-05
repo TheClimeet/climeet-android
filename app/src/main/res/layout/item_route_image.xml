@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.climus.climeet.presentation.ui.main.shorts.model.SectorImageUiData" />
+            type="com.climus.climeet.presentation.ui.main.global.selectsector.model.RouteUiData" />
 
     </data>
 
@@ -32,7 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
-            app:imgUrl="@{item.sectorImg}"
+            app:imgUrl="@{item.routeImg}"
             app:layout_constraintBottom_toBottomOf="@id/guideline_item"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,8 +46,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            app:textHexColor="@{item.levelColor}"
-            android:text="@{item.levelName}"
+            app:textHexColor="@{item.gymLevelColor}"
+            android:text="@{item.gymLevelName}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_image"

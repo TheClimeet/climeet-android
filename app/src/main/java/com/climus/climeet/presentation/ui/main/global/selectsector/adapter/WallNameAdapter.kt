@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.shorts.adapter
+package com.climus.climeet.presentation.ui.main.global.selectsector.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,23 +8,23 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.databinding.ItemWallNameBinding
-import com.climus.climeet.presentation.ui.main.shorts.model.WallNameUiData
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.SectorNameUiData
 
 class WallNameAdapter :
-    ListAdapter<WallNameUiData, WallNameViewHolder>(diffCallback) {
+    ListAdapter<SectorNameUiData, WallNameViewHolder>(diffCallback) {
 
     companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<WallNameUiData>() {
+        val diffCallback = object : DiffUtil.ItemCallback<SectorNameUiData>() {
             override fun areItemsTheSame(
-                oldItem: WallNameUiData,
-                newItem: WallNameUiData
+                oldItem: SectorNameUiData,
+                newItem: SectorNameUiData
             ): Boolean {
                 return oldItem.name == newItem.name
             }
 
             override fun areContentsTheSame(
-                oldItem: WallNameUiData,
-                newItem: WallNameUiData
+                oldItem: SectorNameUiData,
+                newItem: SectorNameUiData
             ): Boolean {
                 return oldItem == newItem
             }
@@ -48,7 +48,7 @@ class WallNameAdapter :
 class WallNameViewHolder(private val binding: ItemWallNameBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: WallNameUiData) {
+    fun bind(item: SectorNameUiData) {
         binding.item = item
         if (item.isSelected) {
             binding.chipText.setChipBackgroundColorResource(R.color.cm_main)

@@ -17,9 +17,11 @@ import com.climus.climeet.presentation.ui.main.shorts.ShortsViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ShortsBottomSheetFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentShortsBottomSheetBinding? = null
@@ -75,7 +77,7 @@ class ShortsBottomSheetFragment : BottomSheetDialogFragment() {
                 when(it){
                     is ShortsBottomSheetEvent.DismissDialog -> dismiss()
                     is ShortsBottomSheetEvent.ApplyFilter -> {
-                        parentViewModel.applyFilter(it.selectedSector)
+                        parentViewModel.applyFilter(it.selectedRoute)
                         dismiss()
                     }
                 }

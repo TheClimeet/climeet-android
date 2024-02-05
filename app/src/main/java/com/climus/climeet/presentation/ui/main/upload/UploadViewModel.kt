@@ -4,24 +4,21 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.presentation.customview.PublicType
-import com.climus.climeet.presentation.ui.main.global.selectsector.SelectedSector
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class UploadUiState(
     val publicState: PublicType = PublicType.PUBLIC,
-    val selectedSector: SelectedSector = SelectedSector()
+    val selectedRoute: SelectedRoute = SelectedRoute()
 )
 
 sealed class UploadEvent {
@@ -68,12 +65,12 @@ class UploadViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun applyFilter(data: SelectedSector) {
+    fun applyFilter(data: SelectedRoute) {
 
         viewModelScope.launch {
             _uiState.update { state ->
                 state.copy(
-                    selectedSector = data
+                    selectedRoute = data
                 )
             }
         }
