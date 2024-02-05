@@ -7,6 +7,7 @@ import com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiD
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.UpdatedFollowUiData
+import com.climus.climeet.presentation.util.Constants.climeetColor
 
 fun SearchAvailableGymItem.toSearchCragUiData(
     keyword: String,
@@ -30,27 +31,37 @@ fun ShortsItem.toShortsThumbnailUiData(
     onClickListener = onClickListener
 )
 
-fun ShortsItem.toShortsUiData() = ShortsUiData(
-    shortsId = shortsId,
-    thumbnailImg = thumbnailImageUrl,
-    gymId = shortsDetailInfo.gymId,
-    gymName = gymName,
-    climeetLevelColor = "#FFFFFF",
-    videoUrl = shortsDetailInfo.videoUrl,
-    profileImgUrl = shortsDetailInfo.userShortsSimpleInfo.profileImgUrl,
-    userName = shortsDetailInfo.userShortsSimpleInfo.profileName,
-    description = shortsDetailInfo.description,
-    sectorId = shortsDetailInfo.sectorId,
-    sectorName = shortsDetailInfo.sectorName,
-    sectorImgUrl = shortsDetailInfo.routeImageUrl,
-    likeCount = shortsDetailInfo.likeCount,
-    commentCount = shortsDetailInfo.commentCount,
-    bookMarkCount = shortsDetailInfo.bookmarkCount,
-    sharedCount = shortsDetailInfo.shareCount,
-    isSoundEnabled = shortsDetailInfo.isSoundEnabled,
-    isLiked = shortsDetailInfo.liked,
-    isBookMarked = shortsDetailInfo.bookmarked
-)
+fun ShortsItem.toShortsUiData() : ShortsUiData{
+
+    var climeetLevelColor = "#FFFFFF"
+    climeetColor[climeetDifficultyName]?.let{
+       climeetLevelColor = it
+    }
+
+    return ShortsUiData(
+        shortsId = shortsId,
+        thumbnailImg = thumbnailImageUrl,
+        gymId = shortsDetailInfo.gymId,
+        gymName = gymName,
+        climeetLevelColor = climeetLevelColor,
+        videoUrl = shortsDetailInfo.videoUrl,
+        profileImgUrl = shortsDetailInfo.userShortsSimpleInfo.profileImgUrl,
+        userName = shortsDetailInfo.userShortsSimpleInfo.profileName,
+        description = shortsDetailInfo.description,
+        sectorId = shortsDetailInfo.sectorId,
+        sectorName = shortsDetailInfo.sectorName,
+        sectorImgUrl = shortsDetailInfo.routeImageUrl,
+        likeCount = shortsDetailInfo.likeCount,
+        commentCount = shortsDetailInfo.commentCount,
+        bookMarkCount = shortsDetailInfo.bookmarkCount,
+        sharedCount = shortsDetailInfo.shareCount,
+        isSoundEnabled = shortsDetailInfo.isSoundEnabled,
+        isLiked = shortsDetailInfo.liked,
+        isBookMarked = shortsDetailInfo.bookmarked
+    )
+}
+
+
 
 fun ShortsUpdatedFollowResponse.toUpdatedFollowUiData(
     viewType: Int,
