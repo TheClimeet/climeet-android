@@ -367,22 +367,26 @@
                             tools:listitem="@layout/item_sector_image" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_setting"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
                             android:layout_marginHorizontal="10dp"
-                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginTop="20dp"
+                            android:visibility="@{vm.uiState.selectedSector.sectorId == -1 ? View.GONE : View.VISIBLE}"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/rv_sector_image">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/select_sector"
                                 android:layout_width="100dp"
                                 android:layout_height="120dp"
+                                android:layout_marginBottom="20dp"
                                 android:background="@drawable/rect_blackfill_nostroke_8radius"
-                                android:visibility="@{vm.uiState.selectedSector.sectorId == -1 ? View.GONE : View.VISIBLE}"
+                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/rv_sector_image">
+                                app:layout_constraintTop_toTopOf="parent">
 
                                 <androidx.constraintlayout.widget.Guideline
                                     android:id="@+id/guideline_item"
@@ -424,8 +428,10 @@
                                     android:background="@drawable/rect_nofill_mainstroke_6radius"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintVertical_bias="0.0" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -436,9 +442,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:text="도전 횟수"
-                                app:layout_constraintStart_toEndOf="@id/select_sector"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"/>
+                                app:layout_constraintStart_toEndOf="@id/select_sector"
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
                                 android:id="@+id/tv_challenge"
@@ -447,29 +453,29 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
                                 android:text="0"
-                                app:layout_constraintStart_toStartOf="@id/tv_challenge_title"
                                 app:layout_constraintEnd_toEndOf="@id/tv_challenge_title"
-                                app:layout_constraintTop_toBottomOf="@id/tv_challenge_title"/>
+                                app:layout_constraintStart_toStartOf="@id/tv_challenge_title"
+                                app:layout_constraintTop_toBottomOf="@id/tv_challenge_title" />
 
                             <ImageButton
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_marginEnd="10dp"
-                                android:src="@drawable/ic_horizontal_line_grey9"
                                 android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
-                                app:layout_constraintTop_toTopOf="@id/tv_challenge"
+                                android:src="@drawable/ic_horizontal_line_grey9"
                                 app:layout_constraintBottom_toBottomOf="@id/tv_challenge"
-                                app:layout_constraintEnd_toStartOf="@id/tv_challenge"/>
+                                app:layout_constraintEnd_toStartOf="@id/tv_challenge"
+                                app:layout_constraintTop_toTopOf="@id/tv_challenge" />
 
                             <ImageButton
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_marginStart="10dp"
-                                android:src="@drawable/ic_add_gray9"
                                 android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
-                                app:layout_constraintTop_toTopOf="@id/tv_challenge"
+                                android:src="@drawable/ic_add_gray9"
                                 app:layout_constraintBottom_toBottomOf="@id/tv_challenge"
-                                app:layout_constraintStart_toEndOf="@id/tv_challenge"/>
+                                app:layout_constraintStart_toEndOf="@id/tv_challenge"
+                                app:layout_constraintTop_toTopOf="@id/tv_challenge" />
 
                             <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/btn_clear"
@@ -477,18 +483,25 @@
                                 android:layout_width="0dp"
                                 android:layout_height="35dp"
                                 android:layout_marginHorizontal="15dp"
+                                android:background="@drawable/rect_lightgrayfill_nostroke_10radius"
                                 android:text="완등했어요"
                                 android:textColor="@color/cm_grey9"
-                                android:background="@drawable/rect_lightgrayfill_nostroke_10radius"
-                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintBottom_toBottomOf="@id/select_sector"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/select_sector" />
 
-
-
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+                        <ImageView
+                            android:id="@+id/iv_celebrate"
+                            android:layout_width="105dp"
+                            android:layout_height="80dp"
+                            android:layout_marginStart="95dp"
+                            android:visibility="gone"
+                            android:src="@drawable/img_celebrate"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/layout_setting"
+                            app:layout_constraintStart_toStartOf="@+id/layout_setting" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -503,7 +516,6 @@
                         android:enabled="@{vm.uiState.selectedSector.levelName.empty? false : true}"
                         android:background="@drawable/selector_submit_btn"
                         android:text="운동완료"
-                        android:onClick="@{() -> vm.applySectorFilter()}"
                         android:textColor="@color/black"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

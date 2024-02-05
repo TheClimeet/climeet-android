@@ -13,6 +13,15 @@ fun bindProfileImg(imageView: ImageView, url: String) {
         .into(imageView)
 }
 
+@BindingAdapter("imgUrl")
+fun bindImgUrl(imageView: ImageView, url: String?) {
+    url?.let{
+        Glide.with(imageView.context)
+            .load(it)
+            .into(imageView)
+    }
+}
+
 @BindingAdapter("formCheck")
 fun bindFormCheck(iv: ImageView, data: String) {
     if (data.isBlank()) {

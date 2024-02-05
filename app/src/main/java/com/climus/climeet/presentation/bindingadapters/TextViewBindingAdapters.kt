@@ -6,6 +6,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.databinding.BindingAdapter
 import com.climus.climeet.R
 import com.climus.climeet.presentation.ui.InputState
@@ -48,6 +49,13 @@ fun bindHelperMessage(tv: TextView, state: InputState) {
             tv.text = state.msg
             tv.setTextColor(ContextCompat.getColor(tv.context, R.color.cm_red))
         }
+    }
+}
+
+@BindingAdapter("textHexColor")
+fun bindTextHexColor(tv: TextView, hexColor: String) {
+    if(hexColor.isNotBlank()){
+        tv.setTextColor(hexColor.toColorInt())
     }
 }
 
