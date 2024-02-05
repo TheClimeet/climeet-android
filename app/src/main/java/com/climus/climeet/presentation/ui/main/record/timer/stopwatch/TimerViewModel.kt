@@ -76,6 +76,7 @@ class TimerViewModel @Inject constructor(
             val state = intent.getStringExtra("pauseState")
             if(state != null){
                 pauseState.value = state.toString()
+                pauseTime.value = sharedPreferences.getLong("pauseTime", 0L)
                 Log.d("timer", "알림창 일시정지 : ${pauseState.value}")
             }
 

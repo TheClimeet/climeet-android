@@ -32,4 +32,6 @@
     <string name="timer_crag_set_inform">"암장을 선택해주세요"</string>
     <string name="timer_complete_inform">"오늘도 클밋과 행클 완료!"</string>
 
+    <string name="viewpager2_banner">%1$d / %2$d</string>
+
 </resources>

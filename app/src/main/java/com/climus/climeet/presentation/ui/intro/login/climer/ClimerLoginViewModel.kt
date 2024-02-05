@@ -33,33 +33,30 @@ class ClimerLoginViewModel @Inject constructor(
     val event: SharedFlow<ClimerLoginEvent> = _event.asSharedFlow()
 
     fun login(type: String, token: String) {
-        viewModelScope.launch {
-            _event.emit(ClimerLoginEvent.NavigateToSignUp(type, token))
-        }
 
-//        viewModelScope.launch {
-//            repository.climerLogin(type, token).let{
-//                when(it){
-//                    is BaseState.Success -> {
-//
-//                        App.sharedPreferences.edit()
-//                            .putString(Constants.X_ACCESS_TOKEN, it.body.accessToken)
-//                            .putString(Constants.X_REFRESH_TOKEN, it.body.refreshToken)
-//                            .putString(Constants.X_MODE, "CLIMER")
-//                            .apply()
-//
-//                        _event.emit(ClimerLoginEvent.GoToMainActivity)
-//                    }
-//
-//                    is BaseState.Error -> {
-//                        // todo 에러코드에 따라서, 회원가입으로 이동, 토스트메세지 띄우기 분기
-//
-//                        _event.emit(ClimerLoginEvent.NavigateToSignUp(type, token))
-//                    }
-//                }
-//            }
-//
-//        }
+        viewModelScope.launch {
+            repository.climerLogin(type, token).let{
+                when(it){
+                    is BaseState.Success -> {
+
+                        App.sharedPreferences.edit()
+                            .putString(Constants.X_ACCESS_TOKEN, it.body.accessToken)
+                            .putString(Constants.X_REFRESH_TOKEN, it.body.refreshToken)
+                            .putString(Constants.X_MODE, "CLIMER")
+                            .apply()
+
+                        _event.emit(ClimerLoginEvent.GoToMainActivity)
+                    }
+
+                    is BaseState.Error -> {
+                        // todo 에러코드에 따라서, 회원가입으로 이동, 토스트메세지 띄우기 분기
+
+                        _event.emit(ClimerLoginEvent.NavigateToSignUp(type, token))
+                    }
+                }
+            }
+
+        }
     }
 
     fun navigateBack() {

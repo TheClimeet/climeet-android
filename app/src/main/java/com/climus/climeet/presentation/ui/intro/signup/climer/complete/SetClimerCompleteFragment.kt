@@ -11,8 +11,11 @@ import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSetClimerCompleteBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.climus.climeet.presentation.ui.intro.IntroViewModel
+import com.climus.climeet.presentation.ui.intro.signup.admin.complete.SetAdminCompleteEvent
+import com.climus.climeet.presentation.ui.intro.signup.admin.complete.SetAdminCompleteFragmentDirections
+import com.climus.climeet.presentation.ui.intro.signup.admin.complete.SetAdminCompleteViewModel
 import com.climus.climeet.presentation.ui.main.MainActivity
+import com.climus.climeet.presentation.ui.intro.IntroViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

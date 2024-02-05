@@ -117,4 +117,7 @@ dependencies {
 
     // Live Data
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
+
+    // View Pager
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
 }
