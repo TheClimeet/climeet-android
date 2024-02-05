@@ -67,8 +67,14 @@
         android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.ClimbingCompleteFragment"
         android:label="ClimbingCompleteFragment"/>
     <fragment
+        android:id="@+id/timer_fragment"
+        android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerFragment"
+        android:label="TimerFragment"/>
+    <fragment
         android:id="@+id/set_timer_climbing_record_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerClimbingRecordFragment"
-        android:label="SetTimerClimbingRecordFragment"/>
+        android:label="SetTimerClimbingRecordFragment">\
+    </fragment>
+
 
 </navigation>

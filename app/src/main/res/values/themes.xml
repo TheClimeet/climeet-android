@@ -27,4 +27,10 @@
         <item name="cornerSizeBottomLeft">10dp</item>
     </style>
 
+    <style name="Top8RadiusImageView" parent="">
+        <item name="cornerSizeTopRight">8dp</item>
+        <item name="cornerSizeTopLeft">8dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
 </resources>
