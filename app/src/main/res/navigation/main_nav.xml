@@ -7,7 +7,20 @@
     <fragment
         android:id="@+id/home_fragment"
         android:name="com.climus.climeet.presentation.ui.main.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_home_fragment_to_bestClimerFragment"
+            app:destination="@id/bestClimerFragment" />
+        <action
+            android:id="@+id/action_home_fragment_to_popularShortsFragment"
+            app:destination="@id/popularShortsFragment" />
+        <action
+            android:id="@+id/action_home_fragment_to_popularCragsFragment"
+            app:destination="@id/popularCragsFragment" />
+        <action
+            android:id="@+id/action_home_fragment_to_popularRoutesFragment"
+            app:destination="@id/popularRoutesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/shorts_fragment"
         android:name="com.climus.climeet.presentation.ui.main.shorts.ShortsFragment"
@@ -16,6 +29,7 @@
         android:id="@+id/upload_fragment"
         android:name="com.climus.climeet.presentation.ui.main.upload.UploadFragment"
         android:label="UploadFragment" />
+<!--  TimerMainFragment에 연결해둠  -->
     <fragment
         android:id="@+id/record_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.RecordFragment"
@@ -28,6 +42,44 @@
         android:id="@+id/myPage_fragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.MyPageFragment"
         android:label="MyPageFragment" />
+    <fragment
+        android:id="@+id/bestClimerFragment"
+        android:name="com.climus.climeet.presentation.ui.main.home.bestclimer.BestClimerFragment"
+        android:label="BestClimerFragment" />
+    <fragment
+        android:id="@+id/popularShortsFragment"
+        android:name="com.climus.climeet.presentation.ui.main.home.popularshorts.PopularShortsFragment"
+        android:label="PopularShortsFragment" />
+    <fragment
+        android:id="@+id/popularCragsFragment"
+        android:name="com.climus.climeet.presentation.ui.main.home.popularcrags.PopularCragsFragment"
+        android:label="PopularCragsFragment" />
+    <fragment
+        android:id="@+id/popularRoutesFragment"
+        android:name="com.climus.climeet.presentation.ui.main.home.popularroutes.PopularRoutesFragment"
+        android:label="PopularRoutesFragment" />
+    <fragment
+        android:id="@+id/searchCragFragment"
+        android:name="com.climus.climeet.presentation.ui.main.home.searchcrag.SearchCragFragment"
+        android:label="SearchCragFragment" />
+
+    <action
+        android:id="@+id/action_home_fragment_to_searchCragFragment"
+        app:destination="@id/searchCragFragment" />
+    <fragment
+        android:id="@+id/record_complete_fragment"
+        android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.ClimbingCompleteFragment"
+        android:label="ClimbingCompleteFragment"/>
+    <fragment
+        android:id="@+id/timer_fragment"
+        android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerFragment"
+        android:label="TimerFragment"/>
+    <fragment
+        android:id="@+id/set_timer_climbing_record_fragment"
+        android:name="com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerClimbingRecordFragment"
+        android:label="SetTimerClimbingRecordFragment">\
+    </fragment>
+
     <fragment
         android:id="@+id/calendar_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.calendar.CalendarFragment"

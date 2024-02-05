@@ -16,9 +16,13 @@
     <color name="cm_grey8">#3D3D3D</color>
     <color name="cm_grey9">#333333</color>
     <color name="cm_grey10">#0F0F0F</color>
+    <color name="cm_stargrey">#E8E8E8</color>
+    <color name="cm_lightblack">#3D3D3D</color>
+    <color name="cm_alphablack">#80000000</color>
 
     <color name="cm_lightgrey">#FFD9D9D9</color>
     <color name="cm_darkgrey">#FF2C2D2E</color>
+    <color name="cm_textgrey">#8B8B8B</color>
     <color name="cm_red">#FFE64646</color>
     <color name="cm_silver">#FF676767</color>
     <color name="cm_silver2">#FF646464</color>

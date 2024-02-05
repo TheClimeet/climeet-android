@@ -122,4 +122,7 @@ dependencies {
     implementation ("com.github.prolificinteractive:material-calendarview:2.0.1")
     implementation ("com.jakewharton.threetenabp:threetenabp:1.1.1")
     implementation ("com.kizitonwose.calendar:view:2.4.1")
+
+    // View Pager
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
 }

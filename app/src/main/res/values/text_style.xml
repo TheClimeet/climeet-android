@@ -91,4 +91,10 @@
         <item name="android:textColor">@color/cm_grey6</item>
     </style>
 
+    <style name="TextTimer" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">70sp</item>
+        <item name="android:textColor">@color/cm_main</item>
+    </style>
+
 </resources>
