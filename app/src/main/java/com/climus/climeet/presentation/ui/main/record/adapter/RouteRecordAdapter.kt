@@ -39,5 +39,9 @@ class RouteRecordViewHolder(
         binding.btnDecrease.setOnClickListener {
             viewModel.itemDecrease(item.sectorId)
         }
+
+        binding.ivDelete.setOnClickListener {
+            viewModel.removeItem(item.sectorId)
+        }
     }
 }

@@ -395,6 +395,10 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun removeItem(id: Long) {
+        _items.value = _items.value.filter { it.sectorId != id }
+    }
+
     private fun itemClicked(id: Long) {
         // 여기에 아이템 클릭 시 실행할 코드를 추가하세요
     }
