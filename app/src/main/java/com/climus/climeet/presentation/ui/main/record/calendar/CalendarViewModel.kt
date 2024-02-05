@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.main.record.calendar
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
@@ -55,6 +56,7 @@ class CalendarViewModel @Inject constructor(
     val selectedDate = MutableLiveData(LocalDate.now())
 
     init {
+        setRecord(LocalDate.now())
     }
 
     fun updateSelectedYearMonth(selectedYear: String, selectedMonth: String) {
@@ -114,8 +116,14 @@ class CalendarViewModel @Inject constructor(
     }
 
     fun navigateToCreateClimbingRecord() {
-        viewModelScope.launch {
-            _event.emit(CalendarEvent.NavigateToCreateClimbingRecord)
+        if(LocalDate.now().isBefore(selectedDate.value)){
+            viewModelScope.launch{
+                _event.emit(CalendarEvent.ShowToastMessage("과거의 기록을 적어주세요!"))
+            }
+        } else {
+            viewModelScope.launch {
+                _event.emit(CalendarEvent.NavigateToCreateClimbingRecord)
+            }
         }
     }
 

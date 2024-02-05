@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.climus.climeet.R
+import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateClimbingRecordViewModel
 import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateRecordData
+import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.selectdate.SelectDateBottomSheetViewModel
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.view.ViewContainer
 import java.time.LocalDate
 
-class DayViewContainer(view: View, val viewModel: CalendarViewModel) : ViewContainer(view) {
+class DayViewContainer(view: View, val viewModel: CalendarViewModel, val dateViewModel: CreateClimbingRecordViewModel) : ViewContainer(view) {
     val textView: TextView = view.findViewById(R.id.tv_date)
     val squareView: View = view.findViewById(R.id.view_date)
     val titlesContainer: ViewGroup = view as ViewGroup
@@ -34,6 +36,7 @@ class DayViewContainer(view: View, val viewModel: CalendarViewModel) : ViewConta
         textView.setBackgroundResource(R.drawable.rect_mainfill_nostroke_5radius)
         squareView.setBackgroundResource(R.drawable.rect_grey6fill_nostroke_5radius)
         viewModel.setSelectedDate(day.date)
+        dateViewModel.setSelectedDate(day.date)
         CreateRecordData.setSelectedDate(day.date)
     }
 

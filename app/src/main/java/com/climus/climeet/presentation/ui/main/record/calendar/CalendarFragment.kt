@@ -13,6 +13,7 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCalendarBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.signup.climer.setlevel.AdapterDecoration
+import com.climus.climeet.presentation.ui.main.record.createclimbingrecord.CreateClimbingRecordViewModel
 import com.climus.climeet.presentation.ui.toSelectDateBottomSheetFragment
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.DayPosition
@@ -26,7 +27,7 @@ import java.util.Locale
 
 @AndroidEntryPoint
 class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment_calendar) {
-
+    private val recordViewModel: CreateClimbingRecordViewModel by activityViewModels()
     private val viewModel: CalendarViewModel by activityViewModels()
     private var calendarAdapter: CalendarAdapter? = null
 
@@ -44,7 +45,6 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
             val yearMonth = YearMonth.of(date.year, date.monthValue)
 
             binding.calendarView.scrollToMonth(yearMonth)  // 새로 선택된 날짜가 있는 월로 이동
-            binding.calendarView.scrollToMonth(yearMonth)
         })
 
     }
@@ -90,7 +90,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
                 container.textView.text = data.date.dayOfMonth.toString()
             }
 
-            override fun create(view: View) = DayViewContainer(view, viewModel)
+            override fun create(view: View) = DayViewContainer(view, viewModel, recordViewModel)
         }
 
         setupCalendarView()
@@ -122,7 +122,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
 
     private fun setupDayBinder() {
         binding.calendarView.dayBinder = object : MonthDayBinder<DayViewContainer> {
-            override fun create(view: View) = DayViewContainer(view, viewModel)
+            override fun create(view: View) = DayViewContainer(view, viewModel, recordViewModel)
             override fun bind(container: DayViewContainer, data: CalendarDay) {
                 container.textView.text = data.date.dayOfMonth.toString()
                 container.day = data
