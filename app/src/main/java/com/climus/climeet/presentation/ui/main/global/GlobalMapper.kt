@@ -8,7 +8,7 @@ import com.climus.climeet.presentation.ui.main.global.selectsector.model.GymLeve
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SectorNameUiData
 
 fun SectorItem.toSectorNameUiData(
-    onClickListener: (Long) -> Unit
+    onClickListener: (SectorNameUiData) -> Unit
 ) = SectorNameUiData(
     sectorId = sectorId,
     name = name,
@@ -17,7 +17,7 @@ fun SectorItem.toSectorNameUiData(
 )
 
 fun DifficultyItem.toGymLevelUiData(
-    onClickListener: (Int) -> Unit
+    onClickListener: (GymLevelUiData) -> Unit
 ) = GymLevelUiData(
     levelName = gymDifficultyName,
     levelColor = gymDifficultyColor,
@@ -26,7 +26,7 @@ fun DifficultyItem.toGymLevelUiData(
 )
 
 fun RouteItem.toRouteUiData(
-    onClickListener: (Long) -> Unit
+    onClickListener: (RouteUiData) -> Unit
 ) = RouteUiData(
     routeId = routeId,
     sectorId = sectorId,

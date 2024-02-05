@@ -18,7 +18,6 @@
         android:layout_width="36dp"
         android:text="@{item.levelName}"
         app:textHexColor="@{item.levelColor}"
-        android:onClick="@{() -> item.onClickListener.invoke(item.difficulty)}"
         android:layout_height="36dp"
         android:background="@drawable/oval_silver2fill_nostroke"
         android:gravity="center"

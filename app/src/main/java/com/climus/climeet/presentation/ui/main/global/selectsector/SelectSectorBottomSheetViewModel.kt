@@ -8,7 +8,7 @@ import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.GymLevelUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.RouteUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SectorNameUiData
-import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedRoute
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedFilter
 import com.climus.climeet.presentation.ui.main.global.toGymLevelUiData
 import com.climus.climeet.presentation.ui.main.global.toRouteUiData
 import com.climus.climeet.presentation.ui.main.global.toSectorNameUiData
@@ -34,9 +34,10 @@ data class SelectSectorBottomSheetUiState(
     val sectorNameList: List<SectorNameUiData> = emptyList(),
     val gymLevelList: List<GymLevelUiData> = emptyList(),
     val routeList: List<RouteUiData> = emptyList(),
-    val selectedSectorId: Long = -1,
-    val selectedDifficulty: Int = -1,
-    val selectedRoute: SelectedRoute = SelectedRoute()
+    val selectedSector: SectorNameUiData = SectorNameUiData {},
+    val selectedLevel: GymLevelUiData = GymLevelUiData {},
+    val selectedRoute: RouteUiData = RouteUiData {},
+    val selectedFilter: SelectedFilter = SelectedFilter()
 )
 
 sealed class FloorBtnState {
@@ -46,9 +47,7 @@ sealed class FloorBtnState {
 
 sealed class SelectSectorBottomSheetEvent {
     data object NavigateToBack : SelectSectorBottomSheetEvent()
-    data class ApplyFilter(val sector: SelectedRoute) :
-        SelectSectorBottomSheetEvent()
-
+    data class ApplyFilter(val filter: SelectedFilter) : SelectSectorBottomSheetEvent()
     data object DismissDialog : SelectSectorBottomSheetEvent()
     data class ShowToastMessage(val msg: String) : SelectSectorBottomSheetEvent()
 }
@@ -96,7 +95,7 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
                             data.toGymLevelUiData(::selectGymLevel)
                         }
 
-                        if(it.body.maxFloor == 1){
+                        if (it.body.maxFloor == 1) {
                             _uiState.update { state ->
                                 state.copy(
                                     isSingleFloor = true,
@@ -132,7 +131,8 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
                 curFloor = floor,
                 sectorNameList = sectorNameList.filter {
                     it.floor == floor
-                }
+                },
+                selectedRoute = RouteUiData{}
             )
         }
         setFloorInfo(floor)
@@ -141,7 +141,7 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
     private fun setFloorInfo(floor: Int) {
 
         viewModelScope.launch {
-            repository.getGymRouteInfoList(cragId, GetGymRouteInfoRequest(0, 10)).let { it ->
+            repository.getGymRouteInfoList(cragId, GetGymRouteInfoRequest(0, 10, floor)).let {
                 when (it) {
                     is BaseState.Success -> {
 
@@ -166,8 +166,8 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
 
     private fun getRouteList(
         floor: Int,
-        sectorId: Long?,
-        difficulty: Int?,
+        sectorId: Long? = null,
+        difficulty: Int? = null,
     ) {
         viewModelScope.launch {
             repository.getGymRouteInfoList(
@@ -175,13 +175,19 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
                     0, 10, floor, sectorId, difficulty
                 )
             ).let {
-                when(it){
+                when (it) {
                     is BaseState.Success -> {
-
+                        _uiState.update { state ->
+                            state.copy(
+                                routeList = it.body.result.map { data ->
+                                    data.toRouteUiData(::selectRoute)
+                                }
+                            )
+                        }
                     }
 
                     is BaseState.Error -> {
-
+                        _event.emit(SelectSectorBottomSheetEvent.ShowToastMessage(it.msg))
                     }
                 }
 
@@ -189,82 +195,69 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
         }
     }
 
-    private fun selectSectorName(sectorId: Long) {
+    private fun selectSectorName(item: SectorNameUiData) {
 
         _uiState.update { state ->
             state.copy(
                 sectorNameList = state.sectorNameList.map {
                     it.copy(
-                        isSelected = it.sectorId == sectorId
+                        isSelected = it.sectorId == item.sectorId
                     )
                 },
-                selectedSectorId = sectorId
+                selectedSector = item,
+                selectedRoute = RouteUiData{}
             )
         }
 
-        viewModelScope.launch {
-            //todo sectorImage 목록 최신화
-            // - 기존 선택되어있는게 있으면, 그거 맨 앞으로 보내고, list 추가하기
-        }
+        getRouteList(
+            uiState.value.curFloor,
+            item.sectorId,
+            if (uiState.value.selectedLevel.difficulty != -1) uiState.value.selectedLevel.difficulty else null
+        )
 
     }
 
-    private fun selectGymLevel(difficulty: Int) {
+    private fun selectGymLevel(item: GymLevelUiData) {
         _uiState.update { state ->
             state.copy(
                 gymLevelList = state.gymLevelList.map {
                     it.copy(
-                        isSelected = it.difficulty == difficulty
+                        isSelected = it.difficulty == item.difficulty
                     )
                 },
-                selectedDifficulty = difficulty
+                selectedLevel = item,
+                selectedRoute = RouteUiData{}
             )
         }
 
-        viewModelScope.launch {
-
-            //todo sectorImage 목록 최신화
-            // - 기존 선택되어있는게 있으면, 그거 맨 앞으로 보내고, list 추가하기
-        }
+        getRouteList(
+            uiState.value.curFloor,
+            if (uiState.value.selectedSector.sectorId != -1L) uiState.value.selectedSector.sectorId else null,
+            item.difficulty
+        )
     }
 
-    private fun selectRoute(id: Long) {
-        var selectedData = SelectedRoute()
+    private fun selectRoute(item: RouteUiData) {
         _uiState.update { state ->
             state.copy(
-                routeList = state.routeList.map {
-                    if (it.sectorId == id) {
-                        selectedData =
-                            SelectedRoute(
-                                routeId = it.routeId,
-                                sectorId = it.sectorId,
-                                sectorName = it.sectorName,
-                                cragName = cragName,
-                                gymLevelName = it.gymLevelName,
-                                gymLevelColor = it.gymLevelColor,
-                                climeetLevelName = it.climeetLevelName,
-                                routeImg = it.routeImg
-                            )
-                        it.copy(
-                            isSelected = true
-                        )
-                    } else {
-                        it.copy(
-                            isSelected = false
-                        )
-                    }
-
-                },
-                selectedRoute = selectedData
+                selectedRoute = item
             )
         }
     }
 
     fun applySectorFilter() {
+        val selectedFilter = SelectedFilter(
+            routeId = uiState.value.selectedRoute.routeId,
+            sectorId = uiState.value.selectedSector.sectorId,
+            difficulty = uiState.value.selectedLevel.difficulty,
+            sectorName = uiState.value.selectedSector.name,
+            cragName = cragName,
+            gymLevelName = uiState.value.selectedLevel.levelName
+        )
         viewModelScope.launch {
             _event.emit(
                 SelectSectorBottomSheetEvent.ApplyFilter(
-                    uiState.value.selectedRoute
+                    selectedFilter
                 )
             )
         }

@@ -75,7 +75,7 @@ class UploadBottomSheetFragment : BottomSheetDialogFragment(){
                 when(it){
                     is UploadBottomSheetEvent.DismissDialog -> dismiss()
                     is UploadBottomSheetEvent.ApplyFilter -> {
-                        parentViewModel.applyFilter(it.selectedRoute)
+                        parentViewModel.applyFilter(it.selectedFilter)
                         dismiss()
                     }
                 }

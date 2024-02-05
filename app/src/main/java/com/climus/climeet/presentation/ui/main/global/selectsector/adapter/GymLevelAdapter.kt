@@ -49,6 +49,9 @@ class SectorLevelViewHolder(private val binding: ItemGymLevelBinding) :
 
     fun bind(item: GymLevelUiData) {
         binding.item = item
+        binding.root.setOnClickListener {
+            item.onClickListener(item)
+        }
         if (item.isSelected) {
             binding.tvLevel.setBackgroundResource(R.drawable.oval_silver2fill_mainstroke)
         } else {

@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
-import com.climus.climeet.databinding.ItemWallNameBinding
+import com.climus.climeet.databinding.ItemSectorNameBinding
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SectorNameUiData
 
-class WallNameAdapter :
-    ListAdapter<SectorNameUiData, WallNameViewHolder>(diffCallback) {
+class SectorNameAdapter :
+    ListAdapter<SectorNameUiData, SectorNameViewHolder>(diffCallback) {
 
     companion object {
         val diffCallback = object : DiffUtil.ItemCallback<SectorNameUiData>() {
@@ -31,13 +31,13 @@ class WallNameAdapter :
         }
     }
 
-    override fun onBindViewHolder(holder: WallNameViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SectorNameViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WallNameViewHolder =
-        WallNameViewHolder(
-            ItemWallNameBinding.inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SectorNameViewHolder =
+        SectorNameViewHolder(
+            ItemSectorNameBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -45,11 +45,14 @@ class WallNameAdapter :
         )
 }
 
-class WallNameViewHolder(private val binding: ItemWallNameBinding) :
+class SectorNameViewHolder(private val binding: ItemSectorNameBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: SectorNameUiData) {
         binding.item = item
+        binding.root.setOnClickListener {
+            item.onClickListener(item)
+        }
         if (item.isSelected) {
             binding.chipText.setChipBackgroundColorResource(R.color.cm_main)
             binding.chipText.setTextColor(

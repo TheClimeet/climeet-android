@@ -267,17 +267,17 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun selectWallName(sectorId: Long) {
+    private fun selectWallName(item: SectorNameUiData) {
 
         _uiState.update { state ->
             state.copy(
                 wallNameList = state.wallNameList.map {
                     it.copy(
-                        isSelected = it.sectorId == sectorId
+                        isSelected = it.sectorId == item.sectorId
                     )
                 },
                 selectedSectorName = state.wallNameList.filter {
-                    it.sectorId == sectorId
+                    it.sectorId == item.sectorId
                 }[0]
             )
         }
@@ -289,16 +289,16 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
 
     }
 
-    private fun selectSectorLevel(difficulty: Int) {
+    private fun selectSectorLevel(item: GymLevelUiData) {
         _uiState.update { state ->
             state.copy(
                 sectorLevelList = state.sectorLevelList.map {
                     it.copy(
-                        isSelected = it.difficulty == difficulty
+                        isSelected = it.difficulty == item.difficulty
                     )
                 },
                 selectedSectorLevel = state.sectorLevelList.filter {
-                    it.difficulty == difficulty
+                    it.difficulty == item.difficulty
                 }[0]
             )
         }
@@ -310,12 +310,12 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private fun selectSectorImage(id: Long) {
+    private fun selectSectorImage(item: RouteUiData) {
         var selectedData = SelectedSector()
         _uiState.update { state ->
             state.copy(
                 sectorImageList = state.sectorImageList.map {
-                    if (it.sectorId == id) {
+                    if (it.sectorId == item.sectorId) {
                         selectedData =
                             SelectedSector(
                                 it.sectorId,

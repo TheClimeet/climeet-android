@@ -49,6 +49,9 @@ class RouteImageViewHolder(private val binding: ItemRouteImageBinding) :
 
     fun bind(item: RouteUiData) {
         binding.item = item
+        binding.root.setOnClickListener {
+            item.onClickListener(item)
+        }
         if (item.isSelected) {
             binding.vStroke.setBackgroundResource(R.drawable.rect_nofill_mainstroke_6radius)
         } else {

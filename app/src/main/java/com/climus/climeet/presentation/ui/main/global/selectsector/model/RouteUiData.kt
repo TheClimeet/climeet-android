@@ -1,7 +1,7 @@
 package com.climus.climeet.presentation.ui.main.global.selectsector.model
 
 data class RouteUiData(
-    val routeId: Long = 0,
+    val routeId: Long = -1,
     val sectorId: Long = 0,
     val sectorName: String = "",
     val gymLevelName: String = "",
@@ -9,5 +9,5 @@ data class RouteUiData(
     val climeetLevelName: String = "",
     val routeImg: String = "",
     var isSelected: Boolean = false,
-    val onClickListener: (Long) -> Unit
+    val onClickListener: (RouteUiData) -> Unit
 )

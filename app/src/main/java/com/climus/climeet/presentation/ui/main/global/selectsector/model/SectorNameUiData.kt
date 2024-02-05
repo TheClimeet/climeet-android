@@ -5,5 +5,5 @@ data class SectorNameUiData(
     val name: String = "",
     var isSelected: Boolean = false,
     val floor: Int = 0,
-    val onClickListener: (Long) -> Unit
+    val onClickListener: (SectorNameUiData) -> Unit
 )

@@ -77,7 +77,7 @@ class ShortsBottomSheetFragment : BottomSheetDialogFragment() {
                 when(it){
                     is ShortsBottomSheetEvent.DismissDialog -> dismiss()
                     is ShortsBottomSheetEvent.ApplyFilter -> {
-                        parentViewModel.applyFilter(it.selectedRoute)
+                        parentViewModel.applyFilter(it.selectedFilter)
                         dismiss()
                     }
                 }

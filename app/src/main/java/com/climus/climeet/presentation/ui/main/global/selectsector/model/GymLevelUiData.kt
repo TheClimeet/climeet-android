@@ -4,6 +4,6 @@ data class GymLevelUiData(
     val levelName: String = "",
     val levelColor: String = "",
     var isSelected: Boolean = false,
-    val difficulty: Int = 0,
-    val onClickListener: (Int) -> Unit
+    val difficulty: Int = -1,
+    val onClickListener: (GymLevelUiData) -> Unit
 )

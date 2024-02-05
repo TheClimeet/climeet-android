@@ -10,9 +10,9 @@ import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSelectSectorBottomSheetBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLevelAdapter
-import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.WallNameAdapter
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.SectorNameAdapter
 import com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsBottomSheetViewModel
 import com.climus.climeet.presentation.ui.main.upload.bottomsheet.UploadBottomSheetViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +39,7 @@ class SelectSectorBottomSheetFragment :
     }
 
     private fun setRecyclerView() {
-        binding.rvSectorName.adapter = WallNameAdapter()
+        binding.rvSectorName.adapter = SectorNameAdapter()
         binding.rvSectorLevel.adapter = GymLevelAdapter()
         binding.rvSectorImage.adapter = RouteImageAdapter()
         binding.rvSectorName.itemAnimator = null
@@ -54,9 +54,9 @@ class SelectSectorBottomSheetFragment :
                     is SelectSectorBottomSheetEvent.NavigateToBack -> findNavController().toBack()
                     is SelectSectorBottomSheetEvent.ApplyFilter -> {
                         if(BottomSheetState.state == "UPLOAD"){
-                            parentUploadViewModel.applyFilter(it.sector)
+                            parentUploadViewModel.applyFilter(it.filter)
                         } else {
-                            parentShortsViewModel.applyFilter(it.sector)
+                            parentShortsViewModel.applyFilter(it.filter)
                         }
                     }
                     is SelectSectorBottomSheetEvent.DismissDialog -> {
