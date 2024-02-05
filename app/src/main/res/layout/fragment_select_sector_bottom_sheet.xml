@@ -9,7 +9,7 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector.SelectSectorBottomSheetViewModel" />
+            type="com.climus.climeet.presentation.ui.main.global.selectsector.SelectSectorBottomSheetViewModel" />
 
     </data>
 

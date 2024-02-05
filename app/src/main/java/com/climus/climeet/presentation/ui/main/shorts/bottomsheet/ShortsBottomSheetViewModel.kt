@@ -2,7 +2,7 @@ package com.climus.climeet.presentation.ui.main.shorts.bottomsheet
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector.SelectedSector
+import com.climus.climeet.presentation.ui.main.global.selectsector.SelectedSector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow

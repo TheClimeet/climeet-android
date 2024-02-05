@@ -3,15 +3,14 @@ package com.climus.climeet.presentation.ui.main.shorts
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentShortsBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.main.global.selectsector.BottomSheetState
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsThumbnailAdapter
 import com.climus.climeet.presentation.ui.main.shorts.adapter.UpdatedFollowAdapter
-import com.climus.climeet.presentation.ui.toSearchCragBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -48,9 +47,17 @@ class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_sho
                 when (it) {
                     is ShortsEvent.ShowToastMessage -> showToastMessage(it.msg)
                     is ShortsEvent.NavigateToShortsDetail -> {}
-                    is ShortsEvent.NavigateToSearchCragBottomSheet -> findNavController().toSearchCragBottomSheet()
+                    is ShortsEvent.NavigateToSearchCragBottomSheet -> {
+                        BottomSheetState.state = "SHORTS"
+                        findNavController().toShortsBottomSheet()
+                    }
                 }
             }
         }
+    }
+
+    private fun NavController.toShortsBottomSheet(){
+        val action = ShortsFragmentDirections.actionShortsFragmentToShortsBottomSheetFragment()
+        navigate(action)
     }
 }

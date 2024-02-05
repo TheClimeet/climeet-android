@@ -15,11 +15,18 @@
         <action
             android:id="@+id/action_shorts_fragment_to_shortsDetailFragment"
             app:destination="@id/shortsDetailFragment" />
+        <action
+            android:id="@+id/action_shorts_fragment_to_shortsBottomSheetFragment"
+            app:destination="@id/shortsBottomSheetFragment" />
     </fragment>
     <fragment
         android:id="@+id/upload_fragment"
         android:name="com.climus.climeet.presentation.ui.main.upload.UploadFragment"
-        android:label="UploadFragment" />
+        android:label="UploadFragment" >
+        <action
+            android:id="@+id/action_upload_fragment_to_uploadBottomSheetFragment"
+            app:destination="@id/uploadBottomSheetFragment" />
+    </fragment>
     <fragment
         android:id="@+id/record_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.RecordFragment"
@@ -45,8 +52,9 @@
         android:name="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsBottomSheetFragment"
         android:label="ShortsBottomSheetFragment" />
 
-    <action
-        android:id="@+id/globalActionToShortsBottomSheetFragment"
-        app:destination="@id/shortsBottomSheetFragment"/>
+    <dialog
+        android:id="@+id/uploadBottomSheetFragment"
+        android:name="com.climus.climeet.presentation.ui.main.upload.bottomsheet.UploadBottomSheetFragment"
+        android:label="UploadBottomSheetFragment" />
 
 </navigation>

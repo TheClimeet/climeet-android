@@ -5,18 +5,21 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentUploadBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.CheckPublicBottomSheet
 import com.climus.climeet.presentation.ui.main.MainViewModel
+import com.climus.climeet.presentation.ui.main.global.selectsector.BottomSheetState
 import com.climus.climeet.presentation.util.Constants.TAG
 
 class UploadFragment: BaseFragment<FragmentUploadBinding>(R.layout.fragment_upload) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
-    private val viewModel: UploadViewModel by viewModels()
+    private val viewModel: UploadViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,8 +50,20 @@ class UploadFragment: BaseFragment<FragmentUploadBinding>(R.layout.fragment_uplo
                             viewModel.setPublicState(it)
                         }.show()
                     }
+
+                    is UploadEvent.NavigateToSearchCragBottomSheet -> {
+                        BottomSheetState.state = "UPLOAD"
+                        findNavController().toUploadBottomSheets()
+                    }
+
+                    is UploadEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }
+    }
+
+    private fun NavController.toUploadBottomSheets(){
+        val action = UploadFragmentDirections.actionUploadFragmentToUploadBottomSheetFragment()
+        navigate(action)
     }
 }

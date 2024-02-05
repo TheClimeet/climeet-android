@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.shorts.bottomsheet.searchcrag
+package com.climus.climeet.presentation.ui.main.global.searchcrag
 
 import android.os.Bundle
 import android.view.View

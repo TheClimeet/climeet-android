@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector
+package com.climus.climeet.presentation.ui.main.global.selectsector
 
 import android.os.Bundle
 import android.view.View
@@ -14,11 +14,13 @@ import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorImageAdapter
 import com.climus.climeet.presentation.ui.main.shorts.adapter.SectorLevelAdapter
 import com.climus.climeet.presentation.ui.main.shorts.adapter.WallNameAdapter
 import com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsBottomSheetViewModel
+import com.climus.climeet.presentation.ui.main.upload.bottomsheet.UploadBottomSheetViewModel
 
 class SelectSectorBottomSheetFragment :
     BaseFragment<FragmentSelectSectorBottomSheetBinding>(R.layout.fragment_select_sector_bottom_sheet) {
 
-    private val parentViewModel: ShortsBottomSheetViewModel by activityViewModels()
+    private val parentShortsViewModel: ShortsBottomSheetViewModel by activityViewModels()
+    private val parentUploadViewModel: UploadBottomSheetViewModel by activityViewModels()
     private val viewModel: SelectSectorBottomSheetViewModel by viewModels()
 
     private val args: SelectSectorBottomSheetFragmentArgs by navArgs()
@@ -48,8 +50,17 @@ class SelectSectorBottomSheetFragment :
             viewModel.event.collect {
                 when (it) {
                     is SelectSectorBottomSheetEvent.NavigateToBack -> findNavController().toBack()
-                    is SelectSectorBottomSheetEvent.ApplyFilter -> parentViewModel.applyFilter(it.sector)
-                    is SelectSectorBottomSheetEvent.DismissDialog -> parentViewModel.dismissDialog()
+                    is SelectSectorBottomSheetEvent.ApplyFilter -> {
+                        if(BottomSheetState.state == "UPLOAD"){
+                            parentUploadViewModel.applyFilter(it.sector)
+                        } else {
+                            parentShortsViewModel.applyFilter(it.sector)
+                        }
+                    }
+                    is SelectSectorBottomSheetEvent.DismissDialog -> {
+                        parentShortsViewModel.dismissDialog()
+                        parentUploadViewModel.dismissDialog()
+                    }
                 }
             }
         }

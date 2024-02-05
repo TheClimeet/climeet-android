@@ -168,7 +168,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
-            android:text="@{vm.publicState.text}"
+            android:text="@{vm.uiState.publicState.text}"
             android:textColor="@color/cm_grey6"
             app:layout_constraintBottom_toBottomOf="@id/btn_public"
             app:layout_constraintEnd_toStartOf="@id/btn_public"
@@ -180,8 +180,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:onClick="@{() -> vm.showPublicBottomSheet()}"
             android:background="@android:color/transparent"
+            android:onClick="@{() -> vm.showPublicBottomSheet()}"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_next_small"
             app:layout_constraintBottom_toBottomOf="@id/iv_public"
@@ -213,12 +213,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
-            android:text="@{vm.selectCragName}"
+            android:text="@{vm.uiState.selectedSector.cragName}"
             android:textColor="@color/cm_grey6"
             app:layout_constraintBottom_toBottomOf="@id/btn_crag"
             app:layout_constraintEnd_toStartOf="@id/btn_crag"
-            app:layout_constraintTop_toTopOf="@id/btn_crag"
-            tools:text="어디어디 암장" />
+            app:layout_constraintTop_toTopOf="@id/btn_crag" />
 
         <ImageButton
             android:id="@+id/btn_crag"
@@ -226,6 +225,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
+            android:onClick="@{() -> vm.navigateToSearchCragBottomSheet()}"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_next_small"
             app:layout_constraintBottom_toBottomOf="@id/iv_crag"
@@ -247,7 +247,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="루트 추가"
+            android:text="루트"
             app:layout_constraintBottom_toBottomOf="@id/iv_route"
             app:layout_constraintStart_toEndOf="@id/iv_route" />
 
@@ -256,24 +256,24 @@
             style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:text="@{vm.selectRoute}"
+            android:layout_marginEnd="30dp"
+            android:text="@{vm.uiState.selectedSector.sectorName}"
             android:textColor="@color/cm_grey6"
-            app:layout_constraintBottom_toBottomOf="@id/btn_route"
-            app:layout_constraintEnd_toStartOf="@id/btn_route"
-            app:layout_constraintTop_toTopOf="@id/btn_route"
+            app:layout_constraintBottom_toBottomOf="@id/iv_route"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_route"
             tools:text="SECTOR 2-2" />
 
-        <ImageButton
-            android:id="@+id/btn_route"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:background="@android:color/transparent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_next_small"
-            app:layout_constraintBottom_toBottomOf="@id/iv_route"
-            app:layout_constraintEnd_toEndOf="parent" />
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/btn_route"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginEnd="16dp"-->
+        <!--            android:background="@android:color/transparent"-->
+        <!--            android:scaleType="centerCrop"-->
+        <!--            android:src="@drawable/ic_next_small"-->
+        <!--            app:layout_constraintBottom_toBottomOf="@id/iv_route"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

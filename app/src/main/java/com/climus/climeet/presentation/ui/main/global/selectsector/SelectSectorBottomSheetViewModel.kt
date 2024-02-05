@@ -1,12 +1,10 @@
-package com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector
+package com.climus.climeet.presentation.ui.main.global.selectsector
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.presentation.ui.main.shorts.model.SectorImageUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.SectorLevelUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.WallNameUiData
-import com.climus.climeet.presentation.util.Constants.TAG
 import com.climus.climeet.presentation.util.Constants.TEST_IMG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

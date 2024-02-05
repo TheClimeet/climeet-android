@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsDetailListener
-import com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector.SelectedSector
+import com.climus.climeet.presentation.ui.main.global.selectsector.SelectedSector
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.UpdatedFollowUiData
