@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rect_grey9fill_nostroke_top_20radius">
+
+        <TextView
+            android:id="@+id/tv_header"
+            style="@style/TextMediumSemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="공개 대상"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:dividerColor="#484C4F"
+            app:dividerThickness="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_header" />
+
+        <TextView
+            android:id="@+id/tv_description"
+            style="@style/TextRegular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:text="누구와 게시물을 공유하고 싶으신가요?"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider" />
+
+        <ImageView
+            android:id="@+id/iv_public"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/ic_earth"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_description" />
+
+        <TextView
+            android:id="@+id/tv_public_label"
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="전체 공개"
+            app:layout_constraintBottom_toBottomOf="@id/iv_public"
+            app:layout_constraintStart_toEndOf="@id/iv_public" />
+
+        <ImageView
+            android:id="@+id/iv_follower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/ic_people"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_public" />
+
+        <TextView
+            android:id="@+id/tv_followerlabel"
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="팔로워만 공개"
+            app:layout_constraintBottom_toBottomOf="@id/iv_follower"
+            app:layout_constraintStart_toEndOf="@id/iv_follower" />
+
+        <ImageView
+            android:id="@+id/iv_only_me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/ic_lock"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_follower" />
+
+        <TextView
+            android:id="@+id/tv_only_me_label"
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="나만 보기"
+            app:layout_constraintBottom_toBottomOf="@id/iv_only_me"
+            app:layout_constraintStart_toEndOf="@id/iv_only_me" />
+
+        <RadioGroup
+            android:id="@+id/rg_state"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:checkedButton="@id/rb_public"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@id/divider_bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_public">
+
+            <RadioButton
+                android:id="@+id/rb_public"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="15dp"
+                android:theme="@style/RadioButtonTheme" />
+
+            <RadioButton
+                android:id="@+id/rb_follower"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="15dp"
+                android:theme="@style/RadioButtonTheme" />
+
+            <RadioButton
+                android:id="@+id/rb_only_me"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="15dp"
+                android:paddingBottom="0dp"
+                android:theme="@style/RadioButtonTheme" />
+
+        </RadioGroup>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider_bottom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:dividerColor="#484C4F"
+            app:dividerThickness="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_only_me" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_complete"
+            style="@style/TextMediumBold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/rect_mainfill_nostroke_8radius"
+            android:paddingVertical="10dp"
+            android:text="설정 완료"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_bottom" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_complete" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

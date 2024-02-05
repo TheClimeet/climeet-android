@@ -34,4 +34,9 @@
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
+    <style name="RadioButtonTheme" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/cm_main</item>
+        <item name="colorControlNormal">@color/cm_grey5</item>
+    </style>
+
 </resources>
