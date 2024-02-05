@@ -101,8 +101,6 @@ class ShortsViewModel @Inject constructor(
                     }
                 }
 
-
-
                 result.let {
                     when (it) {
                         is BaseState.Success -> {

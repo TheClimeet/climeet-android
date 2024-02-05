@@ -53,6 +53,4 @@ class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_sho
             }
         }
     }
-
-
 }
