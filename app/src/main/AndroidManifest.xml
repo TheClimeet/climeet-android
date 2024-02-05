@@ -13,6 +13,9 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
+    <!--  Foreground 서비스 권한  -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
 
     <application
         android:name=".app.App"
@@ -48,5 +51,12 @@
                     android:scheme="kakao${KAKAO_API_KEY}" />
             </intent-filter>
         </activity>
+
+        <!--  스톱워치 notification 서비스  -->
+        <service
+            android:name=".presentation.ui.main.record.timer.stopwatch.TimerService"
+            android:enabled="true"
+            android:foregroundServiceType="dataSync"
+            android:exported="true"/>
     </application>
 </manifest>

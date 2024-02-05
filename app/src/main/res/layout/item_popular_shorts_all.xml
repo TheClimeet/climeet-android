@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp">
+
+        <ImageView
+            android:id="@+id/iv_shorts_all_thumbnail"
+            android:layout_width="90dp"
+            android:layout_height="150dp"
+            android:layout_marginVertical="10dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/img_shorts"
+            app:civ_border_overlay="true"
+            app:civ_border_width="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_shorts_all_crag_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rect_alpahblackfill_nostroke_999radius"
+            android:text="피커스 구로"
+            style="@style/TextSmall"
+            android:textSize="8sp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="15dp"
+            android:textColor="@color/cm_stargrey"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_shorts_all_thumbnail" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_popular_shorts_all_circle"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="4dp"
+            android:src="#FFE64646"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_shorts_all_crag_name"
+            app:layout_constraintEnd_toEndOf="@+id/tv_shorts_all_crag_name"
+            app:layout_constraintTop_toTopOf="@+id/tv_shorts_all_crag_name" />
+
+        <TextView
+            android:id="@+id/tv_popular_shorts_all_level"
+            style="@style/TextTiny"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="9dp"
+            android:background="@drawable/circle_nofill_redstroke_noradius"
+            android:gravity="center"
+            android:text="V1"
+            android:textColor="@color/cm_red"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_shorts_all_thumbnail"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
