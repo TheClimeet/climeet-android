@@ -66,7 +66,7 @@ class NoticeSettingFragment :
                 when(it){
                     is NoticeSettingEvent.NavigateToBack -> findNavController().navigateUp()
                     is NoticeSettingEvent.NavigateToComplete -> navigateNext()
-                    is NoticeSettingEvent.ShowToastMessage -> showToastMessage(it.msg)
+                    is NoticeSettingEvent.ShowToastMessage -> navigateNext() // 임시로 수정 showToastMessage(it.msg)
                 }
             }
         }

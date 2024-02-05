@@ -27,4 +27,6 @@
     <string name="set_climer_nick_explain_large">클밋에서 사용하실\n닉네임을 설정해주세요!</string>
     <string name="set_climer_profile_explain_large">클밋에서 사용하실\n프로필을 설정해주세요!</string>
 
+    <string name="viewpager2_banner">%1$d / %2$d</string>
+
 </resources>
