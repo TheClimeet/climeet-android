@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.upload.UploadViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -89,6 +93,7 @@
             android:layout_marginTop="16dp"
             android:backgroundTint="@android:color/transparent"
             android:hint="문구를 입력하세요 ..."
+            android:text="@={vm.description}"
             android:textColorHint="@color/cm_grey6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -130,7 +135,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:checked="false"
+            android:checked="@={vm.soundEnabled}"
             app:layout_constraintBottom_toBottomOf="@id/iv_sound"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/iv_sound"
@@ -163,6 +168,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
+            android:text="@{vm.publicState}"
             android:textColor="@color/cm_grey6"
             app:layout_constraintBottom_toBottomOf="@id/btn_public"
             app:layout_constraintEnd_toStartOf="@id/btn_public"
@@ -206,6 +212,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
+            android:text="@{vm.selectCragName}"
             android:textColor="@color/cm_grey6"
             app:layout_constraintBottom_toBottomOf="@id/btn_crag"
             app:layout_constraintEnd_toStartOf="@id/btn_crag"
@@ -249,6 +256,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
+            android:text="@{vm.selectRoute}"
             android:textColor="@color/cm_grey6"
             app:layout_constraintBottom_toBottomOf="@id/btn_route"
             app:layout_constraintEnd_toStartOf="@id/btn_route"
