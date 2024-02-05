@@ -29,10 +29,11 @@
         android:id="@+id/upload_fragment"
         android:name="com.climus.climeet.presentation.ui.main.upload.UploadFragment"
         android:label="UploadFragment" />
+<!--  TimerMainFragment에 연결해둠  -->
     <fragment
         android:id="@+id/record_fragment"
-        android:name="com.climus.climeet.presentation.ui.main.record.RecordFragment"
-        android:label="RecordFragment" />
+        android:name="com.climus.climeet.presentation.ui.main.record.timer.TimerMainFragment"
+        android:label="RecordFragment"/>
     <fragment
         android:id="@+id/myPage_fragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.MyPageFragment"
@@ -61,5 +62,13 @@
     <action
         android:id="@+id/action_home_fragment_to_searchCragFragment"
         app:destination="@id/searchCragFragment" />
+    <fragment
+        android:id="@+id/record_complete_fragment"
+        android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.ClimbingCompleteFragment"
+        android:label="ClimbingCompleteFragment"/>
+    <fragment
+        android:id="@+id/set_timer_climbing_record_fragment"
+        android:name="com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerClimbingRecordFragment"
+        android:label="SetTimerClimbingRecordFragment"/>
 
 </navigation>
