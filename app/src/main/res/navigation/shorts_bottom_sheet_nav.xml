@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/shorts_bottom_sheet_nav"
+    app:startDestination="@id/searchCragBottomSheetFragment">
+
+    <fragment
+        android:id="@+id/searchCragBottomSheetFragment"
+        android:name="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.searchcrag.SearchCragBottomSheetFragment"
+        android:label="SearchCragBottomSheetFragment" >
+        <action
+            android:id="@+id/action_searchCragBottomSheetFragment_to_selectSectorBottomSheetFragment"
+            app:destination="@id/selectSectorBottomSheetFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectSectorBottomSheetFragment"
+        android:name="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector.SelectSectorBottomSheetFragment"
+        android:label="SelectSectorBottomSheetFragment" >
+
+        <argument
+            android:name="cragId"
+            app:argType="long"/>
+
+        <argument
+            android:name="cragName"
+            app:argType="string"/>
+        <action
+            android:id="@+id/action_selectSectorBottomSheetFragment_to_searchCragBottomSheetFragment"
+            app:destination="@id/searchCragBottomSheetFragment" />
+
+    </fragment>
+</navigation>

@@ -33,6 +33,8 @@ sealed class CalendarEvent {
     data object NavigateToSelectDateBottomSheetFragment : CalendarEvent()
 
     data class ShowToastMessage(val msg: String): CalendarEvent()
+
+    data object NavigateToTimerMain: CalendarEvent()
 }
 
 @HiltViewModel
@@ -130,6 +132,12 @@ class CalendarViewModel @Inject constructor(
     fun navigateToSelectDateBottomSheetFragment() {
         viewModelScope.launch {
             _event.emit(CalendarEvent.NavigateToSelectDateBottomSheetFragment)
+        }
+    }
+
+    fun navigateToTimerMain(){
+        viewModelScope.launch {
+            _event.emit(CalendarEvent.NavigateToTimerMain)
         }
     }
 
