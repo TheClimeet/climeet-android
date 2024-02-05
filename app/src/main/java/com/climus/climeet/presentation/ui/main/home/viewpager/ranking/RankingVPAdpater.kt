@@ -2,6 +2,8 @@ package com.climus.climeet.presentation.ui.main.home.viewpager.best
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingFragment
+import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.TimeFragment
 
 class RankingVPAdapter (fragment : Fragment) : FragmentStateAdapter(fragment) {
 

@@ -6,7 +6,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -70,7 +69,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             if (intent.getBooleanExtra("showTimerFragment", false)) {
                 // TimerExerciseFragment로 이동
-                navController.navigate(R.id.record_fragment)
+                navController.navigate(R.id.calendar_fragment)
             } else if (intent.getBooleanExtra("showTimerRecordFragment", false)) {
                 // SetTimerClimbingRecordFragment로 이동
                 navController.navigate(R.id.set_timer_climbing_record_fragment)
@@ -88,8 +87,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         binding.mainBnv.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.home_fragment || destination.id == R.id.shorts_fragment || destination.id == R.id.upload_fragment
-                || destination.id == R.id.record_fragment || destination.id == R.id.myPage_fragment || destination.id == R.id.shortsBottomSheetFragment
+            if (destination.id == R.id.home_fragment || destination.id == R.id.shorts_fragment
+                 || destination.id == R.id.myPage_fragment
                 || destination.id == R.id.bestClimerFragment || destination.id == R.id.popularShortsFragment
                 || destination.id == R.id.popularCragsFragment || destination.id == R.id.popularRoutesFragment
                 || destination.id == R.id.searchCragFragment || destination.id == R.id.set_timer_climbing_record_fragment || destination.id == R.id.calendar_fragment
@@ -99,7 +98,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             } else {
                 binding.mainBnv.visibility = View.INVISIBLE
             }
-
         }
     }
 

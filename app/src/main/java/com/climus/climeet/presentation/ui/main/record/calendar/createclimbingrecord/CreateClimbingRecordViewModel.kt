@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm.cragName
+import com.climus.climeet.presentation.ui.main.global.selectsector.FloorBtnState
 import com.climus.climeet.presentation.ui.main.record.model.RouteRecordUiData
-import com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector.FloorBtnState
 import com.climus.climeet.presentation.ui.main.shorts.model.SectorImageUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.SectorLevelUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.WallNameUiData

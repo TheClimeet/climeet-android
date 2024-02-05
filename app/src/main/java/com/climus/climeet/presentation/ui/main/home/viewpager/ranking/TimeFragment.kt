@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.home.viewpager.best
+package com.climus.climeet.presentation.ui.main.home.viewpager.ranking
 
 import android.os.Bundle
 import android.util.Log
@@ -15,10 +15,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.climus.climeet.R
-import com.climus.climeet.databinding.FragmentCompleteClimbingBinding
 import com.climus.climeet.databinding.FragmentTimeBinding
-import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingViewModel
-import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.TimeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
