@@ -70,6 +70,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
                     CalendarEvent.NavigateToCreateClimbingRecord -> findNavController().toCreateClimbingRecord()
                     CalendarEvent.NavigateToSelectDateBottomSheetFragment -> findNavController().toSelectDateBottomSheetFragment()
                     is CalendarEvent.ShowToastMessage -> showToastMessage(it.msg)
+                    is CalendarEvent.NavigateToTimerMain -> findNavController().toTimerMain()
                 }
             }
         }
@@ -164,6 +165,11 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
                 month.yearMonth.month.value.toString()
             )
         }
+    }
+
+    private fun NavController.toTimerMain(){
+        val action = CalendarFragmentDirections.actionCalendarFragmentToTimerMainFragment()
+        navigate(action)
     }
 
 }

@@ -59,7 +59,7 @@ class BearerInterceptor : Interceptor {
                     } else {
                         val error =
                             Gson().fromJson(result.errorBody()?.string(), ErrorResponse::class.java)
-                        Log.d(TAG, error.message)
+//                        Log.d(TAG, error.message)
                     }
                 }
             }

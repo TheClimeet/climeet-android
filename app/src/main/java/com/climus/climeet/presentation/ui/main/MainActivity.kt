@@ -52,12 +52,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         val navController = navHostFragment.navController
         binding.mainBnv.setupWithNavController(navController)
 
-        navController.addOnDestinationChangedListener { _,destination,_ ->
-            if(destination.id == R.id.home_fragment || destination.id == R.id.shorts_fragment || destination.id == R.id.upload_fragment
-                || destination.id == R.id.record_fragment || destination.id == R.id.myPage_fragment || destination.id == R.id.shortsBottomSheetFragment){
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.home_fragment || destination.id == R.id.shorts_fragment || destination.id == R.id.upload_fragment
-                || destination.id == R.id.record_fragment || destination.id == R.id.myPage_fragment
+                || destination.id == R.id.record_fragment || destination.id == R.id.myPage_fragment || destination.id == R.id.shortsBottomSheetFragment
                 || destination.id == R.id.bestClimerFragment || destination.id == R.id.popularShortsFragment
                 || destination.id == R.id.popularCragsFragment || destination.id == R.id.popularRoutesFragment
                 || destination.id == R.id.searchCragFragment || destination.id == R.id.set_timer_climbing_record_fragment || destination.id == R.id.calendar_fragment

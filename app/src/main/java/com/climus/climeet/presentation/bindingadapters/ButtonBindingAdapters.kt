@@ -5,7 +5,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.climus.climeet.R
 import com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector.FloorBtnState
-import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.FloorBtnState
 
 @BindingAdapter("floorBtnState")
 fun bindFloorBtnState(btn: Button, state: FloorBtnState) {

@@ -42,10 +42,12 @@
             android:id="@+id/action_record_fragment_to_calendar_fragment"
             app:destination="@id/calendar_fragment" />
     </fragment>
+
     <fragment
         android:id="@+id/myPage_fragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.MyPageFragment"
         android:label="MyPageFragment" />
+
     <fragment
         android:id="@+id/bestClimerFragment"
         android:name="com.climus.climeet.presentation.ui.main.home.bestclimer.BestClimerFragment"
@@ -81,7 +83,7 @@
     <fragment
         android:id="@+id/set_timer_climbing_record_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerClimbingRecordFragment"
-        android:label="SetTimerClimbingRecordFragment">\
+        android:label="SetTimerClimbingRecordFragment">
     </fragment>
 
     <fragment
@@ -91,6 +93,9 @@
         <action
             android:id="@+id/action_calendar_fragment_to_createClimbingRecordFragment"
             app:destination="@id/create_climbing_record_fragment" />
+        <action
+            android:id="@+id/action_calendar_fragment_to_timerMainFragment"
+            app:destination="@id/timerMainFragment" />
     </fragment>
     <fragment
         android:id="@+id/create_climbing_record_fragment"
@@ -140,6 +145,10 @@
     <action
         android:id="@+id/globalActionToShortsBottomSheetFragment"
         app:destination="@id/shortsBottomSheetFragment"/>
+    <fragment
+        android:id="@+id/timerMainFragment"
+        android:name="com.climus.climeet.presentation.ui.main.record.timer.TimerMainFragment"
+        android:label="TimerMainFragment" />
 
 
 </navigation>

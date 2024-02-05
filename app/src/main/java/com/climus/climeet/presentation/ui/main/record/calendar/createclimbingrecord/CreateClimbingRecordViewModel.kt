@@ -8,6 +8,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm.cragName
 import com.climus.climeet.presentation.ui.main.record.model.RouteRecordUiData
+import com.climus.climeet.presentation.ui.main.shorts.bottomsheet.selectsector.FloorBtnState
 import com.climus.climeet.presentation.ui.main.shorts.model.SectorImageUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.SectorLevelUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.WallNameUiData
@@ -49,11 +50,6 @@ data class SelectedSector(
     val levelColor: String = "",
     val sectorImg: String = "",
 )
-
-sealed class FloorBtnState {
-    data object FloorSelected : FloorBtnState()
-    data object FloorUnSelected : FloorBtnState()
-}
 
 sealed class CreateClimbingRecordEvent {
     data object ShowDatePicker : CreateClimbingRecordEvent()

@@ -27,7 +27,7 @@ class CompleteDetailViewModel @Inject constructor(private val repository: MainRe
 
     fun getClimberRankingOrderClearCount() {
         viewModelScope.launch {
-            repository.findClimberRankingOrderClearCount("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNSttYW5hZ2VyIiwiaWF0IjoxNzA2NzQzMjczLCJleHAiOjE3MDcxMDMyNzN9.6IKq29hpSLSPw06TVHoN-gq3EP24MjtYlDwirrrYr3U").let {
+            repository.findClimberRankingOrderClearCount().let {
                 when(it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
