@@ -6,6 +6,8 @@
     <color name="cm_main">#FFBEDF22</color>
     <color name="cm_background">#FF333333</color>
 
+    <color name="cm_lightblack">#FF242424</color>
+
     <color name="cm_grey1">#F7F7F7</color>
     <color name="cm_grey2">#F5F4F3</color>
     <color name="cm_grey3">#DFDFDF</color>
