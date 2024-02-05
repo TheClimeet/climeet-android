@@ -36,6 +36,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="13dp"
                     android:layout_marginTop="25dp"
+                    android:onClick="@{()->vm.navigateToBack()"
                     android:src="@drawable/ic_close"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -565,16 +566,16 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                tools:listitem="@layout/item_route_record"
-                                tools:itemCount="3"/>
+                                tools:itemCount="3"
+                                tools:listitem="@layout/item_route_record" />
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/layout_no_route"
                                 android:layout_width="match_parent"
                                 android:layout_height="83dp"
                                 android:layout_marginTop="15dp"
-                                android:visibility="@{vm.itemsLiveData.isEmpty() ? View.VISIBLE : View.GONE}"
                                 android:background="@drawable/rect_grey8fill_nostroke_10radius"
+                                android:visibility="@{vm.itemsLiveData.isEmpty() ? View.VISIBLE : View.GONE}"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
@@ -614,6 +615,7 @@
                         android:layout_marginTop="20dp"
                         android:background="@drawable/selector_submit_btn"
                         android:enabled="@{vm.uiState.selectedSector.levelName.empty? false : true}"
+                        android:onClick="@{()->vm.navigateToBack()"
                         android:text="운동완료"
                         android:textColor="@color/black"
                         android:visibility="@{vm.isSelectedCrag()? View.VISIBLE : View.GONE}"

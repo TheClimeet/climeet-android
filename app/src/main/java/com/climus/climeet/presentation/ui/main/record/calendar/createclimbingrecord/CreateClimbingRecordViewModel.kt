@@ -60,6 +60,8 @@ sealed class CreateClimbingRecordEvent {
     data object ShowTimePicker : CreateClimbingRecordEvent()
 
     data object NavigateToSelectCrag : CreateClimbingRecordEvent()
+
+    data object NavigateToBack : CreateClimbingRecordEvent()
 }
 
 @HiltViewModel
@@ -406,6 +408,12 @@ class CreateClimbingRecordViewModel @Inject constructor() : ViewModel() {
     fun navigateToSelectCrag() {
         viewModelScope.launch {
             _event.emit(CreateClimbingRecordEvent.NavigateToSelectCrag)
+        }
+    }
+
+    fun navigateToBack() {
+        viewModelScope.launch {
+            _event.emit(CreateClimbingRecordEvent.NavigateToBack)
         }
     }
 

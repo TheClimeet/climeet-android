@@ -3,7 +3,6 @@ package com.climus.climeet.presentation.ui.main.record.calendar.createclimbingre
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -29,7 +28,8 @@ class CreateClimbingRecordFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(requireActivity()).get(CreateClimbingRecordViewModel::class.java)
+        viewModel =
+            ViewModelProvider(requireActivity()).get(CreateClimbingRecordViewModel::class.java)
         itemAdapter = RouteRecordAdapter(viewModel)
         binding.vm = viewModel
 
@@ -51,7 +51,7 @@ class CreateClimbingRecordFragment :
         })
         viewModel.selectedCragEvent.observe(viewLifecycleOwner, Observer { event ->
             event?.let { (id, name) ->
-                if(viewModel.isSelectedCrag.value){
+                if (viewModel.isSelectedCrag.value) {
                     binding.tvGym.setTextColor(Color.WHITE)
                 }
             }
@@ -66,7 +66,7 @@ class CreateClimbingRecordFragment :
 
     }
 
-    private fun setRecyclerView(){
+    private fun setRecyclerView() {
         binding.rvSectorName.adapter = SectorNameAdapter()
         binding.rvSectorLevel.adapter = SectorLevelAdapter()
         binding.rvSectorImage.adapter = SectorImageAdapter()
@@ -86,7 +86,9 @@ class CreateClimbingRecordFragment :
                         isTimeSet = true
                         findNavController().toSelectTimeBottomSheetFragment()
                     }
+
                     CreateClimbingRecordEvent.NavigateToSelectCrag -> findNavController().toSelectCrag()
+                    CreateClimbingRecordEvent.NavigateToBack -> findNavController().navigateUp()
                 }
             }
         }
@@ -94,7 +96,7 @@ class CreateClimbingRecordFragment :
 
     private fun initItemObserve() {
         repeatOnStarted {
-            viewModel.items.collect{items ->
+            viewModel.items.collect { items ->
                 itemAdapter.items = items
                 itemAdapter.notifyDataSetChanged()
             }
