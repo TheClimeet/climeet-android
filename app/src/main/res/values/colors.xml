@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="cm_main">#FFBEDF22</color>
+    <color name="cm_main_alpha">#77BEDF22</color>
     <color name="cm_background">#FF333333</color>
 
     <color name="cm_lightblack">#FF242424</color>
