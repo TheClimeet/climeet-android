@@ -97,7 +97,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
 
     fun getRouteRankingOrderSelectionCount() {
         viewModelScope.launch {
-            repository.findRouteRankingOrderSelectionCount("Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNSttYW5hZ2VyIiwiaWF0IjoxNzA2NzQzMjczLCJleHAiOjE3MDcxMDMyNzN9.6IKq29hpSLSPw06TVHoN-gq3EP24MjtYlDwirrrYr3U").let {
+            repository.findRouteRankingOrderSelectionCount().let {
                 when(it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
