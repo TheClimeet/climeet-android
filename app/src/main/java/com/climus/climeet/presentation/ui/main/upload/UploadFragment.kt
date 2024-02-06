@@ -2,7 +2,6 @@ package com.climus.climeet.presentation.ui.main.upload
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -21,7 +20,6 @@ import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.CheckPublicBottomSheet
 import com.climus.climeet.presentation.ui.main.MainViewModel
 import com.climus.climeet.presentation.ui.main.global.selectsector.BottomSheetState
-import com.climus.climeet.presentation.util.Constants.TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -113,8 +111,6 @@ class UploadFragment : BaseFragment<FragmentUploadBinding>(R.layout.fragment_upl
 
                     override fun onSuccess(index: Int, size: Long, path: String?) {
                         binding.ivThumbnail.alpha = 1F
-
-                        Log.d(TAG,size.toString())
 
                         path?.let {
                             val file = File(it)
