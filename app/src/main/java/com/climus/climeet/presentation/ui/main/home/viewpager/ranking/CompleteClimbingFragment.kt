@@ -18,7 +18,6 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.climus.climeet.MainNavDirections
 import com.climus.climeet.R
-import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.databinding.FragmentCompleteClimbingBinding
 import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingViewModel
 import dagger.hilt.android.AndroidEntryPoint

@@ -8,6 +8,7 @@ plugins {
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("androidx.navigation.safeargs.kotlin")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -23,7 +24,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "0.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "BASE_DEV_URL", getProperty("baseDevUrl"))
@@ -118,6 +119,14 @@ dependencies {
     // Live Data
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
 
+    // Calendar
+    implementation ("com.github.prolificinteractive:material-calendarview:2.0.1")
+    implementation ("com.jakewharton.threetenabp:threetenabp:1.1.1")
+    implementation ("com.kizitonwose.calendar:view:2.4.1")
+
     // View Pager
     implementation ("androidx.viewpager2:viewpager2:1.0.0")
+
+    // firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
 }

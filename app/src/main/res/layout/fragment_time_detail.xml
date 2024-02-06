@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.ui.main.home.viewpager.best.CompleteClimbingFragment">
+        tools:context=".presentation.ui.main.home.viewpager.ranking.TimeDetailFragment">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_time_ranking1"
@@ -160,10 +160,8 @@
 
         <TextView
             android:id="@+id/tv_time_ranking3_nickname"
-            style="@style/TextSmallSemiBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:maxWidth="80dp"
             android:maxHeight="15dp"
             android:ellipsize="end"

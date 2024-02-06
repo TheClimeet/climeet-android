@@ -4,13 +4,23 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.climus.climeet.R
+import com.google.android.material.imageview.ShapeableImageView
 
 @BindingAdapter("profileImgUrl")
-fun bindProfileImg(imageView: ImageView, url: String) {
+fun bindProfileImg(imageView: ImageView, url: String?) {
     Glide.with(imageView.context)
         .load(url)
         .error(R.drawable.test)
         .into(imageView)
+}
+
+@BindingAdapter("imgUrl")
+fun bindImgUrl(imageView: ImageView, url: String?) {
+    url?.let{
+        Glide.with(imageView.context)
+            .load(it)
+            .into(imageView)
+    }
 }
 
 @BindingAdapter("formCheck")

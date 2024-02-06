@@ -1,8 +1,11 @@
 package com.climus.climeet.presentation.bindingadapters
 
+import android.content.res.ColorStateList
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.databinding.BindingAdapter
 import com.climus.climeet.R
 import com.climus.climeet.presentation.ui.InputState
@@ -45,5 +48,11 @@ fun bindSignUpProgress(pb: ProgressBar, state: SignUpState){
             pb.progress = state.progress
         }
     }
+}
 
+@BindingAdapter("viewHexColor")
+fun bindViewHexColor(v : View, hexColor: String) {
+    if(hexColor.isNotBlank()){
+        v.backgroundTintList = ColorStateList.valueOf(hexColor.toColorInt())
+    }
 }

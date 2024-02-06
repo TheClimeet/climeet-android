@@ -27,4 +27,23 @@
         <item name="cornerSizeBottomLeft">10dp</item>
     </style>
 
+    <style name="Top8RadiusImageView" parent="">
+        <item name="cornerSizeTopRight">8dp</item>
+        <item name="cornerSizeTopLeft">8dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="RadioButtonTheme" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/cm_main</item>
+        <item name="colorControlNormal">@color/cm_grey5</item>
+    </style>
+
+    <style name="ThemeOverlay.NumberPicker" parent="">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+        <item name="android:textSize">18sp</item>
+        <item name="colorControlNormal">@android:color/transparent</item>
+    </style>
+
 </resources>

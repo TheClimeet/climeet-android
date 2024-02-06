@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.ui.main.home.viewpager.best.CompleteClimbingFragment">
+        tools:context=".presentation.ui.main.home.viewpager.ranking.CompleteClimbingFragment">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_complete_ranking1"

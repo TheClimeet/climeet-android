@@ -14,11 +14,13 @@ import com.climus.climeet.data.model.response.ShortsSimpleResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MainApi {
@@ -46,11 +48,32 @@ interface MainApi {
         @Query("refreshToken") refreshToken: String
     ): Response<RefreshTokenResponse>
 
+    @GET("api/shorts/latest")
+    suspend fun getRecentShorts(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<ShortsListResponse>
+
+    @GET("api/shorts/popular")
+    suspend fun getPopularShorts(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<ShortsListResponse>
+
+    @GET("api/shorts/profile")
+    suspend fun getShortsUpdatedFollow(): Response<List<ShortsUpdatedFollowResponse>>
+
+    @GET("/api/climbing-records/between-dates")
+    suspend fun getSelectDateRecord(
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): Response<List<GetSelectDateRecordResponse>>
+
     @GET("/api/banners")
-    suspend fun findBannerListBetweenDates(@Header("Authorization") accessToken : String): Response<List<BannerDetailInfoResponse>>
+    suspend fun findBannerListBetweenDates(): Response<List<BannerDetailInfoResponse>>
 
     @GET("/api/home/rank/weeks/climbers/clear")
-    suspend fun findClimberRankingOrderClearCount(@Header("Authorization") accessToken : String): Response<List<BestClearClimberSimpleResponse>>
+    suspend fun findClimberRankingOrderClearCount(): Response<List<BestClearClimberSimpleResponse>>
 
     @GET("/api/home/rank/weeks/climbers/time")
     suspend fun findClimberRankingOrderTime(@Header("Authorization") accessToken : String): Response<List<BestTimeClimberSimpleResponse>>
@@ -60,8 +83,8 @@ interface MainApi {
 
     @GET("/api/shorts/popular")
     suspend fun findPopularShorts(
-        @Query("page") page : Int,
-        @Query("size") size : Int,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
     ): Response<List<ShortsSimpleResponse>>
 
     @GET("/api/rank/week/gym/follow")
@@ -72,5 +95,17 @@ interface MainApi {
     suspend fun findRouteRankingOrderSelectionCount(
         @Header("Authorization") accessToken : String
     ): Response<List<BestRouteDetailInfoResponse>>
+
+    @GET("/api/gyms/{gymId}/version/key")
+    suspend fun getGymFilteringKey(
+        @Path("gymId") gymId: Long,
+    ): Response<GetGymFilteringKeyResponse>
+
+    @POST("/api/gyms/{gymId}/version/route")
+    suspend fun getGymRouteInfoList(
+        @Path("gymId") gymId: Long,
+        @Body params: GetGymRouteInfoRequest
+    ): Response<GetGymRouteInfoResponse>
+
 
 }
