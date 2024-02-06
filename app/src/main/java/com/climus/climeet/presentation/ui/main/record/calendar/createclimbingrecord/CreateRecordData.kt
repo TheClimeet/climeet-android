@@ -6,7 +6,9 @@ import java.time.LocalTime
 
 object CreateRecordData {
 
-    var selectedDate: LocalDate = LocalDate.of(9999,12,31)
+    val today = LocalDate.now()
+
+    var selectedDate: LocalDate = LocalDate.of(today.year, today.monthValue - 1, today.dayOfMonth)
         private set
 
     var selectedStartTime: LocalTime = LocalTime.of(11, 0, 1)
@@ -18,16 +20,16 @@ object CreateRecordData {
     var selectedCrag: FollowCrag? = FollowCrag(-1, "", "", "", 0, false)
 
 
-    fun setSelectedDate(date: LocalDate){
+    fun setSelectedDate(date: LocalDate) {
         selectedDate = date
     }
 
-    fun setSelectedTime(start: LocalTime, end: LocalTime){
+    fun setSelectedTime(start: LocalTime, end: LocalTime) {
         selectedStartTime = start
         selectedEndTime = end
     }
 
-    fun setSelecetedCrag(crag: FollowCrag){
+    fun setSelecetedCrag(crag: FollowCrag) {
         selectedCrag = crag
     }
 }

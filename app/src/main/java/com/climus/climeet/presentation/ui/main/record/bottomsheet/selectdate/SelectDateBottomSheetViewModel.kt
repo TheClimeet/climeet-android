@@ -50,7 +50,6 @@ class SelectDateBottomSheetViewModel @Inject constructor() : ViewModel() {
         }
 
         isToday.update { !isToday.value }
-        Log.d("dateTest", isToday.value.toString())
     }
 
 }
