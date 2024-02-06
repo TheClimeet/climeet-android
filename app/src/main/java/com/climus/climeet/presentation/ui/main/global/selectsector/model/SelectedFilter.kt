@@ -1,6 +1,7 @@
 package com.climus.climeet.presentation.ui.main.global.selectsector.model
 
 data class SelectedFilter(
+    val cragId: Long = -1,
     val routeId: Long = -1,
     val sectorId: Long = -1,
     val sectorName: String = "",

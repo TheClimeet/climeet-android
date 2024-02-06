@@ -247,6 +247,7 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
 
     fun applySectorFilter() {
         val selectedFilter = SelectedFilter(
+            cragId = cragId,
             routeId = uiState.value.selectedRoute.routeId,
             sectorId = uiState.value.selectedSector.sectorId,
             difficulty = uiState.value.selectedLevel.difficulty,
