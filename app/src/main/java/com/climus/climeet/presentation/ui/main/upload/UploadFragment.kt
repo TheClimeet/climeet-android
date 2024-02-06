@@ -5,13 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.abedelazizshe.lightcompressorlibrary.CompressionListener
 import com.abedelazizshe.lightcompressorlibrary.VideoCompressor
 import com.abedelazizshe.lightcompressorlibrary.VideoQuality
-import com.abedelazizshe.lightcompressorlibrary.config.AppSpecificStorageConfiguration
 import com.abedelazizshe.lightcompressorlibrary.config.Configuration
 import com.abedelazizshe.lightcompressorlibrary.config.SaveLocation
 import com.abedelazizshe.lightcompressorlibrary.config.SharedStorageConfiguration
@@ -32,7 +30,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
-class UploadFragment: BaseFragment<FragmentUploadBinding>(R.layout.fragment_upload) {
+class UploadFragment : BaseFragment<FragmentUploadBinding>(R.layout.fragment_upload) {
 
     private val parentViewModel: MainViewModel by activityViewModels()
     private val viewModel: UploadViewModel by activityViewModels()
@@ -46,9 +44,9 @@ class UploadFragment: BaseFragment<FragmentUploadBinding>(R.layout.fragment_uplo
         initEventObserve()
     }
 
-    private fun initVideoObserve(){
+    private fun initVideoObserve() {
         repeatOnStarted {
-            parentViewModel.videoUri.collect{
+            parentViewModel.videoUri.collect {
                 startCompress(it)
                 Glide.with(requireContext())
                     .load(it)
@@ -57,18 +55,18 @@ class UploadFragment: BaseFragment<FragmentUploadBinding>(R.layout.fragment_uplo
         }
 
         repeatOnStarted {
-            parentViewModel.shortsThumbnail.collect{
+            parentViewModel.shortsThumbnail.collect {
                 viewModel.setThumbnailImg(it)
             }
         }
     }
 
-    private fun initEventObserve(){
+    private fun initEventObserve() {
         repeatOnStarted {
-            viewModel.event.collect{
-                when(it){
+            viewModel.event.collect {
+                when (it) {
                     is UploadEvent.ShowPublicBottomSheet -> {
-                        CheckPublicBottomSheet(requireContext(), it.type){
+                        CheckPublicBottomSheet(requireContext(), it.type) {
                             viewModel.setPublicState(it)
                         }.show()
                     }
@@ -79,12 +77,14 @@ class UploadFragment: BaseFragment<FragmentUploadBinding>(R.layout.fragment_uplo
                     }
 
                     is UploadEvent.ShowToastMessage -> showToastMessage(it.msg)
+                    is UploadEvent.ShowLoading -> showLoading(requireContext())
+                    is UploadEvent.DismissLoading -> dismissLoading()
                 }
             }
         }
     }
 
-    private fun startCompress(uri: Uri){
+    private fun startCompress(uri: Uri) {
         CoroutineScope(Dispatchers.Main).launch {
 
             val uris = listOf(uri)
@@ -104,22 +104,27 @@ class UploadFragment: BaseFragment<FragmentUploadBinding>(R.layout.fragment_uplo
                 ),
                 listener = object : CompressionListener {
                     override fun onProgress(index: Int, percent: Float) {
-
-                        Log.d(TAG,percent.toString())
+                        viewModel.setCompressProgress(percent.toInt())
                     }
 
                     override fun onStart(index: Int) {
-
+                        binding.ivThumbnail.alpha = 0.2F
+                        viewModel.startCompress()
                     }
 
                     override fun onSuccess(index: Int, size: Long, path: String?) {
-                        path?.let{
+                        binding.ivThumbnail.alpha = 1F
+
+                        Log.d(TAG,size.toString())
+
+                        path?.let {
                             val file = File(it)
                             val requestFile = file.asRequestBody("video/mp4".toMediaTypeOrNull())
-                            val videoFile = MultipartBody.Part.createFormData("file", file.name, requestFile)
-                            viewModel.setVideoFIle(videoFile)
-                        } ?: run{
-                            
+                            val videoFile =
+                                MultipartBody.Part.createFormData("file", file.name, requestFile)
+                            viewModel.finishCompress(videoFile)
+                        } ?: run {
+
                         }
                     }
 
@@ -135,7 +140,7 @@ class UploadFragment: BaseFragment<FragmentUploadBinding>(R.layout.fragment_uplo
         }
     }
 
-    private fun NavController.toUploadBottomSheets(){
+    private fun NavController.toUploadBottomSheets() {
         val action = UploadFragmentDirections.actionUploadFragmentToUploadBottomSheetFragment()
         navigate(action)
     }
