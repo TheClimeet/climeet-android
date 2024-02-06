@@ -20,9 +20,9 @@ class DayViewContainer(view: View, val viewModel: CalendarViewModel, val dateVie
 
     init {
         view.setOnClickListener {
-            DayViewContainer.selectedDay?.deselect()  // 기존 선택된 날짜 deselect
+            selectedDay?.deselect()  // 기존 선택된 날짜 deselect
             select()  // 새로 선택된 날짜 select
-            DayViewContainer.selectedDay = this  // selectedDay 업데이트
+            selectedDay = this  // selectedDay 업데이트
             viewModel.setIsToday(day.date == LocalDate.now())
             viewModel.setRecord(day.date)
             viewModel.setSelectedDate(day.date)

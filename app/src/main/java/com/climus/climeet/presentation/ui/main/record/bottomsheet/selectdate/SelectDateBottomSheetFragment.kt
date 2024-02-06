@@ -50,7 +50,7 @@ class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initEventObserve()
-        setDatePicker()
+        setDatePicker(CreateRecordData.selectedDate)
     }
 
     private fun initEventObserve() {
@@ -58,7 +58,7 @@ class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
             viewModel.event.collect {
                 when (it) {
                     SelectDateBottomEvent.CloseFragment -> dismiss()
-                    SelectDateBottomEvent.UpdateIsToday -> setDateToday()
+                    SelectDateBottomEvent.UpdateIsToday -> setDatePicker(today)
                     SelectDateBottomEvent.SetDate -> setDate()
                 }
             }
@@ -76,22 +76,13 @@ class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {
         dismiss()
     }
 
-    private fun setDatePicker() {
+    private fun setDatePicker(date: LocalDate) {
         with(binding) {
-            val date = CreateRecordData.selectedDate
             datepicker.setOnDateChangedListener(null)
             datepicker.updateDate(date.year, date.monthValue - 1, date.dayOfMonth)
             datepicker.setOnDateChangedListener { view, year, monthOfYear, dayOfMonth ->
                 viewModel.setIsTodayToFalse()
             }
-        }
-    }
-
-    private fun setDateToday() {
-        with(binding) {
-            datepicker.setOnDateChangedListener(null)
-            datepicker.updateDate(today.year, today.monthValue - 1, today.dayOfMonth)
-            datepicker.setOnDateChangedListener { _, _, _, _ -> viewModel.setIsTodayToFalse() }
         }
     }
 
