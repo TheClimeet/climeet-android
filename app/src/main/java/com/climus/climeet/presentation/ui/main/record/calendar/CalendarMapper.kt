@@ -5,6 +5,7 @@ import com.climus.climeet.presentation.ui.main.record.model.ClimbingRecordData
 
 fun GetSelectDateRecordResponse.toClimbingRecordData(
     gymName: String,
+    gymProfile: String
 ) = ClimbingRecordData(
     id = climbingRecordId,
     date = date,
@@ -13,5 +14,6 @@ fun GetSelectDateRecordResponse.toClimbingRecordData(
     totalAttemptCount = totalAttemptCount.toString(),
     avgDifficulty = "V${avgDifficulty}",
     gymId = gymId,
+    gymProfile = gymProfile,
     gymName = gymName
 )

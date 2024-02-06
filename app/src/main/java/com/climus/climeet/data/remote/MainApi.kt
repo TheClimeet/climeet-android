@@ -8,6 +8,7 @@ import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
+import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.RefreshTokenResponse
@@ -110,5 +111,9 @@ interface MainApi {
         @Body params: GetGymRouteInfoRequest
     ): Response<GetGymRouteInfoResponse>
 
+    @GET("/api/gym/{gymId}")
+    suspend fun getGymProfile(
+        @Path("gymId") gymId: Long
+    ): Response<GetGymProfileResponse>
 
 }
