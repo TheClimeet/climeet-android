@@ -77,8 +77,7 @@ class UploadFragment : BaseFragment<FragmentUploadBinding>(R.layout.fragment_upl
                     }
 
                     is UploadEvent.ShowToastMessage -> showToastMessage(it.msg)
-                    is UploadEvent.ShowLoading -> showLoading(requireContext())
-                    is UploadEvent.DismissLoading -> dismissLoading()
+                    is UploadEvent.NavigateToUploadComplete -> findNavController().toUploadComplete()
                 }
             }
         }
@@ -122,7 +121,7 @@ class UploadFragment : BaseFragment<FragmentUploadBinding>(R.layout.fragment_upl
                             val requestFile = file.asRequestBody("video/mp4".toMediaTypeOrNull())
                             val videoFile =
                                 MultipartBody.Part.createFormData("file", file.name, requestFile)
-                            viewModel.finishCompress(videoFile)
+                            viewModel.finishCompress(videoFile, size)
                         } ?: run {
 
                         }
@@ -142,6 +141,11 @@ class UploadFragment : BaseFragment<FragmentUploadBinding>(R.layout.fragment_upl
 
     private fun NavController.toUploadBottomSheets() {
         val action = UploadFragmentDirections.actionUploadFragmentToUploadBottomSheetFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toUploadComplete(){
+        val action = UploadFragmentDirections.actionUploadFragmentToUploadCompleteFragment()
         navigate(action)
     }
 }

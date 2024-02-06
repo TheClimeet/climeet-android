@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_upload_fragment_to_uploadBottomSheetFragment"
             app:destination="@id/uploadBottomSheetFragment" />
+        <action
+            android:id="@+id/action_upload_fragment_to_uploadCompleteFragment"
+            app:destination="@id/uploadCompleteFragment" />
     </fragment>
 
 <!--  TimerMainFragment에 연결해둠  -->
@@ -151,5 +154,9 @@
         android:id="@+id/uploadBottomSheetFragment"
         android:name="com.climus.climeet.presentation.ui.main.upload.bottomsheet.UploadBottomSheetFragment"
         android:label="UploadBottomSheetFragment" />
+    <fragment
+        android:id="@+id/uploadCompleteFragment"
+        android:name="com.climus.climeet.presentation.ui.main.upload.complete.UploadCompleteFragment"
+        android:label="UploadCompleteFragment" />
 
 </navigation>
