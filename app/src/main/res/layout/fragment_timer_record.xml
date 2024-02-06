@@ -65,7 +65,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_root_record"
+                    android:id="@+id/layout_route_record"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
@@ -308,7 +308,7 @@
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/layout_root_record"
+                    app:layout_constraintTop_toBottomOf="@id/layout_route_record"
                     app:layout_constraintBottom_toBottomOf="parent">
 
                     <ImageView
