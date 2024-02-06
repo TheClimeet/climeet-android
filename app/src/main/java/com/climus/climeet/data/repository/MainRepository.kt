@@ -2,6 +2,7 @@ package com.climus.climeet.data.repository
 
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
+import com.climus.climeet.data.model.request.ShortsUploadRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -22,8 +23,8 @@ import retrofit2.http.Query
 
 interface MainRepository {
 
-    suspend fun uploadImage(
-        image: MultipartBody.Part
+    suspend fun uploadFile(
+        file: MultipartBody.Part
     ): BaseState<UploadImgResponse>
 
     suspend fun searchGym(
@@ -81,5 +82,9 @@ interface MainRepository {
         gymId: Long,
         body: GetGymRouteInfoRequest
     ): BaseState<GetGymRouteInfoResponse>
+
+    suspend fun uploadShorts(
+        body: ShortsUploadRequest
+    ): BaseState<Unit>
 
 }

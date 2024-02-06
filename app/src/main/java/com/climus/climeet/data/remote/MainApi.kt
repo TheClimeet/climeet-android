@@ -1,6 +1,7 @@
 package com.climus.climeet.data.remote
 
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
+import com.climus.climeet.data.model.request.ShortsUploadRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -31,7 +32,7 @@ interface MainApi {
 
     @Multipart
     @POST("api/file")
-    suspend fun uploadImage(@Part file: MultipartBody.Part): Response<UploadImgResponse>
+    suspend fun uploadFile(@Part file: MultipartBody.Part): Response<UploadImgResponse>
 
     @GET("api/gym/search/all")
     suspend fun searchGym(
@@ -110,5 +111,9 @@ interface MainApi {
         @Body params: GetGymRouteInfoRequest
     ): Response<GetGymRouteInfoResponse>
 
+    @POST("/api/shorts")
+    suspend fun uploadShorts(
+        @Body params: ShortsUploadRequest
+    ): Response<Unit>
 
 }

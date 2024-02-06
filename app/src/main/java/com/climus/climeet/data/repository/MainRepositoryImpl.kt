@@ -2,6 +2,7 @@ package com.climus.climeet.data.repository
 
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
+import com.climus.climeet.data.model.request.ShortsUploadRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -27,9 +28,9 @@ class MainRepositoryImpl @Inject constructor(
     private val api: MainApi
 ) : MainRepository {
 
-    override suspend fun uploadImage(
-        image: MultipartBody.Part
-    ): BaseState<UploadImgResponse> = runRemote { api.uploadImage(image) }
+    override suspend fun uploadFile(
+        file: MultipartBody.Part
+    ): BaseState<UploadImgResponse> = runRemote { api.uploadFile(file) }
 
     override suspend fun searchGym(
         gymName: String,
@@ -105,4 +106,8 @@ class MainRepositoryImpl @Inject constructor(
         api.getGymRouteInfoList(gymId, body)
     }
 
+    override suspend fun uploadShorts(body: ShortsUploadRequest): BaseState<Unit> =
+        runRemote {
+            api.uploadShorts(body)
+        }
 }

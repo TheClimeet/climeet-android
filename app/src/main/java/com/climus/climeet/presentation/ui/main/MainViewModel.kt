@@ -1,16 +1,10 @@
 package com.climus.climeet.presentation.ui.main
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
-import com.climus.climeet.presentation.ui.intro.IntroEvent
-import com.climus.climeet.presentation.ui.intro.UrlType
-import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
-import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
-import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -52,7 +46,7 @@ class MainViewModel @Inject constructor(
 
     fun fileToUrl(file: MultipartBody.Part, type: DataType) {
         viewModelScope.launch {
-            repository.uploadImage(file).let {
+            repository.uploadFile(file).let {
                 when (it) {
                     is BaseState.Success -> {
                         when(type){

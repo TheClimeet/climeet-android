@@ -99,7 +99,7 @@ class IntroViewModel @Inject constructor(
 
     fun fileToUrl(file: MultipartBody.Part) {
         viewModelScope.launch {
-            repository.uploadImage(file).let {
+            repository.uploadFile(file).let {
                 when (it) {
                     is BaseState.Success -> {
                         when (urlType) {
