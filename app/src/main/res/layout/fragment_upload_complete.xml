@@ -28,6 +28,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <ProgressBar
+            android:id="@+id/pb_compress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="150dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="30dp"
+            android:max="100"
+            android:progress="@{vm.uploadProgress}"
+            android:progressBackgroundTint="@color/white"
+            android:progressTint="@color/cm_main"
+            android:scaleY="5"
+            android:visibility="@{vm.isUploadDone ?  View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toTopOf="@id/tv_explain"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <TextView
             android:id="@+id/tv_explain"
             style="@style/TextRegularSemiBold"
@@ -35,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:lineSpacingExtra="10dp"
-            android:text="@{vm.uploadProgress.toString()}"
+            android:text="@{vm.isUploadDone ? `영상이 업로드 되었어요!` : `영상이 업로드 되고 있어요` }"
             android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@id/guide"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +62,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.5"/>
+            app:layout_constraintGuide_percent="0.5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

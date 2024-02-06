@@ -142,6 +142,7 @@ class UploadViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
+                        isUploadDone.value = true
                         _event.emit(UploadEvent.ShowToastMessage(it.msg))
                         _uploadComplete.emit(false)
                     }
@@ -162,6 +163,7 @@ class UploadViewModel @Inject constructor(
                         }
 
                         is BaseState.Error -> {
+                            isUploadDone.value = true
                             _uploadComplete.emit(false)
                         }
                     }
