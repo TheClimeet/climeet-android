@@ -14,6 +14,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.climus.climeet.R
@@ -34,6 +36,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val viewModel: MainViewModel by viewModels()
 
     private lateinit var neededPermissionList: MutableList<String>
+    private lateinit var navController: NavController
+
     private val storagePermissionList =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arrayOf(
@@ -84,12 +88,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.main_container) as NavHostFragment
-        val navController = navHostFragment.navController
+        navController = navHostFragment.navController
         binding.mainBnv.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.home_fragment || destination.id == R.id.shorts_fragment
-                 || destination.id == R.id.myPage_fragment || destination.id == R.id.bestClimerFragment || destination.id == R.id.popularShortsFragment
+                || destination.id == R.id.myPage_fragment || destination.id == R.id.bestClimerFragment || destination.id == R.id.popularShortsFragment
                 || destination.id == R.id.popularCragsFragment || destination.id == R.id.popularRoutesFragment
                 || destination.id == R.id.searchCragFragment || destination.id == R.id.set_timer_climbing_record_fragment || destination.id == R.id.calendar_fragment
             ) {
@@ -101,10 +105,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     }
 
-    private fun initEventObserve(){
+    private fun initEventObserve() {
         repeatOnStarted {
-            viewModel.event.collect{
-                when(it){
+            viewModel.event.collect {
+                when (it) {
                     is MainEvent.GoToGalleryForVideo -> onCheckStoragePermissions()
                     is MainEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
@@ -142,7 +146,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == STORAGE_PERMISSION) {
             neededPermissionList.forEach {
-                if (ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED) return
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        it
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) return
             }
             openGalleryForVideo()
         }
@@ -163,12 +171,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
                 uri?.let {
                     viewModel.setVideoUri(it)
-                    it.toVideoThumbnail(this)?.let{ image ->
-                        viewModel.fileToUrl(image)
-                    } ?: run{
+                    it.toVideoThumbnail(this)?.let { image ->
+                        viewModel.fileToUrl(image, DataType.SHORTS_THUMBNAIL)
+                    } ?: run {
                         showToastMessage("썸네일 추출 실패")
                     }
+                } ?: run {
+                    showToastMessage("파일 불러오기 실패")
                 }
+            } else if (result.resultCode == Activity.RESULT_CANCELED) {
+                navController.navigateUp()
             }
         }
 }

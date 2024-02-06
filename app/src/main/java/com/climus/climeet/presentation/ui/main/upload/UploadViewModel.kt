@@ -1,10 +1,12 @@
 package com.climus.climeet.presentation.ui.main.upload
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.presentation.customview.PublicType
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedFilter
+import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +20,7 @@ import javax.inject.Inject
 
 data class UploadUiState(
     val publicState: PublicType = PublicType.PUBLIC,
-    val selectedFilter: SelectedFilter = SelectedFilter()
+    val selectedFilter: SelectedFilter = SelectedFilter(),
 )
 
 sealed class UploadEvent {
@@ -38,11 +40,16 @@ class UploadViewModel @Inject constructor() : ViewModel() {
 
     val description = MutableStateFlow("")
     val soundEnabled = MutableStateFlow(false)
-    var thumbnailUri: Uri? = null
+    val thumbnailImg = MutableStateFlow("")
     private var videoUri: Uri? = null
 
     fun setVideoUri(uri: Uri) {
         videoUri = uri
+    }
+
+    fun setThumbnailImg(imgUrl: String){
+        Log.d(TAG,imgUrl)
+        thumbnailImg.value = imgUrl
     }
 
     fun showPublicBottomSheet() {

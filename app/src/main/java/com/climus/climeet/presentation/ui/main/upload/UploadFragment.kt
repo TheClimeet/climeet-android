@@ -39,6 +39,12 @@ class UploadFragment: BaseFragment<FragmentUploadBinding>(R.layout.fragment_uplo
                     .into(binding.ivThumbnail)
             }
         }
+
+        repeatOnStarted {
+            parentViewModel.shortsThumbnail.collect{
+                viewModel.setThumbnailImg(it)
+            }
+        }
     }
 
     private fun initEventObserve(){

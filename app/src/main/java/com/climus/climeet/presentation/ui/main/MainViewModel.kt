@@ -35,6 +35,9 @@ class MainViewModel @Inject constructor(
     private val _videoUri = MutableSharedFlow<Uri>()
     val videoUri: SharedFlow<Uri> = _videoUri.asSharedFlow()
 
+    private val _shortsThumbnail = MutableSharedFlow<String>()
+    val shortsThumbnail: SharedFlow<String> = _shortsThumbnail.asSharedFlow()
+
     fun goToGalleryForVideo(){
         viewModelScope.launch {
             _event.emit(MainEvent.GoToGalleryForVideo)
@@ -47,12 +50,16 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun fileToUrl(file: MultipartBody.Part) {
+    fun fileToUrl(file: MultipartBody.Part, type: DataType) {
         viewModelScope.launch {
             repository.uploadImage(file).let {
                 when (it) {
                     is BaseState.Success -> {
-                        Log.d(TAG,it.body.imgUrl)
+                        when(type){
+                            DataType.SHORTS_THUMBNAIL -> {
+                                _shortsThumbnail.emit(it.body.imgUrl)
+                            }
+                        }
                     }
 
                     is BaseState.Error -> _event.emit(MainEvent.ShowToastMessage(it.msg))
@@ -60,4 +67,8 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+}
+
+enum class DataType{
+    SHORTS_THUMBNAIL
 }
