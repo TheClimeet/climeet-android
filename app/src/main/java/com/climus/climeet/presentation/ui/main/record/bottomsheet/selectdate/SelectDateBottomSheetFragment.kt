@@ -1,8 +1,7 @@
-package com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag.selectdate
+package com.climus.climeet.presentation.ui.main.record.bottomsheet.selectdate
 
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.util.Calendar
 
 @AndroidEntryPoint
 class SelectDateBottomSheetFragment : BottomSheetDialogFragment() {

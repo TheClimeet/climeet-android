@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag.selectdate
+package com.climus.climeet.presentation.ui.main.record.bottomsheet.selectdate
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
