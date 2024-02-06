@@ -12,6 +12,7 @@ import com.climus.climeet.presentation.ui.main.record.model.RouteRecordUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.RouteUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.GymLevelUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SectorNameUiData
+import com.climus.climeet.presentation.ui.main.record.model.CreateRecordData
 import com.climus.climeet.presentation.util.Constants.TEST_IMG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

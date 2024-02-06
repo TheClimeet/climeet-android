@@ -13,7 +13,7 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentSelectDateBottomSheetBinding
 import com.climus.climeet.presentation.ui.main.record.calendar.CalendarViewModel
 import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateClimbingRecordViewModel
-import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateRecordData
+import com.climus.climeet.presentation.ui.main.record.model.CreateRecordData
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

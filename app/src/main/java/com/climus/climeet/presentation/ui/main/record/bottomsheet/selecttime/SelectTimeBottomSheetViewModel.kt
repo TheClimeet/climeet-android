@@ -3,7 +3,7 @@ package com.climus.climeet.presentation.ui.main.record.bottomsheet.selecttime
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateRecordData
+import com.climus.climeet.presentation.ui.main.record.model.CreateRecordData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

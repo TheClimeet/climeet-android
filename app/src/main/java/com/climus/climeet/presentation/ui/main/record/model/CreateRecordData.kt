@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord
+package com.climus.climeet.presentation.ui.main.record.model
 
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
 import java.time.LocalDate
