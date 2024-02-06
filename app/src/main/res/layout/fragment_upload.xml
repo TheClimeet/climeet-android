@@ -57,6 +57,7 @@
                 android:background="@android:color/transparent"
                 android:minWidth="0dp"
                 android:text="공유"
+                android:onClick="@{() -> vm.storeVideo()}"
                 android:textColor="@color/selector_share_btn_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

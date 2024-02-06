@@ -24,6 +24,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Climeet"
+        android:largeHeap="true"
         tools:targetApi="31">
         <activity android:name=".presentation.ui.splash.SplashActivity"
             android:exported="true">

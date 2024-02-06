@@ -51,6 +51,8 @@ private fun getRealPathFromUri(uri: Uri, context: Context): String? {
     }
 }
 
+
+
 fun Uri.toVideoThumbnail(context: Context): MultipartBody.Part? {
     return try {
         val mediaMetadataRetriever = MediaMetadataRetriever()
