@@ -8,7 +8,7 @@ fun GetSelectDateRecordResponse.toClimbingRecordData(
 ) = ClimbingRecordData(
     id = climbingRecordId,
     date = date,
-    time = "${time.hour}h ${time.minute}m",
+    time = getFormattedTime(),
     totalCompleteCount = totalCompletedCount.toString(),
     totalAttemptCount = totalAttemptCount.toString(),
     avgDifficulty = "V${avgDifficulty}",

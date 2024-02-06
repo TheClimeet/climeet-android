@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rect_grey7fill_nostroke_8radius"
-        android:padding="19dp">
+        android:padding="13dp">
 
         <ImageView
             android:id="@+id/iv_crags_profile"
@@ -70,7 +70,7 @@
             style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="65dp"
+            android:layout_marginStart="50dp"
             android:text="도전"
             app:layout_constraintStart_toEndOf="@id/tv_time_title"
             app:layout_constraintTop_toTopOf="@id/tv_time_title" />
@@ -89,7 +89,7 @@
             style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="30dp"
             android:text="완등"
             app:layout_constraintStart_toEndOf="@id/tv_challenge_title"
             app:layout_constraintTop_toTopOf="@id/tv_challenge_title" />
@@ -108,7 +108,7 @@
             style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="30dp"
             android:text="평균 레벨"
             app:layout_constraintStart_toEndOf="@id/tv_success_title"
             app:layout_constraintTop_toTopOf="@id/tv_success_title" />
