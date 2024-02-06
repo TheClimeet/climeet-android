@@ -38,7 +38,7 @@ class UploadViewModel @Inject constructor() : ViewModel() {
 
     val description = MutableStateFlow("")
     val soundEnabled = MutableStateFlow(false)
-    private var thumbnailUri: Uri? = null
+    var thumbnailUri: Uri? = null
     private var videoUri: Uri? = null
 
     fun setVideoUri(uri: Uri) {

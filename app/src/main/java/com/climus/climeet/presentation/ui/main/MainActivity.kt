@@ -22,6 +22,7 @@ import com.climus.climeet.presentation.base.BaseActivity
 import com.climus.climeet.presentation.customview.Permission
 import com.climus.climeet.presentation.ui.toMultiPart
 import com.climus.climeet.presentation.ui.toVideoMultiPart
+import com.climus.climeet.presentation.ui.toVideoThumbnail
 import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION
 import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
@@ -162,7 +163,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
                 uri?.let {
                     viewModel.setVideoUri(it)
-                    viewModel.fileToUrl(it.toVideoMultiPart(this))
+                    it.toVideoThumbnail(this)?.let{ image ->
+                        viewModel.fileToUrl(image)
+                    } ?: run{
+                        showToastMessage("썸네일 추출 실패")
+                    }
                 }
             }
         }
