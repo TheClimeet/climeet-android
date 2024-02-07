@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/home_fragment"
         android:name="com.climus.climeet.presentation.ui.main.home.HomeFragment"
-        android:label="HomeFragment" >
+        android:label="HomeFragment">
         <action
             android:id="@+id/action_home_fragment_to_bestClimerFragment"
             app:destination="@id/bestClimerFragment" />
@@ -24,7 +24,7 @@
     <fragment
         android:id="@+id/shorts_fragment"
         android:name="com.climus.climeet.presentation.ui.main.shorts.ShortsFragment"
-        android:label="ShortsFragment" >
+        android:label="ShortsFragment">
         <action
             android:id="@+id/action_shorts_fragment_to_shortsDetailFragment"
             app:destination="@id/shortsDetailFragment" />
@@ -35,7 +35,7 @@
     <fragment
         android:id="@+id/upload_fragment"
         android:name="com.climus.climeet.presentation.ui.main.upload.UploadFragment"
-        android:label="UploadFragment" >
+        android:label="UploadFragment">
         <action
             android:id="@+id/action_upload_fragment_to_uploadBottomSheetFragment"
             app:destination="@id/uploadBottomSheetFragment" />
@@ -44,7 +44,7 @@
             app:destination="@id/uploadCompleteFragment" />
     </fragment>
 
-<!--  TimerMainFragment에 연결해둠  -->
+    <!--  TimerMainFragment에 연결해둠  -->
 
     <fragment
         android:id="@+id/myPage_fragment"
@@ -78,21 +78,20 @@
     <fragment
         android:id="@+id/record_complete_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.ClimbingCompleteFragment"
-        android:label="ClimbingCompleteFragment"/>
+        android:label="ClimbingCompleteFragment" />
     <fragment
         android:id="@+id/timer_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerFragment"
-        android:label="TimerFragment"/>
+        android:label="TimerFragment" />
     <fragment
         android:id="@+id/set_timer_climbing_record_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerClimbingRecordFragment"
-        android:label="SetTimerClimbingRecordFragment">
-    </fragment>
+        android:label="SetTimerClimbingRecordFragment"></fragment>
 
     <fragment
         android:id="@+id/calendar_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.calendar.CalendarFragment"
-        android:label="CalendarFragment" >
+        android:label="CalendarFragment">
         <action
             android:id="@+id/action_calendar_fragment_to_createClimbingRecordFragment"
             app:destination="@id/create_climbing_record_fragment" />
@@ -103,7 +102,7 @@
     <fragment
         android:id="@+id/create_climbing_record_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateClimbingRecordFragment"
-        android:label="CreateClimbingRecordFragment" >
+        android:label="CreateClimbingRecordFragment">
         <action
             android:id="@+id/action_create_climbing_record_fragment_to_createSelectCragFragment"
             app:destination="@id/fragment_create_select_crag" />
@@ -122,7 +121,7 @@
 
     <action
         android:id="@+id/globalActionToSelectDateBottomSheetFragment"
-        app:destination="@id/select_date_bottom_sheet_fragment"/>
+        app:destination="@id/select_date_bottom_sheet_fragment" />
     <dialog
         android:id="@+id/select_time_bottom_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag.selecttime.SelectTimeBottomSheetFragment"
@@ -135,7 +134,7 @@
     <fragment
         android:id="@+id/shortsDetailFragment"
         android:name="com.climus.climeet.presentation.ui.main.shorts.detail.ShortsDetailFragment"
-        android:label="ShortsDetailFragment" >
+        android:label="ShortsDetailFragment">
         <action
             android:id="@+id/action_shortsDetailFragment_to_rootShortsFragment"
             app:destination="@id/rootShortsFragment" />
@@ -157,13 +156,10 @@
     <fragment
         android:id="@+id/uploadCompleteFragment"
         android:name="com.climus.climeet.presentation.ui.main.upload.complete.UploadCompleteFragment"
-        android:label="UploadCompleteFragment" >
-        <action
-            android:id="@+id/action_uploadCompleteFragment_to_shortsDetailFragment"
-            app:destination="@id/shortsDetailFragment" />
-        <action
-            android:id="@+id/action_uploadCompleteFragment_to_shorts_fragment"
-            app:destination="@id/shorts_fragment" />
-    </fragment>
+        android:label="UploadCompleteFragment" />
+
+    <action
+        android:id="@+id/globalActionToShortsFragment"
+        app:destination="@id/shorts_fragment"/>
 
 </navigation>

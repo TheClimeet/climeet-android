@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.ActivityMainBinding
@@ -89,7 +90,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.main_container) as NavHostFragment
         navController = navHostFragment.navController
-        binding.mainBnv.setupWithNavController(navController)
+        binding.mainBnv.apply {
+            setupWithNavController(navController)
+            setOnItemSelectedListener { item ->
+                NavigationUI.onNavDestinationSelected(item,navController)
+                navController.popBackStack(item.itemId, inclusive = false)
+                true
+            }
+        }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.home_fragment || destination.id == R.id.shorts_fragment

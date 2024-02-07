@@ -7,3 +7,8 @@ fun NavController.toSelectDateBottomSheetFragment(){
     val action = MainNavDirections.globalActionToSelectDateBottomSheetFragment()
     navigate(action)
 }
+
+fun NavController.toShortsFragment(){
+    val action = MainNavDirections.globalActionToShortsFragment()
+    navigate(action)
+}
