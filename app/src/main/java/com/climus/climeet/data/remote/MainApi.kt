@@ -82,10 +82,10 @@ interface MainApi {
     suspend fun findClimberRankingOrderClearCount(): Response<List<BestClearClimberSimpleResponse>>
 
     @GET("/api/home/rank/weeks/climbers/time")
-    suspend fun findClimberRankingOrderTime(@Header("Authorization") accessToken : String): Response<List<BestTimeClimberSimpleResponse>>
+    suspend fun findClimberRankingOrderTime(): Response<List<BestTimeClimberSimpleResponse>>
 
     @GET("/api/home/rank/weeks/climbers/level")
-    suspend fun findClimberRankingOrderLevel(@Header("Authorization") accessToken : String): Response<List<BestLevelCimberSimpleResponse>>
+    suspend fun findClimberRankingOrderLevel(): Response<List<BestLevelCimberSimpleResponse>>
 
     @GET("/api/shorts/popular")
     suspend fun findPopularShorts(
@@ -99,7 +99,6 @@ interface MainApi {
 
     @GET("/api/home/rank/weeks/routes")
     suspend fun findRouteRankingOrderSelectionCount(
-        @Header("Authorization") accessToken : String
     ): Response<List<BestRouteDetailInfoResponse>>
 
     @GET("/api/gyms/{gymId}/version/key")
