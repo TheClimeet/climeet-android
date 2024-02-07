@@ -10,11 +10,7 @@
 
         <variable
             name="data"
-            type="com.climus.climeet.presentation.ui.main.record.model.RecordCragData" />
-
-        <variable
-            name="vm"
-            type="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.CragSelectBottomFragment" />
+            type="com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
