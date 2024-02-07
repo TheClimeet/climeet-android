@@ -7,6 +7,7 @@ import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
+import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteSimpleResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
@@ -93,9 +94,13 @@ interface MainApi {
         @Query("size") size: Int,
     ): Response<List<ShortsSimpleResponse>>
 
-    @GET("/api/rank/week/gym/follow")
+    @GET("/api/home/rank/weeks/gyms/follow")
     suspend fun findGymRankingOrderFollowCount(
     ): Response<List<BestFollowGymSimpleResponse>>
+
+    @GET("/api/home/rank/weeks/gyms/record")
+    suspend fun findGymRankingListOrderSelectionCount(
+    ): Response<List<BestRecordGymDetailInfoResponse>>
 
     @GET("/api/home/rank/weeks/routes")
     suspend fun findRouteRankingOrderSelectionCount(

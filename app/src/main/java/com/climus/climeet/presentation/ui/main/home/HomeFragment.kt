@@ -58,8 +58,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         setupOnClickListener()
         setupHomeGymList()
         setupBestRanking()
-        setupPopularShorts()
-        setupPopularCrags()
     }
 
     private fun initEventObserve(){
@@ -67,56 +65,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             viewModel?.let { vm ->
                 vm.uiState.collect { uiState ->
                     uiState.bannerList?.let { bannerList ->
-                        Log.d("bannerList", bannerList.toString())
                         vpBanner = bannerList
                         setupIntroduceBanner(vpBanner)
                     }
 
                     uiState.shortsList?.let { shortsList ->
-                        Log.d("HomeFragment", shortsList.toString())
                         recyclerShorts = shortsList
+                        setupPopularShorts()
                     }
 
                     uiState.cragList?.let { cragList ->
-                        Log.d("HomeFragment", cragList.toString())
                         recyclerCrag = cragList
+                        Log.d("recyclerCrag", recyclerCrag.toString())
+                        setupPopularCrags()
                     }
 
                     uiState.routeList?.let { routeList ->
-                        Log.d("RouteList", recyclerRoute.toString())
                         recyclerRoute = routeList
                         setupPopularRoutes()
                     }
                 }
             }
-//            viewModel?.let { vm ->
-//                vm.uiState.collect { uiState ->
-//                    uiState.shortsList?.let { shortsList ->
-//                        Log.d("HomeFragment", shortsList.toString())
-//                        recyclerShorts = shortsList
-//                    }
-//                }
-//            }
-//
-//            viewModel?.let { vm ->
-//                vm.uiState.collect { uiState ->
-//                    uiState.cragList?.let { cragList ->
-//                        Log.d("HomeFragment", cragList.toString())
-//                        recyclerCrag = cragList
-//                    }
-//                }
-//            }
-//
-//            viewModel?.let { vm ->
-//                vm.uiState.collect { uiState ->
-//                    uiState.routeList?.let { routeList ->
-//                        Log.d("RouteList", "called")
-//                        Log.d("RouteList", recyclerRoute.toString())
-//                        recyclerRoute = routeList
-//                        setupPopularRoutes()
-//                    }
-//                }
-//            }
         }
     }
 
@@ -284,21 +253,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private fun setupPopularCrags() {
-//        val cragList = arrayListOf(
-//            PopularCrag(null, true, "피커스 구로", 70),
-//            PopularCrag(null, false, "송도 비블럭", 125),
-//            PopularCrag(null, true, "더클라임 연남", 12),
-//            PopularCrag(null, false, "더클라임 마포", 24),
-//            PopularCrag(null, true, "더클라임 부천", 54),
-//            PopularCrag(null, false, "더클라임 부천", 90),
-//            PopularCrag(null, true, "피커스 구로", 70),
-//            PopularCrag(null, false, "송도 비블럭", 125),
-//            PopularCrag(null, true, "더클라임 연남", 12),
-//            PopularCrag(null, false, "더클라임 마포", 24),
-//            PopularCrag(null, true, "더클라임 부천", 54),
-//            PopularCrag(null, false, "더클라임 부천", 90)
-//        )
-
         val popularCragRVAdapter = PopularCragRVAdapter(recyclerCrag)
         setupRecyclerView(binding.rvHomePopularCrags, popularCragRVAdapter, LinearLayoutManager.HORIZONTAL)
     }
