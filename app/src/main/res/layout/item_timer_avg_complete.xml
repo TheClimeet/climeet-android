@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="levelName"
+            type="String" />
+
+        <variable
+            name="levelColor"
+            type="String" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp">
+
+        <TextView
+            android:id="@+id/tv_level"
+            style="@style/TextSmallSemiBold"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/oval_silver2fill_nostroke"
+            android:gravity="center"
+            android:text="@{levelName}"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:textHexColor="@{levelColor}"
+            tools:text="VB" />
+
+        <ProgressBar
+            android:id="@+id/pb_avg_complete"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="60"
+            android:progressDrawable="@drawable/record_progrssbar_custom"
+            app:layout_constraintBottom_toBottomOf="@id/tv_level"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_level"
+            app:layout_constraintTop_toTopOf="@id/tv_level" />
+
+        <TextView
+            android:id="@+id/tv_avg_complete"
+            style="@style/TextTiny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="2/5"
+            app:layout_constraintEnd_toEndOf="@id/pb_avg_complete"
+            app:layout_constraintTop_toBottomOf="@id/pb_avg_complete" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

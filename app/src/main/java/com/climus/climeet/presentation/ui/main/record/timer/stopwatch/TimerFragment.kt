@@ -25,6 +25,7 @@ import com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerCl
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.TimerCragSelectBottomSheetFragment
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.TimerCragSelectBottomSheetViewModel
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.TimerCragSelectRVAdapter
+import kotlin.math.roundToInt
 
 // ------------------------ 스톱워치 화면 -------------------------
 enum class ViewMode {
@@ -99,14 +100,22 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         })
     }
 
+    // 평균 완등률 설정
     private fun initAverage(){
         val levelAdapter = RecordAvgAdapter(recordVM)
         binding.rvAvgRecord.adapter = levelAdapter
 
+        // todo : roomDB에 저장된 루트기록 값 가져와서 넘겨주기
         val items = listOf(
-            LevelItemForAvg("V1", "#FFFFFF",2, 3),
-            LevelItemForAvg("V2", "#DDDDDD",3, 5),
+            LevelItemForAvg("V1", "#FFFFFF",3, 2),
+            LevelItemForAvg("V2", "#DDDDDD",5, 3),
         )
+
+        // 토글 위에 있는 총 평균 완등률
+        val successRate = 5 / 8.toFloat()
+        val progress = (successRate * 100).roundToInt()
+        binding.pbAvgComplete.progress = progress
+        binding.tvAvgComplete.text = "$progress%"
 
         levelAdapter.setItems(items)
     }
