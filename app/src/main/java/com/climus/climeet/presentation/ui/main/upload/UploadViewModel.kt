@@ -53,13 +53,14 @@ class UploadViewModel @Inject constructor(
     val description = MutableStateFlow("")
     val soundEnabled = MutableStateFlow(false)
     val thumbnailImg = MutableStateFlow("")
+
     val compressProgress = MutableStateFlow(0)
     val isCompressDone = MutableStateFlow(false)
 
     val uploadProgress = MutableStateFlow(0)
     val isUploadDone = MutableStateFlow(false)
-    private var videoSize = 0L
 
+    private var videoSize = 0L
     private var videoFile: MultipartBody.Part? = null
 
     val isDataReady = combine(thumbnailImg, isCompressDone) { thumbnailImg, isCompressDone ->
@@ -69,6 +70,14 @@ class UploadViewModel @Inject constructor(
         SharingStarted.WhileSubscribed(),
         false
     )
+
+    fun initViewModel() {
+        _uiState.value = UploadUiState()
+        compressProgress.value = 0
+        isCompressDone.value = false
+        uploadProgress.value = 0
+        isUploadDone.value = false
+    }
 
     fun startCompress() {
         isCompressDone.value = false

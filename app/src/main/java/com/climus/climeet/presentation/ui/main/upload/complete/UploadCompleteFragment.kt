@@ -44,8 +44,7 @@ class UploadCompleteFragment :
                     }
                 } else {
                     showToastMessage("업로드 실패")
-                    delay(1500)
-                    findNavController().toShortsMain()
+                    findNavController().toShortsFragment()
                 }
             }
         }
@@ -53,20 +52,17 @@ class UploadCompleteFragment :
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            findNavController().toShortsMain()
+            findNavController().toShortsFragment()
         }
     }
 
-    private fun NavController.toShortsDetail() {
-        val action =
-            UploadCompleteFragmentDirections.actionUploadCompleteFragmentToShortsDetailFragment()
-        navigate(action)
-    }
-
-    private fun NavController.toShortsMain() {
+    private fun NavController.toShortsFragment(){
         val action = UploadCompleteFragmentDirections.actionUploadCompleteFragmentToShortsFragment()
         navigate(action)
     }
 
-
+    private fun NavController.toShortsDetail(){
+        val action = UploadCompleteFragmentDirections.actionUploadCompleteFragmentToShortsDetailFragment()
+        navigate(action)
+    }
 }

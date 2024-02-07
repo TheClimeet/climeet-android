@@ -36,6 +36,7 @@ class UploadFragment : BaseFragment<FragmentUploadBinding>(R.layout.fragment_upl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.initViewModel()
         binding.vm = viewModel
         parentViewModel.goToGalleryForVideo()
         initVideoObserve()
@@ -85,7 +86,6 @@ class UploadFragment : BaseFragment<FragmentUploadBinding>(R.layout.fragment_upl
         CoroutineScope(Dispatchers.Main).launch {
 
             val uris = listOf(uri)
-
             VideoCompressor.start(
                 context = App.getContext(),
                 uris,
@@ -140,8 +140,13 @@ class UploadFragment : BaseFragment<FragmentUploadBinding>(R.layout.fragment_upl
         navigate(action)
     }
 
-    private fun NavController.toUploadComplete(){
+    private fun NavController.toUploadComplete() {
         val action = UploadFragmentDirections.actionUploadFragmentToUploadCompleteFragment()
         navigate(action)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        VideoCompressor.cancel()
     }
 }
