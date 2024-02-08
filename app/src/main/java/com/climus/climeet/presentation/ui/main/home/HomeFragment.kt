@@ -16,6 +16,7 @@ import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteSimpleResponse
+import com.climus.climeet.data.model.response.ShortsItem
 import com.climus.climeet.data.model.response.ShortsSimpleResponse
 import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.data.repository.MainRepository
@@ -44,7 +45,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private val viewModel: HomeViewModel by viewModels()
     private var vpBanner: List<BannerDetailInfoResponse> = emptyList()
-    private var recyclerShorts: List<ShortsSimpleResponse> = emptyList()
+    private var recyclerShorts: List<ShortsItem> = emptyList()
     private var recyclerCrag: List<BestFollowGymSimpleResponse> = emptyList()
     private var recyclerRoute: List<BestRouteDetailInfoResponse> = emptyList()
 
@@ -70,8 +71,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     }
 
                     uiState.shortsList?.let { shortsList ->
-                        //recyclerShorts = shortsList
-                        //setupPopularShorts()
+                        recyclerShorts = shortsList.result
+                        setupPopularShorts()
                     }
 
                     uiState.cragList?.let { cragList ->
@@ -227,27 +228,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private fun setupPopularShorts() {
-//        val shortsList = arrayListOf(
-//            PopularShorts(null, "피커스 구로", "#000000", "V10", "#FFBEDF22"),
-//            PopularShorts(null, "더클라임 양재", "#FFFFFF", "V1", "#FFBEDF22"),
-//            PopularShorts(null, "피커스 사당", "#000000", "V9", "#FFBEDF22"),
-//            PopularShorts(null, "더클라임 마포", "#000000", "V3", "#FFBEDF22"),
-//            PopularShorts(null, "피커스 부평", "#FFFFFF", "V7", "#000FFF"),
-//            PopularShorts(null, "더클라임 부천", "#000000", "V2", "#000000"),
-//            PopularShorts(null, "피커스 구로", "#000000", "V10", "#FFBEDF22"),
-//            PopularShorts(null, "더클라임 양재", "#FFFFFF", "V1", "#FFBEDF22"),
-//            PopularShorts(null, "피커스 사당", "#000000", "V9", "#FFBEDF22"),
-//            PopularShorts(null, "더클라임 마포", "#000000", "V3", "#FFBEDF22"),
-//            PopularShorts(null, "피커스 부평", "#FFFFFF", "V7", "#000FFF"),
-//            PopularShorts(null, "더클라임 부천", "#000000", "V2", "#000000"),
-//            PopularShorts(null, "피커스 구로", "#000000", "V10", "#FFBEDF22"),
-//            PopularShorts(null, "더클라임 양재", "#FFFFFF", "V1", "#FFBEDF22"),
-//            PopularShorts(null, "피커스 사당", "#000000", "V9", "#FFBEDF22"),
-//            PopularShorts(null, "더클라임 마포", "#000000", "V3", "#FFBEDF22"),
-//            PopularShorts(null, "피커스 부평", "#FFFFFF", "V7", "#000FFF"),
-//            PopularShorts(null, "더클라임 부천", "#000000", "V2", "#000000")
-//        )
-
         val popularShortsRVAdapter = PopularShortsRVAdapter(recyclerShorts)
         setupRecyclerView(binding.rvHomeShorts, popularShortsRVAdapter, LinearLayoutManager.HORIZONTAL)
     }

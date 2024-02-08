@@ -8,23 +8,31 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/iv_shorts_all_thumbnail"
-            android:layout_width="90dp"
-            android:layout_height="150dp"
-            android:layout_marginVertical="10dp"
-            android:layout_marginTop="12dp"
-            android:src="@drawable/img_shorts"
-            app:civ_border_overlay="true"
-            app:civ_border_width="1dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardview_layout"
+            android:layout_width="100dp"
+            android:layout_height="160dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="4dp"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_shorts_all_thumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_shorts"
+                app:civ_border_overlay="true"
+                app:civ_border_width="1dp" />
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/tv_shorts_all_crag_name"
@@ -39,8 +47,8 @@
             android:paddingStart="5dp"
             android:paddingEnd="15dp"
             android:textColor="@color/cm_stargrey"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_shorts_all_thumbnail" />
+            app:layout_constraintStart_toStartOf="@+id/cardview_layout"
+            app:layout_constraintTop_toTopOf="@+id/cardview_layout" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_popular_shorts_all_circle"
@@ -64,8 +72,8 @@
             android:text="V1"
             android:textColor="@color/cm_red"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_shorts_all_thumbnail"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/cardview_layout"
+            app:layout_constraintEnd_toEndOf="@+id/cardview_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
