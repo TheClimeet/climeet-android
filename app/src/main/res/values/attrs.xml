@@ -11,8 +11,8 @@
     </declare-styleable>
     
     <declare-styleable name="RouteView">
-        <attr name="levelColor" format="reference|string" />
-        <attr name="levelName" format="reference|string" />
-        <attr name="imgUrl" format="reference|string" />
+        <attr name="routeLevelColor" format="reference|string" />
+        <attr name="routeLevelName" format="reference|string" />
+        <attr name="routeImgUrl" format="reference|string" />
     </declare-styleable>
 </resources>
