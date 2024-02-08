@@ -4,10 +4,10 @@ import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.data.repository.MainRepositoryImpl
 import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.data.repository.IntroRepositoryImpl
-import com.climus.climeet.presentation.ui.main.record.timer.data.ClimbingRecordRepository
-import com.climus.climeet.presentation.ui.main.record.timer.data.ClimbingRecordRepositoryImpl
-import com.climus.climeet.presentation.ui.main.record.timer.data.StopwatchStatesRepository
-import com.climus.climeet.presentation.ui.main.record.timer.data.StopwatchStatesRepositoryImpl
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordRepository
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordRepositoryImpl
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordRepository
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -28,9 +28,10 @@ abstract class RepositoryModule {
 
     @Singleton
     @Binds
-    abstract fun bindStopwatchStatesRepository(stopwatchRepositoryImpl: StopwatchStatesRepositoryImpl): StopwatchStatesRepository
+    abstract fun bindClimbingRecordRepository(climbingRecordRepositoryImpl: ClimbingRecordRepositoryImpl): ClimbingRecordRepository
 
     @Singleton
     @Binds
-    abstract fun bindClimbingRecordRepository(climbingRecordRepositoryImpl: ClimbingRecordRepositoryImpl): ClimbingRecordRepository
+    abstract fun bindRouteRecordRepository(routeRecordRepositoryImpl: RouteRecordRepositoryImpl): RouteRecordRepository
+
 }

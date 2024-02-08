@@ -81,6 +81,16 @@
         android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerFragment"
         android:label="TimerFragment"/>
     <fragment
+        android:id="@+id/timerCragSelectBottomSheetFragment"
+        android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.TimerCragSelectBottomSheetFragment"
+        android:label="TimerCragSelectBottomSheetFragment">
+
+        <action
+            android:id="@+id/action_timerCragSelectBottomSheetFragment_to_timer_fragment"
+            app:destination="@id/timer_fragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/set_timer_climbing_record_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerClimbingRecordFragment"
         android:label="SetTimerClimbingRecordFragment">

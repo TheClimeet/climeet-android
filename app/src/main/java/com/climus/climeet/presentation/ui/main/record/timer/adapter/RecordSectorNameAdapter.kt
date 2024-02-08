@@ -7,24 +7,24 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
-import com.climus.climeet.databinding.ItemTimerSectorNameBinding
-import com.climus.climeet.presentation.ui.main.record.model.RecordWallData
+import com.climus.climeet.databinding.ItemSectorNameBinding
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.SectorNameUiData
 
-class RecordWallNameAdapter :
-    ListAdapter<RecordWallData, RecordWallViewHolder>(diffCallback) {
+class RecordSectorNameAdapter :
+    ListAdapter<SectorNameUiData, RecordWallViewHolder>(diffCallback) {
 
     companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<RecordWallData>() {
+        val diffCallback = object : DiffUtil.ItemCallback<SectorNameUiData>() {
             override fun areItemsTheSame(
-                oldItem: RecordWallData,
-                newItem: RecordWallData
+                oldItem: SectorNameUiData,
+                newItem: SectorNameUiData
             ): Boolean {
                 return oldItem.name == newItem.name
             }
 
             override fun areContentsTheSame(
-                oldItem: RecordWallData,
-                newItem: RecordWallData
+                oldItem: SectorNameUiData,
+                newItem: SectorNameUiData
             ): Boolean {
                 return oldItem == newItem
             }
@@ -37,7 +37,7 @@ class RecordWallNameAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordWallViewHolder =
         RecordWallViewHolder(
-            ItemTimerSectorNameBinding.inflate(
+            ItemSectorNameBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -45,10 +45,10 @@ class RecordWallNameAdapter :
         )
 }
 
-class RecordWallViewHolder(private val binding: ItemTimerSectorNameBinding) :
+class RecordWallViewHolder(private val binding: ItemSectorNameBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: RecordWallData) {
+    fun bind(item: SectorNameUiData) {
         binding.item = item
         if (item.isSelected) {
             binding.chipText.setChipBackgroundColorResource(R.color.cm_main)

@@ -5,9 +5,11 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.CragSelectBottomViewModel" />
+            type="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.TimerCragSelectBottomSheetViewModel" />
 
     </data>
 
@@ -19,7 +21,8 @@
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        tools:context= "presentation.ui.main.record.timer.stopwatch.selectcrag.TimerCragSelectBottomSheetFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -66,7 +69,6 @@
                 android:paddingHorizontal="45dp"
                 android:paddingVertical="10dp"
                 android:text="@={vm.keyword}"
-                android:textColor="@color/white"
                 android:textColorHint="@color/cm_grey3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -94,16 +96,6 @@
                 app:layout_constraintEnd_toEndOf="@id/et_crag_name"
                 app:layout_constraintTop_toTopOf="@id/et_crag_name" />
 
-            <TextView
-                android:id="@+id/tv_crag_num"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="총 n개의 검색 결과가 있습니다."
-                android:textColor="@color/cm_grey6"
-                app:layout_constraintStart_toStartOf="@id/iv_search"
-                app:layout_constraintTop_toBottomOf="@id/et_crag_name" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_search_crag"
                 android:layout_width="match_parent"
@@ -111,11 +103,10 @@
                 app:layout_constrainedHeight="true"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="15dp"
-                android:visibility="visible"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_crag_num"
+                app:layout_constraintTop_toBottomOf="@id/et_crag_name"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:listitem="@layout/item_crag_search_timer" />
 
@@ -124,19 +115,19 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_marginTop="70dp"
-                android:visibility="invisible"
+                android:visibility="@{vm.uiState.progressState? View.VISIBLE : View.INVISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_crag_num"/>
+                app:layout_constraintTop_toBottomOf="@+id/et_crag_name"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_search_none"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
-                android:visibility="visible"
+                android:visibility="@{vm.uiState.emptyResultState? View.VISIBLE : View.INVISIBLE}"
                 app:layout_constraintStart_toStartOf="@id/iv_search"
-                app:layout_constraintTop_toBottomOf="@id/tv_crag_num">
+                app:layout_constraintTop_toBottomOf="@id/et_crag_name">
 
                 <ImageView
                     android:id="@+id/iv_none"

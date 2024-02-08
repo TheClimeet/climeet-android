@@ -2,9 +2,9 @@ package com.climus.climeet.app.di
 
 import android.content.Context
 import androidx.room.Room
-import com.climus.climeet.presentation.ui.main.record.timer.data.ClimbingRecordDao
-import com.climus.climeet.presentation.ui.main.record.timer.data.ClimbingDatabase
-import com.climus.climeet.presentation.ui.main.record.timer.data.StopwatchStatesDao
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordDao
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.ClimbingDatabase
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,7 +32,7 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideStopwatchStatesDao(recordDatabase: ClimbingDatabase): StopwatchStatesDao {
-        return recordDatabase.StopwatchStatesDao()
+    fun provideRouteRecordDao(recordDatabase: ClimbingDatabase): RouteRecordDao {
+        return recordDatabase.RouteRecordDao()
     }
 }

@@ -1,18 +1,19 @@
 package com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.databinding.ItemCragSearchTimerBinding
-import com.climus.climeet.presentation.ui.main.record.model.RecordCragData
-
+import com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiData
 
 class TimerCragSelectRVAdapter(
-    private val onCragSelected: (RecordCragData) -> Unit
+    private val viewModel : TimerCragSelectBottomSheetViewModel
 ) : RecyclerView.Adapter<TimerCragSelectRVAdapter.CragSelectViewHolder>() {
 
-    private var searchList: List<RecordCragData> = emptyList()
+    private var searchList: List<SearchCragUiData> = emptyList()
     private var keyword: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CragSelectViewHolder =
@@ -24,18 +25,18 @@ class TimerCragSelectRVAdapter(
 
     override fun onBindViewHolder(holder: CragSelectViewHolder, position: Int) {
         val cragData = searchList[position]
-        holder.bind(searchList[position], keyword)
+        holder.bind(cragData, keyword)
 
-        // 암장을 선택하는 버튼 클릭 시
-        holder.binding.btnSelect.setOnClickListener {
-            onCragSelected(cragData)
+        // 선택된 암장 정보 TimerFragment로 전달
+        holder.binding.btnSelect.setOnClickListener{
+            viewModel.selectItem(cragData)
         }
     }
 
     override fun getItemCount(): Int = searchList.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setList(list: List<RecordCragData>, keyword: String) {
+    fun setList(list: List<SearchCragUiData>, keyword: String) {
         searchList = list
         this.keyword = keyword
         notifyDataSetChanged()
@@ -43,10 +44,14 @@ class TimerCragSelectRVAdapter(
 
     class CragSelectViewHolder(val binding: ItemCragSearchTimerBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
-            fun bind(data: RecordCragData, keyword: String) {
+            fun bind(data: SearchCragUiData, keyword: String) {
                 binding.keyword = keyword
                 binding.data = data
+
+                binding.btnSelect.setOnClickListener {
+                    data.onClickListener(data.id, data.name, data.imgUrl)
+                    sharedPreferences.edit().putString("cragName", data.name).apply()
+                }
             }
         }
 }

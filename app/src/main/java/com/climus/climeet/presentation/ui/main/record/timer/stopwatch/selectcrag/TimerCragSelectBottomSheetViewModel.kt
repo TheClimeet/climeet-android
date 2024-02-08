@@ -1,37 +1,62 @@
 package com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.climus.climeet.presentation.ui.main.record.model.RecordCragData
+import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiData
+import com.climus.climeet.presentation.ui.main.shorts.toSearchCragUiData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class CragNameUiState(
-    val searchList: List<RecordCragData> = emptyList(),
-    val selectedItems: List<RecordCragData> = emptyList()
+    var searchList: List<SearchCragUiData> = emptyList(),
+    val progressState: Boolean = false,
+    val emptyResultState: Boolean = false
 )
 
-@HiltViewModel
-class CragSelectBottomViewModel @Inject constructor() : ViewModel() {
+sealed class CragSelectEvent{
+    data class NavigateToBack(val id: Long, val name: String) : CragSelectEvent()
+    data class ShowToastMessage(val msg: String): CragSelectEvent()
+}
 
-    //todo
-    // - 암장 검색 API 연결하기
-    // - 암장 검색 API 연결해 결과 개수 tv_crag_num에 반영하기
+@HiltViewModel
+class TimerCragSelectBottomSheetViewModel @Inject constructor(
+    private val repository: MainRepository
+): ViewModel() {
 
     private val _uiState = MutableStateFlow(CragNameUiState())
     val uiState: StateFlow<CragNameUiState> = _uiState.asStateFlow()
 
+    private val _event = MutableSharedFlow<CragSelectEvent>()
+    val event: SharedFlow<CragSelectEvent> = _event.asSharedFlow()
+
+    private var curJob: Job? = null
+
     val keyword = MutableStateFlow("")
 
-    val selectedCrag = MutableLiveData<RecordCragData>()
+    // 선택된 암장
+    private val _selectedCrag = MutableLiveData<SearchCragUiData>()
+    val selectedCrag: LiveData<SearchCragUiData> get() = _selectedCrag
 
+    fun selectItem(item: SearchCragUiData) {
+        _selectedCrag.value = item
+    }
 
     init {
         observeKeyword()
@@ -39,32 +64,60 @@ class CragSelectBottomViewModel @Inject constructor() : ViewModel() {
 
     private fun observeKeyword() {
         keyword.onEach {
-
             if (it.isBlank()) {
                 _uiState.update { state ->
                     state.copy(
-                        searchList = emptyList()
+                        searchList = emptyList(),
+                        emptyResultState = false
                     )
                 }
             } else {
-                // todo 타이핑 할 때마다 API 호출
+                curJob?.cancel()
+
                 _uiState.update { state ->
                     state.copy(
-                        searchList = listOf(
-                            RecordCragData(null, "더클라임 클라이밍 강남점", false),
-                            RecordCragData(null, "더클라임 클라이밍 논현점", false),
-                            RecordCragData(null, "더클라임 클라이밍 마곡점", false),
-                            RecordCragData(null, "더클라임 클라이밍 홍대점", false),
-                            RecordCragData(null, "더클라임 클라이밍 강남점", false),
-                            RecordCragData(null, "더클라임 클라이밍 논현점", false),
-                            RecordCragData(null, "더클라임 클라이밍 마곡점", false),
-                            RecordCragData(null, "더클라임 클라이밍 홍대점", false),
-                            RecordCragData(null, "더클라임 클라이밍 강남점", false),
-                            RecordCragData(null, "더클라임 클라이밍 논현점", false),
-                            RecordCragData(null, "더클라임 클라이밍 마곡점", false),
-                            RecordCragData(null, "더클라임 클라이밍 홍대점", false)
-                        )
+                        progressState = true,
+                        emptyResultState = false
                     )
+                }
+                curJob = viewModelScope.launch {
+                    delay(500)
+                    repository.searchAvailableGym(it, 0, 15).let { result ->
+                        when (result) {
+                            is BaseState.Success -> {
+                                if (result.body.result.isNotEmpty()) {
+                                    _uiState.update { state ->
+                                        state.copy(
+                                            searchList = result.body.result.map { item ->
+                                                item.toSearchCragUiData(
+                                                    it, ::navigateToBack
+                                                )
+                                            },
+                                            progressState = false
+                                        )
+                                    }
+                                } else {
+                                    _uiState.update { state ->
+                                        state.copy(
+                                            searchList = emptyList(),
+                                            progressState = false,
+                                            emptyResultState = true,
+                                        )
+                                    }
+                                }
+                            }
+
+                            is BaseState.Error -> {
+                                _uiState.update { state ->
+                                    state.copy(
+                                        progressState = false,
+                                        emptyResultState = true
+                                    )
+                                }
+                                _event.emit(CragSelectEvent.ShowToastMessage(result.msg))
+                            }
+                        }
+                    }
                 }
             }
         }.launchIn(viewModelScope)
@@ -79,8 +132,11 @@ class CragSelectBottomViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    // 선택된 암장 관리
-    fun setSelectedItem(item: RecordCragData) {
-        selectedCrag.value = item // 암장 선택 시 선택 정보 업데이트
+    fun navigateToBack(cragId: Long, cragName: String, cragImgUrl: String) {
+        viewModelScope.launch {
+            _event.emit(
+                CragSelectEvent.NavigateToBack(cragId, cragName)
+            )
+        }
     }
 }
