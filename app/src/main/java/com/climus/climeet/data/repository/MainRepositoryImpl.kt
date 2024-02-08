@@ -72,13 +72,6 @@ class MainRepositoryImpl @Inject constructor(
             : BaseState<List<BestLevelCimberSimpleResponse>> =
         runRemote { api.findClimberRankingOrderLevel() }
 
-    override suspend fun findPopularShorts(
-        @Query("page") page: Int,
-        @Query("size") size: Int
-    )
-            : BaseState<List<ShortsSimpleResponse>> =
-        runRemote { api.findPopularShorts(page, size) }
-
     override suspend fun findGymRankingOrderFollowCount()
             : BaseState<List<BestFollowGymSimpleResponse>> =
         runRemote { api.findGymRankingOrderFollowCount() }

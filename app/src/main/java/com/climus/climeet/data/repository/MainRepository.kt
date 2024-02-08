@@ -59,11 +59,6 @@ interface MainRepository {
 
     suspend fun findClimberRankingOrderLevel(): BaseState<List<BestLevelCimberSimpleResponse>>
 
-    suspend fun findPopularShorts(
-        @Query("page") page: Int,
-        @Query("size") size: Int
-    ): BaseState<List<ShortsSimpleResponse>>
-
     suspend fun findGymRankingOrderFollowCount(): BaseState<List<BestFollowGymSimpleResponse>>
 
     suspend fun findGymRankingListOrderSelectionCount(): BaseState<List<BestRecordGymDetailInfoResponse>>

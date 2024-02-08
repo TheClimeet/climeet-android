@@ -51,7 +51,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getBannerListBetweenDates()
-        viewModel.getPopularShorts()
+        viewModel.getShorts()
         viewModel.getGymRankingOrderFollowCount()
         viewModel.getRouteRankingOrderSelectionCount()
         initEventObserve()
@@ -70,8 +70,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     }
 
                     uiState.shortsList?.let { shortsList ->
-                        recyclerShorts = shortsList
-                        setupPopularShorts()
+                        //recyclerShorts = shortsList
+                        //setupPopularShorts()
                     }
 
                     uiState.cragList?.let { cragList ->

@@ -88,12 +88,6 @@ interface MainApi {
     @GET("/api/home/rank/weeks/climbers/level")
     suspend fun findClimberRankingOrderLevel(): Response<List<BestLevelCimberSimpleResponse>>
 
-    @GET("/api/shorts/popular")
-    suspend fun findPopularShorts(
-        @Query("page") page: Int,
-        @Query("size") size: Int,
-    ): Response<List<ShortsSimpleResponse>>
-
     @GET("/api/home/rank/weeks/gyms/follow")
     suspend fun findGymRankingOrderFollowCount(
     ): Response<List<BestFollowGymSimpleResponse>>
