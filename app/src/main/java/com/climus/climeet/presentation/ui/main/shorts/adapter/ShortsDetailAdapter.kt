@@ -14,7 +14,7 @@ class ShortsDetailAdapter(fragment: Fragment) :
     override fun getItemCount(): Int = data.size
 
     override fun createFragment(position: Int): Fragment =
-        ShortsDetailFragment.newData(data[position])
+        ShortsDetailFragment(data[position])
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(list: List<ShortsUiData>){

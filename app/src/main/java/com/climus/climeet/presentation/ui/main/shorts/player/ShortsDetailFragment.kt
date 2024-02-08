@@ -1,7 +1,6 @@
 package com.climus.climeet.presentation.ui.main.shorts.player
 
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.OptIn
@@ -21,45 +20,15 @@ import com.climus.climeet.databinding.FragmentShortsDetailBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class ShortsDetailFragment(): BaseFragment<FragmentShortsDetailBinding>(R.layout.fragment_shorts_detail) {
+class ShortsDetailFragment @Inject constructor(
+    private val data: ShortsUiData
+): BaseFragment<FragmentShortsDetailBinding>(R.layout.fragment_shorts_detail) {
 
     private var player : ExoPlayer? = null
     private val dataSourceFactory: DataSource.Factory = DefaultHttpDataSource.Factory()
-
-    private lateinit var data: ShortsUiData
-
-    companion object {
-        fun newData(data: ShortsUiData): ShortsDetailFragment{
-
-            val args = Bundle().apply {
-                putSerializable("data",data)
-            }
-
-            val fragment = ShortsDetailFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        try {
-            data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                requireArguments().getSerializable("data", ShortsUiData::class.java) ?: run {
-                    ShortsUiData()
-                }
-            } else {
-                (requireArguments().getSerializable("data") as? ShortsUiData) ?: run{
-                    ShortsUiData()
-                }
-            }
-        } catch (e: java.lang.Exception) {
-            showToastMessage(e.message.toString())
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
