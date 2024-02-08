@@ -14,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCompleteClimbingBinding
 import com.climus.climeet.databinding.FragmentLevelBinding
@@ -99,10 +100,17 @@ class LevelFragment : Fragment() {
                 vm.uiState.collect { uiState ->
                     uiState.rankingList?.let { rankingList ->
                         Log.d("LevelFragment", rankingList.toString())
-                        rankingList.take(3).forEachIndexed { i, bestLevelResponse ->
+                        val iterationCount = minOf(rankingList.size, 3)
+
+                        rankingList.take(iterationCount).forEachIndexed { i, bestLevelResponse ->
+                            if(bestLevelResponse.profileImageUrl != null) {
+                                Glide.with(binding.root)
+                                    .load(bestLevelResponse.profileImageUrl)
+                                    .into(profileImgList[i])
+                            }
                             rankList[i].text = bestLevelResponse.ranking.toString()
                             nicknameList[i].text = bestLevelResponse.profileName
-                            levelList[i].text = bestLevelResponse.thisWeekHighDifficulty.toString()
+                            levelList[i].text = "레벨 " + bestLevelResponse.thisWeekHighDifficulty.toString()
                         }
                     }
                 }

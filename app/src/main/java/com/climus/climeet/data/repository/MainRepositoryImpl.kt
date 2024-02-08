@@ -6,6 +6,7 @@ import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
+import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
@@ -71,16 +72,13 @@ class MainRepositoryImpl @Inject constructor(
             : BaseState<List<BestLevelCimberSimpleResponse>> =
         runRemote { api.findClimberRankingOrderLevel() }
 
-    override suspend fun findPopularShorts(
-        @Query("page") page: Int,
-        @Query("size") size: Int
-    )
-            : BaseState<List<ShortsSimpleResponse>> =
-        runRemote { api.findPopularShorts(page, size) }
-
     override suspend fun findGymRankingOrderFollowCount()
             : BaseState<List<BestFollowGymSimpleResponse>> =
         runRemote { api.findGymRankingOrderFollowCount() }
+
+    override suspend fun findGymRankingListOrderSelectionCount()
+            : BaseState<List<BestRecordGymDetailInfoResponse>> =
+        runRemote { api.findGymRankingListOrderSelectionCount() }
 
     override suspend fun findRouteRankingOrderSelectionCount()
             : BaseState<List<BestRouteDetailInfoResponse>> =

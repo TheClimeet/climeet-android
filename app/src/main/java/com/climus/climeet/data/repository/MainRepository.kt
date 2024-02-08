@@ -6,6 +6,7 @@ import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
+import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
@@ -58,12 +59,9 @@ interface MainRepository {
 
     suspend fun findClimberRankingOrderLevel(): BaseState<List<BestLevelCimberSimpleResponse>>
 
-    suspend fun findPopularShorts(
-        @Query("page") page: Int,
-        @Query("size") size: Int
-    ): BaseState<List<ShortsSimpleResponse>>
-
     suspend fun findGymRankingOrderFollowCount(): BaseState<List<BestFollowGymSimpleResponse>>
+
+    suspend fun findGymRankingListOrderSelectionCount(): BaseState<List<BestRecordGymDetailInfoResponse>>
 
     suspend fun findRouteRankingOrderSelectionCount(): BaseState<List<BestRouteDetailInfoResponse>>
 

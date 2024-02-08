@@ -18,6 +18,12 @@ data class BestRouteDetailInfoResponse(
     @SerializedName("sectorName")
     val sectorName : String,
 
-    @SerializedName("level")
-    val level : Int
+    @SerializedName("climeetDifficultyName")
+    val climeetDifficultyName : String,
+
+    @SerializedName("gymDifficultyName")
+    val gymDifficultyName : String,
+
+    @SerializedName("gymDifficultyColor")
+    val gymDifficultyColor : String
 )

@@ -36,7 +36,7 @@ class PopularCragRVAdapter (private val cragList: List<BestFollowGymSimpleRespon
                     .into(binding.ivPopularCragProfile)
             }
             binding.tvItemCragName.text = crag.gymName
-            binding.popularCragRanking.text = (position + 1).toString()
+            binding.popularCragRanking.text = crag.ranking.toString()
             binding.tvItemFollowers.text = "팔로워 " + crag.thisWeekFollowerCount.toString()
 //            if(crag.isSoaring) {
 //                binding.ivSoaring.visibility = View.VISIBLE

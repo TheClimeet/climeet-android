@@ -1,17 +1,19 @@
 package com.climus.climeet.data.remote
 
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
+import com.climus.climeet.data.model.response.RefreshTokenResponse
+import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
+import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
+import com.climus.climeet.data.model.response.BestRouteSimpleResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
-import com.climus.climeet.data.model.response.RefreshTokenResponse
-import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
 import com.climus.climeet.data.model.response.ShortsSimpleResponse
@@ -21,6 +23,7 @@ import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
@@ -79,21 +82,19 @@ interface MainApi {
     @GET("/api/home/rank/weeks/climbers/clear")
     suspend fun findClimberRankingOrderClearCount(): Response<List<BestClearClimberSimpleResponse>>
 
-    @GET("/api/home/rank/weeks/climber/time")
+    @GET("/api/home/rank/weeks/climbers/time")
     suspend fun findClimberRankingOrderTime(): Response<List<BestTimeClimberSimpleResponse>>
 
-    @GET("/api/home/rank/weeks/climber/level")
+    @GET("/api/home/rank/weeks/climbers/level")
     suspend fun findClimberRankingOrderLevel(): Response<List<BestLevelCimberSimpleResponse>>
 
-    @GET("/api/shorts/popular")
-    suspend fun findPopularShorts(
-        @Query("page") page: Int,
-        @Query("size") size: Int,
-    ): Response<List<ShortsSimpleResponse>>
-
-    @GET("/api/rank/week/gym/follow")
+    @GET("/api/home/rank/weeks/gyms/follow")
     suspend fun findGymRankingOrderFollowCount(
     ): Response<List<BestFollowGymSimpleResponse>>
+
+    @GET("/api/home/rank/weeks/gyms/record")
+    suspend fun findGymRankingListOrderSelectionCount(
+    ): Response<List<BestRecordGymDetailInfoResponse>>
 
     @GET("/api/home/rank/weeks/routes")
     suspend fun findRouteRankingOrderSelectionCount(

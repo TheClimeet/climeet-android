@@ -37,12 +37,12 @@ class PopularRouteRVAdapter (private val routeList: List<BestRouteDetailInfoResp
                     .into(binding.ivPopularRoutesImg)
             }
 
-            binding.tvPopularRoutesLevel.text = route.level.toString()
-//            val colorCode = route.color
-//            val color: Int = Color.parseColor(colorCode)
-//            binding.tvPopularRoutesLevel.setTextColor(color)
-//            binding.itemPopularRoutesCardView.strokeColor = color
-//            binding.tvPopularRoutesLocation.text = route.location
+            binding.tvPopularRoutesLevel.text = route.climeetDifficultyName
+            val colorCode = route.gymDifficultyColor
+            val color: Int = Color.parseColor(colorCode)
+            binding.tvPopularRoutesLevel.setTextColor(color)
+            binding.itemPopularRoutesCardView.strokeColor = color
+            binding.tvPopularRoutesLocation.text = route.gymName
             binding.tvPopularRoutesSector.text = route.sectorName
         }
     }
