@@ -1,16 +1,20 @@
 package com.climus.climeet.presentation.ui.main.shorts.player
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.R
 import com.climus.climeet.app.App
 import com.climus.climeet.databinding.FragmentShortsPlayerBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.MainViewModel
+import com.climus.climeet.presentation.ui.main.shorts.ShortsOption
 import com.climus.climeet.presentation.ui.main.shorts.ShortsViewModel
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsDetailAdapter
+import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,14 +33,23 @@ class ShortsPlayerFragment: BaseFragment<FragmentShortsPlayerBinding>(R.layout.f
 
         parentViewModel.changeStatusBarBlack()
 
+        binding.position = curPosition
+        binding.vm = sharedViewModel
         adapter = ShortsDetailAdapter(this)
         setViewPager()
     }
 
     private fun setViewPager(){
-        adapter?.setData(sharedViewModel.uiState.value.shortsList)
         binding.vpShorts.adapter = adapter
-        binding.vpShorts.setCurrentItem(curPosition, false)
+        binding.vpShorts.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                if(position == sharedViewModel.uiState.value.shortsList.size - 1){
+                    sharedViewModel.getShorts(ShortsOption.NEXT_PAGE)
+                }
+            }
+        })
     }
 
     override fun onDestroy() {

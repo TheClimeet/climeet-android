@@ -2,7 +2,6 @@ package com.climus.climeet.presentation.ui.main.shorts.player
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
@@ -21,7 +20,6 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentShortsDetailBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
-import com.climus.climeet.presentation.util.Constants.TAG
 import com.climus.climeet.presentation.util.Constants.TEST_IMG
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -29,31 +27,30 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ShortsDetailFragment @Inject constructor(
     private val data: ShortsUiData
-): BaseFragment<FragmentShortsDetailBinding>(R.layout.fragment_shorts_detail) {
+) : BaseFragment<FragmentShortsDetailBinding>(R.layout.fragment_shorts_detail) {
 
-    private var player : ExoPlayer? = null
+    private var player: ExoPlayer? = null
     private val dataSourceFactory: DataSource.Factory = DefaultHttpDataSource.Factory()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        Log.d(TAG,"${data.shortsId} create")
         binding.item = data
         setImage()
         setPlayer()
     }
 
-    private fun setImage(){
+    private fun setImage() {
         Glide.with(this)
             .load(data.profileImgUrl)
             .error(TEST_IMG)
             .into(binding.ivProfile)
     }
 
-    @OptIn(UnstableApi::class) private fun setPlayer(){
+    @OptIn(UnstableApi::class)
+    private fun setPlayer() {
         player = ExoPlayer.Builder(requireContext())
             .build().apply {
-                val source = if(data.videoUrl.contains("m3u8")) getHlsMediaSource()
+                val source = if (data.videoUrl.contains("m3u8")) getHlsMediaSource()
                 else getProgressiveMediaSource()
                 setMediaSource(source)
                 prepare()
@@ -62,17 +59,19 @@ class ShortsDetailFragment @Inject constructor(
         player?.playWhenReady = false
     }
 
-    @OptIn(UnstableApi::class) private fun getHlsMediaSource(): MediaSource {
-        return HlsMediaSource.Factory(dataSourceFactory).
-        createMediaSource(MediaItem.fromUri(data.videoUrl))
+    @OptIn(UnstableApi::class)
+    private fun getHlsMediaSource(): MediaSource {
+        return HlsMediaSource.Factory(dataSourceFactory)
+            .createMediaSource(MediaItem.fromUri(data.videoUrl))
     }
 
-    @OptIn(UnstableApi::class) private fun getProgressiveMediaSource(): MediaSource{
+    @OptIn(UnstableApi::class)
+    private fun getProgressiveMediaSource(): MediaSource {
         return ProgressiveMediaSource.Factory(dataSourceFactory)
             .createMediaSource(MediaItem.fromUri(Uri.parse(data.videoUrl)))
     }
 
-    private fun releasePlayer(){
+    private fun releasePlayer() {
         player?.apply {
             playWhenReady = false
             release()
@@ -80,28 +79,29 @@ class ShortsDetailFragment @Inject constructor(
         player = null
     }
 
-    private fun pause(){
+    private fun pause() {
         player?.playWhenReady = false
     }
 
-    private fun play(){
+    private fun play() {
         player?.playWhenReady = true
     }
 
-    private fun restartPlayer(){
+    private fun restartPlayer() {
         player?.seekTo(0)
         player?.playWhenReady = true
     }
 
-    private val playerListener = object: Player.Listener {
+    private val playerListener = object : Player.Listener {
         override fun onPlaybackStateChanged(playbackState: Int) {
             super.onPlaybackStateChanged(playbackState)
-            when(playbackState){
+            when (playbackState) {
                 STATE_ENDED -> restartPlayer()
                 STATE_READY -> {
                     binding.exoPlayer.player = player
                     play()
                 }
+
                 else -> {}
             }
         }
@@ -109,19 +109,16 @@ class ShortsDetailFragment @Inject constructor(
 
     override fun onPause() {
         super.onPause()
-        Log.d(TAG,"${data.shortsId} pause")
         pause()
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG,"${data.shortsId} resume")
         play()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(TAG,"${data.shortsId} destroy")
         releasePlayer()
     }
 
