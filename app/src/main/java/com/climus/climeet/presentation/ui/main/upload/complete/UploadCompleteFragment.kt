@@ -40,7 +40,7 @@ class UploadCompleteFragment :
                             (this as Animatable).start()
                         }
                         delay(2000)
-                        findNavController().toShortsDetail()
+                        findNavController().toShortsPlayer()
                     }
                 } else {
                     showToastMessage("업로드 실패")
@@ -61,8 +61,8 @@ class UploadCompleteFragment :
         navigate(action)
     }
 
-    private fun NavController.toShortsDetail(){
-        val action = UploadCompleteFragmentDirections.actionUploadCompleteFragmentToShortsDetailFragment()
+    private fun NavController.toShortsPlayer(){
+        val action = UploadCompleteFragmentDirections.actionUploadCompleteFragmentToShortsPlayerFragment()
         navigate(action)
     }
 }
