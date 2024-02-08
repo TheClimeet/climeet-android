@@ -14,6 +14,7 @@ import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteSimpleResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
+import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
@@ -117,5 +118,9 @@ interface MainApi {
     suspend fun createTimerClimbingRecord(
         @Body params: CreateTimerClimbingRecordRequest
     ): Response<String>
+    @GET("/api/gym/{gymId}")
+    suspend fun getGymProfile(
+        @Path("gymId") gymId: Long
+    ): Response<GetGymProfileResponse>
 
 }

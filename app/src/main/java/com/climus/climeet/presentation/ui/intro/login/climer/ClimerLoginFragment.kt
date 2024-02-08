@@ -48,7 +48,7 @@ class ClimerLoginFragment :
 
     private fun testLogin(){
         App.sharedPreferences.edit()
-            .putString(Constants.X_ACCESS_TOKEN, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxK2NsaW1iZXIiLCJpYXQiOjE3MDY4NTkzNDQsImV4cCI6MTcwNzIxOTM0NH0.XDHZlOUDY-C8Ac99JHRB5Oi3YjBf--cTpHhwSM09lpU")
+            .putString(Constants.X_ACCESS_TOKEN, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxK2NsaW1iZXIiLCJpYXQiOjE3MDcxMzIzMjcsImV4cCI6MTcwNzQ5MjMyN30.NajKnryIxB1G30dBTQNCyF6UjWaVVM9U9ijMad_7NDc")
             .putString(Constants.X_MODE, "CLIMER")
             .apply()
 

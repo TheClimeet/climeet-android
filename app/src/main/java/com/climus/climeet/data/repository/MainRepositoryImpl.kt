@@ -11,6 +11,7 @@ import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
+import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
@@ -107,5 +108,8 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun createTimerClimbingRecord(
         body: CreateTimerClimbingRecordRequest
     ): BaseState<String> = runRemote { api.createTimerClimbingRecord(body) }
+
+    override suspend fun getGymProfile(gymId: Long): BaseState<GetGymProfileResponse> =
+        runRemote { api.getGymProfile(gymId) }
 
 }
