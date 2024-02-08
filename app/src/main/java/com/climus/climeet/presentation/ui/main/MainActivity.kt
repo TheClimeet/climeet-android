@@ -118,6 +118,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 when (it) {
                     is MainEvent.GoToGalleryForVideo -> onCheckStoragePermissions()
                     is MainEvent.ShowToastMessage -> showToastMessage(it.msg)
+                    is MainEvent.ChangeStatusBarBlack -> {
+                        window.statusBarColor = ContextCompat.getColor(this@MainActivity,R.color.black)
+                    }
+                    is MainEvent.ChangeStatusBarBackground -> {
+                        window.statusBarColor = ContextCompat.getColor(this@MainActivity,R.color.cm_background)
+                    }
                 }
             }
         }

@@ -28,11 +28,11 @@
 
             <TextView
                 android:id="@+id/tv_header"
-                style="@style/TextLargeSemiBold"
+                style="@style/TextMediumBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="28dp"
-                android:text="숏츠"
+                android:text="Shorts"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
