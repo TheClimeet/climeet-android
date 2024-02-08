@@ -1,5 +1,7 @@
 package com.climus.climeet.presentation.ui.main.shorts.model
 
+import java.io.Serializable
+
 data class ShortsUiData(
     val shortsId: Long = 0,
     val thumbnailImg: String = "",
@@ -21,4 +23,4 @@ data class ShortsUiData(
     val isSoundEnabled: Boolean = false,
     val isLiked: Boolean = false,
     val isBookMarked: Boolean = false,
-)
+) : Serializable
