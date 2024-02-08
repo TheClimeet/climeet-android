@@ -18,11 +18,9 @@ import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
-import com.climus.climeet.data.model.response.ShortsSimpleResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import okhttp3.MultipartBody
-import retrofit2.http.Query
 
 interface MainRepository {
 
@@ -86,6 +84,7 @@ interface MainRepository {
     suspend fun createTimerClimbingRecord(
         body: CreateTimerClimbingRecordRequest
     ): BaseState<String>
+
     suspend fun getGymProfile(
         gymId: Long
     ): BaseState<GetGymProfileResponse>
