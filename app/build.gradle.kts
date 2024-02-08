@@ -133,8 +133,11 @@ dependencies {
     // video compressor
     implementation("com.github.AbedElazizShe:LightCompressor:1.3.2")
 
-    // exoplayer2
-    implementation("com.google.android.exoplayer:exoplayer:2.19.1")
+    // media3 | exoplayer2
+    val media3Version = "1.2.1"
+    implementation("androidx.media3:media3-exoplayer:$media3Version")
+    implementation("androidx.media3:media3-ui:$media3Version")
+    implementation("androidx.media3:media3-exoplayer-hls:$media3Version")
 
 
 }
