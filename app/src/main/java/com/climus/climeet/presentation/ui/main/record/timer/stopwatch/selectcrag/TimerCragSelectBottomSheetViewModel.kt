@@ -50,12 +50,17 @@ class TimerCragSelectBottomSheetViewModel @Inject constructor(
 
     val keyword = MutableStateFlow("")
 
-    // 선택된 암장
-    private val _selectedCrag = MutableLiveData<SearchCragUiData>()
-    val selectedCrag: LiveData<SearchCragUiData> get() = _selectedCrag
+    // 선택된 암장 정보
+    private val _selectedCrag = MutableLiveData<SearchCragUiData?>()
+    val selectedCrag: MutableLiveData<SearchCragUiData?> get() = _selectedCrag
 
     fun selectItem(item: SearchCragUiData) {
         _selectedCrag.value = item
+    }
+
+    fun resetItem() {
+        _selectedCrag.value = null
+        Log.d("TIMER", "선택된 암장 정보 초기화 -> ${selectedCrag.value}")
     }
 
     init {

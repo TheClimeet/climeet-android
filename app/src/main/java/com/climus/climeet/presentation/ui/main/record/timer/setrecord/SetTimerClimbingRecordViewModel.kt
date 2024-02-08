@@ -37,6 +37,7 @@ data class AddRecordUiState(
     val selectedSector: SelectedSector = SelectedSector(),
     val clearBtnState: Boolean = false
 )
+
 data class SelectedSector(
     val sectorId: Long = -1,
     val sectorName: String = "",
@@ -51,7 +52,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     private val repository: MainRepository,
     private val climbingRepository: ClimbingRecordRepository,
     private val routeRepository: RouteRecordRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AddRecordUiState())
     val uiState: StateFlow<AddRecordUiState> = _uiState.asStateFlow()
@@ -70,14 +71,17 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     val isRouteToggleOn = MutableLiveData(true)
 
 
-    private fun getData(){
+    private fun getData() {
         val climbingData = climbingRepository.getAll()
         // todo : db에서 루트기록 데이터 가져오기
     }
 
     fun selectCrag(id: Long, name: String) {
         selectedCragEvent.value = Pair(id, name)
-
+        _uiState.value =
+            _uiState.value.copy(
+                selectedSector = _uiState.value.selectedSector.copy(cragName = name)
+            )
     }
 
     fun getCragInfo(id: Long) {
@@ -250,7 +254,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
 
     fun addChallengeNum() {
         _challengeNumber.value = (_challengeNumber.value ?: 0) + 1
-        Log.d("timer", "add")
+        Log.d("TIMER", "add")
     }
 
     fun subChallengeNum() {
@@ -258,7 +262,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         if (currentValue > 0) {
             _challengeNumber.value = currentValue - 1
         }
-        Log.d("timer", "sub")
+        Log.d("TIMER", "sub")
     }
 
     fun setClear() {
@@ -270,7 +274,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     }
 
     fun addItem(item: SelectedSector) {
-        Log.d("timer", "itemcheck : " + _items.value.toString())
+        Log.d("TIMER", "itemcheck : " + _items.value.toString())
         if (_items.value.none { it.sectorId == item.sectorId }) {
             val newItem = RouteRecordUiData(
                 sectorId = item.sectorId,
@@ -316,7 +320,12 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         isRouteToggleOn.value = !(isRouteToggleOn.value ?: false)
     }
 
-    private fun createClimbingRecord(gymId: Long, date: String, time: LocalTime, avgDifficulty: Int){
+    private fun createClimbingRecord(
+        gymId: Long,
+        date: String,
+        time: LocalTime,
+        avgDifficulty: Int
+    ) {
         viewModelScope.launch {
 
         }
