@@ -317,6 +317,7 @@
                             android:layout_marginHorizontal="12dp"
                             android:layout_marginTop="16dp"
                             android:scaleType="centerCrop"
+                            app:imgUrl="@{vm.uiState.layoutImg}"
                             app:layout_constraintDimensionRatio="2.3:1"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -336,7 +337,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/iv_sector"
-                            app:list="@{vm.uiState.wallNameList}"
+                            app:list="@{vm.uiState.sectorNameList}"
                             tools:listitem="@layout/item_sector_name" />
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -351,7 +352,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/rv_sector_name"
-                            app:list="@{vm.uiState.sectorLevelList}"
+                            app:list="@{vm.uiState.gymLevelList}"
                             tools:listitem="@layout/item_gym_level" />
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -367,7 +368,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/rv_sector_level"
-                            app:list="@{vm.uiState.sectorImageList}"
+                            app:list="@{vm.uiState.routeList}"
                             tools:listitem="@layout/item_route_image" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -382,15 +383,25 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/rv_sector_image">
 
+                            <View
+                                android:id="@+id/v_stroke"
+                                android:layout_width="104dp"
+                                android:layout_height="124dp"
+                                android:background="@drawable/rect_blackfill_nostroke_8radius"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:viewHexColor="@{vm.uiState.selectedRoute.gymLevelColor}"/>
+
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/select_sector"
                                 android:layout_width="100dp"
                                 android:layout_height="120dp"
-                                android:layout_marginBottom="20dp"
                                 android:background="@drawable/rect_blackfill_nostroke_8radius"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
+                                app:layout_constraintBottom_toBottomOf="@id/v_stroke"
+                                app:layout_constraintEnd_toEndOf="@id/v_stroke"
+                                app:layout_constraintStart_toStartOf="@id/v_stroke"
+                                app:layout_constraintTop_toTopOf="@id/v_stroke">
 
                                 <androidx.constraintlayout.widget.Guideline
                                     android:id="@+id/guideline_item"
@@ -404,7 +415,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="0dp"
                                     android:scaleType="centerCrop"
-                                    app:imgUrl="@{vm.uiState.selectedSector.sectorImg}"
+                                    app:imgUrl="@{vm.uiState.selectedRoute.routeImg}"
                                     app:layout_constraintBottom_toBottomOf="@id/guideline_item"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
@@ -418,24 +429,12 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="12dp"
-                                    android:text="@{vm.uiState.selectedSector.levelName}"
+                                    android:text="@{vm.uiState.selectedRoute.gymLevelName}"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toBottomOf="@id/iv_image"
-                                    app:textHexColor="@{vm.uiState.selectedSector.levelColor}"
+                                    app:textHexColor="@{vm.uiState.selectedRoute.gymLevelColor}"
                                     tools:text="V1" />
-
-                                <View
-                                    android:id="@+id/v_stroke"
-                                    android:layout_width="0dp"
-                                    android:layout_height="0dp"
-                                    android:background="@drawable/rect_nofill_mainstroke_6radius"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintHorizontal_bias="0.0"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintVertical_bias="0.0" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -614,7 +613,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:background="@drawable/selector_submit_btn"
-                        android:enabled="@{vm.uiState.selectedSector.levelName.empty? false : true}"
+                        android:enabled="@{vm.uiState.selectedSector.name.empty? false : true}"
                         android:onClick="@{()->vm.navigateToBack()"
                         android:text="운동완료"
                         android:textColor="@color/black"
