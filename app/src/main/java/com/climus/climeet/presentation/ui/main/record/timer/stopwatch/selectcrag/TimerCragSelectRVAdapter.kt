@@ -31,6 +31,8 @@ class TimerCragSelectRVAdapter(
         holder.binding.btnSelect.setOnClickListener{
             viewModel.selectItem(cragData)
         }
+
+        // todo : 암장 선택되면 암장 검색창 사라지게 만들기
     }
 
     override fun getItemCount(): Int = searchList.size

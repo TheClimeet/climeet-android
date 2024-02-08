@@ -1,6 +1,7 @@
 package com.climus.climeet.data.repository
 
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
@@ -80,4 +81,7 @@ interface MainRepository {
         body: GetGymRouteInfoRequest
     ): BaseState<GetGymRouteInfoResponse>
 
+    suspend fun createTimerClimbingRecord(
+        body: CreateTimerClimbingRecordRequest
+    ): BaseState<String>
 }

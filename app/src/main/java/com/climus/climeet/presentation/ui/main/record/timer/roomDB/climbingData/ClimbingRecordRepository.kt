@@ -5,4 +5,5 @@ interface ClimbingRecordRepository {
     fun update(climbingRecordData: ClimbingRecordData)
     fun delete(climbingRecordData: ClimbingRecordData)
     fun getAll(): List<ClimbingRecordData>
+    fun getRoute(id: Int): ClimbingRecordData
 }

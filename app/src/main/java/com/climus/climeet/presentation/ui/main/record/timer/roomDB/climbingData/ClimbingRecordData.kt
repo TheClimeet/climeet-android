@@ -3,9 +3,11 @@ package com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+// 저장 및 API에 넘길 데이터
+// id = 1에 계속 업데이트하며 사용할 예정
 @Entity(tableName = "climbing_record")
 data class ClimbingRecordData(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = false) val id: Int = 0,
     val gymId: Long = 0,
     val gymName: String = "",
     val date: String = "",
