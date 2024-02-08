@@ -176,6 +176,13 @@
         <action
             android:id="@+id/action_shortsPlayerFragment_to_routeShortsFragment"
             app:destination="@id/routeShortsFragment" />
+        <argument
+            app:argType="long"
+            android:name="shortsId"/>
+
+        <argument
+            app:argType="integer"
+            android:name="position"/>
     </fragment>
 
     <fragment

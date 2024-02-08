@@ -21,7 +21,7 @@ fun SearchAvailableGymItem.toSearchCragUiData(
 )
 
 fun ShortsItem.toShortsThumbnailUiData(
-    onClickListener: (Long) -> Unit
+    onClickListener: (Long, Int) -> Unit
 ) = ShortsThumbnailUiData(
     shortsId = shortsId,
     thumbnailImg = thumbnailImageUrl,

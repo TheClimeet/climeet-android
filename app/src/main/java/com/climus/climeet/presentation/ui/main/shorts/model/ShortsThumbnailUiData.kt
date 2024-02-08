@@ -6,5 +6,5 @@ data class ShortsThumbnailUiData(
     val gymName: String = "",
     val originLevelColor: String = "",
     val climeetLevelColor: String = "",
-    val onClickListener: (Long) -> Unit
+    val onClickListener: (Long, Int) -> Unit
 )

@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.main.shorts.player
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
@@ -36,6 +37,7 @@ class ShortsDetailFragment @Inject constructor(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d(TAG,"${data.shortsId} create")
         binding.item = data
         setImage()
         setPlayer()
@@ -48,23 +50,6 @@ class ShortsDetailFragment @Inject constructor(
             .into(binding.ivProfile)
     }
 
-
-    override fun onPause() {
-        super.onPause()
-        pause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        play()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        releasePlayer()
-    }
-
-
     @OptIn(UnstableApi::class) private fun setPlayer(){
         player = ExoPlayer.Builder(requireContext())
             .build().apply {
@@ -74,6 +59,7 @@ class ShortsDetailFragment @Inject constructor(
                 prepare()
                 addListener(playerListener)
             }
+        player?.playWhenReady = false
     }
 
     @OptIn(UnstableApi::class) private fun getHlsMediaSource(): MediaSource {
@@ -119,6 +105,24 @@ class ShortsDetailFragment @Inject constructor(
                 else -> {}
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG,"${data.shortsId} pause")
+        pause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG,"${data.shortsId} resume")
+        play()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG,"${data.shortsId} destroy")
+        releasePlayer()
     }
 
 

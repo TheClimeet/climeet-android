@@ -40,7 +40,8 @@ class UploadCompleteFragment :
                             (this as Animatable).start()
                         }
                         delay(2000)
-                        findNavController().toShortsPlayer()
+                        // todo API 에서 shortsId 반환받은뒤, Fragment Direction에 넣어주기
+                        findNavController().toShortsPlayer(-1)
                     }
                 } else {
                     showToastMessage("업로드 실패")
@@ -61,8 +62,8 @@ class UploadCompleteFragment :
         navigate(action)
     }
 
-    private fun NavController.toShortsPlayer(){
-        val action = UploadCompleteFragmentDirections.actionUploadCompleteFragmentToShortsPlayerFragment()
+    private fun NavController.toShortsPlayer(shortsId: Long){
+        val action = UploadCompleteFragmentDirections.actionUploadCompleteFragmentToShortsPlayerFragment(shortsId, 0)
         navigate(action)
     }
 }

@@ -33,7 +33,7 @@ data class ShortsUiState(
 
 sealed class ShortsEvent {
     data object NavigateToSearchCragBottomSheet : ShortsEvent()
-    data class NavigateToShortsDetail(val shortsId: Long) : ShortsEvent()
+    data class NavigateToShortsDetail(val shortsId: Long, val position: Int) : ShortsEvent()
     data class ShowToastMessage(val msg: String) : ShortsEvent()
 }
 
@@ -107,7 +107,7 @@ class ShortsViewModel @Inject constructor(
 
                             val shortsThumbnailUiData = it.body.result.map { data ->
                                 data.toShortsThumbnailUiData(
-                                    ::navigateToShortsDetail
+                                    ::navigateToShortsPlayer
                                 )
                             }
 
@@ -180,9 +180,9 @@ class ShortsViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToShortsDetail(id: Long) {
+    private fun navigateToShortsPlayer(id: Long, position: Int) {
         viewModelScope.launch {
-            _event.emit(ShortsEvent.NavigateToShortsDetail(id))
+            _event.emit(ShortsEvent.NavigateToShortsDetail(id,position))
         }
     }
 
