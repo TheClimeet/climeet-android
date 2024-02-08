@@ -8,13 +8,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="4dp">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/item_popular_routes_all_cardView"
-            android:layout_width="85dp"
-            android:layout_height="115dp"
+            android:layout_width="90dp"
+            android:layout_height="110dp"
             android:layout_marginTop="8dp"
             app:cardCornerRadius="10dp"
             app:strokeWidth="2dp"
@@ -31,7 +30,7 @@
                 <ImageView
                     android:id="@+id/iv_popular_routes_all_img"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="100dp"
                     android:layout_weight="5"
                     android:scaleType="fitXY"
                     android:src="@drawable/img_introduce_banner"
@@ -41,14 +40,14 @@
                 <TextView
                     android:id="@+id/tv_popular_routes_all_number"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="40dp"
                     android:layout_weight="2"
                     android:background="@color/black"
-                    android:textSize="14sp"
                     android:gravity="center_vertical|start"
                     android:paddingStart="20dp"
                     android:paddingEnd="100dp"
-                    android:textColor="#63B75D"/>
+                    android:textColor="#63B75D"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -90,6 +89,10 @@
             android:paddingStart="18dp"
             android:paddingEnd="8dp"
             style="@style/TextRegular"
+            android:maxWidth="80dp"
+            android:maxHeight="15dp"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:layout_marginTop="5dp"
             android:paddingVertical="2dp"
             android:text="더클라임 연남"
@@ -120,6 +123,10 @@
             android:paddingStart="18dp"
             android:paddingEnd="8dp"
             android:text="툇마루"
+            android:maxWidth="80dp"
+            android:maxHeight="15dp"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:textColor="@color/white"
             android:textSize="8sp"
             app:layout_constraintBottom_toBottomOf="parent"

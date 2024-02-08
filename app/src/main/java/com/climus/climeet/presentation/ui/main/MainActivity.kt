@@ -67,18 +67,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         handleIntent(intent)
     }
 
+    // 알림창을 눌렀을 때 스톱워치 화면이 보여지게 설정하는 함수
     private fun handleIntent(intent: Intent) {
         if (intent.hasExtra("showTimerFragment")) {
             val navHostFragment =
                 supportFragmentManager.findFragmentById(R.id.main_container) as NavHostFragment
             val navController = navHostFragment.navController
 
-            if (intent.getBooleanExtra("showTimerFragment", false)) {
+            if (intent.getBooleanExtra("showTimerFragment", true)) {
                 // TimerExerciseFragment로 이동
                 navController.navigate(R.id.calendar_fragment)
-            } else if (intent.getBooleanExtra("showTimerRecordFragment", false)) {
-                // SetTimerClimbingRecordFragment로 이동
-                navController.navigate(R.id.set_timer_climbing_record_fragment)
             }
         }
     }
@@ -104,6 +102,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 || destination.id == R.id.myPage_fragment || destination.id == R.id.bestClimerFragment || destination.id == R.id.popularShortsFragment
                 || destination.id == R.id.popularCragsFragment || destination.id == R.id.popularRoutesFragment
                 || destination.id == R.id.searchCragFragment || destination.id == R.id.set_timer_climbing_record_fragment || destination.id == R.id.calendar_fragment
+                || destination.id == R.id.timerMainFragment
             ) {
                 // todo bnv show 해야되는 frag
                 binding.mainBnv.visibility = View.VISIBLE

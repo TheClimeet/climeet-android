@@ -1,20 +1,19 @@
-package com.climus.climeet.presentation.ui.main.record.timer.data
+package com.climus.climeet.presentation.ui.main.record.timer.roomDB
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.sqlite.db.SupportSQLiteDatabase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordDao
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordData
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordDao
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordData
 
-@Database(entities = [ClimbingRecordData::class, StopwatchStatesData::class], version = 1)
-@TypeConverters(DataListConverters::class)
+@Database(entities = [ClimbingRecordData::class, RouteRecordData::class], version = 1, exportSchema = false)
 abstract class ClimbingDatabase : RoomDatabase() {
     abstract fun ClimbingRecordDao(): ClimbingRecordDao
-    abstract fun StopwatchStatesDao(): StopwatchStatesDao
+    abstract fun RouteRecordDao(): RouteRecordDao
 
     companion object {
         private var INSTANCE: ClimbingDatabase? = null

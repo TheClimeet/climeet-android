@@ -1,6 +1,7 @@
-package com.climus.climeet.presentation.ui.main.record.timer.data
+package com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData
 
 import androidx.room.*
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordData
 
 @Dao
 interface ClimbingRecordDao {
@@ -17,6 +18,6 @@ interface ClimbingRecordDao {
     @Query("SELECT * FROM climbing_record")
     fun getAll(): List<ClimbingRecordData>
 
-    @Query("INSERT INTO climbing_record DEFAULT VALUES")
-    fun initialize()
+    @Query("SELECT * FROM climbing_record WHERE id = :id")
+    fun getRoute(id: Int): ClimbingRecordData
 }

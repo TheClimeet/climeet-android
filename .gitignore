@@ -18,3 +18,4 @@ local.properties
 *.apk
 google-services.json
 output-metadata.json
+/app/google.services.json

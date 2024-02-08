@@ -1,21 +1,23 @@
 package com.climus.climeet.data.remote
 
+import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.ShortsUploadRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
+import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
+import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
-import com.climus.climeet.data.model.response.ShortsSimpleResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import okhttp3.MultipartBody
@@ -80,25 +82,25 @@ interface MainApi {
     @GET("/api/home/rank/weeks/climbers/clear")
     suspend fun findClimberRankingOrderClearCount(): Response<List<BestClearClimberSimpleResponse>>
 
-    @GET("/api/home/rank/weeks/climber/time")
+    @GET("/api/home/rank/weeks/climbers/time")
     suspend fun findClimberRankingOrderTime(): Response<List<BestTimeClimberSimpleResponse>>
 
-    @GET("/api/home/rank/weeks/climber/level")
+    @GET("/api/home/rank/weeks/climbers/level")
     suspend fun findClimberRankingOrderLevel(): Response<List<BestLevelCimberSimpleResponse>>
 
-    @GET("/api/shorts/popular")
-    suspend fun findPopularShorts(
-        @Query("page") page: Int,
-        @Query("size") size: Int,
-    ): Response<List<ShortsSimpleResponse>>
 
-    @GET("/api/rank/week/gym/follow")
+    @GET("/api/home/rank/weeks/gyms/follow")
     suspend fun findGymRankingOrderFollowCount(
     ): Response<List<BestFollowGymSimpleResponse>>
+
+    @GET("/api/home/rank/weeks/gyms/record")
+    suspend fun findGymRankingListOrderSelectionCount(
+    ): Response<List<BestRecordGymDetailInfoResponse>>
 
     @GET("/api/home/rank/weeks/routes")
     suspend fun findRouteRankingOrderSelectionCount(
     ): Response<List<BestRouteDetailInfoResponse>>
+
 
     @GET("/api/gyms/{gymId}/version/key")
     suspend fun getGymFilteringKey(
@@ -110,6 +112,16 @@ interface MainApi {
         @Path("gymId") gymId: Long,
         @Body params: GetGymRouteInfoRequest
     ): Response<GetGymRouteInfoResponse>
+
+    @POST("/api/climbing-records")
+    suspend fun createTimerClimbingRecord(
+        @Body params: CreateTimerClimbingRecordRequest
+    ): Response<String>
+
+    @GET("/api/gym/{gymId}")
+    suspend fun getGymProfile(
+        @Path("gymId") gymId: Long
+    ): Response<GetGymProfileResponse>
 
     @POST("/api/shorts")
     suspend fun uploadShorts(

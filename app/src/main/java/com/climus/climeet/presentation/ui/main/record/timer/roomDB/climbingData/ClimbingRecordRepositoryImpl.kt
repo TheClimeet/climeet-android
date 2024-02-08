@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.record.timer.data
+package com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData
 
 import javax.inject.Inject
 
@@ -22,7 +22,7 @@ class ClimbingRecordRepositoryImpl @Inject constructor(
         return climbingRecordDao.getAll()
     }
 
-    override fun initialize() {
-        climbingRecordDao.initialize()
+    override fun getRoute(id: Int): ClimbingRecordData {
+        return climbingRecordDao.getRoute(id)
     }
 }

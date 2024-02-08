@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.record.calendar
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStore
@@ -8,8 +9,10 @@ import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragEvent
 import com.climus.climeet.presentation.ui.main.record.model.ClimbingRecordData
+import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -74,6 +77,22 @@ class CalendarViewModel @Inject constructor(
         selectedDate.value = date
     }
 
+    private suspend fun setGymProfile(gymId : Long): Pair<String, String> {
+        return repository.getGymProfile(gymId).let { result ->
+            when(result){
+                is BaseState.Success -> {
+                    val gymName = result.body.gymName
+                    val gymProfile = result.body.gymProfileImageUrl
+                    Pair(gymName, gymProfile)
+                }
+                is BaseState.Error -> {
+                    _event.emit(CalendarEvent.ShowToastMessage(result.msg))
+                    Pair("", "")
+                }
+            }
+        }
+    }
+
     fun setRecord(date: LocalDate) {
         _uiState.update { state ->
             state.copy(
@@ -85,10 +104,14 @@ class CalendarViewModel @Inject constructor(
                 when(result){
                     is BaseState.Success -> {
                         if(result.body.isNotEmpty()){
+                            val dataDeferred = result.body.map { item ->
+                                async { setGymProfile(item.gymId) }
+                            }
+                            val data = dataDeferred.map { it.await() }
                             _uiState.update { state ->
                                 state.copy(
-                                    recordList = result.body.map{ item ->
-                                        item.toClimbingRecordData("더클라임 연남")
+                                    recordList = result.body.zip(data) { item, gymProfile ->
+                                        item.toClimbingRecordData(gymProfile.first, gymProfile.second)
                                     },
                                     emptyResultState = false
                                 )
@@ -101,7 +124,6 @@ class CalendarViewModel @Inject constructor(
                                 )
                             }
                         }
-
                     }
                     is BaseState.Error -> {
                         _uiState.update { state ->

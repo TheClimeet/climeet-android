@@ -153,8 +153,7 @@ class ClimerLoginFragment :
     }
 
     private fun NavController.toSetClimerNick() {
-        val action =
-            ClimerLoginFragmentDirections.actionClimerLoginFragmentToSetClimerNameFragment()
+        val action = ClimerLoginFragmentDirections.actionClimerLoginFragmentToSetClimerNameFragment()
         navigate(action)
     }
 
