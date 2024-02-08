@@ -133,5 +133,8 @@ dependencies {
     // video compressor
     implementation("com.github.AbedElazizShe:LightCompressor:1.3.2")
 
+    // exoplayer2
+    implementation("com.google.android.exoplayer:exoplayer:2.19.1")
+
 
 }
