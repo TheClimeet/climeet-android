@@ -10,10 +10,10 @@ import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCreateClimbingRecordBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLevelAdapter
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.SectorNameAdapter
 import com.climus.climeet.presentation.ui.main.record.adapter.RouteRecordAdapter
-import com.climus.climeet.presentation.ui.main.record.adapter.RouteAdapter
-import com.climus.climeet.presentation.ui.main.record.adapter.GymLevelAdapter
-import com.climus.climeet.presentation.ui.main.record.adapter.SectorNameAdapter
 import com.climus.climeet.presentation.ui.toSelectDateBottomSheetFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -59,7 +59,7 @@ class CreateClimbingRecordFragment :
 
         binding.ivCelebrate.bringToFront()
 
-        viewModel.selectedCragEvent.value?.let { viewModel.getCragInfo(it.first) }
+        //viewModel.selectedCragEvent.value?.let { viewModel.getCragInfo(it.first, it.second) }
         setRecyclerView()
         initEventObserve()
         initItemObserve()
@@ -69,7 +69,7 @@ class CreateClimbingRecordFragment :
     private fun setRecyclerView() {
         binding.rvSectorName.adapter = SectorNameAdapter()
         binding.rvSectorLevel.adapter = GymLevelAdapter()
-        binding.rvSectorImage.adapter = RouteAdapter()
+        binding.rvSectorImage.adapter = RouteImageAdapter()
         binding.rvRouteRecord.adapter = itemAdapter
         binding.rvSectorName.itemAnimator = null
         binding.rvSectorLevel.itemAnimator = null
@@ -89,6 +89,8 @@ class CreateClimbingRecordFragment :
 
                     CreateClimbingRecordEvent.NavigateToSelectCrag -> findNavController().toSelectCrag()
                     CreateClimbingRecordEvent.NavigateToBack -> findNavController().navigateUp()
+                    is CreateClimbingRecordEvent.ApplyFilter -> TODO()
+                    is CreateClimbingRecordEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }

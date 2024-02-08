@@ -14,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCompleteDetailBinding
 import com.climus.climeet.databinding.FragmentTimeBinding
@@ -26,7 +27,7 @@ import kotlinx.coroutines.launch
 class TimeDetailFragment : Fragment() {
 
     private lateinit var binding : FragmentTimeDetailBinding
-    private val viewModel: CompleteDetailViewModel by viewModels()
+    private val viewModel: TimeDetailViewModel by viewModels()
 
     private lateinit var profileImg1 : ImageView
     private lateinit var profileImg2 : ImageView
@@ -59,7 +60,7 @@ class TimeDetailFragment : Fragment() {
     private lateinit var recordTime7 : TextView
     private lateinit var recordTime8 : TextView
     private lateinit var recordTime9 : TextView
-    lateinit var problemsList: List<TextView>
+    lateinit var recordList: List<TextView>
 
     private lateinit var rank1 : TextView
     private lateinit var rank2 : TextView
@@ -83,7 +84,7 @@ class TimeDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // api
         super.onViewCreated(view, savedInstanceState)
         initView()
-        viewModel.getClimberRankingOrderClearCount()
+        viewModel.getClimberRankingOrderTime()
         initStateObserve()
 
     }
@@ -124,7 +125,7 @@ class TimeDetailFragment : Fragment() {
         recordTime7 = binding.tvTimeRanking7
         recordTime8 = binding.tvTimeRanking8
         recordTime9 = binding.tvTimeRanking9
-        problemsList = listOf(
+        recordList = listOf(
             recordTime1, recordTime2, recordTime3, recordTime4, recordTime5, recordTime6, recordTime7, recordTime8, recordTime9
         )
 
@@ -140,11 +141,26 @@ class TimeDetailFragment : Fragment() {
                 vm.uiState.collect { uiState ->
                     uiState.rankingList?.let { rankingList ->
                         Log.d("TimeDetail", rankingList.toString())
-                        rankingList.take(3).forEachIndexed { i, bestTimeClimberResponse ->
-                            rankList[i].text = bestTimeClimberResponse.ranking.toString()
+                        val iterationCount = minOf(rankingList.size, 9)
+
+                        rankingList.take(iterationCount).forEachIndexed { i, bestTimeClimberResponse ->
+                            if(bestTimeClimberResponse.profileImageUrl != null) {
+                                Glide.with(binding.root)
+                                    .load(bestTimeClimberResponse.profileImageUrl)
+                                    .into(profileImgList[i])
+                            }
+                            if(i < 3) {
+                                rankList[i].text = bestTimeClimberResponse.ranking.toString()
+                                rankList[i].visibility = View.VISIBLE
+                            }
                             nicknameList[i].text = bestTimeClimberResponse.profileName
-                            problemsList[i].text = bestTimeClimberResponse.thisWeekClearCount.toString()
+                            recordList[i].text = bestTimeClimberResponse.thisWeekTotalClimbingTime.toString()
+
+                            profileImgList[i].visibility = View.VISIBLE
+                            nicknameList[i].visibility = View.VISIBLE
+                            recordList[i].visibility = View.VISIBLE
                         }
+
                     }
                 }
             }

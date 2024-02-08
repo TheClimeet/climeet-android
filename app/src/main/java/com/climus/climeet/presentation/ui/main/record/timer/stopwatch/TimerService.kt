@@ -20,18 +20,12 @@ import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.climus.climeet.presentation.ui.main.MainActivity
-import com.climus.climeet.presentation.ui.main.record.timer.data.StopwatchStatesData
-import com.climus.climeet.presentation.ui.main.record.timer.data.StopwatchStatesRepository
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
+// -------------------- 스톱워치 기능 --------------------------
+// todo : 알림을 허용하지 않으면 스톱워치 알림창이 뜨지 않는다..
 @AndroidEntryPoint
 class TimerService : Service() {
-//    @Inject
-//    lateinit var repository: StopwatchStatesRepository
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
 
@@ -49,6 +43,7 @@ class TimerService : Service() {
         throw UnsupportedOperationException("Not yet implemented")
     }
 
+    // command 를 통해 스톱워치 서비스 상태 변경
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val command = intent?.getStringExtra("command")
 
@@ -68,12 +63,13 @@ class TimerService : Service() {
                 Log.d("timer", "서비스 종료")
             }
         }
-        // 서비스 실행중
+        // 서비스 실행중이면 serviceRunning을 true로 성정 (실행 중이지 않으면 null)
         serviceRunning.postValue(true)
 
         return START_STICKY
     }
 
+    // 알림 생성
     private fun createNotification(elapsedTime: Long): Notification {
         val hours = TimeUnit.MILLISECONDS.toHours(elapsedTime)
         val minutes = TimeUnit.MILLISECONDS.toMinutes(elapsedTime) % 60
@@ -104,6 +100,7 @@ class TimerService : Service() {
         }
 
         // 알림창 재시작, 일시중지 버튼
+        // 일시중지 상태면 재시작 버튼이 보이고, 재시작 상태면 일시중지 버튼이 보인다
         if (isPaused) {
             val restartIntent = Intent(this, TimerService::class.java).apply {
                 putExtra("command", "RESTART")
@@ -125,6 +122,7 @@ class TimerService : Service() {
         return notification.build()
     }
 
+    // 알림 채널 설정
     private fun createNotificationChannelAndGroup() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager: NotificationManager =
@@ -137,7 +135,7 @@ class TimerService : Service() {
 
             // Notification Channel 생성
             val channelName = "운동 시간"
-            val descriptionText = "운동한 시간을 알려줍니다"
+            val descriptionText = "운동한 시간을 알려줍니다."
             val importance = NotificationManager.IMPORTANCE_LOW
             val channel = NotificationChannel(CHANNEL_ID, channelName, importance).apply {
                 description = descriptionText
@@ -156,6 +154,7 @@ class TimerService : Service() {
         editor = sharedPreferences.edit()
     }
 
+    // 시간이 흘러갈 때 호출 (start, restart)
     private fun setTimer() {
         if (!isPaused) {
             startTime = System.currentTimeMillis()
@@ -188,14 +187,6 @@ class TimerService : Service() {
         isStopped = false
         isRunning = true
 
-//        val intent = Intent("StopwatchUpdate")
-//        intent.putExtra(KEY_IS_START, isStart)
-//        intent.putExtra(KEY_IS_PAUSE, isPaused)
-//        intent.putExtra(KEY_IS_RESTART, isRestart)
-//        intent.putExtra(KEY_IS_STOP, isStopped)
-//        intent.putExtra(KEY_IS_RUNNING, isRunning)
-//        LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(intent)
-
         editor.putBoolean(KEY_IS_START, isStart)
         editor.putBoolean(KEY_IS_PAUSE, isPaused)
         editor.putBoolean(KEY_IS_RESTART, isRestart)
@@ -203,18 +194,14 @@ class TimerService : Service() {
         editor.putBoolean(KEY_IS_RUNNING, isRunning)
         editor.apply()
 
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val state = StopwatchStatesData(
-//                id = 0,
-//                isStart = true,
-//                isPaused = false,
-//                isRestart = false,
-//                isStop = false,
-//                isRunning = true
-//            )
-//            repository.updateState(state)
-//        }
-        Log.d("timer", "서비스 타이머 시작")
+        Log.d("TIMER", "서비스 타이머 시작")
+
+        val r1 = sharedPreferences.getBoolean(KEY_IS_START, false)
+        val r2 = sharedPreferences.getBoolean(KEY_IS_PAUSE, false)
+        val r3 = sharedPreferences.getBoolean(KEY_IS_RESTART, false)
+        val r4 = sharedPreferences.getBoolean(KEY_IS_STOP, false)
+        val r5 = sharedPreferences.getBoolean(KEY_IS_RUNNING, false)
+        Log.d("TIMER", "서비스 타이머 시작 spf 확인  -> start :$r1, pause : $r2, restart : $r3, , stop : $r4, running : $r5")
     }
 
     private fun pauseTimer() {
@@ -223,25 +210,18 @@ class TimerService : Service() {
         isRestart = false
         isStopped = false
         isRunning = false
-        timer?.cancel()
+        timer?.cancel() // 스톱워치 멈추기
         pauseTime = elapsedTime
 
-        // 알림창 재생성
+        // 알림창 재생성 (재생성하지 않으면 스톱워치 시간이 반영되지 않음)
         val notification = createNotification(elapsedTime)
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(1, notification)
 
-        // TimeFragment에 전달
+        // TimerViewModel에 전달 정지 상태 broadcast로 전달
         val intent = Intent("StopwatchUpdate")
         intent.putExtra("pauseState", "yes")
-//        intent.putExtra("pause", isPaused)
-        //intent.putExtra("pauseTime", pauseTime)
-//        intent.putExtra(KEY_IS_START, isStart)
-//        intent.putExtra(KEY_IS_PAUSE, isPaused)
-//        intent.putExtra(KEY_IS_RESTART, isRestart)
-//        intent.putExtra(KEY_IS_STOP, isStopped)
-//        intent.putExtra(KEY_IS_RUNNING, isRunning)
         LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(intent)
 
         editor.putLong("pauseTime", pauseTime)
@@ -252,18 +232,14 @@ class TimerService : Service() {
         editor.putBoolean(KEY_IS_RUNNING, isRunning)
         editor.apply()
 
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val state = StopwatchStatesData(
-//                id = 0,
-//                isStart = false,
-//                isPaused = true,
-//                isRestart = false,
-//                isStop = false,
-//                isRunning = false
-//            )
-//            repository.updateState(state)
-//        }
-        Log.d("timer", "서비스 타이머 일시정지 : $pauseTime")
+        Log.d("TIMER", "서비스 타이머 일시정지 : $pauseTime")
+
+        val r1 = sharedPreferences.getBoolean(KEY_IS_START, false)
+        val r2 = sharedPreferences.getBoolean(KEY_IS_PAUSE, false)
+        val r3 = sharedPreferences.getBoolean(KEY_IS_RESTART, false)
+        val r4 = sharedPreferences.getBoolean(KEY_IS_STOP, false)
+        val r5 = sharedPreferences.getBoolean(KEY_IS_RUNNING, false)
+        Log.d("TIMER", "서비스 타이머 일시정지 spf 확인  -> start :$r1, pause : $r2, restart : $r3, , stop : $r4, running : $r5")
     }
 
     private fun restartTimer() {
@@ -272,15 +248,11 @@ class TimerService : Service() {
         isRestart = true
         isStopped = false
         isRunning = true
-        // 타이머 재시작
-        setTimer()
+        setTimer()   // 타이머 재시작
 
+        // TimerViewModel에 전달
         val intent = Intent("StopwatchUpdate")
-//        intent.putExtra(KEY_IS_START, isStart)
-//        intent.putExtra(KEY_IS_PAUSE, isPaused)
         intent.putExtra("pauseState", "no")
-//        intent.putExtra(KEY_IS_STOP, isStopped)
-//        intent.putExtra(KEY_IS_RUNNING, isRunning)
         LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(intent)
 
         editor.putLong(PAUSE_TIME, 0L)
@@ -292,18 +264,14 @@ class TimerService : Service() {
         editor.putBoolean(KEY_IS_RUNNING, isRunning)
         editor.apply()
 
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val state = StopwatchStatesData(
-//                id = 0,
-//                isStart = false,
-//                isPaused = false,
-//                isRestart = true,
-//                isStop = false,
-//                isRunning = true
-//            )
-//            repository.updateState(state)
-//        }
-        Log.d("timer", "서비스 타이머 재시작")
+        Log.d("TIMER", "서비스 타이머 재시작")
+
+        val r1 = sharedPreferences.getBoolean(KEY_IS_START, false)
+        val r2 = sharedPreferences.getBoolean(KEY_IS_PAUSE, false)
+        val r3 = sharedPreferences.getBoolean(KEY_IS_RESTART, false)
+        val r4 = sharedPreferences.getBoolean(KEY_IS_STOP, false)
+        val r5 = sharedPreferences.getBoolean(KEY_IS_RUNNING, false)
+        Log.d("TIMER", "서비스 타이머 재시작 spf 확인  -> start :$r1, pause : $r2, restart : $r3, , stop : $r4, running : $r5")
     }
 
     private fun stopTimer() {
@@ -314,15 +282,9 @@ class TimerService : Service() {
         isRunning = false
         timer?.cancel()
 
-        // 스톱워치 화면 시간 0으로 바꿔주기
+        // 스톱워치 화면 시간 0으로 바꿔주기 위해 값 전달
         val intent = Intent("StopwatchUpdate")
         intent.putExtra("elapsedTime", 0L)
-
-//        intent.putExtra(KEY_IS_START, isStart)
-//        intent.putExtra(KEY_IS_PAUSE, isPaused)
-//        intent.putExtra(KEY_IS_RESTART, isRestart)
-//        intent.putExtra(KEY_IS_STOP, isStopped)
-//        intent.putExtra(KEY_IS_RUNNING, isRunning)
         LocalBroadcastManager.getInstance(this@TimerService).sendBroadcast(intent)
 
         editor.putBoolean(KEY_IS_START, isStart)
@@ -332,18 +294,14 @@ class TimerService : Service() {
         editor.putBoolean(KEY_IS_RUNNING, isRunning)
         editor.apply()
 
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val state = StopwatchStatesData(
-//                id = 0,
-//                isStart = false,
-//                isPaused = false,
-//                isRestart = false,
-//                isStop = true,
-//                isRunning = false
-//            )
-//            repository.updateState(state)
-//        }
-        //Log.d("timer", "서비스 타이머 종료")
+        Log.d("TIMER", "서비스 타이머 종료")
+
+        val r1 = sharedPreferences.getBoolean(KEY_IS_START, false)
+        val r2 = sharedPreferences.getBoolean(KEY_IS_PAUSE, false)
+        val r3 = sharedPreferences.getBoolean(KEY_IS_RESTART, false)
+        val r4 = sharedPreferences.getBoolean(KEY_IS_STOP, false)
+        val r5 = sharedPreferences.getBoolean(KEY_IS_RUNNING, false)
+        Log.d("TIMER", "서비스 타이머 정지 spf 확인  -> start :$r1, pause : $r2, restart : $r3, , stop : $r4, running : $r5")
     }
 
     companion object {

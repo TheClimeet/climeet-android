@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.home.viewpager.ranking
+package com.climus.climeet.presentation.ui.main.home.viewpager.best
 
 import android.os.Bundle
 import android.util.Log
@@ -14,8 +14,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.climus.climeet.MainNavDirections
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCompleteClimbingBinding
+import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -98,7 +102,14 @@ class CompleteClimbingFragment: Fragment() {
                 vm.uiState.collect { uiState ->
                     uiState.rankingList?.let { rankingList ->
                         Log.d("CompleteClimbingFragment", rankingList.toString())
-                        rankingList.take(3).forEachIndexed { i, bestClearClimberResponse ->
+                        val iterationCount = minOf(rankingList.size, 3)
+
+                        rankingList.take(iterationCount).forEachIndexed { i, bestClearClimberResponse ->
+                            if(bestClearClimberResponse.profileImageUrl != null) {
+                                Glide.with(binding.root)
+                                    .load(bestClearClimberResponse.profileImageUrl)
+                                    .into(profileImgList[i])
+                            }
                             rankList[i].text = bestClearClimberResponse.ranking.toString()
                             nicknameList[i].text = bestClearClimberResponse.profileName
                             problemsList[i].text = "완등한 문제 " + bestClearClimberResponse.thisWeekClearCount.toString()

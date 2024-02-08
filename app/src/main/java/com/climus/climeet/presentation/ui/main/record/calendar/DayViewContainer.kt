@@ -1,15 +1,13 @@
 package com.climus.climeet.presentation.ui.main.record.calendar
 
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.climus.climeet.R
 import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateClimbingRecordViewModel
-import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateRecordData
-import com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag.selectdate.SelectDateBottomSheetViewModel
+import com.climus.climeet.presentation.ui.main.record.model.CreateRecordData
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.view.ViewContainer
 import java.time.LocalDate
@@ -22,9 +20,9 @@ class DayViewContainer(view: View, val viewModel: CalendarViewModel, val dateVie
 
     init {
         view.setOnClickListener {
-            DayViewContainer.selectedDay?.deselect()  // 기존 선택된 날짜 deselect
+            selectedDay?.deselect()  // 기존 선택된 날짜 deselect
             select()  // 새로 선택된 날짜 select
-            DayViewContainer.selectedDay = this  // selectedDay 업데이트
+            selectedDay = this  // selectedDay 업데이트
             viewModel.setIsToday(day.date == LocalDate.now())
             viewModel.setRecord(day.date)
             viewModel.setSelectedDate(day.date)

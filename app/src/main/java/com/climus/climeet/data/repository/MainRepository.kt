@@ -1,15 +1,18 @@
 package com.climus.climeet.data.repository
 
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.ShortsUploadRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
+import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
+import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
@@ -59,12 +62,9 @@ interface MainRepository {
 
     suspend fun findClimberRankingOrderLevel(): BaseState<List<BestLevelCimberSimpleResponse>>
 
-    suspend fun findPopularShorts(
-        @Query("page") page: Int,
-        @Query("size") size: Int
-    ): BaseState<List<ShortsSimpleResponse>>
-
     suspend fun findGymRankingOrderFollowCount(): BaseState<List<BestFollowGymSimpleResponse>>
+
+    suspend fun findGymRankingListOrderSelectionCount(): BaseState<List<BestRecordGymDetailInfoResponse>>
 
     suspend fun findRouteRankingOrderSelectionCount(): BaseState<List<BestRouteDetailInfoResponse>>
 
@@ -82,6 +82,13 @@ interface MainRepository {
         gymId: Long,
         body: GetGymRouteInfoRequest
     ): BaseState<GetGymRouteInfoResponse>
+
+    suspend fun createTimerClimbingRecord(
+        body: CreateTimerClimbingRecordRequest
+    ): BaseState<String>
+    suspend fun getGymProfile(
+        gymId: Long
+    ): BaseState<GetGymProfileResponse>
 
     suspend fun uploadShorts(
         body: ShortsUploadRequest

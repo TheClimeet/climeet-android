@@ -14,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCompleteDetailBinding
 import com.climus.climeet.databinding.FragmentLevelBinding
@@ -140,10 +141,24 @@ class LevelDetailFragment : Fragment() {
                 vm.uiState.collect { uiState ->
                     uiState.rankingList?.let { rankingList ->
                         Log.d("LevelDetail", rankingList.toString())
-                        rankingList.take(3).forEachIndexed { i, bestLevelClimberResponse ->
-                            rankList[i].text = bestLevelClimberResponse.ranking.toString()
+                        val iterationCount = minOf(rankingList.size, 9)
+
+                        rankingList.take(iterationCount).forEachIndexed { i, bestLevelClimberResponse ->
+                            if(bestLevelClimberResponse.profileImageUrl != null) {
+                                Glide.with(binding.root)
+                                    .load(bestLevelClimberResponse.profileImageUrl)
+                                    .into(profileImgList[i])
+                            }
+                            if(i < 3) {
+                                rankList[i].text = bestLevelClimberResponse.ranking.toString()
+                                rankList[i].visibility = View.VISIBLE
+                            }
                             nicknameList[i].text = bestLevelClimberResponse.profileName
-                            levelList[i].text = bestLevelClimberResponse.thisWeekHighDifficulty.toString()
+                            levelList[i].text = "레벨 " + bestLevelClimberResponse.thisWeekHighDifficulty.toString()
+
+                            profileImgList[i].visibility = View.VISIBLE
+                            nicknameList[i].visibility = View.VISIBLE
+                            levelList[i].visibility = View.VISIBLE
                         }
                     }
                 }

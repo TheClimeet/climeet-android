@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag.selectdate
+package com.climus.climeet.presentation.ui.main.record.bottomsheet.selectdate
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -50,7 +50,6 @@ class SelectDateBottomSheetViewModel @Inject constructor() : ViewModel() {
         }
 
         isToday.update { !isToday.value }
-        Log.d("dateTest", isToday.value.toString())
     }
 
 }

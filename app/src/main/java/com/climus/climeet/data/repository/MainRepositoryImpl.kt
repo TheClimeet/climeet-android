@@ -1,15 +1,18 @@
 package com.climus.climeet.data.repository
 
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.ShortsUploadRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
+import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
+import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
@@ -72,16 +75,13 @@ class MainRepositoryImpl @Inject constructor(
             : BaseState<List<BestLevelCimberSimpleResponse>> =
         runRemote { api.findClimberRankingOrderLevel() }
 
-    override suspend fun findPopularShorts(
-        @Query("page") page: Int,
-        @Query("size") size: Int
-    )
-            : BaseState<List<ShortsSimpleResponse>> =
-        runRemote { api.findPopularShorts(page, size) }
-
     override suspend fun findGymRankingOrderFollowCount()
             : BaseState<List<BestFollowGymSimpleResponse>> =
         runRemote { api.findGymRankingOrderFollowCount() }
+
+    override suspend fun findGymRankingListOrderSelectionCount()
+            : BaseState<List<BestRecordGymDetailInfoResponse>> =
+        runRemote { api.findGymRankingListOrderSelectionCount() }
 
     override suspend fun findRouteRankingOrderSelectionCount()
             : BaseState<List<BestRouteDetailInfoResponse>> =
@@ -110,4 +110,11 @@ class MainRepositoryImpl @Inject constructor(
         runRemote {
             api.uploadShorts(body)
         }
+    override suspend fun createTimerClimbingRecord(
+        body: CreateTimerClimbingRecordRequest
+    ): BaseState<String> = runRemote { api.createTimerClimbingRecord(body) }
+
+    override suspend fun getGymProfile(gymId: Long): BaseState<GetGymProfileResponse> =
+        runRemote { api.getGymProfile(gymId) }
+
 }
