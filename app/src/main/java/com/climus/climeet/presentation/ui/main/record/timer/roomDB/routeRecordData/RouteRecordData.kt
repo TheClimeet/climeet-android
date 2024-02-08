@@ -3,7 +3,7 @@ package com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordD
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-// API에 넘길겸 평균 계산을 위한 db
+// API에 넘길겸 평균완등률 계산을 위한 db
 
 @Entity(tableName = "route_record")
 data class RouteRecordData(

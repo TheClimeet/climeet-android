@@ -25,13 +25,4 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     abstract fun bindMainRepository(globalRepositoryImpl: MainRepositoryImpl): MainRepository
-
-    @Singleton
-    @Binds
-    abstract fun bindClimbingRecordRepository(climbingRecordRepositoryImpl: ClimbingRecordRepositoryImpl): ClimbingRecordRepository
-
-    @Singleton
-    @Binds
-    abstract fun bindRouteRecordRepository(routeRecordRepositoryImpl: RouteRecordRepositoryImpl): RouteRecordRepository
-
 }

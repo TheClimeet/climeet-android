@@ -10,7 +10,7 @@ import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.
 import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordDao
 import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordData
 
-@Database(entities = [ClimbingRecordData::class, RouteRecordData::class], version = 1)
+@Database(entities = [ClimbingRecordData::class, RouteRecordData::class], version = 1, exportSchema = false)
 abstract class ClimbingDatabase : RoomDatabase() {
     abstract fun ClimbingRecordDao(): ClimbingRecordDao
     abstract fun RouteRecordDao(): RouteRecordDao

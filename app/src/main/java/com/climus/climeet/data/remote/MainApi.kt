@@ -1,5 +1,7 @@
 package com.climus.climeet.data.remote
 
+import com.climus.climeet.data.model.request.ClimerSignupRequest
+import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
@@ -110,5 +112,9 @@ interface MainApi {
         @Body params: GetGymRouteInfoRequest
     ): Response<GetGymRouteInfoResponse>
 
+    @POST("/api/climbing-records")
+    suspend fun createTimerClimbingRecord(
+        @Body params: CreateTimerClimbingRecordRequest
+    ): Response<String>
 
 }

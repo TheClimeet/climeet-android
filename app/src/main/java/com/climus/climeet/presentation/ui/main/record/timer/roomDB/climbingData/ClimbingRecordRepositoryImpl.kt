@@ -21,4 +21,8 @@ class ClimbingRecordRepositoryImpl @Inject constructor(
     override fun getAll(): List<ClimbingRecordData> {
         return climbingRecordDao.getAll()
     }
+
+    override fun getRoute(id: Int): ClimbingRecordData {
+        return climbingRecordDao.getRoute(id)
+    }
 }
