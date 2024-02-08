@@ -33,7 +33,7 @@ data class ShortsUiState(
 
 sealed class ShortsEvent {
     data object NavigateToSearchCragBottomSheet : ShortsEvent()
-    data class NavigateToShortsDetail(val shortsId: Int) : ShortsEvent()
+    data class NavigateToShortsDetail(val shortsId: Long) : ShortsEvent()
     data class ShowToastMessage(val msg: String) : ShortsEvent()
 }
 
@@ -181,7 +181,9 @@ class ShortsViewModel @Inject constructor(
     }
 
     private fun navigateToShortsDetail(id: Long) {
-
+        viewModelScope.launch {
+            _event.emit(ShortsEvent.NavigateToShortsDetail(id))
+        }
     }
 
     private fun navigateToFollowerPage(id: Long) {

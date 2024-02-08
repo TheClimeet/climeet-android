@@ -46,7 +46,7 @@ class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_sho
             sharedViewModel.event.collect {
                 when (it) {
                     is ShortsEvent.ShowToastMessage -> showToastMessage(it.msg)
-                    is ShortsEvent.NavigateToShortsDetail -> {}
+                    is ShortsEvent.NavigateToShortsDetail -> findNavController().toShortsPlayer()
                     is ShortsEvent.NavigateToSearchCragBottomSheet -> {
                         BottomSheetState.state = "SHORTS"
                         findNavController().toShortsBottomSheet()
@@ -58,6 +58,11 @@ class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_sho
 
     private fun NavController.toShortsBottomSheet(){
         val action = ShortsFragmentDirections.actionShortsFragmentToShortsBottomSheetFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toShortsPlayer(){
+        val action = ShortsFragmentDirections.actionShortsFragmentToShortsPlayerFragment()
         navigate(action)
     }
 }

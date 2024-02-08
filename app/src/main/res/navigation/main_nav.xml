@@ -21,17 +21,19 @@
             android:id="@+id/action_home_fragment_to_popularRoutesFragment"
             app:destination="@id/popularRoutesFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/shorts_fragment"
         android:name="com.climus.climeet.presentation.ui.main.shorts.ShortsFragment"
         android:label="ShortsFragment">
         <action
-            android:id="@+id/action_shorts_fragment_to_shortsDetailFragment"
-            app:destination="@id/shortsDetailFragment" />
-        <action
             android:id="@+id/action_shorts_fragment_to_shortsBottomSheetFragment"
             app:destination="@id/shortsBottomSheetFragment" />
+        <action
+            android:id="@+id/action_shorts_fragment_to_shortsPlayerFragment"
+            app:destination="@id/shortsPlayerFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/upload_fragment"
         android:name="com.climus.climeet.presentation.ui.main.upload.UploadFragment"
@@ -55,34 +57,37 @@
         android:id="@+id/bestClimerFragment"
         android:name="com.climus.climeet.presentation.ui.main.home.bestclimer.BestClimerFragment"
         android:label="BestClimerFragment" />
+
     <fragment
         android:id="@+id/popularShortsFragment"
         android:name="com.climus.climeet.presentation.ui.main.home.popularshorts.PopularShortsFragment"
         android:label="PopularShortsFragment" />
+
     <fragment
         android:id="@+id/popularCragsFragment"
         android:name="com.climus.climeet.presentation.ui.main.home.popularcrags.PopularCragsFragment"
         android:label="PopularCragsFragment" />
+
     <fragment
         android:id="@+id/popularRoutesFragment"
         android:name="com.climus.climeet.presentation.ui.main.home.popularroutes.PopularRoutesFragment"
         android:label="PopularRoutesFragment" />
+
     <fragment
         android:id="@+id/searchCragFragment"
         android:name="com.climus.climeet.presentation.ui.main.home.searchcrag.SearchCragFragment"
         android:label="SearchCragFragment" />
 
-    <action
-        android:id="@+id/action_home_fragment_to_searchCragFragment"
-        app:destination="@id/searchCragFragment" />
     <fragment
         android:id="@+id/record_complete_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.ClimbingCompleteFragment"
         android:label="ClimbingCompleteFragment" />
+
     <fragment
         android:id="@+id/timer_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerFragment"
         android:label="TimerFragment" />
+
     <fragment
         android:id="@+id/timerCragSelectBottomSheetFragment"
         android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.TimerCragSelectBottomSheetFragment"
@@ -96,7 +101,7 @@
     <fragment
         android:id="@+id/set_timer_climbing_record_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerClimbingRecordFragment"
-        android:label="SetTimerClimbingRecordFragment"></fragment>
+        android:label="SetTimerClimbingRecordFragment" />
 
     <fragment
         android:id="@+id/calendar_fragment"
@@ -109,6 +114,7 @@
             android:id="@+id/action_calendar_fragment_to_timerMainFragment"
             app:destination="@id/timerMainFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/create_climbing_record_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateClimbingRecordFragment"
@@ -120,6 +126,7 @@
             android:id="@+id/action_create_climbing_record_fragment_to_selectTimeBottomFragment"
             app:destination="@id/select_time_bottom_fragment" />
     </fragment>
+
     <fragment
         android:id="@+id/fragment_create_select_crag"
         android:name="com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag.CreateSelectCragFragment"
@@ -129,26 +136,12 @@
         android:name="com.climus.climeet.presentation.ui.main.record.bottomsheet.selectdate.SelectDateBottomSheetFragment"
         android:label="SelectDateBottomSheetFragment" />
 
-    <action
-        android:id="@+id/globalActionToSelectDateBottomSheetFragment"
-        app:destination="@id/select_date_bottom_sheet_fragment" />
     <dialog
         android:id="@+id/select_time_bottom_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.bottomsheet.selecttime.SelectTimeBottomSheetFragment"
         android:label="SelectTimeBottomFragment" />
 
-    <fragment
-        android:id="@+id/rootShortsFragment"
-        android:name="com.climus.climeet.presentation.ui.main.shorts.root.RootShortsFragment"
-        android:label="RootShortsFragment" />
-    <fragment
-        android:id="@+id/shortsDetailFragment"
-        android:name="com.climus.climeet.presentation.ui.main.shorts.detail.ShortsDetailFragment"
-        android:label="ShortsDetailFragment">
-        <action
-            android:id="@+id/action_shortsDetailFragment_to_rootShortsFragment"
-            app:destination="@id/rootShortsFragment" />
-    </fragment>
+
     <dialog
         android:id="@+id/shortsBottomSheetFragment"
         android:name="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsBottomSheetFragment"
@@ -163,16 +156,39 @@
         android:id="@+id/uploadBottomSheetFragment"
         android:name="com.climus.climeet.presentation.ui.main.upload.bottomsheet.UploadBottomSheetFragment"
         android:label="UploadBottomSheetFragment" />
+
     <fragment
         android:id="@+id/uploadCompleteFragment"
         android:name="com.climus.climeet.presentation.ui.main.upload.complete.UploadCompleteFragment"
-        android:label="UploadCompleteFragment" >
-        <action
-            android:id="@+id/action_uploadCompleteFragment_to_shortsDetailFragment"
-            app:destination="@id/shortsDetailFragment" />
+        android:label="UploadCompleteFragment">
         <action
             android:id="@+id/action_uploadCompleteFragment_to_shorts_fragment"
             app:destination="@id/shorts_fragment" />
+        <action
+            android:id="@+id/action_uploadCompleteFragment_to_shortsPlayerFragment"
+            app:destination="@id/shortsPlayerFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/shortsPlayerFragment"
+        android:name="com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerFragment"
+        android:label="ShortsPlayerFragment">
+        <action
+            android:id="@+id/action_shortsPlayerFragment_to_routeShortsFragment"
+            app:destination="@id/routeShortsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/routeShortsFragment"
+        android:name="com.climus.climeet.presentation.ui.main.shorts.route.RouteShortsFragment"
+        android:label="RouteShortsFragment" />
+
+    <action
+        android:id="@+id/globalActionToSelectDateBottomSheetFragment"
+        app:destination="@id/select_date_bottom_sheet_fragment" />
+
+    <action
+        android:id="@+id/action_home_fragment_to_searchCragFragment"
+        app:destination="@id/searchCragFragment" />
 
 </navigation>
