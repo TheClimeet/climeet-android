@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.bindingadapters
 
+import android.annotation.SuppressLint
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -66,4 +67,9 @@ fun bindSelectedColor(tv: TextView, state: Boolean) {
     }else{
         tv.setTextColor(ContextCompat.getColor(tv.context, R.color.white))
     }
+}
+
+@BindingAdapter("compressProgress")
+fun bindCompressProgress(tv: TextView, progress: Int) {
+    tv.text = "$progress%"
 }

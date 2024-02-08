@@ -129,4 +129,9 @@ dependencies {
 
     // firebase
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+
+    // video compressor
+    implementation("com.github.AbedElazizShe:LightCompressor:1.3.2")
+
+
 }

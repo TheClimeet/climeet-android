@@ -19,6 +19,8 @@ import com.climus.climeet.presentation.util.Constants
 import com.climus.climeet.presentation.util.Constants.KAKAO
 import com.climus.climeet.presentation.util.Constants.NAVER
 import com.climus.climeet.presentation.util.Constants.TAG
+import com.climus.climeet.presentation.util.Constants.TEST_ACCESS_TOKEN
+import com.climus.climeet.presentation.util.Constants.X_ACCESS_TOKEN
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -46,9 +48,9 @@ class ClimerLoginFragment :
         }
     }
 
-    private fun testLogin(){
+    private fun testLogin() {
         App.sharedPreferences.edit()
-            .putString(Constants.X_ACCESS_TOKEN, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxK2NsaW1iZXIiLCJpYXQiOjE3MDcxMzIzMjcsImV4cCI6MTcwNzQ5MjMyN30.NajKnryIxB1G30dBTQNCyF6UjWaVVM9U9ijMad_7NDc")
+            .putString(X_ACCESS_TOKEN, TEST_ACCESS_TOKEN)
             .putString(Constants.X_MODE, "CLIMER")
             .apply()
 
