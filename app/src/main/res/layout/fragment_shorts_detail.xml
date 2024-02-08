@@ -5,6 +5,12 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +24,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:use_controller="false" />
 
         <ImageButton
             android:id="@+id/btn_favorite"
@@ -39,6 +46,7 @@
             app:layout_constraintBottom_toTopOf="@id/btn_comment"
             app:layout_constraintEnd_toEndOf="@id/btn_favorite"
             app:layout_constraintStart_toStartOf="@id/btn_favorite"
+            app:socialCount="@{item.likeCount}"
             tools:text="61.4K" />
 
         <ImageButton
@@ -60,6 +68,7 @@
             app:layout_constraintBottom_toTopOf="@id/btn_bookmark"
             app:layout_constraintEnd_toEndOf="@id/btn_comment"
             app:layout_constraintStart_toStartOf="@id/btn_comment"
+            app:socialCount="@{item.commentCount}"
             tools:text="300" />
 
         <ImageButton
@@ -81,6 +90,7 @@
             app:layout_constraintBottom_toTopOf="@id/btn_share"
             app:layout_constraintEnd_toEndOf="@id/btn_bookmark"
             app:layout_constraintStart_toStartOf="@id/btn_bookmark"
+            app:socialCount="@{item.bookMarkCount}"
             tools:text="3500" />
 
         <ImageButton
@@ -102,6 +112,7 @@
             app:layout_constraintBottom_toTopOf="@id/route_view"
             app:layout_constraintEnd_toEndOf="@id/btn_share"
             app:layout_constraintStart_toStartOf="@id/btn_share"
+            app:socialCount="@{item.sharedCount}"
             tools:text="61.4K" />
 
         <com.climus.climeet.presentation.customview.RouteView
@@ -112,8 +123,9 @@
             android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toTopOf="@id/pb_video"
             app:layout_constraintEnd_toEndOf="parent"
-            app:routeLevelColor="#FFFFFF"
-            app:routeLevelName="V2" />
+            app:routeImgUrl="@{item.routeImgUrl}"
+            app:routeLevelColor="@{item.gymLevelColor}"
+            app:routeLevelName="@{item.gymLevelName}" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile"
@@ -131,6 +143,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:text="@{item.userName}"
             app:layout_constraintBottom_toBottomOf="@id/iv_profile"
             app:layout_constraintStart_toEndOf="@id/iv_profile"
             app:layout_constraintTop_toTopOf="@id/iv_profile"
@@ -143,6 +156,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="20dp"
+            android:text="@{item.description}"
             app:layout_constraintBottom_toTopOf="@id/tv_gym_name"
             app:layout_constraintEnd_toStartOf="@id/route_view"
             app:layout_constraintStart_toStartOf="parent"
@@ -160,6 +174,8 @@
             android:gravity="center_vertical"
             android:paddingHorizontal="8dp"
             android:paddingVertical="2dp"
+            android:text="@{item.gymName}"
+            android:visibility="@{item.gymName.empty ? View.INVISIBLE : View.VISIBLE}"
             app:drawableStartCompat="@drawable/ic_location_small"
             app:layout_constraintBottom_toTopOf="@id/pb_video"
             app:layout_constraintStart_toStartOf="parent"
@@ -177,6 +193,8 @@
             android:gravity="center_vertical"
             android:paddingHorizontal="8dp"
             android:paddingVertical="2dp"
+            android:text="@{item.sectorName}"
+            android:visibility="@{item.sectorName.empty ? View.INVISIBLE : View.VISIBLE}"
             app:drawableStartCompat="@drawable/ic_walking"
             app:layout_constraintBottom_toTopOf="@id/pb_video"
             app:layout_constraintStart_toEndOf="@id/tv_gym_name"
