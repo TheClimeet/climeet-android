@@ -383,60 +383,16 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/rv_sector_image">
 
-                            <View
-                                android:id="@+id/v_stroke"
-                                android:layout_width="104dp"
+                            <com.climus.climeet.presentation.customview.RouteView
+                                android:id="@+id/select_sector"
+                                android:layout_width="100dp"
                                 android:layout_height="124dp"
-                                android:background="@drawable/rect_blackfill_nostroke_8radius"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:viewHexColor="@{vm.uiState.selectedRoute.gymLevelColor}"/>
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:id="@+id/select_sector"
-                                android:layout_width="100dp"
-                                android:layout_height="120dp"
-                                android:background="@drawable/rect_blackfill_nostroke_8radius"
-                                app:layout_constraintBottom_toBottomOf="@id/v_stroke"
-                                app:layout_constraintEnd_toEndOf="@id/v_stroke"
-                                app:layout_constraintStart_toStartOf="@id/v_stroke"
-                                app:layout_constraintTop_toTopOf="@id/v_stroke">
-
-                                <androidx.constraintlayout.widget.Guideline
-                                    android:id="@+id/guideline_item"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    app:layout_constraintGuide_percent="0.75" />
-
-                                <com.google.android.material.imageview.ShapeableImageView
-                                    android:id="@+id/iv_image"
-                                    android:layout_width="0dp"
-                                    android:layout_height="0dp"
-                                    android:scaleType="centerCrop"
-                                    app:imgUrl="@{vm.uiState.selectedRoute.routeImg}"
-                                    app:layout_constraintBottom_toBottomOf="@id/guideline_item"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:shapeAppearanceOverlay="@style/Top8RadiusImageView"
-                                    tools:src="@drawable/test" />
-
-                                <TextView
-                                    android:id="@+id/tv_level"
-                                    style="@style/TextSmall"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="12dp"
-                                    android:text="@{vm.uiState.selectedRoute.gymLevelName}"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/iv_image"
-                                    app:textHexColor="@{vm.uiState.selectedRoute.gymLevelColor}"
-                                    tools:text="V1" />
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
+                                app:routeImgUrl="@{vm.uiState.selectedRoute.routeImg}"
+                                app:routeLevelColor="@{vm.uiState.selectedRoute.gymLevelColor}"
+                                app:routeLevelName="@{vm.uiState.selectedRoute.gymLevelName}" />
 
                             <TextView
                                 android:id="@+id/tv_challenge_title"

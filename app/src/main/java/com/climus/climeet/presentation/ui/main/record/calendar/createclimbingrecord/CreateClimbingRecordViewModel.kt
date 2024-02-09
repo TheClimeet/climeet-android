@@ -107,7 +107,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
 
     init {
         selectCrag(0, "클라이밍 암장을 선택해주세요")
-        selectedCragEvent.value?.let { getCragInfo(it.first) }
     }
 
     fun setSelectedDate(date: LocalDate) {
@@ -189,6 +188,10 @@ class CreateClimbingRecordViewModel @Inject constructor(
 
     fun selectCrag(id: Long, name: String) {
         selectedCragEvent.value = Pair(id, name)
+        cragId = id
+        cragName = name
+        Log.d("testtt", "${selectedCragEvent.value}")
+        selectedCragEvent.value?.let { getCragInfo(it.first) }
     }
 
     fun getCragInfo(id: Long) {
@@ -196,6 +199,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
             repository.getGymFilteringKey(id).let {
                 when (it) {
                     is BaseState.Success -> {
+                        Log.d("testtt", "성공은 함")
                         sectorNameList = it.body.sectorList.map { data ->
                             data.toSectorNameUiData(::selectSectorName)
                         }
@@ -205,6 +209,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
                         }
 
                         if (it.body.maxFloor == 1) {
+                            Log.d("testtt", "1층")
                             _uiState.update { state ->
                                 state.copy(
                                     isSingleFloor = true,
@@ -212,6 +217,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
                                 )
                             }
                         } else {
+                            Log.d("testtt", "2층")
                             _uiState.update { state ->
                                 state.copy(
                                     isSingleFloor = false,
@@ -224,6 +230,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
+                        Log.d("testtt", "에러")
                         _event.emit(CreateClimbingRecordEvent.ShowToastMessage(it.msg))
                     }
                 }
@@ -234,11 +241,18 @@ class CreateClimbingRecordViewModel @Inject constructor(
 
     fun selectFloor(floor: Int) {
         _uiState.update { state ->
+            Log.d("testtt", "설정 조져")
             state.copy(
                 secondFloorBtnState = if (floor == 2) FloorBtnState.FloorSelected else FloorBtnState.FloorUnSelected,
-                firstFloorBtnState = if (floor == 1) FloorBtnState.FloorSelected else FloorBtnState.FloorUnSelected
+                firstFloorBtnState = if (floor == 1) FloorBtnState.FloorSelected else FloorBtnState.FloorUnSelected,
+                curFloor = floor,
+                sectorNameList = sectorNameList.filter {
+                    it.floor == floor
+                },
+                selectedRoute = RouteUiData{}
             )
         }
+        Log.d("testtt", "${uiState.value}")
         setFloorInfo(floor)
     }
 
@@ -248,7 +262,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
             repository.getGymRouteInfoList(cragId, GetGymRouteInfoRequest(0, 10, floor)).let {
                 when (it) {
                     is BaseState.Success -> {
-
+                        Log.d("testtt", "층 슬정 성공은 함")
                         _uiState.update { state ->
                             state.copy(
                                 sectorNameList = sectorNameList.filter { data -> data.floor == floor },
@@ -273,7 +287,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
         sectorId: Long? = null,
         difficulty: Int? = null,
     ) {
-        cragId = selectedCragEvent.value?.let { it.first } ?: run{ 0 }
         viewModelScope.launch {
             repository.getGymRouteInfoList(
                 cragId, GetGymRouteInfoRequest(
@@ -301,7 +314,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
     }
 
     private fun selectSectorName(item: SectorNameUiData) {
-
         _uiState.update { state ->
             state.copy(
                 sectorNameList = state.sectorNameList.map {
