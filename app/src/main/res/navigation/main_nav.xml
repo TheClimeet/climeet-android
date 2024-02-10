@@ -177,7 +177,29 @@
         <argument
             app:argType="integer"
             android:name="position"/>
+        <action
+            android:id="@+id/action_shortsPlayerFragment_to_shortsShareBottomSheetFragment"
+            app:destination="@id/shortsShareBottomSheetFragment" />
+        <action
+            android:id="@+id/action_shortsPlayerFragment_to_shortsCommentBottomSheetFragment"
+            app:destination="@id/shortsCommentBottomSheetFragment" />
     </fragment>
+
+
+    <dialog
+        android:id="@+id/shortsCommentBottomSheetFragment"
+        android:name="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsCommentBottomSheetFragment"
+        android:label="ShortsCommentBottomSheetFragment" >
+        <argument
+            app:argType="long"
+            android:name="shortsId"/>
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/shortsShareBottomSheetFragment"
+        android:name="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsShareBottomSheetFragment"
+        android:label="ShortsShareBottomSheetFragment" />
 
     <fragment
         android:id="@+id/routeShortsFragment"
@@ -195,5 +217,6 @@
     <action
         android:id="@+id/globalActionToShortsPlayerFragment"
         app:destination="@id/shortsPlayerFragment" />
+
 
 </navigation>

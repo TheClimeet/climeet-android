@@ -3,6 +3,7 @@ package com.climus.climeet.presentation.ui.main.shorts.player
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.R
@@ -65,10 +66,12 @@ class ShortsPlayerFragment: BaseFragment<FragmentShortsPlayerBinding>(R.layout.f
     }
 
     override fun showCommentDialog(shortsId: Long) {
-        showToastMessage("댓글 BottomSheet 띄우기")
+        val action = ShortsPlayerFragmentDirections.actionShortsPlayerFragmentToShortsCommentBottomSheetFragment(shortsId)
+        findNavController().navigate(action)
     }
 
     override fun showShareDialog() {
-        showToastMessage("공유 BottomSheet 띄우기")
+        val action = ShortsPlayerFragmentDirections.actionShortsPlayerFragmentToShortsShareBottomSheetFragment()
+        findNavController().navigate(action)
     }
 }
