@@ -56,6 +56,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
+                        android:ellipsize="end"
+                        android:maxWidth="200dp"
+                        android:maxLines="1"
                         android:text="@string/timer_crag_set_inform"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -157,8 +160,8 @@
                             android:id="@+id/iv_sector"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_marginTop="16dp"
                             android:layout_marginHorizontal="12dp"
+                            android:layout_marginTop="16dp"
                             android:scaleType="centerCrop"
                             app:layout_constraintDimensionRatio="2.3:1"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -201,8 +204,8 @@
                             android:id="@+id/rv_sector_image"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
                             android:layout_marginHorizontal="12dp"
+                            android:layout_marginTop="16dp"
                             android:clipToPadding="false"
                             android:orientation="horizontal"
                             android:paddingEnd="10dp"
@@ -274,10 +277,10 @@
                                     android:background="@drawable/rect_nofill_mainstroke_6radius"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintVertical_bias="0.0"
-                                    app:layout_constraintHorizontal_bias="0.0"/>
+                                    app:layout_constraintVertical_bias="0.0" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -315,8 +318,8 @@
                                     android:layout_height="20dp"
                                     android:layout_marginEnd="10dp"
                                     android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
-                                    android:src="@drawable/ic_horizontal_line_grey9"
                                     android:onClick="@{()->vm.subChallengeNum()}"
+                                    android:src="@drawable/ic_horizontal_line_grey9"
                                     app:layout_constraintBottom_toBottomOf="@id/tv_challenge"
                                     app:layout_constraintEnd_toStartOf="@id/tv_challenge"
                                     app:layout_constraintTop_toTopOf="@id/tv_challenge" />
@@ -326,8 +329,8 @@
                                     android:layout_height="20dp"
                                     android:layout_marginStart="10dp"
                                     android:background="@drawable/oval_lightgreyfill_nostroke_noradius"
-                                    android:src="@drawable/ic_add_gray9"
                                     android:onClick="@{()->vm.addChallengeNum()}"
+                                    android:src="@drawable/ic_add_gray9"
                                     app:layout_constraintBottom_toBottomOf="@id/tv_challenge"
                                     app:layout_constraintStart_toEndOf="@id/tv_challenge"
                                     app:layout_constraintTop_toTopOf="@id/tv_challenge" />
@@ -341,9 +344,9 @@
                                 android:layout_height="35dp"
                                 android:layout_marginHorizontal="15dp"
                                 android:background="@drawable/rect_lightgrayfill_nostroke_10radius"
+                                android:onClick="@{()->vm.setClear()}"
                                 android:text="완등했어요"
                                 android:textColor="@color/cm_grey9"
-                                android:onClick="@{()->vm.setClear()}"
                                 app:clearBtnState="@{vm.uiState.clearBtnState}"
                                 app:layout_constraintBottom_toBottomOf="@id/select_sector"
                                 app:layout_constraintEnd_toEndOf="parent"
