@@ -10,10 +10,12 @@ import com.climus.climeet.databinding.FragmentShortsPlayerBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.MainViewModel
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsDetailAdapter
+import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsDetailListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ShortsPlayerFragment: BaseFragment<FragmentShortsPlayerBinding>(R.layout.fragment_shorts_player) {
+class ShortsPlayerFragment: BaseFragment<FragmentShortsPlayerBinding>(R.layout.fragment_shorts_player),
+    ShortsDetailListener {
 
     private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
     private val parentViewModel: MainViewModel by activityViewModels()
@@ -31,6 +33,7 @@ class ShortsPlayerFragment: BaseFragment<FragmentShortsPlayerBinding>(R.layout.f
         binding.position = curPosition
         binding.vm = sharedViewModel
         adapter = ShortsDetailAdapter(this)
+        adapter?.setShortsDetailListener(this)
         setViewPager()
     }
 
@@ -51,5 +54,21 @@ class ShortsPlayerFragment: BaseFragment<FragmentShortsPlayerBinding>(R.layout.f
         super.onDestroy()
 
         parentViewModel.changeStatusBarBackground()
+    }
+
+    override fun navigateToProfileDetail(userId: Long) {
+        showToastMessage("프로필 상세로 이동")
+    }
+
+    override fun navigateToRouteShorts(routeId: Long) {
+        showToastMessage("루트별 숏츠보기로 이동")
+    }
+
+    override fun showCommentDialog(shortsId: Long) {
+        showToastMessage("댓글 BottomSheet 띄우기")
+    }
+
+    override fun showShareDialog() {
+        showToastMessage("공유 BottomSheet 띄우기")
     }
 }

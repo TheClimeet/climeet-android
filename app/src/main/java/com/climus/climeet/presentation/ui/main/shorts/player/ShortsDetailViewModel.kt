@@ -25,6 +25,10 @@ data class ShortsDetailUiState(
 
 sealed class ShortsDetailEvent{
     data class ShowToastMessage(val msg: String): ShortsDetailEvent()
+    data object ShowCommentDialog: ShortsDetailEvent()
+    data object ShowShareDialog: ShortsDetailEvent()
+    data object NavigateToProfileDetail: ShortsDetailEvent()
+    data object NavigateToRouteShorts: ShortsDetailEvent()
 }
 
 @HiltViewModel
@@ -102,6 +106,30 @@ class ShortsDetailViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun showCommentDialog(){
+        viewModelScope.launch {
+            _event.emit(ShortsDetailEvent.ShowCommentDialog)
+        }
+    }
+
+    fun showShareDialog(){
+        viewModelScope.launch {
+            _event.emit(ShortsDetailEvent.ShowShareDialog)
+        }
+    }
+
+    fun navigateToRouteShorts(){
+        viewModelScope.launch {
+            _event.emit(ShortsDetailEvent.NavigateToRouteShorts)
+        }
+    }
+
+    fun navigateToProfileDetail(){
+        viewModelScope.launch {
+            _event.emit(ShortsDetailEvent.NavigateToProfileDetail)
         }
     }
 

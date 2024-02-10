@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentShortsDetailBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsDetailListener
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import com.climus.climeet.presentation.util.Constants.TEST_IMG
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,12 +28,13 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class ShortsDetailFragment @Inject constructor(
-    private val data: ShortsUiData
+    private val data: ShortsUiData,
+    private val listener: ShortsDetailListener?
 ) : BaseFragment<FragmentShortsDetailBinding>(R.layout.fragment_shorts_detail) {
 
     private var player: ExoPlayer? = null
     private val dataSourceFactory: DataSource.Factory = DefaultHttpDataSource.Factory()
-    private val viewModel : ShortsDetailViewModel by viewModels()
+    private val viewModel: ShortsDetailViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,11 +47,25 @@ class ShortsDetailFragment @Inject constructor(
         setPlayer()
     }
 
-    private fun initEventObserve(){
+    private fun initEventObserve() {
         repeatOnStarted {
-            viewModel.event.collect{
-                when(it){
+            viewModel.event.collect {
+                when (it) {
                     is ShortsDetailEvent.ShowToastMessage -> showToastMessage(it.msg)
+                    is ShortsDetailEvent.NavigateToProfileDetail -> listener?.navigateToProfileDetail(
+                        data.userId
+                    )
+
+                    is ShortsDetailEvent.NavigateToRouteShorts -> {
+                        // todo 이거 routeId로 변경. 서버 API 수정되어야함
+                        listener?.navigateToRouteShorts(data.sectorId)
+                    }
+
+                    is ShortsDetailEvent.ShowShareDialog -> {
+                        // todo 어떤정보로 Share 할지 결정된뒤 수정
+                        listener?.showShareDialog()
+                    }
+                    is ShortsDetailEvent.ShowCommentDialog -> listener?.showCommentDialog(data.shortsId)
                 }
             }
         }

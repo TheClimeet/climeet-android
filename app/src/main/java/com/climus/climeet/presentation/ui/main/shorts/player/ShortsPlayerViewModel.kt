@@ -42,7 +42,7 @@ sealed class ShortsPlayerEvent {
 @HiltViewModel
 class ShortsPlayerViewModel @Inject constructor(
     private val repository: MainRepository
-) : ViewModel(), ShortsDetailListener {
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ShortsPlayerUiState())
     val uiState: StateFlow<ShortsPlayerUiState> = _uiState.asStateFlow()
@@ -195,34 +195,6 @@ class ShortsPlayerViewModel @Inject constructor(
 
     private fun navigateToAddFollow() {
 
-    }
-
-    override fun onClickBookMarkBtn(shortsId: Long) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onClickDescription() {
-        TODO("Not yet implemented")
-    }
-
-    override fun showShareDialog() {
-        TODO("Not yet implemented")
-    }
-
-    override fun showCommentDialog(shortsId: Long) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onClickLikeBtn(shortsId: Long) {
-        TODO("Not yet implemented")
-    }
-
-    override fun navigateToProfileDetail(userId: Long) {
-        TODO("Not yet implemented")
-    }
-
-    override fun navigateToSectorShorts(sectorId: Long) {
-        TODO("Not yet implemented")
     }
 }
 
