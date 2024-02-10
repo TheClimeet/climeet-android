@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.OptIn
+import androidx.fragment.app.viewModels
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Player.STATE_ENDED
@@ -31,9 +32,13 @@ class ShortsDetailFragment @Inject constructor(
 
     private var player: ExoPlayer? = null
     private val dataSourceFactory: DataSource.Factory = DefaultHttpDataSource.Factory()
+    private val viewModel : ShortsDetailViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.setInitData(data.isBookMarked, data.isLiked, data.description)
+        binding.vm = viewModel
         binding.item = data
         setImage()
         setPlayer()
