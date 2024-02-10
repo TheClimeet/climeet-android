@@ -25,6 +25,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
@@ -126,6 +127,16 @@ interface MainApi {
     @POST("/api/shorts")
     suspend fun uploadShorts(
         @Body params: ShortsUploadRequest
+    ): Response<Unit>
+
+    @PATCH("/api/shorts/{shortsId}/bookmarks")
+    suspend fun patchBookMarks(
+        @Path("shortsId") shortsId: Long
+    ): Response<Unit>
+
+    @PATCH("/api/Shorts/{shortsId}/likes")
+    suspend fun patchFavorites(
+        @Path("shortsId") shortsId: Long
     ): Response<Unit>
 
 }

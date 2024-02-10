@@ -117,4 +117,8 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun getGymProfile(gymId: Long): BaseState<GetGymProfileResponse> =
         runRemote { api.getGymProfile(gymId) }
 
+
+    override suspend fun patchBookMark(shortsId: Long): BaseState<Unit> = runRemote { api.patchBookMarks(shortsId) }
+
+    override suspend fun patchFavorite(shortsId: Long): BaseState<Unit> = runRemote { api.patchFavorites(shortsId) }
 }

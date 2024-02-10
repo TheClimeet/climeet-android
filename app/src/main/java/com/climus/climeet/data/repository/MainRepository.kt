@@ -93,4 +93,11 @@ interface MainRepository {
         body: ShortsUploadRequest
     ): BaseState<Unit>
 
+    suspend fun patchBookMark(
+        shortsId: Long
+    ): BaseState<Unit>
+
+    suspend fun patchFavorite(
+        shortsId: Long
+    ): BaseState<Unit>
 }
