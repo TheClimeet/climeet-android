@@ -11,6 +11,7 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentUploadCompleteBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.upload.UploadViewModel
+import com.climus.climeet.presentation.ui.toShortsPlayer
 import kotlinx.coroutines.delay
 
 class UploadCompleteFragment :
@@ -41,7 +42,7 @@ class UploadCompleteFragment :
                         }
                         delay(2000)
                         // todo API 에서 shortsId 반환받은뒤, Fragment Direction에 넣어주기
-                        findNavController().toShortsPlayer(-1)
+                        findNavController().toShortsPlayer(-1, 0)
                     }
                 } else {
                     showToastMessage("업로드 실패")
@@ -57,13 +58,8 @@ class UploadCompleteFragment :
         }
     }
 
-    private fun NavController.toShortsFragment(){
+    private fun NavController.toShortsFragment() {
         val action = UploadCompleteFragmentDirections.actionUploadCompleteFragmentToShortsFragment()
-        navigate(action)
-    }
-
-    private fun NavController.toShortsPlayer(shortsId: Long){
-        val action = UploadCompleteFragmentDirections.actionUploadCompleteFragmentToShortsPlayerFragment(shortsId, 0)
         navigate(action)
     }
 }

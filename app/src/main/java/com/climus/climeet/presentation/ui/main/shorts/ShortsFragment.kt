@@ -15,6 +15,7 @@ import com.climus.climeet.presentation.ui.main.shorts.adapter.UpdatedFollowAdapt
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
+import com.climus.climeet.presentation.ui.toShortsPlayer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -78,9 +79,4 @@ class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_sho
         navigate(action)
     }
 
-    private fun NavController.toShortsPlayer(shortsId: Long, position: Int) {
-        val action =
-            ShortsFragmentDirections.actionShortsFragmentToShortsPlayerFragment(shortsId, position)
-        navigate(action)
-    }
 }

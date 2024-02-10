@@ -29,9 +29,6 @@
         <action
             android:id="@+id/action_shorts_fragment_to_shortsBottomSheetFragment"
             app:destination="@id/shortsBottomSheetFragment" />
-        <action
-            android:id="@+id/action_shorts_fragment_to_shortsPlayerFragment"
-            app:destination="@id/shortsPlayerFragment" />
     </fragment>
 
     <fragment
@@ -164,9 +161,6 @@
         <action
             android:id="@+id/action_uploadCompleteFragment_to_shorts_fragment"
             app:destination="@id/shorts_fragment" />
-        <action
-            android:id="@+id/action_uploadCompleteFragment_to_shortsPlayerFragment"
-            app:destination="@id/shortsPlayerFragment" />
     </fragment>
 
     <fragment
@@ -197,5 +191,9 @@
     <action
         android:id="@+id/action_home_fragment_to_searchCragFragment"
         app:destination="@id/searchCragFragment" />
+
+    <action
+        android:id="@+id/globalActionToShortsPlayerFragment"
+        app:destination="@id/shortsPlayerFragment" />
 
 </navigation>
