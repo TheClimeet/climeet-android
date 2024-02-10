@@ -50,7 +50,7 @@ interface MainApi {
         @Query("size") size: Int
     ): Response<SearchAvailableGymResponse>
 
-    @GET("refresh-token")
+    @POST("refresh-token")
     suspend fun refreshToken(
         @Query("refreshToken") refreshToken: String
     ): Response<RefreshTokenResponse>
