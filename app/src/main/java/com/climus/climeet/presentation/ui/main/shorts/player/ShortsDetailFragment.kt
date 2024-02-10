@@ -105,6 +105,7 @@ class ShortsDetailFragment @Inject constructor(
                 else -> {}
             }
         }
+
     }
 
     override fun onPause() {
@@ -121,6 +122,5 @@ class ShortsDetailFragment @Inject constructor(
         super.onDestroy()
         releasePlayer()
     }
-
 
 }
