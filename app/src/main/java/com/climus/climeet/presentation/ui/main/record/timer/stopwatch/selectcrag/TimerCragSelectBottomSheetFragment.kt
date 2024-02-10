@@ -1,7 +1,5 @@
 package com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,13 +8,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentTimerSelectCragBottomSheetBinding
-import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -26,7 +23,6 @@ class TimerCragSelectBottomSheetFragment : BottomSheetDialogFragment() {
 
     private val viewModel: TimerCragSelectBottomSheetViewModel by activityViewModels()
     private lateinit var binding: FragmentTimerSelectCragBottomSheetBinding
-    private lateinit var sharedPreferences: SharedPreferences
 
     private var cragSearchAdapter: TimerCragSelectRVAdapter? = null
 
@@ -36,8 +32,6 @@ class TimerCragSelectBottomSheetFragment : BottomSheetDialogFragment() {
     ): View? {
         binding = FragmentTimerSelectCragBottomSheetBinding.inflate(inflater, container, false)
         binding.vm = viewModel
-        sharedPreferences =
-            requireContext().getSharedPreferences(TimerFragment.PREF_NAME, Context.MODE_PRIVATE)
 
         // 바텀시트 상단 모서리 radius 적용
         binding.layoutBottom.background = context?.let {
@@ -56,6 +50,7 @@ class TimerCragSelectBottomSheetFragment : BottomSheetDialogFragment() {
         initRecyclerview()
         initStateObserve()
         initEventObserve()
+        closeBottomSheet()
     }
 
     private fun initRecyclerview() {
@@ -81,6 +76,15 @@ class TimerCragSelectBottomSheetFragment : BottomSheetDialogFragment() {
                 }
             }
         }
+    }
+
+    private fun closeBottomSheet(){
+        viewModel.selectedCrag.observe(viewLifecycleOwner, Observer { cragName ->
+            if(cragName != null){
+                // 암장 검색 바텀 시트 닫기
+                dismiss()
+            }
+        })
     }
 
     fun showToastMessage(message: String) {
