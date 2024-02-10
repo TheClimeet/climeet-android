@@ -466,7 +466,6 @@
                     android:layout_height="45dp"
                     android:layout_marginVertical="30dp"
                     android:background="@drawable/rect_mainfill_nostroke_999radius"
-                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

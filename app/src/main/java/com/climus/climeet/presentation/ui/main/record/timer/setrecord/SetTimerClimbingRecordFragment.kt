@@ -1,15 +1,16 @@
 package com.climus.climeet.presentation.ui.main.record.timer.setrecord
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.databinding.FragmentTimerRecordBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.NoticePopup
+import com.climus.climeet.presentation.ui.main.record.timer.TimerMainViewModel
 import com.climus.climeet.presentation.ui.main.record.timer.adapter.RecordSectorImageAdapter
 import com.climus.climeet.presentation.ui.main.record.timer.adapter.RecordSectorLevelAdapter
 import com.climus.climeet.presentation.ui.main.record.timer.adapter.RecordSectorNameAdapter
@@ -23,6 +24,7 @@ class SetTimerClimbingRecordFragment :
     private val viewModel: SetTimerClimbingRecordViewModel by activityViewModels()
     private val timerVM: TimerViewModel by activityViewModels()
     private val cragSelectVM: TimerCragSelectBottomSheetViewModel by activityViewModels()
+    private val mainVM : TimerMainViewModel by activityViewModels()
 
     private var cragId: Long = 0L
     private var cragName: String = ""
@@ -38,8 +40,6 @@ class SetTimerClimbingRecordFragment :
         timerObserve()
         initClickListener()
         setCragName()
-
-        findNavController().currentDestination
     }
 
     // 앱 종료 후 재시작 시에 루트기록 화면에 암장 이름 보여주기 위함
@@ -73,6 +73,12 @@ class SetTimerClimbingRecordFragment :
                 NoticePopup.make(it, "운동중에는 암장을 바꿀 수 없어요!").show()
             }
         }
+
+        // 시간 클릭시 스톱워치 화면으로 이동하기 위한 이벤트를 발생시킨다
+        binding.layoutIdcTime.setOnClickListener {
+            mainVM.moveToStopwatch()
+            Log.d("move", "시간 눌림")
+        }
     }
 
     // 루트기록 화면에 암장 이름 설정
@@ -90,6 +96,4 @@ class SetTimerClimbingRecordFragment :
             }
         })
     }
-
-    // todo : 아래 시간 클릭 시 스톱워치 화면으로 이동
 }
