@@ -28,10 +28,8 @@ class TimerCragSelectRVAdapter(
         // 선택된 암장 정보 TimerFragment로 전달
         holder.binding.btnSelect.setOnClickListener {
             viewModel.selectItem(cragData)
-            // 암장 정보 roomDB에 저장은 TimerFragment에서 진행
+            // 암장 정보 roomDB에 저장은 TimerFragment에서 진행함
         }
-
-        // todo : 암장 선택되면 암장 검색창 사라지게 만들기
     }
 
     override fun getItemCount(): Int = searchList.size
