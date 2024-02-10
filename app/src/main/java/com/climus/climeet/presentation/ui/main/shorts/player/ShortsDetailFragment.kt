@@ -37,11 +37,22 @@ class ShortsDetailFragment @Inject constructor(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setInitData(data.isBookMarked, data.isLiked, data.description)
+        viewModel.setInitData(data.shortsId, data.isBookMarked, data.isLiked, data.description)
         binding.vm = viewModel
         binding.item = data
+        initEventObserve()
         setImage()
         setPlayer()
+    }
+
+    private fun initEventObserve(){
+        repeatOnStarted {
+            viewModel.event.collect{
+                when(it){
+                    is ShortsDetailEvent.ShowToastMessage -> showToastMessage(it.msg)
+                }
+            }
+        }
     }
 
     private fun setImage() {
