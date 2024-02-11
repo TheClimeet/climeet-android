@@ -35,6 +35,7 @@ class SearchCragFragment : BaseFragment<FragmentSearchCragBinding>(R.layout.frag
     private val viewModel: SearchCragViewModel by viewModels()
     private var recyclerRoute: List<BestRouteDetailInfoResponse> = emptyList()
     private var adapter: FollowCragRVAdapter? = null
+    private var isCrag: Boolean = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -82,12 +83,11 @@ class SearchCragFragment : BaseFragment<FragmentSearchCragBinding>(R.layout.frag
                     }
                 }
             }
-        }
-        repeatOnStarted {
             viewModel.uiState.collect {
                 adapter?.setList(it.searchList, viewModel.keyword.value)
             }
         }
+
     }
 
     private fun setupOnClickListener() {
@@ -102,6 +102,7 @@ class SearchCragFragment : BaseFragment<FragmentSearchCragBinding>(R.layout.frag
             binding.tvSearchMenuClimer.setBackgroundResource(R.drawable.rect_blackfill_nostroke_10radius)
             val color: Int = Color.parseColor("#B3B3B3")
             binding.tvSearchMenuClimer.setTextColor(color)
+            isCrag = true
         }
 
         binding.tvSearchMenuClimer.setOnClickListener {
@@ -110,31 +111,11 @@ class SearchCragFragment : BaseFragment<FragmentSearchCragBinding>(R.layout.frag
             binding.tvSearchMenuCrag.setBackgroundResource(R.drawable.rect_blackfill_nostroke_10radius)
             val color: Int = Color.parseColor("#B3B3B3")
             binding.tvSearchMenuCrag.setTextColor(color)
+            isCrag = false
         }
     }
 
     private fun setupPopularRoutes() {
-//        val routeList = arrayListOf(
-//            PopularRoute(null, "V1", "#63B75D", "더클라임 연남", "툇마루"),
-//            PopularRoute(null, "V3", "#555522", "볼더프렌즈", "섹터 A"),
-//            PopularRoute(null, "V10", "#FFFFFF", "웨이브락 서면", "Sector V"),
-//            PopularRoute(null, "V7", "#4C3E2F", "V10 천호점", "락랜드"),
-//            PopularRoute(null, "V2", "#333333", "더클라임 부펀", "툇마루"),
-//            PopularRoute(null, "V6", "#765665", "웨이브락 구로", "툇마루"),
-//            PopularRoute(null, "V1", "#63B75D", "더클라임 연남", "툇마루"),
-//            PopularRoute(null, "V3", "#555522", "볼더프렌즈", "섹터 A"),
-//            PopularRoute(null, "V10", "#FFFFFF", "웨이브락 서면", "Sector V"),
-//            PopularRoute(null, "V7", "#4C3E2F", "V10 천호점", "락랜드"),
-//            PopularRoute(null, "V2", "#333333", "더클라임 부펀", "툇마루"),
-//            PopularRoute(null, "V6", "#765665", "웨이브락 구로", "툇마루"),
-//            PopularRoute(null, "V1", "#63B75D", "더클라임 연남", "툇마루"),
-//            PopularRoute(null, "V3", "#555522", "볼더프렌즈", "섹터 A"),
-//            PopularRoute(null, "V10", "#FFFFFF", "웨이브락 서면", "Sector V"),
-//            PopularRoute(null, "V7", "#4C3E2F", "V10 천호점", "락랜드"),
-//            PopularRoute(null, "V2", "#333333", "더클라임 부펀", "툇마루"),
-//            PopularRoute(null, "V6", "#765665", "웨이브락 구로", "툇마루")
-//        )
-
         val popularRouteRVAdapter = PopularRouteRVAdapter(recyclerRoute)
         setupRecyclerView(binding.rvSearchCragRoutes1, popularRouteRVAdapter, LinearLayoutManager.HORIZONTAL)
         setupRecyclerView(binding.rvSearchCragRoutes2, popularRouteRVAdapter, LinearLayoutManager.HORIZONTAL)
