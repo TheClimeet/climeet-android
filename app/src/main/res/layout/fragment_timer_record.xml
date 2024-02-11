@@ -163,6 +163,7 @@
                             android:layout_marginHorizontal="12dp"
                             android:layout_marginTop="16dp"
                             android:scaleType="centerCrop"
+                            app:imgUrl="@{vm.uiState.layoutImg}"
                             app:layout_constraintDimensionRatio="2.3:1"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -182,7 +183,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/iv_sector"
-                            app:list="@{vm.uiState.wallNameList}"
+                            app:list="@{vm.uiState.sectorNameList}"
                             tools:listitem="@layout/item_sector_name" />
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -197,7 +198,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/rv_sector_name"
-                            app:list="@{vm.uiState.sectorLevelList}"
+                            app:list="@{vm.uiState.gymLevelList}"
                             tools:listitem="@layout/item_gym_level" />
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -213,7 +214,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/rv_sector_level"
-                            app:list="@{vm.uiState.sectorImageList}"
+                            app:list="@{vm.uiState.routeList}"
                             tools:listitem="@layout/item_route_image" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -227,62 +228,17 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/rv_sector_image">
 
-                            <androidx.constraintlayout.widget.ConstraintLayout
+                            <com.climus.climeet.presentation.customview.RouteView
                                 android:id="@+id/select_sector"
                                 android:layout_width="100dp"
                                 android:layout_height="120dp"
                                 android:layout_marginBottom="20dp"
-                                android:background="@drawable/rect_blackfill_nostroke_8radius"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <androidx.constraintlayout.widget.Guideline
-                                    android:id="@+id/guideline_item"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    app:layout_constraintGuide_percent="0.75" />
-
-                                <com.google.android.material.imageview.ShapeableImageView
-                                    android:id="@+id/iv_image"
-                                    android:layout_width="0dp"
-                                    android:layout_height="0dp"
-                                    android:scaleType="centerCrop"
-                                    app:imgUrl="@{vm.uiState.selectedSector.sectorImg}"
-                                    app:layout_constraintBottom_toBottomOf="@id/guideline_item"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:shapeAppearanceOverlay="@style/Top8RadiusImageView"
-                                    tools:src="@drawable/test" />
-
-                                <TextView
-                                    android:id="@+id/tv_level"
-                                    style="@style/TextSmall"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="12dp"
-                                    android:text="@{vm.uiState.selectedSector.levelName}"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/iv_image"
-                                    app:textHexColor="@{vm.uiState.selectedSector.levelColor}"
-                                    tools:text="V1" />
-
-                                <View
-                                    android:id="@+id/v_stroke"
-                                    android:layout_width="0dp"
-                                    android:layout_height="0dp"
-                                    android:background="@drawable/rect_nofill_mainstroke_6radius"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintHorizontal_bias="0.0"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintVertical_bias="0.0" />
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:routeImgUrl="@{vm.uiState.selectedRoute.routeImg}"
+                                app:routeLevelColor="@{vm.uiState.selectedRoute.gymLevelColor}"
+                                app:routeLevelName="@{vm.uiState.selectedRoute.gymLevelName}" />
 
                             <TextView
                                 android:id="@+id/tv_challenge_title"

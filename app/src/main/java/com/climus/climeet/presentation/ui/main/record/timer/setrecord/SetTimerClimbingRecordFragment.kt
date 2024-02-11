@@ -10,10 +10,10 @@ import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.databinding.FragmentTimerRecordBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.NoticePopup
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLevelAdapter
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.SectorNameAdapter
 import com.climus.climeet.presentation.ui.main.record.timer.TimerMainViewModel
-import com.climus.climeet.presentation.ui.main.record.timer.adapter.RecordSectorImageAdapter
-import com.climus.climeet.presentation.ui.main.record.timer.adapter.RecordSectorLevelAdapter
-import com.climus.climeet.presentation.ui.main.record.timer.adapter.RecordSectorNameAdapter
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerViewModel
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.TimerCragSelectBottomSheetViewModel
 
@@ -24,7 +24,7 @@ class SetTimerClimbingRecordFragment :
     private val viewModel: SetTimerClimbingRecordViewModel by activityViewModels()
     private val timerVM: TimerViewModel by activityViewModels()
     private val cragSelectVM: TimerCragSelectBottomSheetViewModel by activityViewModels()
-    private val mainVM : TimerMainViewModel by activityViewModels()
+    private val mainVM: TimerMainViewModel by activityViewModels()
 
     private var cragId: Long = 0L
     private var cragName: String = ""
@@ -39,6 +39,7 @@ class SetTimerClimbingRecordFragment :
         setRecyclerView()
         timerObserve()
         initClickListener()
+        initEventObserve()
         setCragName()
     }
 
@@ -51,9 +52,9 @@ class SetTimerClimbingRecordFragment :
     }
 
     private fun setRecyclerView() {
-        binding.rvSectorName.adapter = RecordSectorNameAdapter()
-        binding.rvSectorLevel.adapter = RecordSectorLevelAdapter()
-        binding.rvSectorImage.adapter = RecordSectorImageAdapter()
+        binding.rvSectorName.adapter = SectorNameAdapter()
+        binding.rvSectorLevel.adapter = GymLevelAdapter()
+        binding.rvSectorImage.adapter = RouteImageAdapter()
         binding.rvSectorName.itemAnimator = null
         binding.rvSectorLevel.itemAnimator = null
         binding.rvSectorImage.itemAnimator = null
@@ -92,8 +93,18 @@ class SetTimerClimbingRecordFragment :
                 binding.tvTitle.text = cragName
 
                 // 암장 이름 뷰모델에 저장
-                viewModel.selectCrag(cragId, cragName)
+                viewModel.selectedCrag(cragId, cragName)
             }
         })
+    }
+
+    private fun initEventObserve() {
+        repeatOnStarted {
+            viewModel.event.collect {
+                when (it) {
+                    is CreateRecordEvent.ShowToastMessage -> showToastMessage(it.msg)
+                }
+            }
+        }
     }
 }
