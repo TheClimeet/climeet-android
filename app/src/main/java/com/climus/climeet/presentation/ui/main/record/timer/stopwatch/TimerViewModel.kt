@@ -97,47 +97,60 @@ class TimerViewModel @Inject constructor(
         }
     }
 
-    // todo : 스톱워치가 정지되면, API로 루트 기록들을 넘겨준다
+    // todo : roomDB값으로 루트기록 넘겨주기
     fun sendClimbingRecord() = CoroutineScope(Dispatchers.Main).launch {
-        val recordData: ClimbingRecordData
-        val routeData: List<RouteRecordData>?
+//        val recordData: ClimbingRecordData
+//        val routeData: List<RouteRecordData>?
         val requestBody: CreateTimerClimbingRecordRequest
-
-        // todo : room db에서 정보 가져오기
-        // gymId, date, time, avgDifficulty 가져오기
-        recordData = withContext(Dispatchers.IO) { climbingRepository.getRoute(1) }
-
-        // routeRecordRequestDtoList : routeId, attemptCount, isCompleted 가져오기
-        routeData = withContext(Dispatchers.IO) { routeRepository.getAllRecord() }
-
-        delay(1000)  // 1초 대기
-        Log.d("room", "기본 정보 : $recordData.toString()\n 루트 기록 : $routeData.toString()")
-
-        // 루트 기록 생성
-        val routeRecords = routeData.map { route ->
-            ClimbingRecord(route.routeId, route.attemptCount, route.isCompleted)
-        }
+//
+//        // todo : room db에서 정보 가져오기
+//        // gymId, date, time, avgDifficulty 가져오기
+//        recordData = withContext(Dispatchers.IO) { climbingRepository.getRoute(1) }
+//
+//        // routeRecordRequestDtoList : routeId, attemptCount, isCompleted 가져오기
+//        routeData = withContext(Dispatchers.IO) { routeRepository.getAllRecord() }
+//
+//        delay(1000)  // 1초 대기
+//        Log.d("room", "기본 정보 : $recordData.toString()\n 루트 기록 : $routeData.toString()")
+//
+//        // 루트 기록 생성
+//        val routeRecords = routeData.map { route ->
+//            ClimbingRecord(route.routeId, route.attemptCount, route.isCompleted)
+//        }
         // 요청 바디 생성
+//        requestBody = CreateTimerClimbingRecordRequest(
+//            gymId = recordData.gymId,
+//            date = recordData.date,
+//            time = LocalTime.parse(recordData.time), // String을 LocalTime으로 변환
+//            avgDifficulty = recordData.avgDifficulty,
+//            routeRecordRequestDtoList = routeRecords
+//        )
+
+        // todo : 더미값으로 테스트중
+        val time = "00:05:15"
+        val routeRecords = listOf(
+            ClimbingRecord(routeId = 1, attemptCount = 5, isCompleted = true)
+        )
+
         requestBody = CreateTimerClimbingRecordRequest(
-            gymId = recordData.gymId,
-            date = recordData.date,
-            time = LocalTime.parse(recordData.time), // String을 LocalTime으로 변환
-            avgDifficulty = recordData.avgDifficulty,
+            gymId = 1,
+            date = "2024-02-11",
+            time = time, // String을 LocalTime으로 변환
+            avgDifficulty = 5,
             routeRecordRequestDtoList = routeRecords
         )
 
-        // todo : API로 정보 잘 넘어가나 확인하기 (아직 test 안 해봄)
         viewModelScope.launch {
             repository.createTimerClimbingRecord(requestBody).let {
                 when (it) {
                     is BaseState.Success -> {
                         // 성공
-                        Log.d("API", it.toString())
+                        Log.d("testss", it.toString())
                     }
 
                     is BaseState.Error -> {
                         it.msg // 서버 에러 메시지
-                        Log.d("API", it.msg)
+                        Log.d("testss", it.msg)
                     }
                 }
             }
