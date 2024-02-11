@@ -43,7 +43,8 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
 
         viewModel.selectedDate.observe(viewLifecycleOwner, Observer { date ->
             val yearMonth = YearMonth.of(date.year, date.monthValue)
-
+            binding.calendarView.dayBinder = null
+            setupDayBinder()
             binding.calendarView.scrollToMonth(yearMonth)  // 새로 선택된 날짜가 있는 월로 이동
         })
 

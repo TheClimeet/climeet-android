@@ -9,4 +9,10 @@
     <declare-styleable name="CircleView">
         <attr name="cvColor" format="reference|color" />
     </declare-styleable>
+    
+    <declare-styleable name="RouteView">
+        <attr name="routeLevelColor" format="reference|string" />
+        <attr name="routeLevelName" format="reference|string" />
+        <attr name="routeImgUrl" format="reference|string" />
+    </declare-styleable>
 </resources>

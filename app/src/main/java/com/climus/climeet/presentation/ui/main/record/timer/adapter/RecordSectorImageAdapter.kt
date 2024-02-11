@@ -5,25 +5,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.climus.climeet.R
-import com.climus.climeet.databinding.ItemTimerSectorImageBinding
-import com.climus.climeet.presentation.ui.main.record.model.RecordSectorData
+import com.climus.climeet.databinding.ItemRouteImageBinding
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.RouteUiData
 
 class RecordSectorImageAdapter :
-    ListAdapter<RecordSectorData, RecordSectorImageViewHolder>(diffCallback) {
+    ListAdapter<RouteUiData, RecordSectorImageViewHolder>(diffCallback) {
 
     companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<RecordSectorData>() {
+        val diffCallback = object : DiffUtil.ItemCallback<RouteUiData>() {
             override fun areItemsTheSame(
-                oldItem: RecordSectorData,
-                newItem: RecordSectorData
+                oldItem: RouteUiData,
+                newItem: RouteUiData
             ): Boolean {
                 return oldItem.sectorId == newItem.sectorId
             }
 
             override fun areContentsTheSame(
-                oldItem: RecordSectorData,
-                newItem: RecordSectorData
+                oldItem: RouteUiData,
+                newItem: RouteUiData
             ): Boolean {
                 return oldItem == newItem
             }
@@ -36,7 +35,7 @@ class RecordSectorImageAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordSectorImageViewHolder =
         RecordSectorImageViewHolder(
-            ItemTimerSectorImageBinding.inflate(
+            ItemRouteImageBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -44,15 +43,10 @@ class RecordSectorImageAdapter :
         )
 }
 
-class RecordSectorImageViewHolder(private val binding: ItemTimerSectorImageBinding) :
+class RecordSectorImageViewHolder(private val binding: ItemRouteImageBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: RecordSectorData) {
+    fun bind(item: RouteUiData) {
         binding.item = item
-        if (item.isSelected) {
-            binding.vStroke.setBackgroundResource(R.drawable.rect_nofill_mainstroke_6radius)
-        } else {
-            binding.vStroke.setBackgroundResource(R.drawable.rect_nofill_blackstroke_6radius)
-        }
     }
 }

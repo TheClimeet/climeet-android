@@ -1,16 +1,10 @@
 package com.climus.climeet.presentation.ui.main
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
-import com.climus.climeet.presentation.ui.intro.IntroEvent
-import com.climus.climeet.presentation.ui.intro.UrlType
-import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
-import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
-import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -35,6 +29,9 @@ class MainViewModel @Inject constructor(
     private val _videoUri = MutableSharedFlow<Uri>()
     val videoUri: SharedFlow<Uri> = _videoUri.asSharedFlow()
 
+    private val _shortsThumbnail = MutableSharedFlow<String>()
+    val shortsThumbnail: SharedFlow<String> = _shortsThumbnail.asSharedFlow()
+
     fun goToGalleryForVideo(){
         viewModelScope.launch {
             _event.emit(MainEvent.GoToGalleryForVideo)
@@ -47,12 +44,16 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun fileToUrl(file: MultipartBody.Part) {
+    fun fileToUrl(file: MultipartBody.Part, type: DataType) {
         viewModelScope.launch {
-            repository.uploadImage(file).let {
+            repository.uploadFile(file).let {
                 when (it) {
                     is BaseState.Success -> {
-                        Log.d(TAG,it.body.imgUrl)
+                        when(type){
+                            DataType.SHORTS_THUMBNAIL -> {
+                                _shortsThumbnail.emit(it.body.imgUrl)
+                            }
+                        }
                     }
 
                     is BaseState.Error -> _event.emit(MainEvent.ShowToastMessage(it.msg))
@@ -60,4 +61,8 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+}
+
+enum class DataType{
+    SHORTS_THUMBNAIL
 }

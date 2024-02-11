@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,21 +12,30 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.climus.climeet.app.App.Companion.sharedPreferences
-import com.climus.climeet.presentation.ui.main.record.timer.data.ClimbingDatabase
-import com.climus.climeet.presentation.ui.main.record.timer.data.StopwatchStatesData
-import com.climus.climeet.presentation.ui.main.record.timer.data.StopwatchStatesRepository
+import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.request.ClimbingRecord
+import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
+import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordData
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordRepository
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordData
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
 class TimerViewModel @Inject constructor(
-    private val repository: StopwatchStatesRepository
-) : ViewModel(){
+    private val repository: MainRepository,
+    private val routeRepository: RouteRecordRepository,
+    private val climbingRepository: ClimbingRecordRepository
+) : ViewModel() {
 
     private val _time = MutableLiveData<Long>().apply { value = 0L }
     private val time: LiveData<Long> get() = _time
@@ -40,70 +48,21 @@ class TimerViewModel @Inject constructor(
     var isRestart = MutableLiveData<Boolean>().apply { value = false }
     var isStop = MutableLiveData<Boolean>().apply { value = true }
 
-//    fun updateState(state: StopwatchStatesData) {
-//        viewModelScope.launch {
-//            Log.d("timer", "뷰모델 updataState 호출")
-//            repository.updateState(state)
-//        }
-//    }
-    init {
-        if(TimerService.serviceRunning.value == null){
-            Log.d("timer", "뷰모델 서비스 실행 안해서 초기화")
-            isRunning.value = false
-            isStart.value = false
-            isPaused.value = false
-            isRestart.value = false
-            isStop.value = true
-            pauseTime.value = 0L
-        } else {
-            isRunning.value = sharedPreferences.getBoolean(KEY_IS_RUNNING, isRunning.value!!)
-            isStart.value = sharedPreferences.getBoolean(KEY_IS_START, isStart.value!!)
-            isPaused.value = sharedPreferences.getBoolean(KEY_IS_PAUSE, isRunning.value!!)
-            isRestart.value = sharedPreferences.getBoolean(KEY_IS_RESTART, isRestart.value!!)
-            isStop.value = sharedPreferences.getBoolean(KEY_IS_STOP, isStop.value!!)
-            pauseTime.value = sharedPreferences.getLong("pauseTime", 0L)
-            Log.d(
-                "timer",
-                "뷰모델 init \nisStart : ${isStart.value}, isPause : ${isPaused.value}, isRestart : ${isRestart.value}, isStop : ${isStop.value}, isRunning : ${isStart.value}"
-            )
-        }
-    }
-
-    // 스톱워치 경과시간과 상태값 전달받음
+    // 스톱워치 경과시간과 일시정지 여부를 전달받음
+    // pauseState를 String으로 전달받는 이유 : default값을 설정하지 않기 위해
     private val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             _time.value = intent.getLongExtra("elapsedTime", 0L)
             val state = intent.getStringExtra("pauseState")
-            if(state != null){
+            if (state != null) {
                 pauseState.value = state.toString()
                 pauseTime.value = sharedPreferences.getLong("pauseTime", 0L)
-                Log.d("timer", "알림창 일시정지 : ${pauseState.value}")
+                Log.d("TIMER", "알림창 일시정지 : ${pauseState.value}")
             }
-
-//            Log.d("timer", "뷰모델 브로드캐스트 받는중")
-//            pauseTime.value = intent.getLongExtra("pauseTime", 0L)
-//            isRunning.value = intent.getBooleanExtra(KEY_IS_RUNNING, isRunning.value!!)
-//            isStart.value = intent.getBooleanExtra(KEY_IS_START, isStart.value!!)
-//            isPaused.value = intent.getBooleanExtra(KEY_IS_PAUSE, isPaused.value!!)
-//            isRestart.value = intent.getBooleanExtra(KEY_IS_RESTART, isRestart.value!!)
-//            isStop.value = intent.getBooleanExtra(KEY_IS_STOP, isStop.value!!)
-
-//            viewModelScope.launch {
-//                val state = repository.getState(0)
-//                isStart.value = state.isStart
-//                isStop.value = state.isStop
-//                isPaused.value = state.isPaused
-//                isRestart.value = state.isRestart
-//                isRunning.value = state.isRunning
-//            }
-//            Log.d(
-//                "timer",
-//                "[브로드캐스트 받기] isStart : ${isStart.value}, isPause : ${isPaused.value}, isRestart : ${isRestart.value}, isStop : ${isStop.value}, isRunning : ${isRunning.value}"
-//            )
         }
     }
 
-    // 시간 설정
+    // 흘러가는 시간 형식 설정
     val timeFormat: LiveData<String> = time.map { elapsedTime ->
         if (elapsedTime == 0L) {
             "00:00"
@@ -120,6 +79,8 @@ class TimerViewModel @Inject constructor(
         }
     }
 
+    // 일시정지 시간 형식 설정
+    // 서비스에서 보낸 broadcast를 통해 pauseTime값이 업데이트 되면, pauseTimeFormat을 설정한다
     val pauseTimeFormat: LiveData<String> = pauseTime.map { pauseTime ->
         if (pauseTime == 0L) {
             "00:00"
@@ -135,6 +96,54 @@ class TimerViewModel @Inject constructor(
             }
         }
     }
+
+    // todo : 스톱워치가 정지되면, API로 루트 기록들을 넘겨준다
+    fun sendClimbingRecord() = CoroutineScope(Dispatchers.Main).launch {
+        val recordData: ClimbingRecordData
+        val routeData: List<RouteRecordData>?
+        val requestBody: CreateTimerClimbingRecordRequest
+
+        // todo : room db에서 정보 가져오기
+        // gymId, date, time, avgDifficulty 가져오기
+        recordData = withContext(Dispatchers.IO) { climbingRepository.getRoute(1) }
+
+        // routeRecordRequestDtoList : routeId, attemptCount, isCompleted 가져오기
+        routeData = withContext(Dispatchers.IO) { routeRepository.getAllRecord() }
+
+        delay(1000)  // 1초 대기
+        Log.d("room", "기본 정보 : $recordData.toString()\n 루트 기록 : $routeData.toString()")
+
+        // 루트 기록 생성
+        val routeRecords = routeData.map { route ->
+            ClimbingRecord(route.routeId, route.attemptCount, route.isCompleted)
+        }
+        // 요청 바디 생성
+        requestBody = CreateTimerClimbingRecordRequest(
+            gymId = recordData.gymId,
+            date = recordData.date,
+            time = LocalTime.parse(recordData.time), // String을 LocalTime으로 변환
+            avgDifficulty = recordData.avgDifficulty,
+            routeRecordRequestDtoList = routeRecords
+        )
+
+        // todo : API로 정보 잘 넘어가나 확인하기 (아직 test 안 해봄)
+        viewModelScope.launch {
+            repository.createTimerClimbingRecord(requestBody).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        // 성공
+                        Log.d("API", it.toString())
+                    }
+
+                    is BaseState.Error -> {
+                        it.msg // 서버 에러 메시지
+                        Log.d("API", it.msg)
+                    }
+                }
+            }
+        }
+    }
+
 
     fun registerReceiver(context: Context) {
         LocalBroadcastManager.getInstance(context).registerReceiver(

@@ -129,4 +129,15 @@ dependencies {
 
     // firebase
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+
+    // video compressor
+    implementation("com.github.AbedElazizShe:LightCompressor:1.3.2")
+
+    // media3 | exoplayer2
+    val media3Version = "1.2.1"
+    implementation("androidx.media3:media3-exoplayer:$media3Version")
+    implementation("androidx.media3:media3-ui:$media3Version")
+    implementation("androidx.media3:media3-exoplayer-hls:$media3Version")
+
+
 }

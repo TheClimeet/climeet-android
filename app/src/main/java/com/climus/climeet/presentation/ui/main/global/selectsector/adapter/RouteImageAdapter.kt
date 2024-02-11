@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.climus.climeet.R
 import com.climus.climeet.databinding.ItemRouteImageBinding
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.RouteUiData
 
@@ -51,11 +50,6 @@ class RouteImageViewHolder(private val binding: ItemRouteImageBinding) :
         binding.item = item
         binding.root.setOnClickListener {
             item.onClickListener(item)
-        }
-        if (item.isSelected) {
-            binding.vStroke.setBackgroundResource(R.drawable.rect_nofill_mainstroke_6radius)
-        } else {
-            binding.vStroke.setBackgroundResource(R.drawable.rect_nofill_blackstroke_6radius)
         }
     }
 }

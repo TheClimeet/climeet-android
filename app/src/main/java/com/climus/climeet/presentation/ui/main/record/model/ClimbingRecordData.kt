@@ -8,5 +8,6 @@ data class ClimbingRecordData(
     val totalAttemptCount : String = "",
     val avgDifficulty : String = "",
     val gymName: String = "",
+    val gymProfile: String = "",
     val gymId : Long = -1
 )

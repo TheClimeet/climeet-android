@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.main.upload.UploadViewModel" />
@@ -55,7 +57,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
+                android:enabled="@{vm.isCompressDone()}"
                 android:minWidth="0dp"
+                android:onClick="@{() -> vm.storeVideo()}"
                 android:text="공유"
                 android:textColor="@color/selector_share_btn_text"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -83,6 +87,36 @@
             app:layout_constraintTop_toBottomOf="@id/layout_top"
             app:shapeAppearanceOverlay="@style/All10RadiusImageView"
             tools:src="@drawable/test" />
+
+
+        <TextView
+            android:id="@+id/tv_progress_label"
+            style="@style/TextSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:text="압축중.."
+            android:visibility="@{vm.isCompressDone ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toTopOf="@id/pb_compress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_thumbnail"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <ProgressBar
+            android:id="@+id/pb_compress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="60dp"
+            android:layout_height="10dp"
+            android:max="100"
+            android:progress="@{vm.compressProgress}"
+            android:progressBackgroundTint="@color/white"
+            android:progressTint="@color/cm_main"
+            android:visibility="@{vm.isCompressDone ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@id/iv_thumbnail"
+            app:layout_constraintEnd_toEndOf="@id/iv_thumbnail"
+            app:layout_constraintStart_toStartOf="@id/iv_thumbnail"
+            app:layout_constraintTop_toBottomOf="@id/tv_progress_label" />
 
         <EditText
             android:id="@+id/et_description"

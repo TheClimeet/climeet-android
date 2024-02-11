@@ -6,24 +6,24 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
-import com.climus.climeet.databinding.ItemTimerSectorLevelBinding
-import com.climus.climeet.presentation.ui.main.record.model.RecordLevelData
+import com.climus.climeet.databinding.ItemGymLevelBinding
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.GymLevelUiData
 
 class RecordSectorLevelAdapter  :
-    ListAdapter<RecordLevelData, RecordSectorLevelViewHolder>(diffCallback) {
+    ListAdapter<GymLevelUiData, RecordSectorLevelViewHolder>(diffCallback) {
 
     companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<RecordLevelData>() {
+        val diffCallback = object : DiffUtil.ItemCallback<GymLevelUiData>() {
             override fun areItemsTheSame(
-                oldItem: RecordLevelData,
-                newItem: RecordLevelData
+                oldItem: GymLevelUiData,
+                newItem: GymLevelUiData
             ): Boolean {
                 return oldItem.levelName == newItem.levelName
             }
 
             override fun areContentsTheSame(
-                oldItem: RecordLevelData,
-                newItem: RecordLevelData
+                oldItem: GymLevelUiData,
+                newItem: GymLevelUiData
             ): Boolean {
                 return oldItem == newItem
             }
@@ -36,7 +36,7 @@ class RecordSectorLevelAdapter  :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordSectorLevelViewHolder =
         RecordSectorLevelViewHolder(
-            ItemTimerSectorLevelBinding.inflate(
+            ItemGymLevelBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -44,10 +44,10 @@ class RecordSectorLevelAdapter  :
         )
 }
 
-class RecordSectorLevelViewHolder(private val binding: ItemTimerSectorLevelBinding) :
+class RecordSectorLevelViewHolder(private val binding: ItemGymLevelBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: RecordLevelData) {
+    fun bind(item: GymLevelUiData) {
         binding.item = item
         if (item.isSelected) {
             binding.tvLevel.setBackgroundResource(R.drawable.oval_silver2fill_mainstroke)

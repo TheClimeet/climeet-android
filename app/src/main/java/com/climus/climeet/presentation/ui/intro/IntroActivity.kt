@@ -147,7 +147,11 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
 
                 uri?.let {
                     viewModel.setImage(it)
-                    viewModel.fileToUrl(it.toMultiPart(this))
+                    it.toMultiPart(this)?.let{ file -> 
+                        viewModel.fileToUrl(file)
+                    }?: run {
+                        showToastMessage("이미지 파일 변환 실패")
+                    }
                 }
             }
         }
