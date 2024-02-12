@@ -37,14 +37,14 @@ interface MainApi {
     @POST("api/file")
     suspend fun uploadFile(@Part file: MultipartBody.Part): Response<UploadImgResponse>
 
-    @GET("api/gym/search/all")
+    @GET("api/gyms/search/all")
     suspend fun searchGym(
         @Query("gymname") gymName: String,
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<SearchGymResponse>
 
-    @GET("api/gym/search")
+    @GET("api/gyms/search")
     suspend fun searchAvailableGym(
         @Query("gymname") gymName: String,
         @Query("page") page: Int,

@@ -137,4 +137,13 @@ class SearchCragViewModel @Inject constructor(private val repository: MainReposi
         }.launchIn(viewModelScope)
     }
 
+    fun deleteKeyword() {
+        keyword.value = ""
+        _uiState.update { state ->
+            state.copy(
+                searchList = emptyList()
+            )
+        }
+    }
+
 }
