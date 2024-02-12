@@ -8,7 +8,7 @@
         <import type="android.view.View" />
 
         <variable
-            name="mainVm"
+            name="mainVM"
             type="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerViewModel" />
 
         <variable
@@ -157,7 +157,7 @@
                     android:layout_marginTop="30dp"
                     android:text="총 운동 시간"
                     android:textSize="18sp"
-                    android:visibility="@{mainVm.isPaused ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@id/tv_time"
                     app:layout_constraintStart_toStartOf="@id/layout_top_record"
                     app:layout_constraintTop_toBottomOf="@id/layout_select_crag" />
@@ -182,7 +182,7 @@
                     android:layout_height="70dp"
                     android:layout_marginTop="5dp"
                     android:text="시간"
-                    android:visibility="@{mainVm.isPaused ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{mainVM.isPaused ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toTopOf="@id/layout_buttons"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -194,7 +194,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:visibility="@{mainVm.isPaused ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@id/layout_top_record"
                     app:layout_constraintStart_toStartOf="@id/layout_top_record"
                     app:layout_constraintTop_toBottomOf="@id/tv_time">
@@ -216,7 +216,7 @@
                         android:background="@android:color/transparent"
                         android:onClick="@{() -> recordVM.setAvgToggle()}"
                         android:padding="10dp"
-                        android:src="@{recordVM.isAvgToggleOn() ? @drawable/ic_toggle_on : @drawable/ic_toggle_off}"
+                        android:src="@{!recordVM.isAvgToggleOn() ? @drawable/ic_toggle_on : @drawable/ic_toggle_off}"
                         android:textOff=""
                         android:textOn=""
                         app:layout_constraintBottom_toBottomOf="@id/tv_avg_title"
@@ -228,7 +228,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:background="@drawable/rect_grey8fill_nostroke_10radius"
-                        android:visibility="@{recordVM.itemsLiveData.isEmpty() ? View.VISIBLE : View.GONE}"
+                        android:visibility="@{!recordVM.itemsLiveData.isEmpty() ? View.VISIBLE : View.GONE}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_avg_title">
 
@@ -312,11 +312,11 @@
 
                 <!--    루트 기록    -->
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_root_record"
+                    android:id="@+id/layout_route_record"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:visibility="@{mainVm.isPaused ? View.VISIBLE : View.GONE}"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@id/layout_top_record"
                     app:layout_constraintStart_toStartOf="@id/layout_top_record"
                     app:layout_constraintTop_toBottomOf="@id/layout_avg_complete">
@@ -569,6 +569,7 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <!--     루트 기록 더보기     -->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_toggle"
                         android:layout_width="match_parent"
@@ -594,7 +595,7 @@
                             android:background="@android:color/transparent"
                             android:onClick="@{() -> recordVM.setRouteToggle()}"
                             android:padding="10dp"
-                            android:src="@{recordVM.isRouteToggleOn() ? @drawable/ic_toggle_on : @drawable/ic_toggle_off}"
+                            android:src="@{!recordVM.isRouteToggleOn() ? @drawable/ic_toggle_on : @drawable/ic_toggle_off}"
                             android:textOff=""
                             android:textOn=""
                             app:layout_constraintBottom_toBottomOf="@id/tv_route_record_more"
@@ -672,7 +673,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/layout_root_record">
+                    app:layout_constraintTop_toBottomOf="@id/layout_route_record">
 
                     <ImageView
                         android:id="@+id/iv_start"

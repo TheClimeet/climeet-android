@@ -13,6 +13,7 @@ import com.climus.climeet.presentation.customview.NoticePopup
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLevelAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.SectorNameAdapter
+import com.climus.climeet.presentation.ui.main.record.adapter.RouteRecordAdapter
 import com.climus.climeet.presentation.ui.main.record.timer.TimerMainViewModel
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerViewModel
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.TimerCragSelectBottomSheetViewModel
@@ -26,6 +27,8 @@ class SetTimerClimbingRecordFragment :
     private val cragSelectVM: TimerCragSelectBottomSheetViewModel by activityViewModels()
     private val mainVM: TimerMainViewModel by activityViewModels()
 
+    private lateinit var routeItemAdapter: ClimbingRecordAdapter
+
     private var cragId: Long = 0L
     private var cragName: String = ""
 
@@ -33,6 +36,7 @@ class SetTimerClimbingRecordFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
+        routeItemAdapter = ClimbingRecordAdapter(viewModel)
 
         binding.ivCelebrate.bringToFront()
 
@@ -40,6 +44,7 @@ class SetTimerClimbingRecordFragment :
         timerObserve()
         initClickListener()
         initEventObserve()
+        initRouteObserve()
         setCragName()
     }
 
@@ -55,6 +60,7 @@ class SetTimerClimbingRecordFragment :
         binding.rvSectorName.adapter = SectorNameAdapter()
         binding.rvSectorLevel.adapter = GymLevelAdapter()
         binding.rvSectorImage.adapter = RouteImageAdapter()
+        binding.rvRouteRecord.adapter = routeItemAdapter
         binding.rvSectorName.itemAnimator = null
         binding.rvSectorLevel.itemAnimator = null
         binding.rvSectorImage.itemAnimator = null
@@ -79,6 +85,15 @@ class SetTimerClimbingRecordFragment :
         binding.layoutIdcTime.setOnClickListener {
             mainVM.moveToStopwatch()
             Log.d("move", "시간 눌림")
+        }
+    }
+
+    private fun initRouteObserve() {
+        repeatOnStarted {
+            viewModel.items.collect { items ->
+                routeItemAdapter.items = items
+                routeItemAdapter.notifyDataSetChanged()
+            }
         }
     }
 

@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentTimerSelectCragBottomSheetBinding
+import com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerClimbingRecordViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -22,6 +23,7 @@ import kotlinx.coroutines.launch
 class TimerCragSelectBottomSheetFragment : BottomSheetDialogFragment() {
 
     private val viewModel: TimerCragSelectBottomSheetViewModel by activityViewModels()
+    private val routeVM: SetTimerClimbingRecordViewModel by activityViewModels()
     private lateinit var binding: FragmentTimerSelectCragBottomSheetBinding
 
     private var cragSearchAdapter: TimerCragSelectRVAdapter? = null
@@ -54,7 +56,7 @@ class TimerCragSelectBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun initRecyclerview() {
-        cragSearchAdapter = TimerCragSelectRVAdapter(viewModel)
+        cragSearchAdapter = TimerCragSelectRVAdapter(viewModel, routeVM)
         binding.rvSearchCrag.layoutManager = LinearLayoutManager(context)
         binding.rvSearchCrag.adapter = cragSearchAdapter
     }
@@ -86,7 +88,7 @@ class TimerCragSelectBottomSheetFragment : BottomSheetDialogFragment() {
                     binding.layoutSearchNone.visibility = View.INVISIBLE
                 }
 
-                if (uiState.emptyTextState){
+                if (uiState.emptyTextState) {
                     binding.etCragName.setText("")
                 }
             }

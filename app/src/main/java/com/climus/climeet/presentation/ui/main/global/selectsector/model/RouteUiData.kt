@@ -9,5 +9,6 @@ data class RouteUiData(
     val climeetLevelName: String = "",
     val routeImg: String = "",
     var isSelected: Boolean = false,
+    var challengeNum: Int = 0,
     val onClickListener: (RouteUiData) -> Unit
 )

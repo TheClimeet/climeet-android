@@ -196,12 +196,12 @@ class TimerService : Service() {
 
         Log.d("TIMER", "서비스 타이머 시작")
 
-        val r1 = sharedPreferences.getBoolean(KEY_IS_START, false)
-        val r2 = sharedPreferences.getBoolean(KEY_IS_PAUSE, false)
-        val r3 = sharedPreferences.getBoolean(KEY_IS_RESTART, false)
-        val r4 = sharedPreferences.getBoolean(KEY_IS_STOP, false)
-        val r5 = sharedPreferences.getBoolean(KEY_IS_RUNNING, false)
-        Log.d("TIMER", "서비스 타이머 시작 spf 확인  -> start :$r1, pause : $r2, restart : $r3, , stop : $r4, running : $r5")
+//        val r1 = sharedPreferences.getBoolean(KEY_IS_START, false)
+//        val r2 = sharedPreferences.getBoolean(KEY_IS_PAUSE, false)
+//        val r3 = sharedPreferences.getBoolean(KEY_IS_RESTART, false)
+//        val r4 = sharedPreferences.getBoolean(KEY_IS_STOP, false)
+//        val r5 = sharedPreferences.getBoolean(KEY_IS_RUNNING, false)
+//        Log.d("TIMER", "서비스 타이머 시작 spf 확인  -> start :$r1, pause : $r2, restart : $r3, , stop : $r4, running : $r5")
     }
 
     private fun pauseTimer() {
@@ -233,13 +233,6 @@ class TimerService : Service() {
         editor.apply()
 
         Log.d("TIMER", "서비스 타이머 일시정지 : $pauseTime")
-
-        val r1 = sharedPreferences.getBoolean(KEY_IS_START, false)
-        val r2 = sharedPreferences.getBoolean(KEY_IS_PAUSE, false)
-        val r3 = sharedPreferences.getBoolean(KEY_IS_RESTART, false)
-        val r4 = sharedPreferences.getBoolean(KEY_IS_STOP, false)
-        val r5 = sharedPreferences.getBoolean(KEY_IS_RUNNING, false)
-        Log.d("TIMER", "서비스 타이머 일시정지 spf 확인  -> start :$r1, pause : $r2, restart : $r3, , stop : $r4, running : $r5")
     }
 
     private fun restartTimer() {
@@ -265,13 +258,6 @@ class TimerService : Service() {
         editor.apply()
 
         Log.d("TIMER", "서비스 타이머 재시작")
-
-        val r1 = sharedPreferences.getBoolean(KEY_IS_START, false)
-        val r2 = sharedPreferences.getBoolean(KEY_IS_PAUSE, false)
-        val r3 = sharedPreferences.getBoolean(KEY_IS_RESTART, false)
-        val r4 = sharedPreferences.getBoolean(KEY_IS_STOP, false)
-        val r5 = sharedPreferences.getBoolean(KEY_IS_RUNNING, false)
-        Log.d("TIMER", "서비스 타이머 재시작 spf 확인  -> start :$r1, pause : $r2, restart : $r3, , stop : $r4, running : $r5")
     }
 
     private fun stopTimer() {
@@ -295,13 +281,6 @@ class TimerService : Service() {
         editor.apply()
 
         Log.d("TIMER", "서비스 타이머 종료")
-
-        val r1 = sharedPreferences.getBoolean(KEY_IS_START, false)
-        val r2 = sharedPreferences.getBoolean(KEY_IS_PAUSE, false)
-        val r3 = sharedPreferences.getBoolean(KEY_IS_RESTART, false)
-        val r4 = sharedPreferences.getBoolean(KEY_IS_STOP, false)
-        val r5 = sharedPreferences.getBoolean(KEY_IS_RUNNING, false)
-        Log.d("TIMER", "서비스 타이머 정지 spf 확인  -> start :$r1, pause : $r2, restart : $r3, , stop : $r4, running : $r5")
     }
 
     companion object {
