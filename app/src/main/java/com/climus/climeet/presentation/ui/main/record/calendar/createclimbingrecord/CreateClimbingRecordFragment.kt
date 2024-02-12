@@ -86,10 +86,9 @@ class CreateClimbingRecordFragment :
                         isTimeSet = true
                         findNavController().toSelectTimeBottomSheetFragment()
                     }
-
                     CreateClimbingRecordEvent.NavigateToSelectCrag -> findNavController().toSelectCrag()
                     CreateClimbingRecordEvent.NavigateToBack -> findNavController().navigateUp()
-                    is CreateClimbingRecordEvent.ApplyFilter -> TODO()
+                    CreateClimbingRecordEvent.ClimbingComplete -> findNavController().toCompleteFragment()
                     is CreateClimbingRecordEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
@@ -114,6 +113,12 @@ class CreateClimbingRecordFragment :
     private fun NavController.toSelectCrag() {
         val action =
             CreateClimbingRecordFragmentDirections.actionCreateClimbingRecordFragmentToCreateSelectCragFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toCompleteFragment() {
+        val action =
+            CreateClimbingRecordFragmentDirections.actionCreateClimbingRecordFragmentToFragmentClimbingRecordComplete()
         navigate(action)
     }
 

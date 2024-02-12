@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.request.ClimbingRecord
+import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm.cragName
@@ -32,6 +34,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.Locale
@@ -62,7 +65,7 @@ sealed class CreateClimbingRecordEvent {
 
     data object NavigateToBack : CreateClimbingRecordEvent()
 
-    data class ApplyFilter(val filter: SelectedFilter) : CreateClimbingRecordEvent()
+    data object ClimbingComplete : CreateClimbingRecordEvent()
 
     data class ShowToastMessage(val msg: String) : CreateClimbingRecordEvent()
 
@@ -359,21 +362,46 @@ class CreateClimbingRecordViewModel @Inject constructor(
         addItem(item)
     }
 
-    fun applySectorFilter() {
-        val selectedFilter = SelectedFilter(
-            routeId = uiState.value.selectedRoute.routeId,
-            sectorId = uiState.value.selectedSector.sectorId,
-            difficulty = uiState.value.selectedLevel.difficulty,
-            sectorName = uiState.value.selectedSector.name,
-            cragName = cragName,
-            gymLevelName = uiState.value.selectedLevel.levelName
-        )
-        viewModelScope.launch {
-            _event.emit(
-                CreateClimbingRecordEvent.ApplyFilter(
-                    selectedFilter
-                )
+    fun climbingComplete() {
+
+        val climbingRecords: List<ClimbingRecord> = _items.value.map { routeUiData ->
+            ClimbingRecord(
+                routeId = routeUiData.routeId,
+                attemptCount = routeUiData.challengeNum,
+                isCompleted = routeUiData.clearBtnState
             )
+        }
+
+        val gymId = selectedCragEvent.value?.let{
+            it.first
+        } ?: run{
+            1
+        }
+
+        val requestBody = CreateTimerClimbingRecordRequest(
+            gymId = gymId,
+            date =  CreateRecordData.selectedDate.toString(),
+            time = CreateRecordData.getTimeDiff().toString(),
+            avgDifficulty = 3,
+            routeRecordRequestDtoList = climbingRecords
+        )
+        Log.d("testtt", requestBody.toString())
+        viewModelScope.launch {
+            repository.createTimerClimbingRecord(requestBody).let{
+                when(it){
+                    is BaseState.Success -> {
+                        Log.d("testtt", "성공")
+                        _event.emit(
+                            CreateClimbingRecordEvent.ClimbingComplete
+                        )
+                    }
+                    is BaseState.Error -> {
+                        Log.d("testtt", "에러")
+                        _event.emit(CreateClimbingRecordEvent.ShowToastMessage(it.msg))
+                    }
+
+                }
+            }
         }
     }
 

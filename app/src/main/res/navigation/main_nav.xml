@@ -125,6 +125,9 @@
         <action
             android:id="@+id/action_create_climbing_record_fragment_to_selectTimeBottomFragment"
             app:destination="@id/select_time_bottom_fragment" />
+        <action
+            android:id="@+id/action_create_climbing_record_fragment_to_fragment_climbing_record_complete"
+            app:destination="@id/fragment_climbing_record_complete" />
     </fragment>
 
     <fragment
@@ -190,5 +193,13 @@
     <action
         android:id="@+id/action_home_fragment_to_searchCragFragment"
         app:destination="@id/searchCragFragment" />
+    <fragment
+        android:id="@+id/fragment_climbing_record_complete"
+        android:name="com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.ClimbingRecordCompleteFragment"
+        android:label="ClimbingRecordCompleteFragment" >
+        <action
+            android:id="@+id/action_fragment_climbing_record_complete_to_calendar_fragment"
+            app:destination="@id/calendar_fragment" />
+    </fragment>
 
 </navigation>

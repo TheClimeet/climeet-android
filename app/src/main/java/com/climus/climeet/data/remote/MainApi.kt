@@ -21,6 +21,7 @@ import com.climus.climeet.data.model.response.ShortsListResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -116,7 +117,7 @@ interface MainApi {
     @POST("/api/climbing-records")
     suspend fun createTimerClimbingRecord(
         @Body params: CreateTimerClimbingRecordRequest
-    ): Response<String>
+    ): Response<ResponseBody>
 
     @GET("/api/gyms/{gymId}")
     suspend fun getGymProfile(
