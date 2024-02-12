@@ -35,7 +35,6 @@ class RouteRecordViewHolder(
 
         binding.root.setOnClickListener {
             viewModel.selectRoute(item)
-            viewModel.setChallengeNum(item.challengeNum)
         }
 
         binding.btnIncrease.setOnClickListener {
@@ -48,6 +47,10 @@ class RouteRecordViewHolder(
 
         binding.ivDelete.setOnClickListener {
             viewModel.removeItem(item.routeId)
+        }
+
+        binding.ivClear.setOnClickListener {
+            viewModel.setBtnState(item.routeId)
         }
     }
 }

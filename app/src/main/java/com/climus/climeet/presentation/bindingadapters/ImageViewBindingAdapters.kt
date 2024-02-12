@@ -32,3 +32,12 @@ fun bindFormCheck(iv: ImageView, data: String) {
     }
 
 }
+
+@BindingAdapter("completeState")
+fun bindCompleteStaet(iv: ImageView, state: Boolean){
+    if(state){
+        iv.setImageResource(R.drawable.ic_check_main)
+    }else{
+        iv.setImageResource(R.drawable.ic_check_grey)
+    }
+}

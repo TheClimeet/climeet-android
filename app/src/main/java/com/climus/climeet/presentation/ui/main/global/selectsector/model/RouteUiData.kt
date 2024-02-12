@@ -10,5 +10,6 @@ data class RouteUiData(
     val routeImg: String = "",
     var isSelected: Boolean = false,
     var challengeNum: Int = 0,
+    var clearBtnState: Boolean = false,
     val onClickListener: (RouteUiData) -> Unit
 )

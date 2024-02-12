@@ -349,9 +349,12 @@ class CreateClimbingRecordViewModel @Inject constructor(
     fun selectRoute(item: RouteUiData) {
         _uiState.update { state ->
             state.copy(
-                selectedRoute = item
+                selectedRoute = item,
+                clearBtnState = item.clearBtnState
             )
         }
+        _challengeNumber.value = item.challengeNum
+
         Log.d("testtt", "item 호출 $item")
         addItem(item)
     }
@@ -372,10 +375,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
                 )
             )
         }
-    }
-
-    fun setChallengeNum(challNum: Int) {
-        _challengeNumber.value = challNum
     }
 
     fun addChallengeNum() {
@@ -403,6 +402,13 @@ class CreateClimbingRecordViewModel @Inject constructor(
                 clearBtnState = !state.clearBtnState
             )
         }
+        _items.value = _items.value.map {
+            if (it.routeId == uiState.value.selectedRoute.routeId) {
+                it.copy(
+                    clearBtnState = !it.clearBtnState
+                )
+            } else it
+        }
     }
 
     fun setToggle() {
@@ -429,7 +435,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
     fun itemIncrease(id: Long) {
         _items.value = _items.value.map {
             if (it.routeId == id) {
-                if(uiState.value.selectedRoute.routeId == it.routeId){
+                if (uiState.value.selectedRoute.routeId == it.routeId) {
                     _challengeNumber.value = (_challengeNumber.value ?: 0) + 1
                 }
                 it.copy(challengeNum = it.challengeNum + 1)
@@ -440,7 +446,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
     fun itemDecrease(id: Long) {
         _items.value = _items.value.map {
             if (it.routeId == id && it.challengeNum > 0) {
-                if(uiState.value.selectedRoute.routeId == it.routeId){
+                if (uiState.value.selectedRoute.routeId == it.routeId) {
                     _challengeNumber.value = (_challengeNumber.value ?: 0) - 1
                 }
                 it.copy(challengeNum = it.challengeNum - 1)
@@ -452,8 +458,25 @@ class CreateClimbingRecordViewModel @Inject constructor(
         _items.value = _items.value.filter { it.routeId != id }
         _uiState.update { state ->
             state.copy(
-                selectedRoute = RouteUiData{}
+                selectedRoute = RouteUiData {}
             )
+        }
+    }
+
+    fun setBtnState(id: Long) {
+        _items.value = _items.value.map {
+            if (it.routeId == id) {
+                if (uiState.value.selectedRoute.routeId == it.routeId) {
+                    _uiState.update { state ->
+                        state.copy(
+                            clearBtnState = !state.clearBtnState
+                        )
+                    }
+                }
+                it.copy(
+                    clearBtnState = !it.clearBtnState
+                )
+            } else it
         }
     }
 
