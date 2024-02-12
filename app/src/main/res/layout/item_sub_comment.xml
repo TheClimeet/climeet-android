@@ -5,6 +5,12 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.shorts.model.ShortsCommentUiData" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,6 +27,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile"
             android:layout_width="40dp"
+            app:profileImgUrl="@{item.profileImageUrl}"
             android:layout_height="40dp"
             app:layout_constraintStart_toStartOf="@id/guide"
             app:layout_constraintTop_toTopOf="parent"
@@ -30,6 +37,7 @@
             android:id="@+id/tv_nick"
             style="@style/TextRegular"
             android:layout_width="wrap_content"
+            android:text="@{item.nickName}"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             app:layout_constraintStart_toEndOf="@id/iv_profile"
@@ -41,6 +49,7 @@
             style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{item.createDate}"
             android:textColor="@color/cm_grey_dark1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -52,6 +61,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:text="@{item.content}"
             android:lineSpacingExtra="4dp"
             android:textColor="@color/cm_grey3"
             app:layout_constraintEnd_toEndOf="@id/tv_due"
@@ -86,6 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:visibility="@{item.likeCount == 0? View.GONE : View.VISIBLE}"
             android:textColor="@color/cm_grey_dark1"
             app:layout_constraintBottom_toBottomOf="@id/tv_thumbs_up_label"
             app:layout_constraintStart_toEndOf="@id/tv_thumbs_up_label"
@@ -119,6 +130,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:visibility="@{item.likeCount == 0? View.GONE : View.VISIBLE}"
             android:textColor="@color/cm_grey_dark1"
             app:layout_constraintBottom_toBottomOf="@id/btn_thumbs_down"
             app:layout_constraintStart_toEndOf="@id/tv_thumbs_down_label"
