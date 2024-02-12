@@ -26,7 +26,6 @@
             android:layout_height="60dp"
             android:background="@drawable/rect_blackfill_nostroke_8radius"
             android:clipToPadding="false"
-            android:onClick="@{() -> item.onClickListener.invoke(item.sectorId)}"
             android:paddingBottom="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

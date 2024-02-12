@@ -18,7 +18,7 @@ class AccessTokenInterceptor() : Interceptor {
         Log.d("accessToken",jwt.toString())
 
         jwt?.let {
-            builder.addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxK2NsaW1iZXIiLCJpYXQiOjE3MDcxMzIzMjcsImV4cCI6MTcwNzQ5MjMyN30.NajKnryIxB1G30dBTQNCyF6UjWaVVM9U9ijMad_7NDc") // $jwt")
+            builder.addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3NStjbGltYmVyIn0.fQI53JkY9Xxc57Oyy3Pvbd9JxwHBKWeLIVt18_7gE0Y") // $jwt")
         } ?: run {
 
         }

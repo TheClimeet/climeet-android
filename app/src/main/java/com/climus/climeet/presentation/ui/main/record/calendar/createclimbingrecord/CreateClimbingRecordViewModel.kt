@@ -78,9 +78,9 @@ class CreateClimbingRecordViewModel @Inject constructor(
     private val _event = MutableSharedFlow<CreateClimbingRecordEvent>()
     val event: SharedFlow<CreateClimbingRecordEvent> = _event.asSharedFlow()
 
-    private val _items = MutableStateFlow<List<RouteRecordUiData>>(emptyList())
-    val items: StateFlow<List<RouteRecordUiData>> = _items.asStateFlow()
-    val itemsLiveData: LiveData<List<RouteRecordUiData>> = _items.asLiveData()
+    private val _items = MutableStateFlow<List<RouteUiData>>(emptyList())
+    val items: StateFlow<List<RouteUiData>> = _items.asStateFlow()
+    val itemsLiveData: LiveData<List<RouteUiData>> = _items.asLiveData()
 
     val initDate = CreateRecordData.selectedDate
     val datePickText =
@@ -190,7 +190,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
         selectedCragEvent.value = Pair(id, name)
         cragId = id
         cragName = name
-        Log.d("testtt", "${selectedCragEvent.value}")
         selectedCragEvent.value?.let { getCragInfo(it.first) }
     }
 
@@ -199,7 +198,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
             repository.getGymFilteringKey(id).let {
                 when (it) {
                     is BaseState.Success -> {
-                        Log.d("testtt", "성공은 함")
                         sectorNameList = it.body.sectorList.map { data ->
                             data.toSectorNameUiData(::selectSectorName)
                         }
@@ -209,7 +207,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
                         }
 
                         if (it.body.maxFloor == 1) {
-                            Log.d("testtt", "1층")
                             _uiState.update { state ->
                                 state.copy(
                                     isSingleFloor = true,
@@ -217,7 +214,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
                                 )
                             }
                         } else {
-                            Log.d("testtt", "2층")
                             _uiState.update { state ->
                                 state.copy(
                                     isSingleFloor = false,
@@ -230,7 +226,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        Log.d("testtt", "에러")
                         _event.emit(CreateClimbingRecordEvent.ShowToastMessage(it.msg))
                     }
                 }
@@ -241,7 +236,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
 
     fun selectFloor(floor: Int) {
         _uiState.update { state ->
-            Log.d("testtt", "설정 조져")
             state.copy(
                 secondFloorBtnState = if (floor == 2) FloorBtnState.FloorSelected else FloorBtnState.FloorUnSelected,
                 firstFloorBtnState = if (floor == 1) FloorBtnState.FloorSelected else FloorBtnState.FloorUnSelected,
@@ -249,10 +243,9 @@ class CreateClimbingRecordViewModel @Inject constructor(
                 sectorNameList = sectorNameList.filter {
                     it.floor == floor
                 },
-                selectedRoute = RouteUiData{}
+                selectedRoute = RouteUiData {}
             )
         }
-        Log.d("testtt", "${uiState.value}")
         setFloorInfo(floor)
     }
 
@@ -262,7 +255,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
             repository.getGymRouteInfoList(cragId, GetGymRouteInfoRequest(0, 10, floor)).let {
                 when (it) {
                     is BaseState.Success -> {
-                        Log.d("testtt", "층 슬정 성공은 함")
                         _uiState.update { state ->
                             state.copy(
                                 sectorNameList = sectorNameList.filter { data -> data.floor == floor },
@@ -322,7 +314,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
                     )
                 },
                 selectedSector = item,
-                selectedRoute = RouteUiData{}
+                selectedRoute = RouteUiData {}
             )
         }
 
@@ -343,7 +335,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
                     )
                 },
                 selectedLevel = item,
-                selectedRoute = RouteUiData{}
+                selectedRoute = RouteUiData {}
             )
         }
 
@@ -354,12 +346,14 @@ class CreateClimbingRecordViewModel @Inject constructor(
         )
     }
 
-    private fun selectRoute(item: RouteUiData) {
+    fun selectRoute(item: RouteUiData) {
         _uiState.update { state ->
             state.copy(
                 selectedRoute = item
             )
         }
+        Log.d("testtt", "item 호출 $item")
+        addItem(item)
     }
 
     fun applySectorFilter() {
@@ -380,14 +374,26 @@ class CreateClimbingRecordViewModel @Inject constructor(
         }
     }
 
+    fun setChallengeNum(challNum: Int) {
+        _challengeNumber.value = challNum
+    }
+
     fun addChallengeNum() {
         _challengeNumber.value = (_challengeNumber.value ?: 0) + 1
+        _items.value = _items.value.map {
+            if (it.routeId == uiState.value.selectedRoute.routeId) it.copy(challengeNum = it.challengeNum + 1) else it
+        }
     }
 
     fun subChallengeNum() {
         val currentValue = _challengeNumber.value ?: 0
         if (currentValue > 0) {
             _challengeNumber.value = currentValue - 1
+        }
+        _items.value = _items.value.map {
+            if (it.routeId == uiState.value.selectedRoute.routeId && it.challengeNum > 0) it.copy(
+                challengeNum = it.challengeNum - 1
+            ) else it
         }
     }
 
@@ -403,16 +409,16 @@ class CreateClimbingRecordViewModel @Inject constructor(
         isToggleOn.value = !(isToggleOn.value ?: false)
     }
 
-    fun addItem(item: RouteUiData) {
-        Log.d("itemcheck", _items.value.toString())
-        if (_items.value.none { it.sectorId == item.sectorId }) {
-            val newItem = RouteRecordUiData(
+    private fun addItem(item: RouteUiData) {
+        if (_items.value.none { it.routeId == item.routeId && it.sectorId == item.sectorId }) {
+            val newItem = RouteUiData(
+                routeId = item.routeId,
                 sectorId = item.sectorId,
                 sectorName = item.sectorName,
-                levelName = item.gymLevelName,
-                levelColor = item.gymLevelColor,
-                sectorImg = item.routeImg,
-                onClickListener = { id -> itemClicked(id) }
+                gymLevelName = item.gymLevelName,
+                gymLevelColor = item.gymLevelColor,
+                routeImg = item.routeImg,
+                onClickListener = { it -> itemClicked(it) }
             )
             _items.value = _items.value + newItem
         } else {
@@ -422,22 +428,37 @@ class CreateClimbingRecordViewModel @Inject constructor(
 
     fun itemIncrease(id: Long) {
         _items.value = _items.value.map {
-            if (it.sectorId == id) it.copy(challengeNum = it.challengeNum + 1) else it
+            if (it.routeId == id) {
+                if(uiState.value.selectedRoute.routeId == it.routeId){
+                    _challengeNumber.value = (_challengeNumber.value ?: 0) + 1
+                }
+                it.copy(challengeNum = it.challengeNum + 1)
+            } else it
         }
     }
 
     fun itemDecrease(id: Long) {
         _items.value = _items.value.map {
-            if (it.sectorId == id && it.challengeNum > 0) it.copy(challengeNum = it.challengeNum - 1) else it
+            if (it.routeId == id && it.challengeNum > 0) {
+                if(uiState.value.selectedRoute.routeId == it.routeId){
+                    _challengeNumber.value = (_challengeNumber.value ?: 0) - 1
+                }
+                it.copy(challengeNum = it.challengeNum - 1)
+            } else it
         }
     }
 
     fun removeItem(id: Long) {
-        _items.value = _items.value.filter { it.sectorId != id }
+        _items.value = _items.value.filter { it.routeId != id }
+        _uiState.update { state ->
+            state.copy(
+                selectedRoute = RouteUiData{}
+            )
+        }
     }
 
-    private fun itemClicked(id: Long) {
-        // 여기에 아이템 클릭 시 실행할 코드를 추가하세요
+    private fun itemClicked(item: RouteUiData) {
+
     }
 
     fun navigateToSelectCrag() {
