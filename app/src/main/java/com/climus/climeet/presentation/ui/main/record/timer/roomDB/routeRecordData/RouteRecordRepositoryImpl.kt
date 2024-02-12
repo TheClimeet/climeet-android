@@ -18,6 +18,10 @@ class RouteRecordRepositoryImpl @Inject constructor(
         routeRecordDao.delete(routeRecord)
     }
 
+    override fun deleteAll() {
+        routeRecordDao.deleteAll()
+    }
+
     override fun deleteById(id: Int) {
         routeRecordDao.deleteRecord(id)
     }
@@ -28,6 +32,10 @@ class RouteRecordRepositoryImpl @Inject constructor(
 
     override fun getRecord(id: Int): RouteRecordData {
         return routeRecordDao.getRecord(id)
+    }
+
+    override fun findExistRecord(sectorId: Long, routeId: Long): RouteRecordData? {
+        return routeRecordDao.findExistRecord(sectorId, routeId)
     }
 
     override fun getSuccessCount(level: String): Int{

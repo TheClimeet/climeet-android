@@ -7,11 +7,15 @@ interface RouteRecordRepository {
 
     fun delete(routeRecord: RouteRecordData)
 
+    fun deleteAll()
+
     fun deleteById(id: Int)
 
     fun getAllRecord(): List<RouteRecordData>
 
     fun getRecord(id: Int): RouteRecordData
+
+    fun findExistRecord(sectorId: Long, routeId: Long): RouteRecordData?
 
     fun getSuccessCount(level: String): Int
 

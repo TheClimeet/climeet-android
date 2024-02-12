@@ -155,6 +155,9 @@ class TimerViewModel @Inject constructor(
                 }
             }
         }
+
+        // 다음 운동기록을 위해 루트기록 초기화
+        routeRepository.deleteAll()
     }
 
 
@@ -170,10 +173,5 @@ class TimerViewModel @Inject constructor(
 
     companion object {
         const val STOPWATCH_UPDATE = "StopwatchUpdate"
-        const val KEY_IS_START = "isStart"
-        const val KEY_IS_PAUSE = "isPause"
-        const val KEY_IS_RESTART = "isRestart"
-        const val KEY_IS_STOP = "isStop"
-        const val KEY_IS_RUNNING = "isRunning"
     }
 }

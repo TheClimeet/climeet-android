@@ -19,6 +19,7 @@ import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.Secto
 import com.climus.climeet.presentation.ui.main.record.model.LevelItemForAvg
 import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordData
 import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordRepository
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordRepository
 import com.climus.climeet.presentation.ui.main.record.timer.setrecord.ClimbingRecordAdapter
 import com.climus.climeet.presentation.ui.main.record.timer.setrecord.RecordAverageAdapter
 import com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerClimbingRecordViewModel
@@ -45,6 +46,9 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
     @Inject
     lateinit var climbingRecordRepository: ClimbingRecordRepository
 
+    @Inject
+    lateinit var routeRepository: RouteRecordRepository
+
     private val timerVM: TimerViewModel by activityViewModels()
     private val recordVM: SetTimerClimbingRecordViewModel by activityViewModels()   // 일시정지하면 보이는 루트기록을 위해 연결
     private val cragSelectVM: TimerCragSelectBottomSheetViewModel by activityViewModels()
@@ -62,6 +66,22 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         timerVM.registerReceiver(requireContext())
         sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
+        checkService()
+        initTimerLayout()
+        initClickListener()
+        timerObserve()
+        pauseObserve()
+        initRouteObserve()
+
+        // 암장 이름 설정
+        initCragName()
+        // 평균 완등률
+        initAverage()
+        // 루트 기록
+        setRouteRecyclerView()
+    }
+
+    private fun checkService() {
         // 강제 종료시 stop 상태로 초기화 하기 위해 TimerService에서 serviceRunning 변수 사용
         // true : 스톱워치 서비스 실행중 (강제 종료 되지 않은 상태)
         // null : 스톱워치 동작 안 함 (강제 종료 or 처음 실행하는 상태)
@@ -79,24 +99,23 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             timerVM.pauseTime.value = 0L
             timerVM.pauseState.value = ""
             updateStatePref()
-            Log.d("TIMER", "화면 stop으로 초기화")
+
+            clearRouteRecord()
+
         } else {
             // 스톱워치 서비스가 실행중인 상태 -> spf값으로 뷰모델 변수 초기화 -> initTimerLayout() 통해 ViewMode 설정
             setViewModel()
         }
+    }
 
-        initTimerLayout()
-        initClickListener()
-        timerObserve()
-        pauseObserve()
-        initRouteObserve()
-
-        // 암장 이름 설정
-        initCragName()
-        // 평균 완등률
-        initAverage()
-        // 루트 기록
-        setRouteRecyclerView()
+    private fun clearRouteRecord() {
+        // 저장된 루트기록 초기화
+        CoroutineScope(Dispatchers.IO).launch {
+            routeRepository.deleteAll()
+            val result = routeRepository.getAllRecord()
+            delay(1000)
+            Log.d("recorddd", "저장된 기록들 reset $result")
+        }
     }
 
     private fun initCragName() {
@@ -122,10 +141,9 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
                 )
                 CoroutineScope(Dispatchers.IO).launch {
                     climbingRecordRepository.insert(recordData)
-                    delay(1000)  // 1초 대기
                     val result = climbingRecordRepository.getAll()
-                    delay(1000)  // 1초 대기
-                    Log.d("room", result.toString())
+                    delay(1000)
+                    Log.d("recorddd", result.toString())
                 }
             }
         })
@@ -186,10 +204,13 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         // spf에 저장된 값 불러와 뷰모델에 저장
         setViewModel()
         timerObserve()
-//        Log.d(
-//            "TIMER",
-//            "timer onResume\nisStart : ${timerVM.isStart.value}, isPause : ${timerVM.isPaused.value}, isRestart : ${timerVM.isRestart.value}, isStop : ${timerVM.isStop.value}, isRunning : ${timerVM.isStart.value}"
-//        )
+
+        // room db 롹인
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = routeRepository.getAllRecord()
+            delay(1000)
+            Log.d("recorddd", "TimerFragment onReasume 저장된 기록들\n $result")
+        }
     }
 
     override fun onDestroy() {
@@ -310,7 +331,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             if (isRestart) {
                 viewMode(ViewMode.RESTART)
                 timerObserve()
-                // 기록 유무에 따른 보이기 설정
+
                 binding.layoutAvgComplete.visibility = View.GONE
                 binding.tvTimeTitle.visibility = View.GONE
                 binding.layoutRouteRecord.visibility = View.GONE
@@ -320,6 +341,10 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         timerVM.isStop.observe(viewLifecycleOwner, Observer { isStop ->
             if (isStop) {
                 viewMode(ViewMode.STOP)
+
+                binding.layoutAvgComplete.visibility = View.GONE
+                binding.tvTimeTitle.visibility = View.GONE
+                binding.layoutRouteRecord.visibility = View.GONE
                 //Log.d("TIMER", "화면 초기화 : stop")
             }
         })
@@ -363,6 +388,11 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
             // 루트기록 API로 전송
             //timerVM.sendClimbingRecord()
+
+            // todo : 루트기록 저장 로직 완성되면 뷰모델에서 데이터 지우기
+            CoroutineScope(Dispatchers.IO).launch {
+                routeRepository.deleteAll()
+            }
 
             // 완료화면 띄우기
             val transaction = requireActivity().supportFragmentManager.beginTransaction()

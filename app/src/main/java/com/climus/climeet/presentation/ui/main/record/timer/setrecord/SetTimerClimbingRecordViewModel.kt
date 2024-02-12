@@ -18,8 +18,12 @@ import com.climus.climeet.presentation.ui.main.global.toGymLevelUiData
 import com.climus.climeet.presentation.ui.main.global.toRouteUiData
 import com.climus.climeet.presentation.ui.main.global.toSectorNameUiData
 import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordRepository
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordData
 import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -106,7 +110,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             repository.getGymFilteringKey(id).let {
                 when (it) {
                     is BaseState.Success -> {
-                        Log.d("seon", "암장 정보 가져오기 성공")
+                        Log.d("recorddd", "암장 정보 가져오기 성공")
                         sectorNameList = it.body.sectorList.map { data ->
                             data.toSectorNameUiData(::selectSectorName)
                         }
@@ -116,7 +120,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                         }
 
                         if (it.body.maxFloor == 1) {
-                            Log.d("seon", "암장 정보 1층")
+                            Log.d("recorddd", "암장 정보 1층")
                             _uiState.update { state ->
                                 state.copy(
                                     isSingleFloor = true,
@@ -124,7 +128,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                                 )
                             }
                         } else {
-                            Log.d("seon", "암장 정보 2층")
+                            Log.d("recorddd", "암장 정보 2층")
                             _uiState.update { state ->
                                 state.copy(
                                     isSingleFloor = false,
@@ -137,7 +141,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        Log.d("seon", "암장 정보 가져오기 실패")
+                        Log.d("recorddd", "암장 정보 가져오기 실패")
                         _event.emit(CreateRecordEvent.ShowToastMessage(it.msg))
                     }
                 }
@@ -169,7 +173,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             repository.getGymRouteInfoList(cragId, GetGymRouteInfoRequest(0, 10, floor)).let {
                 when (it) {
                     is BaseState.Success -> {
-                        Log.d("seon", "루트정보 가져오기 성공")
+                        Log.d("recorddd", "루트정보 가져오기 성공")
                         _uiState.update { state ->
                             state.copy(
                                 sectorNameList = sectorNameList.filter { data -> data.floor == floor },
@@ -182,7 +186,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        Log.d("seon", "루트정보 가져오기 실패")
+                        Log.d("recorddd", "루트정보 가져오기 실패")
                         _event.emit(CreateRecordEvent.ShowToastMessage(it.msg))
                     }
                 }
@@ -286,7 +290,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         _items.value = _items.value.map {
             if (it.routeId == uiState.value.selectedRoute.routeId) it.copy(challengeNum = it.challengeNum + 1) else it
         }
-        Log.d("TIMER", "chall num add")
+        Log.d("recorddd", "chall num add")
     }
 
     fun subChallengeNum() {
@@ -294,7 +298,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         if (currentValue > 0) {
             _challengeNumber.value = currentValue - 1
         }
-        Log.d("TIMER", "chall num sub")
+        Log.d("recorddd", "chall num sub")
     }
 
     fun setClear() {
@@ -305,7 +309,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         }
     }
 
-    // 루트 기록에 추가?
+    // 루트 기록에 추가
     private fun addItem(item: RouteUiData) {
         if (_items.value.none { it.routeId == item.routeId && it.sectorId == item.sectorId }) {
             val newItem = RouteUiData(
@@ -318,10 +322,11 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 onClickListener = { it -> itemClicked(it) }
             )
             _items.value = _items.value + newItem
+            saveRouteRecord(newItem)
+
+            Log.d("recorddd", "눌린 루트기록\n $newItem")
         } else {
         }
-
-        // todo : roomDB RouteRecordData에 루트기록 저장
     }
 
     // 루트 기록 도전 수 증가
@@ -335,6 +340,9 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             } else it
         }
         // todo : roomDB RouteRecordData에 도전 기록 증가
+        _items.value.filter { it.routeId == id }.forEach {
+            Log.d("recorddd", "루트 ${it.routeId} 도전 횟수 증가 : ${it.challengeNum}")
+        }
     }
 
     // 루트 기록 도전 수 감소
@@ -348,10 +356,17 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             } else it
         }
         // todo : roomDB RouteRecordData에 도전 기록 감소
+        _items.value.filter { it.routeId == id }.forEach {
+            Log.d("recorddd", "루트 ${it.routeId} 도전 횟수 감소 : ${it.challengeNum}")
+        }
     }
 
     // 루트 기록 삭제
     fun removeItem(id: Long) {
+        val itemToRemove = _items.value.find { it.routeId == id }
+        if (itemToRemove != null) {
+            Log.d("recorddd", "루트 ${itemToRemove.routeId} 기록 삭제")
+        }
         _items.value = _items.value.filter { it.routeId != id }
         _uiState.update { state ->
             state.copy(
@@ -369,12 +384,34 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     // 평균 완등률 더보기
     fun setAvgToggle() {
         isAvgToggleOn.value = !(isAvgToggleOn.value ?: false)
-        Log.d("timer", "평균 완등률 toggle : ${isAvgToggleOn.value}")
+        Log.d("recorddd", "평균 완등률 toggle : ${isAvgToggleOn.value}")
     }
 
     // 루트기록 더보기
     fun setRouteToggle() {
         isRouteToggleOn.value = !(isRouteToggleOn.value ?: false)
-        Log.d("timer", "루트기록 toggle : ${isRouteToggleOn.value}")
+        Log.d("recorddd", "루트기록 toggle : ${isRouteToggleOn.value}")
+    }
+
+    private fun saveRouteRecord(item: RouteUiData) {
+        // 중복된 값 없을 때만 저장
+        CoroutineScope(Dispatchers.IO).launch {
+            val existCheck = routeRepository.findExistRecord(item.sectorId, item.routeId)
+            if (existCheck == null) {
+                val routeRecord = RouteRecordData(
+                    sectorId = item.sectorId,
+                    routeId = item.routeId,
+                    levelName = item.gymLevelColor,
+                    levelColor = item.gymLevelColor,
+                    attemptCount = 0,
+                    isCompleted = false
+                )
+                routeRepository.insert(routeRecord)
+                Log.d("recorddd", "루트기록 중복 없음 -> room 저장")
+            }
+            val result = routeRepository.getAllRecord()
+            delay(1000)
+            Log.d("recorddd", "룸디비 저장됐나 확인 : $result")
+        }
     }
 }

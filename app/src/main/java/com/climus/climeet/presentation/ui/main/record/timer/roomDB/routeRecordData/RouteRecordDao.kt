@@ -18,6 +18,9 @@ interface RouteRecordDao {
     @Delete
     fun delete(routeRecord: RouteRecordData)
 
+    @Query("DELETE FROM route_record")
+    fun deleteAll()
+
     @Query("DELETE FROM route_record WHERE id = :id")
     fun deleteRecord(id: Int)
 
@@ -26,6 +29,9 @@ interface RouteRecordDao {
 
     @Query("SELECT * FROM route_record WHERE id = :id")
     fun getRecord(id: Int): RouteRecordData
+
+    @Query("SELECT * FROM route_record WHERE sectorId = :sectorId AND routeId = :routeId LIMIT 1")
+    fun findExistRecord(sectorId: Long, routeId: Long): RouteRecordData?
 
     // 레벨별 평균 완등률 계산
     @Query("SELECT COUNT(*) FROM route_record WHERE levelName = :level AND isCompleted = 1")
