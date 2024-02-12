@@ -38,13 +38,11 @@ class RouteRecordViewHolder(
         }
 
         binding.btnIncrease.setOnClickListener {
-            viewModel.bringItemToTop(position)
             viewModel.selectRoute(item)
             viewModel.itemIncrease(item.routeId)
         }
 
         binding.btnDecrease.setOnClickListener {
-            viewModel.bringItemToTop(position)
             viewModel.selectRoute(item)
             viewModel.itemDecrease(item.routeId)
         }
@@ -54,7 +52,6 @@ class RouteRecordViewHolder(
         }
 
         binding.ivClear.setOnClickListener {
-            viewModel.bringItemToTop(position)
             viewModel.selectRoute(item)
             viewModel.setBtnState(item.routeId)
         }
