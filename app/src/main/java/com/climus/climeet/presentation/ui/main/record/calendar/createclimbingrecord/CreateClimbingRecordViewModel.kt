@@ -358,7 +358,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
         }
         _challengeNumber.value = item.challengeNum
 
-        Log.d("testtt", "item 호출 $item")
         addItem(item)
     }
 
@@ -385,18 +384,16 @@ class CreateClimbingRecordViewModel @Inject constructor(
             avgDifficulty = 3,
             routeRecordRequestDtoList = climbingRecords
         )
-        Log.d("testtt", requestBody.toString())
+
         viewModelScope.launch {
             repository.createTimerClimbingRecord(requestBody).let{
                 when(it){
                     is BaseState.Success -> {
-                        Log.d("testtt", "성공")
                         _event.emit(
                             CreateClimbingRecordEvent.ClimbingComplete
                         )
                     }
                     is BaseState.Error -> {
-                        Log.d("testtt", "에러")
                         _event.emit(CreateClimbingRecordEvent.ShowToastMessage(it.msg))
                     }
 
