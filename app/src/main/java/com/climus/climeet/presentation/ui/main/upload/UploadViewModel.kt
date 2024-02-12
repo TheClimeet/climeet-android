@@ -20,9 +20,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 data class UploadUiState(
@@ -135,14 +133,14 @@ class UploadViewModel @Inject constructor(
             _event.emit(UploadEvent.NavigateToUploadComplete)
             repository.uploadShorts(
                 video = videoFile,
-                thumbnail = thumbnailImg.value.toRequestBody("text/plain".toMediaTypeOrNull()),
                 body = ShortsDetailRequest(
-                    climbingGymId = uiState.value.selectedFilter.cragId,
-                    routeId = uiState.value.selectedFilter.routeId,
-                    sectorId = uiState.value.selectedFilter.sectorId,
+                    climbingGymId = if (uiState.value.selectedFilter.cragId == -1L) null else uiState.value.selectedFilter.cragId,
+                    routeId = if (uiState.value.selectedFilter.routeId == -1L) null else uiState.value.selectedFilter.routeId,
+                    sectorId = if (uiState.value.selectedFilter.sectorId == -1L) null else uiState.value.selectedFilter.sectorId,
                     description = description.value,
                     public = uiState.value.publicState.value,
-                    soundEnabled = soundEnabled.value
+                    soundEnabled = soundEnabled.value,
+                    thumbnailImageUrl = thumbnailImg.value
                 )
             ).let {
                 when (it) {

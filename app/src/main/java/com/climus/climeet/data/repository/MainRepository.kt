@@ -21,7 +21,6 @@ import com.climus.climeet.data.model.response.ShortsListResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 
 interface MainRepository {
 
@@ -92,7 +91,6 @@ interface MainRepository {
 
     suspend fun uploadShorts(
         video: MultipartBody.Part?,
-        thumbnail: RequestBody,
         body: ShortsDetailRequest
     ): BaseState<Unit>
 

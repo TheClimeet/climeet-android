@@ -23,7 +23,6 @@ import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.runRemote
 import com.climus.climeet.data.remote.MainApi
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
@@ -109,12 +108,9 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun uploadShorts(
         video: MultipartBody.Part?,
-        thumbnail: RequestBody,
         body: ShortsDetailRequest
     ): BaseState<Unit> = runRemote {
-        api.uploadShorts(
-            video, thumbnail, body
-        )
+        api.uploadShorts(video, body)
     }
 
     override suspend fun createTimerClimbingRecord(

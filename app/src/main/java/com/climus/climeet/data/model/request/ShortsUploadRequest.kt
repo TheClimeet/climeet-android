@@ -2,10 +2,11 @@ package com.climus.climeet.data.model.request
 
 
 data class ShortsDetailRequest(
-    val climbingGymId: Long,
-    val routeId: Long,
-    val sectorId: Long,
-    val description: String,
     val public: String,
-    val soundEnabled: Boolean
+    val thumbnailImageUrl: String,
+    val description: String,
+    val soundEnabled: Boolean,
+    val climbingGymId: Long?=null,
+    val routeId: Long?=null,
+    val sectorId: Long?=null,
 )
