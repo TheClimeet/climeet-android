@@ -456,19 +456,20 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@+id/select_sector" />
 
+                            <ImageView
+                                android:id="@+id/iv_celebrate"
+                                android:layout_width="125dp"
+                                android:layout_height="80dp"
+                                android:elevation="2dp"
+                                android:src="@drawable/img_celebrate"
+                                android:visibility="@{vm.uiState.clearBtnState ? View.VISIBLE : View.GONE}"
+                                app:animatedAlpha="@{vm.alpha}"
+                                app:layout_constraintBottom_toBottomOf="@id/btn_clear"
+                                app:layout_constraintTop_toTopOf="@id/btn_clear"
+                                app:layout_constraintEnd_toEndOf="@id/btn_clear"
+                                app:layout_constraintStart_toStartOf="@id/btn_clear" />
+
                         </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <ImageView
-                            android:id="@+id/iv_celebrate"
-                            android:layout_width="105dp"
-                            android:layout_height="80dp"
-                            android:layout_marginStart="95dp"
-                            android:src="@drawable/img_celebrate"
-                            android:visibility="@{vm.uiState.clearBtnState ? View.VISIBLE : View.GONE}"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="@+id/layout_setting"
-                            app:layout_constraintStart_toStartOf="@+id/layout_setting" />
-
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

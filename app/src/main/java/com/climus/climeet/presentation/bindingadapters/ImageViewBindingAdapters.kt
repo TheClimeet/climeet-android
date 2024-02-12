@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.bindingadapters
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
 import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.google.android.material.imageview.ShapeableImageView
@@ -40,4 +41,9 @@ fun bindCompleteStaet(iv: ImageView, state: Boolean){
     }else{
         iv.setImageResource(R.drawable.ic_check_grey)
     }
+}
+
+@BindingAdapter("animatedAlpha")
+fun ImageView.setAnimatedParams(alpha: LiveData<Float>) {
+    this.alpha = alpha.value ?: 1f
 }

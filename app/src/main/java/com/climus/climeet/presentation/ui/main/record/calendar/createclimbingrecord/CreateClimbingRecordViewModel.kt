@@ -1,11 +1,19 @@
 package com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.util.Log
+import android.view.View
+import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.R
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.ClimbingRecord
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
@@ -107,6 +115,8 @@ class CreateClimbingRecordViewModel @Inject constructor(
     val challengeNumber: LiveData<Int> = _challengeNumber
 
     val isToggleOn = MutableLiveData(true)
+
+    val alpha = MutableLiveData(1f)
 
     init {
         selectCrag(0, "클라이밍 암장을 선택해주세요")
@@ -421,6 +431,21 @@ class CreateClimbingRecordViewModel @Inject constructor(
         }
     }
 
+    fun animateImage() {
+        val alphaAnimator = ValueAnimator.ofFloat(1f, 0f)
+
+        alphaAnimator.duration = 2000
+
+        alphaAnimator.addUpdateListener { animation ->
+            alpha.postValue(animation.animatedValue as Float)
+        }
+
+        val animatorSet = AnimatorSet()
+        animatorSet.play(alphaAnimator)
+        animatorSet.duration = 2000
+        animatorSet.start()
+    }
+
     fun setClear() {
         _uiState.update { state ->
             state.copy(
@@ -433,6 +458,10 @@ class CreateClimbingRecordViewModel @Inject constructor(
                     clearBtnState = !it.clearBtnState
                 )
             } else it
+        }
+
+        if(uiState.value.clearBtnState){
+            animateImage()
         }
     }
 
