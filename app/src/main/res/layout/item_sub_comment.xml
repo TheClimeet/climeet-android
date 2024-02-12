@@ -9,8 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide"
@@ -23,7 +22,7 @@
             android:id="@+id/iv_profile"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guide"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/test" />
 
@@ -32,7 +31,8 @@
             style="@style/TextRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/guide"
+            android:layout_marginStart="12dp"
+            app:layout_constraintStart_toEndOf="@id/iv_profile"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="클라이밍하는 헤일" />
 
@@ -126,16 +126,17 @@
             tools:text="30" />
 
         <TextView
-            android:id="@+id/btn_add_comment"
+            android:id="@+id/btn_show_more_comment"
             style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:text="답글달기"
+            android:layout_marginTop="20dp"
+            android:drawablePadding="8dp"
+            android:text="답글 n개 더보기"
             android:textColor="@color/cm_grey_dark1"
-            app:layout_constraintBottom_toBottomOf="@id/btn_thumbs_down"
-            app:layout_constraintStart_toEndOf="@id/tv_thumbs_down_count"
-            app:layout_constraintTop_toTopOf="@id/btn_thumbs_down" />
+            app:drawableStartCompat="@drawable/ic_comment_line"
+            app:layout_constraintStart_toStartOf="@id/btn_thumbs_up"
+            app:layout_constraintTop_toBottomOf="@id/btn_thumbs_up" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
