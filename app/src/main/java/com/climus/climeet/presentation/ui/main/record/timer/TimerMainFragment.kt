@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.R
-import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.databinding.FragmentTimerViewPagerBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerViewModel
@@ -19,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class TimerMainFragment :
     BaseFragment<FragmentTimerViewPagerBinding>(R.layout.fragment_timer_view_pager) {
 
-    private val viewModel: TimerMainViewModel by viewModels()
+    private val viewModel: TimerMainViewModel by activityViewModels()
     private val timerVM: TimerViewModel by activityViewModels()
     private lateinit var timerMainAdapter: TimerMainAdapter
 
@@ -29,13 +27,7 @@ class TimerMainFragment :
 
         setViewPager()
         setObserver()
-    }
-
-    // todo
-    //  : 스와이프 된 루트기록 화면에서 아래 시간을 누르면 스톱워치 화면으로 이동하기 위해 만들었는데
-    //  : Navigation 오류 때문에 일단 뒤로 미뤄둠
-    fun goToStopwatch() {
-        binding.vpTimer.setCurrentItem(0, true)
+        moveToTimerFragment()
     }
 
     // indicator 보이기 설정
@@ -93,5 +85,13 @@ class TimerMainFragment :
                 Log.d("TIMER", "indicator 안 보임")
             }
         }
+    }
+
+    // 루트기록 화면에서 시간을 누르면 스톱워치 화면으로 이동한다 (TimerFragment)
+    private fun moveToTimerFragment() {
+        viewModel.moveToTimerFragmentEvent.observe(viewLifecycleOwner, Observer {
+            binding.vpTimer.currentItem = 0
+            Log.d("move", "메인에서 화면 이동시켜야함")
+        })
     }
 }
