@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.ShortsDetailRequest
-import com.climus.climeet.data.model.request.ShortsUploadRequest
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.customview.PublicType
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedFilter
@@ -21,7 +20,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 data class UploadUiState(
@@ -131,17 +132,15 @@ class UploadViewModel @Inject constructor(
     private fun uploadShorts(videoUrl: String) {
         viewModelScope.launch {
             repository.uploadShorts(
-                ShortsUploadRequest(
-                    video = videoUrl,
-                    thumbnailImage = thumbnailImg.value,
-                    createShortsRequest = ShortsDetailRequest(
-                        climbingGymId = uiState.value.selectedFilter.cragId,
-                        routeId = uiState.value.selectedFilter.routeId,
-                        sectorId = uiState.value.selectedFilter.sectorId,
-                        description = description.value,
-                        public = true,
-                        soundEnabled = soundEnabled.value
-                    )
+                video = videoFile,
+                thumbnail = thumbnailImg.value.toRequestBody("text/plain".toMediaTypeOrNull()),
+                body = ShortsDetailRequest(
+                    climbingGymId = uiState.value.selectedFilter.cragId,
+                    routeId = uiState.value.selectedFilter.routeId,
+                    sectorId = uiState.value.selectedFilter.sectorId,
+                    description = description.value,
+                    public = true,
+                    soundEnabled = soundEnabled.value
                 )
             ).let {
                 when (it) {

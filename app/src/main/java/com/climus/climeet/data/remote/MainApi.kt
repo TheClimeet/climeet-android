@@ -2,7 +2,7 @@ package com.climus.climeet.data.remote
 
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
-import com.climus.climeet.data.model.request.ShortsUploadRequest
+import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -21,6 +21,7 @@ import com.climus.climeet.data.model.response.ShortsListResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -124,9 +125,12 @@ interface MainApi {
         @Path("gymId") gymId: Long
     ): Response<GetGymProfileResponse>
 
+    @Multipart
     @POST("/api/shorts")
     suspend fun uploadShorts(
-        @Body params: ShortsUploadRequest
+        @Part("video") video: MultipartBody.Part?,
+        @Part("thumbnailImage") thumbnailImage: RequestBody,
+        @Part("createShortsRequest") createShortsRequest: ShortsDetailRequest
     ): Response<Unit>
 
     @PATCH("/api/shorts/{shortsId}/bookmarks")

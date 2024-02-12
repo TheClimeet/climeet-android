@@ -3,7 +3,7 @@ package com.climus.climeet.data.repository
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
-import com.climus.climeet.data.model.request.ShortsUploadRequest
+import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -21,6 +21,7 @@ import com.climus.climeet.data.model.response.ShortsListResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 interface MainRepository {
 
@@ -90,7 +91,9 @@ interface MainRepository {
     ): BaseState<GetGymProfileResponse>
 
     suspend fun uploadShorts(
-        body: ShortsUploadRequest
+        video: MultipartBody.Part?,
+        thumbnail: RequestBody,
+        body: ShortsDetailRequest
     ): BaseState<Unit>
 
     suspend fun patchBookMark(
