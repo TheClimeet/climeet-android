@@ -129,8 +129,10 @@ class UploadViewModel @Inject constructor(
         }
     }
 
-    private fun uploadShorts(videoUrl: String) {
+    fun uploadShorts() {
         viewModelScope.launch {
+            startUploadCount()
+            _event.emit(UploadEvent.NavigateToUploadComplete)
             repository.uploadShorts(
                 video = videoFile,
                 thumbnail = thumbnailImg.value.toRequestBody("text/plain".toMediaTypeOrNull()),
@@ -139,7 +141,7 @@ class UploadViewModel @Inject constructor(
                     routeId = uiState.value.selectedFilter.routeId,
                     sectorId = uiState.value.selectedFilter.sectorId,
                     description = description.value,
-                    public = true,
+                    public = uiState.value.publicState.value,
                     soundEnabled = soundEnabled.value
                 )
             ).let {
@@ -153,27 +155,6 @@ class UploadViewModel @Inject constructor(
                         isUploadDone.value = true
                         _event.emit(UploadEvent.ShowToastMessage(it.msg))
                         _uploadComplete.emit(false)
-                    }
-                }
-            }
-        }
-    }
-
-    fun storeVideo() {
-        viewModelScope.launch {
-            startUploadCount()
-            _event.emit(UploadEvent.NavigateToUploadComplete)
-            videoFile?.let {
-                repository.uploadFile(it).let { state ->
-                    when (state) {
-                        is BaseState.Success -> {
-                            uploadShorts(state.body.imgUrl)
-                        }
-
-                        is BaseState.Error -> {
-                            isUploadDone.value = true
-                            _uploadComplete.emit(false)
-                        }
                     }
                 }
             }

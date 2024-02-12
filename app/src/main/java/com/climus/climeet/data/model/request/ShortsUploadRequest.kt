@@ -6,6 +6,6 @@ data class ShortsDetailRequest(
     val routeId: Long,
     val sectorId: Long,
     val description: String,
-    val public: Boolean,
+    val public: String,
     val soundEnabled: Boolean
 )

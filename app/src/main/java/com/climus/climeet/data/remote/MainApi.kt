@@ -128,7 +128,7 @@ interface MainApi {
     @Multipart
     @POST("/api/shorts")
     suspend fun uploadShorts(
-        @Part("video") video: MultipartBody.Part?,
+        @Part video: MultipartBody.Part?,
         @Part("thumbnailImage") thumbnailImage: RequestBody,
         @Part("createShortsRequest") createShortsRequest: ShortsDetailRequest
     ): Response<Unit>
