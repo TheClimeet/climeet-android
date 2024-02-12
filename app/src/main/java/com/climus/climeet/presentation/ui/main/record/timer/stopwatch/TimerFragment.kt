@@ -109,8 +109,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
                 // 선택된 암장의 이름 보여주기
                 binding.tvTitle.text = cragName
-
-                Log.d("TIMER", "timerfragment 이름 설정함 id :$cragId, name : $cragName, data : $date")
+                //Log.d("TIMER", "timerfragment 이름 설정함 id :$cragId, name : $cragName, data : $date")
 
                 // todo : room db에 암장정보 자장 겸 초기화 (완료)
                 val recordData = ClimbingRecordData(
