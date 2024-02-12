@@ -508,6 +508,13 @@ class CreateClimbingRecordViewModel @Inject constructor(
         }
     }
 
+    fun bringItemToTop(position: Int) {
+        val currentItems = _items.value.toMutableList()
+        val item = currentItems.removeAt(position)
+        currentItems.add(0, item)
+        _items.value = currentItems
+    }
+
     private fun itemClicked(item: RouteUiData) {
 
     }

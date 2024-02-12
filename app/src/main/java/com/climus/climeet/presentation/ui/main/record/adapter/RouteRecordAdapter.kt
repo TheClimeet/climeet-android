@@ -19,7 +19,7 @@ class RouteRecordAdapter(private val viewModel: CreateClimbingRecordViewModel) :
     }
 
     override fun onBindViewHolder(holder: RouteRecordViewHolder, position: Int) {
-        holder.bind(items[position])
+        holder.bind(items[position], position)
     }
 
     override fun getItemCount() = items.size
@@ -30,7 +30,7 @@ class RouteRecordViewHolder(
     private val viewModel: CreateClimbingRecordViewModel
 ) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: RouteUiData) {
+    fun bind(item: RouteUiData, position: Int) {
         binding.item = item
 
         binding.root.setOnClickListener {
@@ -38,10 +38,14 @@ class RouteRecordViewHolder(
         }
 
         binding.btnIncrease.setOnClickListener {
+            viewModel.bringItemToTop(position)
+            viewModel.selectRoute(item)
             viewModel.itemIncrease(item.routeId)
         }
 
         binding.btnDecrease.setOnClickListener {
+            viewModel.bringItemToTop(position)
+            viewModel.selectRoute(item)
             viewModel.itemDecrease(item.routeId)
         }
 
@@ -50,6 +54,8 @@ class RouteRecordViewHolder(
         }
 
         binding.ivClear.setOnClickListener {
+            viewModel.bringItemToTop(position)
+            viewModel.selectRoute(item)
             viewModel.setBtnState(item.routeId)
         }
     }
