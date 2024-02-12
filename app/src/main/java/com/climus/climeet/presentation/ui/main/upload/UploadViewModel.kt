@@ -140,7 +140,8 @@ class UploadViewModel @Inject constructor(
                     description = description.value,
                     public = uiState.value.publicState.value,
                     soundEnabled = soundEnabled.value,
-                    thumbnailImageUrl = thumbnailImg.value
+                    thumbnailImageUrl = thumbnailImg.value,
+                    shortsVisibility = uiState.value.publicState.value
                 )
             ).let {
                 when (it) {

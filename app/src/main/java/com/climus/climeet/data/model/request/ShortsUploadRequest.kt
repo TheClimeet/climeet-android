@@ -6,7 +6,8 @@ data class ShortsDetailRequest(
     val thumbnailImageUrl: String,
     val description: String,
     val soundEnabled: Boolean,
-    val climbingGymId: Long?=null,
-    val routeId: Long?=null,
-    val sectorId: Long?=null,
+    val climbingGymId: Long? = null,
+    val routeId: Long? = null,
+    val sectorId: Long? = null,
+    val shortsVisibility: String
 )

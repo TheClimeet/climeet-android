@@ -42,7 +42,9 @@ class UploadCompleteFragment :
                         }
                         delay(2000)
                         // todo API 에서 shortsId 반환받은뒤, Fragment Direction에 넣어주기
-                        findNavController().toShortsPlayer(-1, 0)
+//                        findNavController().toShortsPlayer(-1, 0)
+
+                        findNavController().toShortsFragment()
                     }
                 } else {
                     showToastMessage("업로드 실패")
