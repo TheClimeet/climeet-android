@@ -28,4 +28,6 @@
     <color name="cm_red">#FFE64646</color>
     <color name="cm_silver">#FF676767</color>
     <color name="cm_silver2">#FF646464</color>
+
+    <color name="cm_grey_dark1">#7F7F7F</color>
 </resources>
