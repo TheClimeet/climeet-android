@@ -12,10 +12,10 @@ object CreateRecordData {
     var selectedDate: LocalDate = LocalDate.of(today.year, today.monthValue - 1, today.dayOfMonth)
         private set
 
-    var selectedStartTime: LocalTime = LocalTime.of(11, 0, 1)
+    var selectedStartTime: LocalTime = LocalTime.of(11, 0, 0)
         private set
 
-    var selectedEndTime: LocalTime = LocalTime.of(12, 0, 1)
+    var selectedEndTime: LocalTime = LocalTime.of(11, 0, 0)
         private set
 
     var selectedCrag: FollowCrag? = FollowCrag(-1, "", "", "", 0, false)

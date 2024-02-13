@@ -13,12 +13,9 @@
 
     </data>
 
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="84dp"
         tools:context=".presentation.ui.main.record.calendar.CalendarFragment">
 
         <TextView
@@ -46,7 +43,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/guide_bnv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_record">
@@ -287,6 +284,12 @@
 
         </androidx.core.widget.NestedScrollView>
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_bnv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.9" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

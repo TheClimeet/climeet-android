@@ -171,31 +171,31 @@ class CreateClimbingRecordViewModel @Inject constructor(
         val end = selectedEndTime.value
         var endString = ""
 
-        startString = if (start!!.hour < 12 || start!!.hour == 24) {
-            if (start!!.hour == 24) {
+        startString = if (start!!.hour < 12 || start.hour == 24) {
+            if (start.hour == 24) {
                 String.format(Locale.getDefault(), "AM %02d:%02d", 12, start.minute)
             } else {
                 String.format(Locale.getDefault(), "AM %02d:%02d", start.hour, start.minute)
             }
         } else {
-            if (start!!.hour == 12) {
+            if (start.hour == 12) {
                 String.format(Locale.getDefault(), "PM %02d:%02d", 12, start.minute)
             } else {
                 String.format(Locale.getDefault(), "PM %02d:%02d", start.hour, start.minute)
             }
         }
 
-        endString = if (end!!.hour < 12 || end!!.hour == 24) {
-            if (end!!.hour == 24) {
+        endString = if (end!!.hour < 12 || end.hour == 24) {
+            if (end.hour == 24) {
                 String.format(Locale.getDefault(), "AM %02d:%02d", 12, end.minute)
             } else {
-                String.format(Locale.getDefault(), "AM %02d:%02d", end.hour, end.minute)
+                String.format(Locale.getDefault(), "AM %02d:%02d", end.hour - 12, end.minute)
             }
         } else {
-            if (end!!.hour == 12) {
+            if (end.hour == 12) {
                 String.format(Locale.getDefault(), "PM %02d:%02d", 12, end.minute)
             } else {
-                String.format(Locale.getDefault(), "PM %02d:%02d", end.hour, end.minute)
+                String.format(Locale.getDefault(), "PM %02d:%02d", end.hour - 12, end.minute)
             }
         }
         timePickText.value = "$startString - $endString"
