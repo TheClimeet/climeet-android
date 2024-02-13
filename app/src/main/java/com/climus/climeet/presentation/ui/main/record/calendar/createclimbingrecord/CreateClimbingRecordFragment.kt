@@ -3,6 +3,7 @@ package com.climus.climeet.presentation.ui.main.record.calendar.createclimbingre
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -10,17 +11,20 @@ import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCreateClimbingRecordBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheet
+import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheetViewModel
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLevelAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.SectorNameAdapter
 import com.climus.climeet.presentation.ui.main.record.adapter.RouteRecordAdapter
-import com.climus.climeet.presentation.ui.toSelectDateBottomSheetFragment
+import com.climus.climeet.presentation.ui.main.record.model.CreateRecordData
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CreateClimbingRecordFragment :
     BaseFragment<FragmentCreateClimbingRecordBinding>(R.layout.fragment_create_climbing_record) {
 
+    private val dateViewModel: SelectDateBottomSheetViewModel by viewModels()
     private lateinit var viewModel: CreateClimbingRecordViewModel
     private var isTimeSet = false
     private lateinit var itemAdapter: RouteRecordAdapter
@@ -59,7 +63,6 @@ class CreateClimbingRecordFragment :
 
         binding.ivCelebrate.bringToFront()
 
-        //viewModel.selectedCragEvent.value?.let { viewModel.getCragInfo(it.first, it.second) }
         setRecyclerView()
         initEventObserve()
         initItemObserve()
@@ -81,7 +84,15 @@ class CreateClimbingRecordFragment :
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
-                    CreateClimbingRecordEvent.ShowDatePicker -> findNavController().toSelectDateBottomSheetFragment()
+                    CreateClimbingRecordEvent.ShowDatePicker -> {
+                        SelectDateBottomSheet(
+                            requireContext(),
+                            dateViewModel,
+                            CreateRecordData.selectedDate
+                        ) { date ->
+                            viewModel.setSelectedDate(date)
+                        }.show()
+                    }
                     CreateClimbingRecordEvent.ShowTimePicker -> {
                         isTimeSet = true
                         findNavController().toSelectTimeBottomSheetFragment()

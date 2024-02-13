@@ -134,10 +134,6 @@
         android:id="@+id/fragment_create_select_crag"
         android:name="com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag.CreateSelectCragFragment"
         android:label="CreateSelectCragFragment" />
-    <dialog
-        android:id="@+id/select_date_bottom_sheet_fragment"
-        android:name="com.climus.climeet.presentation.ui.main.record.bottomsheet.selectdate.SelectDateBottomSheetFragment"
-        android:label="SelectDateBottomSheetFragment" />
 
     <dialog
         android:id="@+id/select_time_bottom_fragment"
@@ -185,10 +181,6 @@
         android:id="@+id/routeShortsFragment"
         android:name="com.climus.climeet.presentation.ui.main.shorts.route.RouteShortsFragment"
         android:label="RouteShortsFragment" />
-
-    <action
-        android:id="@+id/globalActionToSelectDateBottomSheetFragment"
-        app:destination="@id/select_date_bottom_sheet_fragment" />
 
     <action
         android:id="@+id/action_home_fragment_to_searchCragFragment"
