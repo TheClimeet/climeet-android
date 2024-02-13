@@ -1,5 +1,7 @@
 package com.climus.climeet.presentation.ui.main.record.timer.setrecord
 
+import android.animation.AnimatorSet
+import android.animation.ValueAnimator
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -86,6 +88,8 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
 
     val isAvgToggleOn = MutableLiveData(true)
     val isRouteToggleOn = MutableLiveData(true)
+
+    val alpha = MutableLiveData(1f)
 
     init {
         // 루트기록 더보기 부분 db에서 가져와 보여주기
@@ -275,7 +279,8 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     fun selectRoute(item: RouteUiData) {
         _uiState.update { state ->
             state.copy(
-                selectedRoute = item
+                selectedRoute = item,
+                clearBtnState = item.clearBtnState
             )
         }
         _challengeNumber.value = item.challengeNum
@@ -318,11 +323,45 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         }
     }
 
+    fun animateImage() {
+        val alphaAnimator = ValueAnimator.ofFloat(1f, 0f)
+
+        alphaAnimator.duration = 2000
+
+        alphaAnimator.addUpdateListener { animation ->
+            alpha.postValue(animation.animatedValue as Float)
+        }
+
+        val animatorSet = AnimatorSet()
+        animatorSet.play(alphaAnimator)
+        animatorSet.duration = 2000
+        animatorSet.start()
+    }
+
+    // 완등 버튼 상태 (위에서 눌렀을 때)
     fun setClear() {
         _uiState.update { state ->
             state.copy(
                 clearBtnState = !state.clearBtnState
             )
+        }
+        Log.d("recorddd", "uiState ${uiState.value.clearBtnState}으로 바뀜")
+
+        _items.value = _items.value.map {
+            if (it.routeId == uiState.value.selectedRoute.routeId) {
+                it.copy(
+                    clearBtnState = !it.clearBtnState
+                )
+            } else it
+        }
+
+        if(uiState.value.clearBtnState){
+            animateImage()
+        }
+
+        // 루트 기록 완등 여부 반영
+        _items.value.filter { it.routeId == uiState.value.selectedRoute.routeId }.forEach {
+            setComplete(it, uiState.value.clearBtnState)
         }
     }
 
@@ -394,6 +433,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         }
     }
 
+    // 완등 버튼 상태 (토글에서 눌렀을 때)
     fun setBtnState(id: Long) {
         _items.value = _items.value.map {
             if (it.routeId == id) {
@@ -408,6 +448,15 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                     clearBtnState = !it.clearBtnState
                 )
             } else it
+        }
+
+        if(uiState.value.clearBtnState){
+            animateImage()
+        }
+
+        // 루트 기록 완등 여부 반영
+        _items.value.filter { it.routeId == uiState.value.selectedRoute.routeId }.forEach {
+            setComplete(it, uiState.value.clearBtnState)
         }
     }
 
@@ -452,7 +501,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 if (record != null) {
                     record.attemptCount += 1
                     routeRepository.update(record)
-                    Log.d("recorddd", "도전 횟수 증가 db 반영")
+                    //Log.d("recorddd", "도전 횟수 증가 db 반영")
                 }
             } else {
                 // 도전 횟수 감소
@@ -460,7 +509,26 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 if (record != null) {
                     record.attemptCount -= 1
                     routeRepository.update(record)
-                    Log.d("recorddd", "도전 횟수 감소 db 반영")
+                    //Log.d("recorddd", "도전 횟수 감소 db 반영")
+                }
+            }
+        }
+    }
+
+    private fun setComplete(item: RouteUiData, complete : Boolean) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val record = routeRepository.findExistRecord(item.sectorId, item.routeId)
+            if (record != null) {
+                if (complete){
+                    // 루트 완등
+                    record.isCompleted = true
+                    routeRepository.update(record)
+                    Log.d("recorddd", "id ${record.id} 루트 완등")
+                } else {
+                    // 루트 완등 취소
+                    record.isCompleted = false
+                    routeRepository.update(record)
+                    Log.d("recorddd", "id ${record.id} 루트 완등 취소")
                 }
             }
         }
@@ -472,7 +540,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             if (target != null) {
                 // 루트 기록 삭제
                 routeRepository.deleteById(target.id)
-                Log.d("recorddd", "id ${target.id} 루트 기록 삭제")
+                //Log.d("recorddd", "id ${target.id} 루트 기록 삭제")
             }
         }
     }
