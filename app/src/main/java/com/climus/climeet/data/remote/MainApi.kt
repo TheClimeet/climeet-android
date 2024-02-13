@@ -20,6 +20,7 @@ import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
+import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -50,6 +51,10 @@ interface MainApi {
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<SearchAvailableGymResponse>
+
+    @GET("/climber-following")
+    suspend fun getClimberFollowing(
+    ): Response<List<UserFollowSimpleResponse>>
 
     @POST("refresh-token")
     suspend fun refreshToken(

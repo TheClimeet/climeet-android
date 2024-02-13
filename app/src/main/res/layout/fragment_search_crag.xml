@@ -153,7 +153,7 @@
             android:gravity="center"
             android:textColor="#8B8B8B"
             style="@style/TextRegular"
-            android:text="검색 결과가 없어요.\n다른 검색어로 검새개보세요"
+            android:text="검색 결과가 없어요.\n다른 검색어로 검색해보세요"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ic_empty_search" />
@@ -245,6 +245,41 @@
                 app:layout_constraintTop_toBottomOf="@+id/iv_search_crag_homegym_profile2"
                 tools:listitem="@layout/item_popular_routes" />
 
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_serach_crags2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/cm_background"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+            <TextView
+                android:id="@+id/tv_search_crag_following"
+                style="@style/TextLargeBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:text="팔로잉"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_search_following"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_search_crag_following"
+                tools:listitem="@layout/item_following" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

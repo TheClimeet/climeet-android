@@ -21,6 +21,7 @@ import com.climus.climeet.data.model.response.ShortsListResponse
 import com.climus.climeet.data.model.response.ShortsSimpleResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
+import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.runRemote
 import com.climus.climeet.data.remote.MainApi
@@ -61,6 +62,9 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun getHomeGyms(): BaseState<List<UserHomeGymSimpleResponse>> =
         runRemote { api.getHomeGyms() }
+
+    override suspend fun getClimberFollowing(): BaseState<List<UserFollowSimpleResponse>> =
+        runRemote { api.getClimberFollowing() }
 
     override suspend fun findBannerListBetweenDates()
             : BaseState<List<BannerDetailInfoResponse>> =

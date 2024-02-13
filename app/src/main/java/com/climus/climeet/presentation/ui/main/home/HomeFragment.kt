@@ -54,7 +54,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getBannerListBetweenDates()
-        viewModel.getShorts()
+        //viewModel.getShorts()
         viewModel.getGymRankingOrderFollowCount()
         viewModel.getRouteRankingOrderSelectionCount()
         viewModel.getHomeGyms()

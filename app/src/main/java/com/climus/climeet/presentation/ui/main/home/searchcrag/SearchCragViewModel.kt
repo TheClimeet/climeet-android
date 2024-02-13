@@ -8,6 +8,7 @@ import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteSimpleResponse
 import com.climus.climeet.data.model.response.ShortsSimpleResponse
+import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragEvent
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
@@ -31,6 +32,7 @@ import javax.inject.Inject
 
 data class SearchCragUiState(
     val routeList: List<BestRouteDetailInfoResponse> = emptyList(),
+    val followingList: List<UserFollowSimpleResponse> = emptyList(),
     val searchList: List<FollowCrag> = emptyList(),
     val progressState: Boolean = false,
     val emptyResultState: Boolean = false
@@ -65,6 +67,26 @@ class SearchCragViewModel @Inject constructor(private val repository: MainReposi
                         _uiState.update { state ->
                             state.copy(
                                 routeList = it.body
+                            )
+                        }
+                    }
+                    is BaseState.Error -> {
+                        it.msg // 서버 에러 메시지
+                        Log.d("API", it.msg)
+                    }
+                }
+            }
+        }
+    }
+
+    fun getClimberFollowing() {
+        viewModelScope.launch {
+            repository.getClimberFollowing().let {
+                when(it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                followingList = it.body
                             )
                         }
                     }
