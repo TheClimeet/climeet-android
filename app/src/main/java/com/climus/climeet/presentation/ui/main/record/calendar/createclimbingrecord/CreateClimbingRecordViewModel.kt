@@ -181,7 +181,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
             if (start.hour == 12) {
                 String.format(Locale.getDefault(), "PM %02d:%02d", 12, start.minute)
             } else {
-                String.format(Locale.getDefault(), "PM %02d:%02d", start.hour, start.minute)
+                String.format(Locale.getDefault(), "PM %02d:%02d", start.hour - 12, start.minute)
             }
         }
 
@@ -189,7 +189,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
             if (end.hour == 24) {
                 String.format(Locale.getDefault(), "AM %02d:%02d", 12, end.minute)
             } else {
-                String.format(Locale.getDefault(), "AM %02d:%02d", end.hour - 12, end.minute)
+                String.format(Locale.getDefault(), "AM %02d:%02d", end.hour, end.minute)
             }
         } else {
             if (end.hour == 12) {
@@ -383,28 +383,29 @@ class CreateClimbingRecordViewModel @Inject constructor(
             )
         }
 
-        val gymId = selectedCragEvent.value?.let{
+        val gymId = selectedCragEvent.value?.let {
             it.first
-        } ?: run{
+        } ?: run {
             1
         }
 
         val requestBody = CreateTimerClimbingRecordRequest(
             gymId = gymId,
-            date =  CreateRecordData.selectedDate.toString(),
+            date = CreateRecordData.selectedDate.toString(),
             time = CreateRecordData.getTimeDiff().toString(),
             avgDifficulty = 3,
             routeRecordRequestDtoList = climbingRecords
         )
 
         viewModelScope.launch {
-            repository.createTimerClimbingRecord(requestBody).let{
-                when(it){
+            repository.createTimerClimbingRecord(requestBody).let {
+                when (it) {
                     is BaseState.Success -> {
                         _event.emit(
                             CreateClimbingRecordEvent.ClimbingComplete
                         )
                     }
+
                     is BaseState.Error -> {
                         _event.emit(CreateClimbingRecordEvent.ShowToastMessage(it.msg))
                     }
@@ -462,7 +463,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
             } else it
         }
 
-        if(uiState.value.clearBtnState){
+        if (uiState.value.clearBtnState) {
             animateImage()
         }
     }
@@ -510,7 +511,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
         }
     }
 
-    fun showDeleteDialog(context: Context, id: Long){
+    fun showDeleteDialog(context: Context, id: Long) {
         val dialog = DeleteDialog(context) { isDelete ->
             if (isDelete) {
                 removeItem(id)
