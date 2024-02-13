@@ -296,8 +296,6 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         _items.value.filter { it.routeId == uiState.value.selectedRoute.routeId }.forEach {
             // roomDB 도전 횟수 증가
             setRoomChallengeNum(it, true)
-
-            Log.d("recorddd", "루트 ${it.routeId} 도전 횟수 증가 : ${it.challengeNum}")
         }
     }
 
@@ -317,8 +315,6 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         _items.value.filter { it.routeId == uiState.value.selectedRoute.routeId && check }.forEach {
             // roomDB 도전 횟수 감소
             setRoomChallengeNum(it, false)
-
-            Log.d("recorddd", "루트 ${it.routeId} 도전 횟수 감소 : ${it.challengeNum}")
         }
     }
 
@@ -345,8 +341,6 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             _items.value = _items.value + newItem
             // roomDB에 루트 기록 저장
             saveRouteRecord(newItem)
-
-            Log.d("recorddd", "눌린 루트기록\n $newItem")
         } else {
         }
     }
@@ -364,8 +358,6 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         _items.value.filter { it.routeId == id }.forEach {
             // roomDB 도전 횟수 증가
             setRoomChallengeNum(it, true)
-
-            Log.d("recorddd", "루트 ${it.routeId} 도전 횟수 증가 : ${it.challengeNum}")
         }
     }
 
@@ -384,8 +376,6 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         _items.value.filter { it.routeId == id && check }.forEach {
             // roomDB 도전 횟수 감소
             setRoomChallengeNum(it, false)
-
-            Log.d("recorddd", "루트 ${it.routeId} 도전 횟수 감소 : ${it.challengeNum}")
         }
     }
 
@@ -393,7 +383,8 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     fun removeItem(id: Long) {
         val itemToRemove = _items.value.find { it.routeId == id }
         if (itemToRemove != null) {
-            Log.d("recorddd", "루트 ${itemToRemove.routeId} 기록 삭제")
+            // roomDB 루트 기록 삭제
+            deleteRouteRecord(itemToRemove)
         }
         _items.value = _items.value.filter { it.routeId != id }
         _uiState.update { state ->
@@ -401,8 +392,6 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 selectedRoute = RouteUiData {}
             )
         }
-
-        // todo : roomDB RouteRecordData 삭제
     }
 
     fun setBtnState(id: Long) {
@@ -436,6 +425,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         isRouteToggleOn.value = !(isRouteToggleOn.value ?: false)
     }
 
+    // -------- room DB ----------
     private fun saveRouteRecord(item: RouteUiData) {
         // 중복된 값 없을 때만 루트 기록 저장
         CoroutineScope(Dispatchers.IO).launch {
@@ -450,7 +440,6 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                     isCompleted = false
                 )
                 routeRepository.insert(routeRecord)
-                Log.d("recorddd", "루트기록 중복 없음 -> room 저장")
             }
         }
     }
@@ -473,6 +462,17 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                     routeRepository.update(record)
                     Log.d("recorddd", "도전 횟수 감소 db 반영")
                 }
+            }
+        }
+    }
+
+    private fun deleteRouteRecord(item: RouteUiData) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val target = routeRepository.findExistRecord(item.sectorId, item.routeId)
+            if (target != null) {
+                // 루트 기록 삭제
+                routeRepository.deleteById(target.id)
+                Log.d("recorddd", "id ${target.id} 루트 기록 삭제")
             }
         }
     }
