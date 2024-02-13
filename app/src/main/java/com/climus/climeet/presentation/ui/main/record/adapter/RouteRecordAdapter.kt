@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.record.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -15,11 +16,13 @@ class RouteRecordAdapter(private val viewModel: CreateClimbingRecordViewModel) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteRecordViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemRouteRecordBinding.inflate(inflater, parent, false)
+        val context = parent.context
         return RouteRecordViewHolder(binding, viewModel)
     }
 
     override fun onBindViewHolder(holder: RouteRecordViewHolder, position: Int) {
-        holder.bind(items[position], position)
+        val context = holder.itemView.context
+        holder.bind(items[position], context)
     }
 
     override fun getItemCount() = items.size
@@ -30,7 +33,7 @@ class RouteRecordViewHolder(
     private val viewModel: CreateClimbingRecordViewModel
 ) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: RouteUiData, position: Int) {
+    fun bind(item: RouteUiData, context: Context) {
         binding.item = item
 
         binding.root.setOnClickListener {
@@ -48,7 +51,7 @@ class RouteRecordViewHolder(
         }
 
         binding.ivDelete.setOnClickListener {
-            viewModel.removeItem(item.routeId)
+            viewModel.showDeleteDialog(context, item.routeId)
         }
 
         binding.ivClear.setOnClickListener {

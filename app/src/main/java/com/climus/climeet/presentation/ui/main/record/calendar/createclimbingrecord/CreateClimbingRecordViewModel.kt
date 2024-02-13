@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -19,6 +20,7 @@ import com.climus.climeet.data.model.request.ClimbingRecord
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.customview.DeleteDialog
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm.cragName
 import com.climus.climeet.presentation.ui.main.global.selectsector.FloorBtnState
 import com.climus.climeet.presentation.ui.main.global.selectsector.SelectSectorBottomSheetEvent
@@ -506,6 +508,15 @@ class CreateClimbingRecordViewModel @Inject constructor(
                 it.copy(challengeNum = it.challengeNum - 1)
             } else it
         }
+    }
+
+    fun showDeleteDialog(context: Context, id: Long){
+        val dialog = DeleteDialog(context) { isDelete ->
+            if (isDelete) {
+                removeItem(id)
+            }
+        }
+        dialog.show()
     }
 
     fun removeItem(id: Long) {
