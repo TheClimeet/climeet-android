@@ -191,6 +191,7 @@
         android:label="ClimbingRecordCompleteFragment" >
         <action
             android:id="@+id/action_fragment_climbing_record_complete_to_calendar_fragment"
+            app:popUpTo="@id/home_fragment"
             app:destination="@id/calendar_fragment" />
     </fragment>
 
