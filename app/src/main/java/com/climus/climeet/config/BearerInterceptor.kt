@@ -5,16 +5,19 @@ import android.util.Log
 import com.climus.climeet.BuildConfig
 import com.climus.climeet.app.App
 import com.climus.climeet.app.App.Companion.sharedPreferences
-import com.climus.climeet.data.model.ErrorResponse
+import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.response.RefreshTokenResponse
+import com.climus.climeet.data.model.runRemote
 import com.climus.climeet.data.remote.MainApi
 import com.climus.climeet.presentation.ui.intro.IntroActivity
 import com.climus.climeet.presentation.util.Constants.TAG
 import com.climus.climeet.presentation.util.Constants.X_ACCESS_TOKEN
 import com.climus.climeet.presentation.util.Constants.X_REFRESH_TOKEN
-import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import okhttp3.Response
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
@@ -35,31 +38,23 @@ class BearerInterceptor : Interceptor {
             runBlocking {
 
                 sharedPreferences.getString(X_REFRESH_TOKEN, null)?.let { refresh ->
-                    Log.d(TAG, refresh)
+                    getNewAccessToken(refresh).let {
+                        when (it) {
+                            is BaseState.Success -> {
 
-                    val result = Retrofit.Builder()
-                        .baseUrl(BuildConfig.BASE_DEV_URL)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build()
-                        .create(MainApi::class.java).refreshToken(refresh)
+                                sharedPreferences.edit()
+                                    .putString(X_ACCESS_TOKEN, it.body.accessToken)
+                                    .putString(X_REFRESH_TOKEN, it.body.refreshToken)
+                                    .apply()
 
-                    if (result.isSuccessful) {
-                        Log.d(TAG, "리프래시 성공")
-                        result.body()?.let { body ->
-                            Log.d(TAG, body.accessToken)
-                            // refresh 성공시 로컬에 저장
-                            sharedPreferences.edit()
-                                .putString(X_ACCESS_TOKEN, body.accessToken)
-                                .putString(X_REFRESH_TOKEN, body.refreshToken)
-                                .apply()
+                                isRefreshed = true
+                                accessToken = it.body.accessToken
+                            }
 
-                            isRefreshed = true
-                            accessToken = body.accessToken
+                            is BaseState.Error -> {
+                                Log.d(TAG,it.msg)
+                            }
                         }
-                    } else {
-                        val error =
-                            Gson().fromJson(result.errorBody()?.string(), ErrorResponse::class.java)
-//                        Log.d(TAG, error.message)
                     }
                 }
             }
@@ -76,6 +71,7 @@ class BearerInterceptor : Interceptor {
                 return chain.proceed(newRequest)
             } else {
                 // 해당 특정 에러코드가 그대로 내려간다면, IntroActivity로 이동. 세션 만료 처리
+                Log.d(TAG,"세션이 만료되었습니다")
                 sharedPreferences.edit()
                     .remove(X_ACCESS_TOKEN)
                     .remove(X_REFRESH_TOKEN)
@@ -88,5 +84,23 @@ class BearerInterceptor : Interceptor {
         }
 
         return response
+    }
+
+    private suspend fun getNewAccessToken(refreshToken: String): BaseState<RefreshTokenResponse> {
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        val okHttpClient = OkHttpClient.Builder().addInterceptor(loggingInterceptor).build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_DEV_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+        val api = retrofit.create(MainApi::class.java)
+        return runRemote {
+            api.refreshToken(
+                refreshToken
+            )
+        }
     }
 }
