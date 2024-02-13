@@ -1,6 +1,7 @@
 package com.climus.climeet.presentation.ui.main.home.recycler.following
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,8 @@ class FollowingRVAdapter(private val followingList: List<UserFollowSimpleRespons
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+        holder.bind(followingList[position])
 
         val btnFollowing = holder.binding.btnFollowing
         val btnFollow = holder.binding.btnFollow
