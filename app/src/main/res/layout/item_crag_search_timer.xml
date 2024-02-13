@@ -30,16 +30,19 @@
         <TextView
             android:id="@+id/tv_crag_name"
             style="@style/TextRegular"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+            android:layout_marginHorizontal="15dp"
+            android:maxLines="2"
+            android:ellipsize="end"
             tools:text="송도 비블럭 클라이밍"
             android:text="@{data.name}"
             app:keyword="@{keyword}"
             app:searchResult="@{data.name}"
             app:layout_constraintStart_toEndOf="@id/iv_crag_profile"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_select"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_select"
