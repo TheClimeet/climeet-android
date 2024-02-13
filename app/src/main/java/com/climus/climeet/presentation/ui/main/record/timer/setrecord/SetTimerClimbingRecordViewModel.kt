@@ -278,6 +278,8 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 selectedRoute = item
             )
         }
+        _challengeNumber.value = item.challengeNum
+
         addItem(item)
     }
 
@@ -285,20 +287,39 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         _challengeNumber.value = count
     }
 
+    // 상단 루트기록 도전 횟수 증가
     fun addChallengeNum() {
         _challengeNumber.value = (_challengeNumber.value ?: 0) + 1
         _items.value = _items.value.map {
             if (it.routeId == uiState.value.selectedRoute.routeId) it.copy(challengeNum = it.challengeNum + 1) else it
         }
-        Log.d("recorddd", "chall num add")
+        _items.value.filter { it.routeId == uiState.value.selectedRoute.routeId }.forEach {
+            // roomDB 도전 횟수 증가
+            setRoomChallengeNum(it, true)
+
+            Log.d("recorddd", "루트 ${it.routeId} 도전 횟수 증가 : ${it.challengeNum}")
+        }
     }
 
+    // 상단 루트기록 도전 횟수 감소
     fun subChallengeNum() {
         val currentValue = _challengeNumber.value ?: 0
+        var check = false
         if (currentValue > 0) {
             _challengeNumber.value = currentValue - 1
+            check = true
         }
-        Log.d("recorddd", "chall num sub")
+        _items.value = _items.value.map {
+            if (it.routeId == uiState.value.selectedRoute.routeId && it.challengeNum > 0) it.copy(
+                challengeNum = it.challengeNum - 1
+            ) else it
+        }
+        _items.value.filter { it.routeId == uiState.value.selectedRoute.routeId && check }.forEach {
+            // roomDB 도전 횟수 감소
+            setRoomChallengeNum(it, false)
+
+            Log.d("recorddd", "루트 ${it.routeId} 도전 횟수 감소 : ${it.challengeNum}")
+        }
     }
 
     fun setClear() {
@@ -322,6 +343,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 onClickListener = { it -> itemClicked(it) }
             )
             _items.value = _items.value + newItem
+            // roomDB에 루트 기록 저장
             saveRouteRecord(newItem)
 
             Log.d("recorddd", "눌린 루트기록\n $newItem")
@@ -329,7 +351,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         }
     }
 
-    // 루트 기록 도전 수 증가
+    // 토글 루트 기록 도전 수 증가
     fun itemIncrease(id: Long) {
         _items.value = _items.value.map {
             if (it.routeId == id) {
@@ -339,24 +361,30 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 it.copy(challengeNum = it.challengeNum + 1)
             } else it
         }
-        // todo : roomDB RouteRecordData에 도전 기록 증가
         _items.value.filter { it.routeId == id }.forEach {
+            // roomDB 도전 횟수 증가
+            setRoomChallengeNum(it, true)
+
             Log.d("recorddd", "루트 ${it.routeId} 도전 횟수 증가 : ${it.challengeNum}")
         }
     }
 
-    // 루트 기록 도전 수 감소
+    // 토글 루트 기록 도전 수 감소
     fun itemDecrease(id: Long) {
+        var check = false
         _items.value = _items.value.map {
             if (it.routeId == id && it.challengeNum > 0) {
                 if (uiState.value.selectedRoute.routeId == it.routeId) {
                     _challengeNumber.value = (_challengeNumber.value ?: 0) - 1
+                    check = true
                 }
                 it.copy(challengeNum = it.challengeNum - 1)
             } else it
         }
-        // todo : roomDB RouteRecordData에 도전 기록 감소
-        _items.value.filter { it.routeId == id }.forEach {
+        _items.value.filter { it.routeId == id && check }.forEach {
+            // roomDB 도전 횟수 감소
+            setRoomChallengeNum(it, false)
+
             Log.d("recorddd", "루트 ${it.routeId} 도전 횟수 감소 : ${it.challengeNum}")
         }
     }
@@ -377,24 +405,39 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         // todo : roomDB RouteRecordData 삭제
     }
 
+    fun setBtnState(id: Long) {
+        _items.value = _items.value.map {
+            if (it.routeId == id) {
+                if (uiState.value.selectedRoute.routeId == it.routeId) {
+                    _uiState.update { state ->
+                        state.copy(
+                            clearBtnState = !state.clearBtnState
+                        )
+                    }
+                }
+                it.copy(
+                    clearBtnState = !it.clearBtnState
+                )
+            } else it
+        }
+    }
+
     private fun itemClicked(id: RouteUiData) {
-        // 여기에 아이템 클릭 시 실행할 코드를 추가하세요
+
     }
 
     // 평균 완등률 더보기
     fun setAvgToggle() {
         isAvgToggleOn.value = !(isAvgToggleOn.value ?: false)
-        Log.d("recorddd", "평균 완등률 toggle : ${isAvgToggleOn.value}")
     }
 
     // 루트기록 더보기
     fun setRouteToggle() {
         isRouteToggleOn.value = !(isRouteToggleOn.value ?: false)
-        Log.d("recorddd", "루트기록 toggle : ${isRouteToggleOn.value}")
     }
 
     private fun saveRouteRecord(item: RouteUiData) {
-        // 중복된 값 없을 때만 저장
+        // 중복된 값 없을 때만 루트 기록 저장
         CoroutineScope(Dispatchers.IO).launch {
             val existCheck = routeRepository.findExistRecord(item.sectorId, item.routeId)
             if (existCheck == null) {
@@ -409,9 +452,28 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 routeRepository.insert(routeRecord)
                 Log.d("recorddd", "루트기록 중복 없음 -> room 저장")
             }
-            val result = routeRepository.getAllRecord()
-            delay(1000)
-            Log.d("recorddd", "룸디비 저장됐나 확인 : $result")
+        }
+    }
+
+    private fun setRoomChallengeNum(item: RouteUiData, plus: Boolean) {
+        CoroutineScope(Dispatchers.IO).launch {
+            if (plus) {
+                // 도전 횟수 증가
+                val record = routeRepository.findExistRecord(item.sectorId, item.routeId)
+                if (record != null) {
+                    record.attemptCount += 1
+                    routeRepository.update(record)
+                    Log.d("recorddd", "도전 횟수 증가 db 반영")
+                }
+            } else {
+                // 도전 횟수 감소
+                val record = routeRepository.findExistRecord(item.sectorId, item.routeId)
+                if (record != null) {
+                    record.attemptCount -= 1
+                    routeRepository.update(record)
+                    Log.d("recorddd", "도전 횟수 감소 db 반영")
+                }
+            }
         }
     }
 }

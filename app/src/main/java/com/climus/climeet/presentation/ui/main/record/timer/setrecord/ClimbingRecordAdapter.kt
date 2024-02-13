@@ -37,15 +37,22 @@ class ClimbingRecordViewHolder(
         }
 
         binding.btnIncrease.setOnClickListener {
+            viewModel.selectRoute(item)
             viewModel.itemIncrease(item.routeId)
         }
 
         binding.btnDecrease.setOnClickListener {
+            viewModel.selectRoute(item)
             viewModel.itemDecrease(item.routeId)
         }
 
         binding.ivDelete.setOnClickListener {
             viewModel.removeItem(item.routeId)
+        }
+
+        binding.ivClear.setOnClickListener {
+            viewModel.selectRoute(item)
+            viewModel.setBtnState(item.routeId)
         }
     }
 }
