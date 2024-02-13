@@ -27,7 +27,8 @@ import javax.inject.Inject
 data class CragNameUiState(
     var searchList: List<SearchCragUiData> = emptyList(),
     val progressState: Boolean = false,
-    val emptyResultState: Boolean = false
+    val emptyResultState: Boolean = false,
+    val emptyTextState: Boolean = false
 )
 
 sealed class CragSelectEvent{
@@ -73,7 +74,8 @@ class TimerCragSelectBottomSheetViewModel @Inject constructor(
                 _uiState.update { state ->
                     state.copy(
                         searchList = emptyList(),
-                        emptyResultState = false
+                        emptyResultState = false,
+                        emptyTextState = false
                     )
                 }
             } else {
@@ -82,7 +84,8 @@ class TimerCragSelectBottomSheetViewModel @Inject constructor(
                 _uiState.update { state ->
                     state.copy(
                         progressState = true,
-                        emptyResultState = false
+                        emptyResultState = false,
+                        emptyTextState = false
                     )
                 }
                 curJob = viewModelScope.launch {
@@ -107,6 +110,7 @@ class TimerCragSelectBottomSheetViewModel @Inject constructor(
                                             searchList = emptyList(),
                                             progressState = false,
                                             emptyResultState = true,
+                                            emptyTextState = false
                                         )
                                     }
                                 }
@@ -116,7 +120,8 @@ class TimerCragSelectBottomSheetViewModel @Inject constructor(
                                 _uiState.update { state ->
                                     state.copy(
                                         progressState = false,
-                                        emptyResultState = true
+                                        emptyResultState = true,
+                                        emptyTextState = false
                                     )
                                 }
                                 _event.emit(CragSelectEvent.ShowToastMessage(result.msg))
@@ -132,7 +137,10 @@ class TimerCragSelectBottomSheetViewModel @Inject constructor(
         keyword.value = ""
         _uiState.update { state ->
             state.copy(
-                searchList = emptyList()
+                searchList = emptyList(),
+                progressState = false,
+                emptyResultState = true,
+                emptyTextState = true
             )
         }
     }

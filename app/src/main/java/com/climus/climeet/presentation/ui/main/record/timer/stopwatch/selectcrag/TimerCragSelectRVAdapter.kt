@@ -1,16 +1,14 @@
 package com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.databinding.ItemCragSearchTimerBinding
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiData
 
 class TimerCragSelectRVAdapter(
-    private val viewModel : TimerCragSelectBottomSheetViewModel
+    private val viewModel: TimerCragSelectBottomSheetViewModel
 ) : RecyclerView.Adapter<TimerCragSelectRVAdapter.CragSelectViewHolder>() {
 
     private var searchList: List<SearchCragUiData> = emptyList()
@@ -28,11 +26,10 @@ class TimerCragSelectRVAdapter(
         holder.bind(cragData, keyword)
 
         // 선택된 암장 정보 TimerFragment로 전달
-        holder.binding.btnSelect.setOnClickListener{
+        holder.binding.btnSelect.setOnClickListener {
             viewModel.selectItem(cragData)
+            // 암장 정보 roomDB에 저장은 TimerFragment에서 진행함
         }
-
-        // todo : 암장 선택되면 암장 검색창 사라지게 만들기
     }
 
     override fun getItemCount(): Int = searchList.size
@@ -46,14 +43,13 @@ class TimerCragSelectRVAdapter(
 
     class CragSelectViewHolder(val binding: ItemCragSearchTimerBinding) :
         RecyclerView.ViewHolder(binding.root) {
-            fun bind(data: SearchCragUiData, keyword: String) {
-                binding.keyword = keyword
-                binding.data = data
+        fun bind(data: SearchCragUiData, keyword: String) {
+            binding.keyword = keyword
+            binding.data = data
 
-                binding.btnSelect.setOnClickListener {
-                    data.onClickListener(data.id, data.name, data.imgUrl)
-                    sharedPreferences.edit().putString("cragName", data.name).apply()
-                }
+            binding.btnSelect.setOnClickListener {
+                data.onClickListener(data.id, data.name, data.imgUrl)
             }
         }
+    }
 }

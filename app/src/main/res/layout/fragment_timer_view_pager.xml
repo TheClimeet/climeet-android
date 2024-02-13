@@ -26,7 +26,7 @@
             android:id="@+id/vp_timer"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/guide"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,7 @@
             android:id="@+id/idc_timer"
             android:layout_width="100dp"
             android:layout_height="30dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
             android:visibility="invisible"
             app:ci_animator="@anim/indicator_anim_timer"
             app:ci_drawable="@drawable/oval_indicator_select"
@@ -47,7 +47,7 @@
             app:ci_width="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guide" />
+            app:layout_constraintBottom_toTopOf="@id/guide" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
