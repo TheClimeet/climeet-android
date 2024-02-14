@@ -58,7 +58,9 @@ class ShortsDetailFragment @Inject constructor(
 
                     is ShortsDetailEvent.NavigateToRouteShorts -> {
                         // todo 이거 routeId로 변경. 서버 API 수정되어야함
-                        listener?.navigateToRouteShorts(data.sectorId)
+                        data.sectorId?.let{ id ->
+                            listener?.navigateToRouteShorts(id)
+                        }
                     }
 
                     is ShortsDetailEvent.ShowShareDialog -> {

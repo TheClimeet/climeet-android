@@ -1,6 +1,7 @@
 package com.climus.climeet.presentation.ui.main.shorts.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.ListAdapter
@@ -37,8 +38,17 @@ class ShortsThumbnailViewHolder(private val binding: ItemShortsThumbnailBinding)
         }
 
         with(binding) {
-            vCragLevelColor.cvColor = item.originLevelColor.toColorInt()
-            ivClimeetLevel.ecColor = item.climeetLevelColor.toColorInt()
+            item.originLevelColor?.let{
+                vCragLevelColor.cvColor = it.toColorInt()
+            } ?: run{
+                vCragLevelColor.visibility = View.INVISIBLE
+            }
+
+            item.climeetLevelColor?.let{
+                ivClimeetLevel.ecColor = it.toColorInt()
+            } ?: run{
+                ivClimeetLevel.visibility = View.INVISIBLE
+            }
         }
     }
 
