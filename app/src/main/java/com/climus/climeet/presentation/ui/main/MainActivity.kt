@@ -102,7 +102,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 || destination.id == R.id.myPage_fragment || destination.id == R.id.bestClimerFragment || destination.id == R.id.popularShortsFragment
                 || destination.id == R.id.popularCragsFragment || destination.id == R.id.popularRoutesFragment
                 || destination.id == R.id.searchCragFragment || destination.id == R.id.set_timer_climbing_record_fragment || destination.id == R.id.calendar_fragment
-                || destination.id == R.id.timerMainFragment
+                || destination.id == R.id.timerMainFragment || destination.id == R.id.record_fragment
             ) {
                 // todo bnv show 해야되는 frag
                 binding.mainBnv.visibility = View.VISIBLE
