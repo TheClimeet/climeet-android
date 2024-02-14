@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.record.stats
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -72,6 +73,7 @@ class StatsViewModel @Inject constructor(
                 when (result) {
                     is BaseState.Success -> {
                         val body = result.body
+                        Log.d("stattest", body.toString())
                         _uiState.update { state ->
                             state.copy(
                                 totalTime = body.time,
@@ -100,6 +102,22 @@ class StatsViewModel @Inject constructor(
     fun setProgress(){
         cc.value = "${uiState.value.totalCompletedCount}문제 완등"
         ac.value = "${uiState.value.totalAttemptCount}문제 도전!"
+    }
+
+    fun btnMoveDate(isPlus: Boolean){
+        var date = selectedDate.value?.let {
+            it
+        } ?: run {
+            LocalDate.of(0, 0, 0)
+        }
+        if(isPlus){
+            selectedDate.value = date.plusMonths(1)
+        }else{
+            selectedDate.value = date.minusMonths(1)
+        }
+        date = selectedDate.value
+        curDate.value = "${date.year}년 ${date.monthValue}월"
+        getMyStatus()
     }
 
 }
