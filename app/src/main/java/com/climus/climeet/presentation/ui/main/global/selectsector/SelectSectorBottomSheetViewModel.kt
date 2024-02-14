@@ -132,7 +132,7 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
                 sectorNameList = sectorNameList.filter {
                     it.floor == floor
                 },
-                selectedRoute = RouteUiData{}
+                selectedRoute = RouteUiData {}
             )
         }
         setFloorInfo(floor)
@@ -151,7 +151,8 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
                                 gymLevelList = gymLevelList,
                                 routeList = it.body.result.map { data ->
                                     data.toRouteUiData(::selectRoute)
-                                }
+                                },
+                                curFloor = 1
                             )
                         }
                     }
@@ -205,7 +206,7 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
                     )
                 },
                 selectedSector = item,
-                selectedRoute = RouteUiData{}
+                selectedRoute = RouteUiData {}
             )
         }
 
@@ -226,7 +227,7 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
                     )
                 },
                 selectedLevel = item,
-                selectedRoute = RouteUiData{}
+                selectedRoute = RouteUiData {}
             )
         }
 
@@ -251,9 +252,9 @@ class SelectSectorBottomSheetViewModel @Inject constructor(
             routeId = uiState.value.selectedRoute.routeId,
             sectorId = uiState.value.selectedSector.sectorId,
             difficulty = uiState.value.selectedLevel.difficulty,
-            sectorName = uiState.value.selectedSector.name,
+            sectorName = uiState.value.selectedRoute.sectorName.ifBlank { uiState.value.selectedSector.name },
             cragName = cragName,
-            gymLevelName = uiState.value.selectedLevel.levelName
+            gymLevelName = uiState.value.selectedRoute.gymLevelName.ifBlank { uiState.value.selectedLevel.levelName }
         )
         viewModelScope.launch {
             _event.emit(

@@ -11,6 +11,7 @@ import androidx.core.graphics.toColorInt
 import androidx.databinding.BindingAdapter
 import com.climus.climeet.R
 import com.climus.climeet.presentation.ui.InputState
+import java.lang.Math.round
 
 @BindingAdapter("keyword", "searchResult")
 fun bindSearchResult(tv: TextView, keyword: String, searchResult: String) {
@@ -72,4 +73,15 @@ fun bindSelectedColor(tv: TextView, state: Boolean) {
 @BindingAdapter("compressProgress")
 fun bindCompressProgress(tv: TextView, progress: Int) {
     tv.text = "$progress%"
+}
+
+@BindingAdapter("socialCount")
+fun bindSocialCount(tv: TextView, count: Int){
+    if(count < 1000){
+        tv.text = count.toString()
+    } else if( count < 1000000){
+        tv.text = round((count / 1000).toDouble()).toString()  + "K"
+    } else {
+        tv.text = round((count / 1000000).toDouble()).toString() + "M"
+    }
 }

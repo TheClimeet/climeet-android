@@ -5,6 +5,15 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData" />
+
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.shorts.player.ShortsDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,18 +24,22 @@
             android:id="@+id/exo_player"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:controller_layout_id="@layout/custom_progress_ui"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:playerAlpha="@{vm.uiState.isWholeText}"
+            app:use_controller="false" />
 
         <ImageButton
             android:id="@+id/btn_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
+            android:onClick="@{() -> vm.patchFavorite()}"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_favorite_off"
+            app:favoriteBtnState="@{vm.uiState.isFavorite}"
             app:layout_constraintBottom_toTopOf="@id/tv_favorite_count"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -39,6 +52,7 @@
             app:layout_constraintBottom_toTopOf="@id/btn_comment"
             app:layout_constraintEnd_toEndOf="@id/btn_favorite"
             app:layout_constraintStart_toStartOf="@id/btn_favorite"
+            app:socialCount="@{item.likeCount}"
             tools:text="61.4K" />
 
         <ImageButton
@@ -47,6 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:background="@android:color/transparent"
+            android:onClick="@{() -> vm.showCommentDialog()}"
             android:src="@drawable/ic_comment"
             app:layout_constraintBottom_toTopOf="@id/tv_comment_count"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -60,6 +75,7 @@
             app:layout_constraintBottom_toTopOf="@id/btn_bookmark"
             app:layout_constraintEnd_toEndOf="@id/btn_comment"
             app:layout_constraintStart_toStartOf="@id/btn_comment"
+            app:socialCount="@{item.commentCount}"
             tools:text="300" />
 
         <ImageButton
@@ -68,7 +84,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_bookmark_off"
+            android:onClick="@{() -> vm.patchBookMark()}"
+            app:bookMarkBtnState="@{vm.uiState.isBookMarked}"
             app:layout_constraintBottom_toTopOf="@id/tv_bookmark_count"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -81,6 +98,7 @@
             app:layout_constraintBottom_toTopOf="@id/btn_share"
             app:layout_constraintEnd_toEndOf="@id/btn_bookmark"
             app:layout_constraintStart_toStartOf="@id/btn_bookmark"
+            app:socialCount="@{item.bookMarkCount}"
             tools:text="3500" />
 
         <ImageButton
@@ -89,6 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:background="@android:color/transparent"
+            android:onClick="@{() -> vm.showShareDialog()}"
             android:src="@drawable/ic_share"
             app:layout_constraintBottom_toTopOf="@id/tv_share_count"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -102,18 +121,22 @@
             app:layout_constraintBottom_toTopOf="@id/route_view"
             app:layout_constraintEnd_toEndOf="@id/btn_share"
             app:layout_constraintStart_toStartOf="@id/btn_share"
+            app:socialCount="@{item.sharedCount}"
             tools:text="61.4K" />
 
         <com.climus.climeet.presentation.customview.RouteView
             android:id="@+id/route_view"
-            android:layout_width="80dp"
-            android:layout_height="100dp"
+            android:layout_width="70dp"
+            android:layout_height="90dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toTopOf="@id/pb_video"
+            android:onClick="@{() -> vm.navigateToRouteShorts()}"
+            app:isDataNull="@{item.routeImgUrl}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:routeLevelColor="#FFFFFF"
-            app:routeLevelName="V2" />
+            app:routeImgUrl="@{item.routeImgUrl}"
+            app:routeLevelColor="@{item.gymLevelColor}"
+            app:routeLevelName="@{item.gymLevelName}" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile"
@@ -121,6 +144,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="16dp"
+            android:onClick="@{() -> vm.navigateToProfileDetail()}"
             android:src="@drawable/test"
             app:layout_constraintBottom_toTopOf="@id/tv_description"
             app:layout_constraintStart_toStartOf="parent" />
@@ -131,6 +155,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:onClick="@{() -> vm.navigateToProfileDetail()}"
+            android:text="@{item.userName}"
             app:layout_constraintBottom_toBottomOf="@id/iv_profile"
             app:layout_constraintStart_toEndOf="@id/iv_profile"
             app:layout_constraintTop_toTopOf="@id/iv_profile"
@@ -142,11 +168,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
+            android:lineSpacingExtra="4dp"
+            android:onClick="@{() -> vm.changeDescriptionState()}"
+            android:text="@{vm.uiState.isWholeText ? vm.uiState.wholeText : vm.uiState.singleLineText}"
             app:layout_constraintBottom_toTopOf="@id/tv_gym_name"
             app:layout_constraintEnd_toStartOf="@id/route_view"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="요즘따라 이큐도 쉽지 않네요 ㅋㅋㅋ" />
+            tools:text="요즘따라 이큐도 쉽지 않네요 ㅋㅋㅋ asdfasdfasdasdfsadf" />
 
         <TextView
             android:id="@+id/tv_gym_name"
@@ -160,8 +190,10 @@
             android:gravity="center_vertical"
             android:paddingHorizontal="8dp"
             android:paddingVertical="2dp"
+            android:text="@{item.gymName}"
             app:drawableStartCompat="@drawable/ic_location_small"
-            app:layout_constraintBottom_toTopOf="@id/pb_video"
+            app:isDataNull="@{item.gymName}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="더클라임 연남" />
 
@@ -177,23 +209,25 @@
             android:gravity="center_vertical"
             android:paddingHorizontal="8dp"
             android:paddingVertical="2dp"
+            android:text="@{item.sectorName}"
             app:drawableStartCompat="@drawable/ic_walking"
-            app:layout_constraintBottom_toTopOf="@id/pb_video"
+            app:isDataNull="@{item.sectorName}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_gym_name"
             tools:text="SECTOR 2-2" />
 
-        <ProgressBar
-            android:id="@+id/pb_video"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:max="100"
-            android:progressBackgroundTint="@color/white"
-            android:progressTint="@color/cm_main"
-            android:scaleY="1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+        <!--        <ProgressBar-->
+        <!--            android:id="@+id/pb_video"-->
+        <!--            style="?android:attr/progressBarStyleHorizontal"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:max="100"-->
+        <!--            android:progressBackgroundTint="@color/white"-->
+        <!--            android:progressTint="@color/cm_main"-->
+        <!--            android:scaleY="1"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

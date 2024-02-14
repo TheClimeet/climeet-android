@@ -29,9 +29,6 @@
         <action
             android:id="@+id/action_shorts_fragment_to_shortsBottomSheetFragment"
             app:destination="@id/shortsBottomSheetFragment" />
-        <action
-            android:id="@+id/action_shorts_fragment_to_shortsPlayerFragment"
-            app:destination="@id/shortsPlayerFragment" />
     </fragment>
 
     <fragment
@@ -158,9 +155,6 @@
         <action
             android:id="@+id/action_uploadCompleteFragment_to_shorts_fragment"
             app:destination="@id/shorts_fragment" />
-        <action
-            android:id="@+id/action_uploadCompleteFragment_to_shortsPlayerFragment"
-            app:destination="@id/shortsPlayerFragment" />
     </fragment>
 
     <fragment
@@ -170,7 +164,36 @@
         <action
             android:id="@+id/action_shortsPlayerFragment_to_routeShortsFragment"
             app:destination="@id/routeShortsFragment" />
+        <argument
+            app:argType="long"
+            android:name="shortsId"/>
+
+        <argument
+            app:argType="integer"
+            android:name="position"/>
+        <action
+            android:id="@+id/action_shortsPlayerFragment_to_shortsShareBottomSheetFragment"
+            app:destination="@id/shortsShareBottomSheetFragment" />
+        <action
+            android:id="@+id/action_shortsPlayerFragment_to_shortsCommentBottomSheetFragment"
+            app:destination="@id/shortsCommentBottomSheetFragment" />
     </fragment>
+
+
+    <dialog
+        android:id="@+id/shortsCommentBottomSheetFragment"
+        android:name="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsCommentBottomSheetFragment"
+        android:label="ShortsCommentBottomSheetFragment" >
+        <argument
+            app:argType="long"
+            android:name="shortsId"/>
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/shortsShareBottomSheetFragment"
+        android:name="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsShareBottomSheetFragment"
+        android:label="ShortsShareBottomSheetFragment" />
 
     <fragment
         android:id="@+id/routeShortsFragment"
@@ -200,5 +223,10 @@
             android:id="@+id/action_record_fragment_to_timerMainFragment"
             app:destination="@id/timerMainFragment" />
     </fragment>
+
+    <action
+        android:id="@+id/globalActionToShortsPlayerFragment"
+        app:destination="@id/shortsPlayerFragment" />
+
 
 </navigation>

@@ -3,7 +3,7 @@ package com.climus.climeet.data.repository
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
-import com.climus.climeet.data.model.request.ShortsUploadRequest
+import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -18,14 +18,14 @@ import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
-import com.climus.climeet.data.model.response.ShortsSimpleResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
+import com.climus.climeet.data.model.response.UserFollowSimpleResponse
+import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.runRemote
 import com.climus.climeet.data.remote.MainApi
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
-import retrofit2.http.Query
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
@@ -43,11 +43,19 @@ class MainRepositoryImpl @Inject constructor(
     ): BaseState<SearchGymResponse> =
         runRemote { api.searchGym(gymName, page, size) }
 
-    override suspend fun getRecentShorts(page: Int, size: Int): BaseState<ShortsListResponse> =
-        runRemote { api.getRecentShorts(page, size) }
+    override suspend fun getRecentShorts(
+        page: Int,
+        size: Int,
+        filter: Map<String, Long>
+    ): BaseState<ShortsListResponse> =
+        runRemote { api.getRecentShorts(page, size, filter) }
 
-    override suspend fun getPopularShorts(page: Int, size: Int): BaseState<ShortsListResponse> =
-        runRemote { api.getPopularShorts(page, size) }
+    override suspend fun getPopularShorts(
+        page: Int,
+        size: Int,
+        filter: Map<String, Long>
+    ): BaseState<ShortsListResponse> =
+        runRemote { api.getPopularShorts(page, size, filter) }
 
     override suspend fun searchAvailableGym(
         gymName: String,
@@ -59,6 +67,11 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun getShortsUpdatedFollow(): BaseState<List<ShortsUpdatedFollowResponse>> =
         runRemote { api.getShortsUpdatedFollow() }
 
+    override suspend fun getHomeGyms(): BaseState<List<UserHomeGymSimpleResponse>> =
+        runRemote { api.getHomeGyms() }
+
+    override suspend fun getClimberFollowing(): BaseState<List<UserFollowSimpleResponse>> =
+        runRemote { api.getClimberFollowing() }
 
     override suspend fun findBannerListBetweenDates()
             : BaseState<List<BannerDetailInfoResponse>> =
@@ -96,9 +109,11 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun getGymFilteringKey(
         gymId: Long,
-    ): BaseState<GetGymFilteringKeyResponse> = runRemote { api.getGymFilteringKey(
-        gymId
-    ) }
+    ): BaseState<GetGymFilteringKeyResponse> = runRemote {
+        api.getGymFilteringKey(
+            gymId
+        )
+    }
 
     override suspend fun getGymRouteInfoList(
         gymId: Long,
@@ -107,10 +122,13 @@ class MainRepositoryImpl @Inject constructor(
         api.getGymRouteInfoList(gymId, body)
     }
 
-    override suspend fun uploadShorts(body: ShortsUploadRequest): BaseState<Unit> =
-        runRemote {
-            api.uploadShorts(body)
-        }
+    override suspend fun uploadShorts(
+        video: MultipartBody.Part?,
+        body: ShortsDetailRequest
+    ): BaseState<Unit> = runRemote {
+        api.uploadShorts(video, body)
+    }
+
     override suspend fun createTimerClimbingRecord(
         body: CreateTimerClimbingRecordRequest
     ): BaseState<ResponseBody> = runRemote { api.createTimerClimbingRecord(body) }
@@ -118,4 +136,10 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun getGymProfile(gymId: Long): BaseState<GetGymProfileResponse> =
         runRemote { api.getGymProfile(gymId) }
 
+
+    override suspend fun patchBookMark(shortsId: Long): BaseState<Unit> =
+        runRemote { api.patchBookMarks(shortsId) }
+
+    override suspend fun patchFavorite(shortsId: Long): BaseState<Unit> =
+        runRemote { api.patchFavorites(shortsId) }
 }

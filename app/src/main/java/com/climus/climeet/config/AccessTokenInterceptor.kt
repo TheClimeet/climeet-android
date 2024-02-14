@@ -18,7 +18,7 @@ class AccessTokenInterceptor() : Interceptor {
         Log.d("accessToken",jwt.toString())
 
         jwt?.let {
-            builder.addHeader("Authorization", "Bearer $jwt") // $jwt")
+            builder.addHeader("Authorization", "Bearer $jwt")
         } ?: run {
 
         }

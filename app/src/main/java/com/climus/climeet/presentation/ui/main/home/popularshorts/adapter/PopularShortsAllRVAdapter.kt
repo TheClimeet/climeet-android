@@ -6,11 +6,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.climus.climeet.data.model.response.ShortsItem
 import com.climus.climeet.databinding.ItemPopularShortsAllBinding
 import com.climus.climeet.presentation.ui.main.home.model.PopularShorts
 import kotlin.math.min
 
-class PopularShortsAllRVAdapter (private val shortsList: ArrayList<PopularShorts>) : RecyclerView.Adapter<PopularShortsAllRVAdapter.ViewHolder>() {
+class PopularShortsAllRVAdapter (private val shortsList: List<ShortsItem>) : RecyclerView.Adapter<PopularShortsAllRVAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularShortsAllRVAdapter.ViewHolder {
         val binding: ItemPopularShortsAllBinding = ItemPopularShortsAllBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -24,19 +25,19 @@ class PopularShortsAllRVAdapter (private val shortsList: ArrayList<PopularShorts
     override fun getItemCount(): Int = shortsList.size
 
     inner class ViewHolder(val binding: ItemPopularShortsAllBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(shorts: PopularShorts){
-            if(shorts.thumbnailImg != null) {
+        fun bind(shorts: ShortsItem){
+            if(shorts.thumbnailImageUrl != null) {
                 Glide.with(binding.root.context)
-                    .load(shorts.thumbnailImg)
+                    .load(shorts.thumbnailImageUrl)
                     .into(binding.ivShortsAllThumbnail)
             }
-            binding.tvShortsAllCragName.text = shorts.cragName
-            val circleColorCode = shorts.shortsCircle
+            binding.tvShortsAllCragName.text = shorts.gymName
+            val circleColorCode = shorts.gymDifficultyColor
             val circleColor: Int = Color.parseColor(circleColorCode)
             binding.ivPopularShortsAllCircle.setColorFilter(circleColor)
 
-            binding.tvPopularShortsAllLevel.text = shorts.level
-            val levelColorCode = shorts.levelColor
+            binding.tvPopularShortsAllLevel.text = shorts.climeetDifficultyName
+            val levelColorCode = shorts.gymDifficultyColor
             val levelColor: Int = Color.parseColor(levelColorCode)
             val gradientDrawable = GradientDrawable()
             gradientDrawable.shape = GradientDrawable.OVAL
