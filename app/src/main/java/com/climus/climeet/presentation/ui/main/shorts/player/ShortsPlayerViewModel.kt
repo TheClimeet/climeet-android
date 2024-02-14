@@ -181,9 +181,6 @@ class ShortsPlayerViewModel @Inject constructor(
     }
 
     fun applyFilter(sectorInfo: SelectedFilter) {
-        Log.d(TAG, sectorInfo.sectorId.toString())
-        Log.d(TAG, sectorInfo.cragId.toString())
-        Log.d(TAG, sectorInfo.routeId.toString())
         _uiState.update { state ->
             state.copy(
                 page = 0,
@@ -191,6 +188,9 @@ class ShortsPlayerViewModel @Inject constructor(
                 curFilter = sectorInfo
             )
         }
+        Log.d(TAG,sectorInfo.sectorName)
+        Log.d(TAG, sectorInfo.gymLevelName)
+
 
         getShorts(ShortsOption.NEW_SORT)
     }

@@ -79,7 +79,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
         // todo API 업데이트 되면, 필터 적용해서 API CALL
 
         viewModelScope.launch {
-            repository.getPopularShorts(0, 10).let {
+            repository.getPopularShorts(0, 10, hashMapOf()).let {
                 when(it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
