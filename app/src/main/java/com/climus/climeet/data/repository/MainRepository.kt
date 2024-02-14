@@ -23,7 +23,6 @@ import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import okhttp3.MultipartBody
-import retrofit2.Response
 import okhttp3.ResponseBody
 
 interface MainRepository {

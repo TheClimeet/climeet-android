@@ -26,7 +26,6 @@ import com.climus.climeet.data.model.runRemote
 import com.climus.climeet.data.remote.MainApi
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
-import retrofit2.http.Query
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
@@ -102,9 +101,11 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun getGymFilteringKey(
         gymId: Long,
-    ): BaseState<GetGymFilteringKeyResponse> = runRemote { api.getGymFilteringKey(
-        gymId
-    ) }
+    ): BaseState<GetGymFilteringKeyResponse> = runRemote {
+        api.getGymFilteringKey(
+            gymId
+        )
+    }
 
     override suspend fun getGymRouteInfoList(
         gymId: Long,
