@@ -38,6 +38,10 @@ class RouteRecordRepositoryImpl @Inject constructor(
         return routeRecordDao.findExistRecord(sectorId, routeId)
     }
 
+    override fun getAverageDifficultyOfCompleted(): Double {
+        return routeRecordDao.getAverageDifficultyOfCompleted()
+    }
+
     override fun getSuccessCount(level: String): Int{
         return routeRecordDao.getSuccessCount(level)
     }

@@ -38,7 +38,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 data class CreateRecordUiState(
     val isSingleFloor: Boolean = false,
@@ -97,7 +99,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
 
     val totalRoute = MutableLiveData("--")
     val totalComplete = MutableLiveData("--")
-    val avgLevel = MutableLiveData<String>()
+    val avgLevel = MutableLiveData("--")
     val avgCompleteRate: MediatorLiveData<Double> = MediatorLiveData<Double>().apply {
         addSource(totalRoute) { recalculateAvgRate() }
         addSource(totalComplete) { recalculateAvgRate() }
@@ -399,6 +401,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         // 루트 기록 완등 여부 반영
         _items.value.filter { it.routeId == uiState.value.selectedRoute.routeId }.forEach {
             setComplete(it, uiState.value.clearBtnState)
+            setAvgLevel()
         }
     }
 
@@ -420,6 +423,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
 
             // roomDB에 루트 기록 저장
             saveRouteRecord(newItem)
+            setAvgLevel()
         } else {
         }
     }
@@ -474,6 +478,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         if (itemToRemove != null) {
             // roomDB 루트 기록 삭제
             deleteRouteRecord(itemToRemove, itemToRemove.clearBtnState)
+            setAvgLevel()
         }
         _items.value = _items.value.filter { it.routeId != id }
         _uiState.update { state ->
@@ -507,6 +512,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         // 루트 기록 완등 여부 반영
         _items.value.filter { it.routeId == uiState.value.selectedRoute.routeId }.forEach {
             setComplete(it, uiState.value.clearBtnState)
+            setAvgLevel()
         }
     }
 
@@ -586,12 +592,12 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                     // 루트 완등
                     record.isCompleted = true
                     routeRepository.update(record)
-                    Log.d("recorddd", "id ${record.id} 루트 완등")
+                    //Log.d("recorddd", "id ${record.id} 루트 완등")
                 } else {
                     // 루트 완등 취소
                     record.isCompleted = false
                     routeRepository.update(record)
-                    Log.d("recorddd", "id ${record.id} 루트 완등 취소")
+                    //Log.d("recorddd", "id ${record.id} 루트 완등 취소")
                 }
             }
         }
@@ -656,6 +662,24 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                     totalComplete.value = num
                     sharedPreferences.edit().putString(TOP_COMPLETE, num).apply()
                 }
+            }
+        }
+    }
+
+    // 상단 평균 레벨 설정
+    private fun setAvgLevel() {
+        CoroutineScope(Dispatchers.IO).launch {
+            delay(1000)
+            val completedRoutes = routeRepository.getAverageDifficultyOfCompleted().roundToInt()
+            withContext(Dispatchers.Main) {
+                if (completedRoutes != null && totalComplete.value != "--") {
+                    // 난이도 이름과 매칭
+                    avgLevel.value = gymLevelList[completedRoutes].levelName
+                    sharedPreferences.edit().putString(TOP_LEVEL, avgLevel.value).apply()
+                } else {
+                    avgLevel.value = "--"
+                }
+                //Log.d("recorddd", "평균 레벨 계산: $completedRoutes ${avgLevel.value}")
             }
         }
     }

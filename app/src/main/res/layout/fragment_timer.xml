@@ -91,8 +91,8 @@
                         style="@style/TextMediumBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{recordVM.avgLevel}"
                         android:textSize="30sp"
+                        android:text="@{recordVM.avgLevel}"
                         app:layout_constraintEnd_toEndOf="@id/tv_avg_level"
                         app:layout_constraintStart_toStartOf="@id/tv_avg_level"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -571,7 +571,7 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <!--     루트 기록 더보기     -->
+                    <!--     루트 기록 더보기     -->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_toggle"
                         android:layout_width="match_parent"

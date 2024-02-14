@@ -17,6 +17,8 @@ interface RouteRecordRepository {
 
     fun findExistRecord(sectorId: Long, routeId: Long): RouteRecordData?
 
+    fun getAverageDifficultyOfCompleted(): Double
+
     fun getSuccessCount(level: String): Int
 
     fun getAttemptCount(level: String): Int
