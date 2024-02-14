@@ -373,48 +373,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
         addItem(item)
     }
 
-    fun climbingComplete() {
-
-        val climbingRecords: List<ClimbingRecord> = _items.value.map { routeUiData ->
-            ClimbingRecord(
-                routeId = routeUiData.routeId,
-                attemptCount = routeUiData.challengeNum,
-                isCompleted = routeUiData.clearBtnState
-            )
-        }
-
-        val gymId = selectedCragEvent.value?.let {
-            it.first
-        } ?: run {
-            1
-        }
-
-        val requestBody = CreateTimerClimbingRecordRequest(
-            gymId = gymId,
-            date = CreateRecordData.selectedDate.toString(),
-            time = CreateRecordData.getTimeDiff().toString(),
-            avgDifficulty = 3,
-            routeRecordRequestDtoList = climbingRecords
-        )
-
-        viewModelScope.launch {
-            repository.createTimerClimbingRecord(requestBody).let {
-                when (it) {
-                    is BaseState.Success -> {
-                        _event.emit(
-                            CreateClimbingRecordEvent.ClimbingComplete
-                        )
-                    }
-
-                    is BaseState.Error -> {
-                        _event.emit(CreateClimbingRecordEvent.ShowToastMessage(it.msg))
-                    }
-
-                }
-            }
-        }
-    }
-
     fun addChallengeNum() {
         _challengeNumber.value = (_challengeNumber.value ?: 0) + 1
         _items.value = _items.value.map {
@@ -550,16 +508,75 @@ class CreateClimbingRecordViewModel @Inject constructor(
 
     }
 
+    fun climbingComplete() {
+
+        val climbingRecords: List<ClimbingRecord> = _items.value.map { routeUiData ->
+            ClimbingRecord(
+                routeId = routeUiData.routeId,
+                attemptCount = routeUiData.challengeNum,
+                isCompleted = routeUiData.clearBtnState
+            )
+        }
+
+        val gymId = selectedCragEvent.value?.let {
+            it.first
+        } ?: run {
+            1
+        }
+
+        val requestBody = CreateTimerClimbingRecordRequest(
+            gymId = gymId,
+            date = CreateRecordData.selectedDate.toString(),
+            time = CreateRecordData.getTimeDiff().toString(),
+            avgDifficulty = 3,
+            routeRecordRequestDtoList = climbingRecords
+        )
+
+        viewModelScope.launch {
+            repository.createTimerClimbingRecord(requestBody).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _event.emit(
+                            CreateClimbingRecordEvent.ClimbingComplete
+                        )
+                        resetState()
+                    }
+
+                    is BaseState.Error -> {
+                        _event.emit(CreateClimbingRecordEvent.ShowToastMessage(it.msg))
+                    }
+
+                }
+            }
+        }
+    }
+
     fun navigateToSelectCrag() {
         viewModelScope.launch {
             _event.emit(CreateClimbingRecordEvent.NavigateToSelectCrag)
         }
+        resetState()
     }
 
     fun navigateToBack() {
         viewModelScope.launch {
             _event.emit(CreateClimbingRecordEvent.NavigateToBack)
         }
+        resetState()
+    }
+
+    fun resetState() {
+        _uiState.value = CreateClimbingRecordUiState()
+        _items.value = emptyList()
+        timePickText.value = "시간을 입력해주세요 (선택)"
+        CreateRecordData.setSelectedTime(LocalTime.of(11,0, 0), LocalTime.of(11,0, 0))
+        sectorNameList = emptyList()
+        gymLevelList = emptyList()
+        isSelectedCrag.value = false
+        selectedCragEvent.value = Pair(0, "클라이밍 암장을 선택해주세요")
+        _challengeNumber.value = 0
+        isToggleOn.value = true
+
     }
 
 }
