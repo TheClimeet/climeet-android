@@ -2,7 +2,7 @@ package com.climus.climeet.data.remote
 
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
-import com.climus.climeet.data.model.request.ShortsUploadRequest
+import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -23,15 +23,18 @@ import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface MainApi {
 
@@ -65,13 +68,15 @@ interface MainApi {
     @GET("api/shorts/latest")
     suspend fun getRecentShorts(
         @Query("page") page: Int,
-        @Query("size") size: Int
+        @Query("size") size: Int,
+        @QueryMap filter : Map<String, Long>,
     ): Response<ShortsListResponse>
 
     @GET("api/shorts/popular")
     suspend fun getPopularShorts(
         @Query("page") page: Int,
-        @Query("size") size: Int
+        @Query("size") size: Int,
+        @QueryMap filter : Map<String, Long>,
     ): Response<ShortsListResponse>
 
     @GET("api/shorts/profile")
@@ -132,9 +137,21 @@ interface MainApi {
         @Path("gymId") gymId: Long
     ): Response<GetGymProfileResponse>
 
+    @Multipart
     @POST("/api/shorts")
     suspend fun uploadShorts(
-        @Body params: ShortsUploadRequest
+        @Part video: MultipartBody.Part?,
+        @Part("createShortsRequest") createShortsRequest: ShortsDetailRequest
+    ): Response<Unit>
+
+    @PATCH("/api/shorts/{shortsId}/bookmarks")
+    suspend fun patchBookMarks(
+        @Path("shortsId") shortsId: Long
+    ): Response<Unit>
+
+    @PATCH("/api/Shorts/{shortsId}/likes")
+    suspend fun patchFavorites(
+        @Path("shortsId") shortsId: Long
     ): Response<Unit>
 
 }

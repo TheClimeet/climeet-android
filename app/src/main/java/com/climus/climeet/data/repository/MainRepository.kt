@@ -3,7 +3,7 @@ package com.climus.climeet.data.repository
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
-import com.climus.climeet.data.model.request.ShortsUploadRequest
+import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -23,7 +23,6 @@ import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import okhttp3.MultipartBody
-import retrofit2.Response
 import okhttp3.ResponseBody
 
 interface MainRepository {
@@ -46,12 +45,14 @@ interface MainRepository {
 
     suspend fun getRecentShorts(
         page: Int,
-        size: Int
+        size: Int,
+        filter: Map<String, Long>
     ): BaseState<ShortsListResponse>
 
     suspend fun getPopularShorts(
         page: Int,
-        size: Int
+        size: Int,
+        filter: Map<String, Long>
     ): BaseState<ShortsListResponse>
 
     suspend fun getShortsUpdatedFollow(): BaseState<List<ShortsUpdatedFollowResponse>>
@@ -97,7 +98,15 @@ interface MainRepository {
     ): BaseState<GetGymProfileResponse>
 
     suspend fun uploadShorts(
-        body: ShortsUploadRequest
+        video: MultipartBody.Part?,
+        body: ShortsDetailRequest
     ): BaseState<Unit>
 
+    suspend fun patchBookMark(
+        shortsId: Long
+    ): BaseState<Unit>
+
+    suspend fun patchFavorite(
+        shortsId: Long
+    ): BaseState<Unit>
 }

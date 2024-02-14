@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColorInt
 import androidx.databinding.BindingAdapter
+import androidx.media3.ui.PlayerView
 import com.climus.climeet.R
 import com.climus.climeet.presentation.ui.InputState
 import com.climus.climeet.presentation.ui.intro.SignUpState
@@ -55,4 +56,23 @@ fun bindViewHexColor(v : View, hexColor: String) {
     if(hexColor.isNotBlank()){
         v.backgroundTintList = ColorStateList.valueOf(hexColor.toColorInt())
     }
+}
+
+@BindingAdapter("playerAlpha")
+fun bindPlayerAlpha(pv: PlayerView, state: Boolean){
+    if(state){
+        pv.alpha = 0.3F
+    } else {
+        pv.alpha = 1F
+    }
+}
+
+@BindingAdapter("isDataNull")
+fun bindIsDataNull(v: View, data: String?){
+    data?.let{
+        v.visibility = View.VISIBLE
+    } ?: run{
+        v.visibility = View.INVISIBLE
+    }
+
 }

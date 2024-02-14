@@ -6,29 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.climus.climeet.R
-import com.climus.climeet.databinding.FragmentShortsBottomSheetBinding
-import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
+import com.climus.climeet.databinding.FragmentShortsCommentBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
-class ShortsBottomSheetFragment : BottomSheetDialogFragment() {
+class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
 
-    private var _binding: FragmentShortsBottomSheetBinding? = null
+    private var _binding: FragmentShortsCommentBottomSheetBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: ShortsBottomSheetViewModel by activityViewModels()
-    private val parentViewModel: ShortsPlayerViewModel by activityViewModels()
+    private val viewModel : ShortsCommentBottomSheetViewModel by viewModels()
 
     fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -43,7 +39,7 @@ class ShortsBottomSheetFragment : BottomSheetDialogFragment() {
     ): View {
         _binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_shorts_bottom_sheet,
+            R.layout.fragment_shorts_comment_bottom_sheet,
             container,
             false
         )
@@ -64,24 +60,9 @@ class ShortsBottomSheetFragment : BottomSheetDialogFragment() {
         BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initEventObserve()
     }
 
-    private fun initEventObserve() {
-        repeatOnStarted {
-            viewModel.event.collect {
-                when(it){
-                    is ShortsBottomSheetEvent.DismissDialog -> dismiss()
-                    is ShortsBottomSheetEvent.ApplyFilter -> {
-                        parentViewModel.applyFilter(it.selectedFilter)
-                        dismiss()
-                    }
-                }
-            }
-        }
-    }
 }
