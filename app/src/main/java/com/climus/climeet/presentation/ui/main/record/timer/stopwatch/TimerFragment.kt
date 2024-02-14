@@ -19,6 +19,7 @@ import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.Secto
 import com.climus.climeet.presentation.ui.main.record.model.LevelItemForAvg
 import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordData
 import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordRepository
+import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordData
 import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordRepository
 import com.climus.climeet.presentation.ui.main.record.timer.setrecord.ClimbingRecordAdapter
 import com.climus.climeet.presentation.ui.main.record.timer.setrecord.RecordAverageAdapter
@@ -30,6 +31,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -44,7 +46,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
     // room DB
     @Inject
-    lateinit var climbingRecordRepository: ClimbingRecordRepository
+    lateinit var climbingRepository: ClimbingRecordRepository
 
     @Inject
     lateinit var routeRepository: RouteRecordRepository
@@ -133,7 +135,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
                 binding.tvTitle.text = cragName
                 //Log.d("TIMER", "timerfragment 이름 설정함 id :$cragId, name : $cragName, data : $date")
 
-                // todo : room db에 암장정보 자장 겸 초기화 (완료)
+                // room db에 암장정보 저장
                 val recordData = ClimbingRecordData(
                     id = 1,
                     gymId = cragId,
@@ -142,9 +144,10 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
                     time = "",
                     avgDifficulty = 0
                 )
+                // 결과 확인
                 CoroutineScope(Dispatchers.IO).launch {
-                    climbingRecordRepository.insert(recordData)
-                    val result = climbingRecordRepository.getAll()
+                    climbingRepository.insert(recordData)
+                    val result = climbingRepository.getAll()
                     delay(1000)
                     Log.d("recorddd", result.toString())
                 }
@@ -154,7 +157,6 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
     // 평균 완등률 설정
     private fun setAverage() {
-        // 토글 위에 있는 총 평균 완등률
         recordVM.avgCompleteRate.observe(viewLifecycleOwner, Observer { rate ->
             val progress = (rate * 100).roundToInt()
             binding.pbAvgComplete.progress = progress
@@ -162,18 +164,38 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         })
     }
 
-    // 도전한 레벨 별 평균 완등
+    // 도전한 레벨 별 평균 완등률
     private fun setAverageByLevel() {
-        val levelAdapter = RecordAverageAdapter(recordVM)
-        binding.rvAvgRecord.adapter = levelAdapter
+        recordVM.updateRecord.observe(viewLifecycleOwner, Observer {
+            var items: List<LevelItemForAvg>
+            val levelAdapter = RecordAverageAdapter(recordVM)
+            binding.rvAvgRecord.adapter = levelAdapter
 
-        // todo : roomDB에 저장된 선택한 루트기록 값 가져와서 넘겨주기
-        val items = listOf(
-            LevelItemForAvg("V1", "#FFFFFF", 3, 2),
-            LevelItemForAvg("V2", "#DDDDDD", 5, 3),
-        )
+            CoroutineScope(Dispatchers.IO).launch {
+                val levelData = routeRepository.getAllLevelRecord()
+                val firstRecords = mutableListOf<RouteRecordData>() // 중복 없게 각 레벨별 첫번째 데이터만 골라냄
 
-        levelAdapter.setItems(items)
+                val levelNameSet = mutableSetOf<String>()
+                for (record in levelData) {
+                    if (!levelNameSet.contains(record.levelName)) {
+                        levelNameSet.add(record.levelName)
+                        firstRecords.add(record)
+                    }
+                }
+                if (firstRecords != null) {
+                    items = firstRecords.map { data ->
+                        val attemptCount = routeRepository.getAttemptCount(data.levelName)
+                        val successCount = routeRepository.getSuccessCount(data.levelName)
+                        val levelColor = data.levelColor
+                        LevelItemForAvg(data.levelName, levelColor, attemptCount, successCount)
+                    }
+                    withContext(Dispatchers.Main) {
+                        levelAdapter.setItems(items)
+                    }
+                }
+            }
+            Log.d("recorddd", "레벨 완등률 변경")
+        })
     }
 
     private fun setRouteRecyclerView() {
@@ -196,6 +218,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         }
     }
 
+    // todo : 앱 재시작하면 암장 루트정보 API 다시 호출, 저장된 루트 기록과 평균 완등률 복구
     override fun onStart() {
         super.onStart()
 //        val serviceState = TimerService.serviceRunning
@@ -227,13 +250,6 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         // spf에 저장된 값 불러와 뷰모델에 저장
         setViewModel()
         timerObserve()
-
-        // room db 롹인
-        CoroutineScope(Dispatchers.IO).launch {
-            val result = routeRepository.getAllRecord()
-            delay(1000)
-            Log.d("recorddd", "TimerFragment onReasume 저장된 기록들\n $result")
-        }
     }
 
     override fun onDestroy() {
@@ -301,8 +317,6 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         }
     }
 
-    // todo : 일시정지 여부 관찰
-    // 현재 스톱워치가 화면에 보여지고 있는 상태에서, 알림창 일시정지 클릭 시 상태를 바로 반영해주기 위해 설정...했는데 왜 잘 안될까
     private fun pauseObserve() {
         timerVM.pauseState.observe(viewLifecycleOwner, Observer { state ->
             if (state == "yes") {
@@ -404,18 +418,17 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             NoticePopup.make(it, "정지 버튼을 길게 누르면\n운동이 종료됩니다.").show()
         }
         binding.ivStop.setOnLongClickListener {
+            // 종료 시간 저장
+            CoroutineScope(Dispatchers.IO).launch {
+                sharedPreferences.edit().putString("stopTime", timerVM.timeFormat.value).commit()
+            }
             stopStopwatch()
 
             // TimerCragSelectBottomSheetViewModel의 selectedCrag 초기화
             cragSelectVM.resetItem()
 
             // 루트기록 API로 전송
-            //timerVM.sendClimbingRecord()
-
-            // todo : 루트기록 저장 로직 완성되면 뷰모델 데이터들 초기화 및 아래 deleteAll 삭제
-            CoroutineScope(Dispatchers.IO).launch {
-                routeRepository.deleteAll()
-            }
+            timerVM.sendClimbingRecord()
 
             // 완료화면 띄우기
             val transaction = requireActivity().supportFragmentManager.beginTransaction()

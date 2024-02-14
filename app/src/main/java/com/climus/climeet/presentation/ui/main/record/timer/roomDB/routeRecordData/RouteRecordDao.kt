@@ -37,6 +37,9 @@ interface RouteRecordDao {
     fun getAverageDifficultyOfCompleted(): Double
 
     // 레벨별 평균 완등률 계산
+    @Query("SELECT * FROM route_record WHERE levelName IN (SELECT DISTINCT levelName FROM route_record)")
+    fun getAllLevelRecord(): List<RouteRecordData>
+
     @Query("SELECT COUNT(*) FROM route_record WHERE levelName = :level AND isCompleted = 1")
     fun getSuccessCount(level: String): Int
 

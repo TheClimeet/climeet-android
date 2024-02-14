@@ -19,6 +19,8 @@ interface RouteRecordRepository {
 
     fun getAverageDifficultyOfCompleted(): Double
 
+    fun getAllLevelRecord(): List<RouteRecordData>
+
     fun getSuccessCount(level: String): Int
 
     fun getAttemptCount(level: String): Int

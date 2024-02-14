@@ -42,6 +42,10 @@ class RouteRecordRepositoryImpl @Inject constructor(
         return routeRecordDao.getAverageDifficultyOfCompleted()
     }
 
+    override fun getAllLevelRecord(): List<RouteRecordData> {
+        return routeRecordDao.getAllLevelRecord()
+    }
+
     override fun getSuccessCount(level: String): Int{
         return routeRecordDao.getSuccessCount(level)
     }

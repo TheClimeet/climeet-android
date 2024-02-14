@@ -105,6 +105,8 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         addSource(totalComplete) { recalculateAvgRate() }
     }
 
+    val updateRecord = MutableLiveData<Boolean>(false)
+
     private fun recalculateAvgRate() {
         if (totalRoute.value == "--" || totalComplete.value == "--") {
             avgCompleteRate.value = 0.0
@@ -546,6 +548,11 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                     isCompleted = false
                 )
                 routeRepository.insert(routeRecord)
+
+                delay(500)
+                withContext(Dispatchers.Main) {
+                    updateRecord.value = !updateRecord.value!!
+                }
             }
         }
 
@@ -592,11 +599,21 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                     // 루트 완등
                     record.isCompleted = true
                     routeRepository.update(record)
+
+                    delay(500)
+                    withContext(Dispatchers.Main) {
+                        updateRecord.value = !updateRecord.value!!
+                    }
                     //Log.d("recorddd", "id ${record.id} 루트 완등")
                 } else {
                     // 루트 완등 취소
                     record.isCompleted = false
                     routeRepository.update(record)
+
+                    delay(500)
+                    withContext(Dispatchers.Main) {
+                        updateRecord.value = !updateRecord.value!!
+                    }
                     //Log.d("recorddd", "id ${record.id} 루트 완등 취소")
                 }
             }
@@ -635,6 +652,11 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             if (target != null) {
                 // 루트 기록 삭제
                 routeRepository.deleteById(target.id)
+
+                delay(500)
+                withContext(Dispatchers.Main) {
+                    updateRecord.value = !updateRecord.value!!
+                }
                 //Log.d("recorddd", "id ${target.id} 루트 기록 삭제")
             }
         }
