@@ -10,6 +10,7 @@ import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteSimpleResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
 import com.climus.climeet.data.model.response.ShortsSimpleResponse
+import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedFilter
 import com.climus.climeet.presentation.ui.main.home.model.HomeGym
@@ -38,7 +39,7 @@ import javax.inject.Inject
 
 data class HomeUiState(
     val bannerList : List<BannerDetailInfoResponse> = emptyList(),
-    val homegymList: List<HomeGym> = emptyList(),
+    val homegymList: List<UserHomeGymSimpleResponse> = emptyList(),
     val shortsList : ShortsListResponse? = null,
     val cragList: List<BestFollowGymSimpleResponse> = emptyList(),
     val routeList: List<BestRouteDetailInfoResponse> = emptyList()
@@ -70,11 +71,32 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
         }
     }
 
+    fun getHomeGyms() {
+        viewModelScope.launch {
+            repository.getHomeGyms().let {
+                when(it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                homegymList = it.body
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> {
+                        it.msg // 서버 에러 메시지
+                        Log.d("API", it.msg)
+                    }
+                }
+            }
+        }
+    }
+
     fun getShorts() {
         // todo API 업데이트 되면, 필터 적용해서 API CALL
 
         viewModelScope.launch {
-            repository.getPopularShorts(0, 20).let {
+            repository.getPopularShorts(0, 10).let {
                 when(it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
