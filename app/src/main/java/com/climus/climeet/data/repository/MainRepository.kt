@@ -21,6 +21,7 @@ import com.climus.climeet.data.model.response.ShortsListResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 
 interface MainRepository {
 
@@ -83,7 +84,7 @@ interface MainRepository {
 
     suspend fun createTimerClimbingRecord(
         body: CreateTimerClimbingRecordRequest
-    ): BaseState<String>
+    ): BaseState<ResponseBody>
 
     suspend fun getGymProfile(
         gymId: Long
