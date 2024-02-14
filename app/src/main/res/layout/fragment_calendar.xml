@@ -32,38 +32,6 @@
                 android:paddingBottom="10dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_yearmonth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/transparent"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_month">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_year"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:listitem="@layout/item_calendar_date" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_month"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/rv_year"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:listitem="@layout/item_calendar_date" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_month"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

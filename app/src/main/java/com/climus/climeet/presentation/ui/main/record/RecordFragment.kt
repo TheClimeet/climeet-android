@@ -9,6 +9,7 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentRecordBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.record.calendar.CalendarFragment
+import com.climus.climeet.presentation.ui.main.record.stats.StatsFragment
 
 class RecordFragment : BaseFragment<FragmentRecordBinding>(R.layout.fragment_record) {
     private val viewModel: RecordViewModel by viewModels()
@@ -21,10 +22,10 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>(R.layout.fragment_rec
         initEventObserve()
     }
 
-    private fun initEventObserve(){
+    private fun initEventObserve() {
         repeatOnStarted {
             viewModel.event.collect {
-                when(it){
+                when (it) {
                     RecordEvent.ShowCalendarFragment -> showCalendar()
                     RecordEvent.ShowStatsFragment -> showStats()
                 }
@@ -32,16 +33,16 @@ class RecordFragment : BaseFragment<FragmentRecordBinding>(R.layout.fragment_rec
         }
     }
 
-    private fun showCalendar(){
+    private fun showCalendar() {
         binding.tvRecord.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
         binding.tvStat.setTextColor(ContextCompat.getColor(requireContext(), R.color.cm_silver))
         showFragment(CalendarFragment())
     }
 
-    private fun showStats(){
+    private fun showStats() {
         binding.tvRecord.setTextColor(ContextCompat.getColor(requireContext(), R.color.cm_silver))
         binding.tvStat.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-        showFragment(CalendarFragment())
+        showFragment(StatsFragment())
     }
 
     private fun showFragment(fragment: Fragment) {
