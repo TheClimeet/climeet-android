@@ -15,7 +15,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide"
@@ -27,19 +28,19 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_profile"
             android:layout_width="40dp"
-            app:profileImgUrl="@{item.profileImageUrl}"
             android:layout_height="40dp"
             app:layout_constraintStart_toStartOf="@id/guide"
             app:layout_constraintTop_toTopOf="parent"
+            app:profileImgUrl="@{item.profileImageUrl}"
             tools:src="@drawable/test" />
 
         <TextView
             android:id="@+id/tv_nick"
             style="@style/TextRegular"
             android:layout_width="wrap_content"
-            android:text="@{item.nickName}"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:text="@{item.nickName}"
             app:layout_constraintStart_toEndOf="@id/iv_profile"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="클라이밍하는 헤일" />
@@ -61,8 +62,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@{item.content}"
             android:lineSpacingExtra="4dp"
+            android:text="@{item.content}"
             android:textColor="@color/cm_grey3"
             app:layout_constraintEnd_toEndOf="@id/tv_due"
             app:layout_constraintStart_toStartOf="@id/tv_nick"
@@ -96,8 +97,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:visibility="@{item.likeCount == 0? View.GONE : View.VISIBLE}"
             android:textColor="@color/cm_grey_dark1"
+            android:visibility="@{item.likeCount == 0? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/tv_thumbs_up_label"
             app:layout_constraintStart_toEndOf="@id/tv_thumbs_up_label"
             tools:text="30" />
@@ -130,8 +131,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:visibility="@{item.likeCount == 0? View.GONE : View.VISIBLE}"
             android:textColor="@color/cm_grey_dark1"
+            android:visibility="@{item.likeCount == 0? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/btn_thumbs_down"
             app:layout_constraintStart_toEndOf="@id/tv_thumbs_down_label"
             app:layout_constraintTop_toTopOf="@id/btn_thumbs_down"

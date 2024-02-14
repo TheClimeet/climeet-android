@@ -40,12 +40,15 @@
             android:id="@+id/rv_comment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:clipToPadding="false"
+            app:list="@{vm.uiState.shortsCommentList}"
             android:orientation="vertical"
+            android:paddingBottom="200dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_comment_label"
-            app:list="@{vm.uiState.shortsCommentList}" />
+            app:layout_constraintTop_toBottomOf="@id/tv_comment_label" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

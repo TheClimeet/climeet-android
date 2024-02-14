@@ -164,7 +164,7 @@ interface MainApi {
         @Query("size") size: Int
     ): Response<ShortsSubCommentResponse>
 
-    @GET("/api/shorts/{shortsId}/shortsComment")
+    @GET("/api/shorts/{shortsId}/shortsComments")
     suspend fun getShortsCommentList(
         @Path("shortsId") shortsId: Long,
         @Query("page") page: Int,

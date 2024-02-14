@@ -12,15 +12,19 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentShortsCommentBottomSheetBinding
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsCommentAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
 
     private var _binding: FragmentShortsCommentBottomSheetBinding? = null
@@ -30,6 +34,8 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
     private val shortsId by lazy { args.shortsId }
 
     private val viewModel : ShortsCommentBottomSheetViewModel by viewModels()
+
+    private var adapter: ShortsCommentAdapter? = null
 
     fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -68,9 +74,36 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setShortsId(shortsId)
         binding.vm = viewModel
-        binding.rvComment.adapter = ShortsCommentAdapter()
+        adapter = ShortsCommentAdapter()
+        binding.rvComment.adapter = adapter
+        viewModel.setShortsId(shortsId)
+        initStateObserver()
+        recyclerViewListener()
+    }
+
+    private fun initStateObserver(){
+        repeatOnStarted {
+            viewModel.uiState.collect{
+                adapter?.submitList(it.shortsCommentList)
+            }
+        }
+    }
+
+    private fun recyclerViewListener(){
+        binding.rvComment.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
+
+                if (lastVisibleItemPosition == itemTotalCount) {
+                    viewModel.getCommentList()
+                }
+            }
+        })
     }
 
 }

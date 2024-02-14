@@ -17,31 +17,50 @@ class ShortsCommentAdapter :
         const val SUB_COMMENT = 1
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ShortsMainCommentViewHolder -> holder.bind(getItem(position))
             is ShortsSubCommentViewHolder -> holder.bind(getItem(position))
-            else -> {}
         }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
-            MAIN_COMMENT -> ShortsMainCommentViewHolder(
-                ItemMainCommentBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
+            MAIN_COMMENT -> {
+                ShortsMainCommentViewHolder(
+                    ItemMainCommentBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
                 )
-            )
+            }
 
-            else -> ShortsSubCommentViewHolder(
-                ItemSubCommentBinding.inflate(
-                    LayoutInflater.from(
-                        parent.context
-                    ), parent, false
+            SUB_COMMENT -> {
+                ShortsSubCommentViewHolder(
+                    ItemSubCommentBinding.inflate(
+                        LayoutInflater.from(
+                            parent.context
+                        ), parent, false
+                    )
                 )
-            )
+            }
+
+            else -> {
+                ShortsSubCommentViewHolder(
+                    ItemSubCommentBinding.inflate(
+                        LayoutInflater.from(
+                            parent.context
+                        ), parent, false
+                    )
+                )
+            }
         }
+
+    override fun getItemViewType(position: Int): Int {
+        val item = getItem(position)
+        return item.type
+    }
 }
 
 class ShortsMainCommentViewHolder(private val binding: ItemMainCommentBinding) :
