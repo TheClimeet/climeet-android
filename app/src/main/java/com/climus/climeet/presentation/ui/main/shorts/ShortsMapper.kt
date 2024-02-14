@@ -2,8 +2,10 @@ package com.climus.climeet.presentation.ui.main.shorts
 
 import com.climus.climeet.data.model.response.SearchAvailableGymItem
 import com.climus.climeet.data.model.response.ShortsItem
+import com.climus.climeet.data.model.response.ShortsMainCommentItem
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiData
+import com.climus.climeet.presentation.ui.main.shorts.model.ShortsCommentUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.UpdatedFollowUiData
@@ -84,4 +86,26 @@ fun ShortsUpdatedFollowResponse.toUpdatedFollowUiData(
     name = followingUserName,
     onClickListener = onClickListener,
     navigateToAddFollow = navigateToAddFollow
+)
+
+fun ShortsMainCommentItem.toShortsCommentUiData(
+    changeLikeStatus: (Long, Boolean, Boolean) -> Unit,
+    showMoreComment: (Long) -> Unit,
+    addSubComment: (Long) -> Unit
+) = ShortsCommentUiData(
+    commentId = commentId,
+    nickName = nickname,
+    profileImageUrl = profileImageUrl,
+    content = content,
+    commentLikeStatus = commentLikeStatus,
+    likeCount = likeCount,
+    dislikeCount = dislikeCount,
+    type = if (isParent) 1 else 0,
+    parentCommentId = parentCommentId,
+    childCommentCount = childCommentCount,
+    createDate = createdDate,
+    changeLikeStatus = changeLikeStatus,
+    showMoreComment = showMoreComment,
+    addSubComment = addSubComment
+
 )

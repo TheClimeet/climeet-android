@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsCommentBottomSheetViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,7 +44,8 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_comment_label" />
+            app:layout_constraintTop_toBottomOf="@id/tv_comment_label"
+            app:list="@{vm.uiState.shortsCommentList}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

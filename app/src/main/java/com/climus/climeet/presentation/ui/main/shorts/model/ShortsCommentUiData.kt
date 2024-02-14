@@ -5,20 +5,16 @@ data class ShortsCommentUiData(
     val nickName: String = "",
     val profileImageUrl: String = "",
     val content: String = "",
-    val commentLikeStatus: LikeStatus = LikeStatus.NONE,
+    val commentLikeStatus: String = "",
     val likeCount: Int = 0,
     val dislikeCount: Int = 0,
     val type: Int = 0,
     val parentCommentId: Long = -1,
     val childCommentCount: Int = 0,
     val createDate: String = "",
-    val changeLikeStatus: (Long) -> Unit,
+    val changeLikeStatus: (Long, Boolean, Boolean) -> Unit,
     val showMoreComment: (Long) -> Unit,
     val addSubComment: (Long) -> Unit
 )
 
-enum class LikeStatus {
-    LIKE,
-    DISLIKE,
-    NONE
-}
+

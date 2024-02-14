@@ -11,8 +11,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentShortsCommentBottomSheetBinding
+import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsCommentAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -23,6 +25,9 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
 
     private var _binding: FragmentShortsCommentBottomSheetBinding? = null
     private val binding get() = _binding!!
+
+    private val args: ShortsCommentBottomSheetFragmentArgs by navArgs()
+    private val shortsId by lazy { args.shortsId }
 
     private val viewModel : ShortsCommentBottomSheetViewModel by viewModels()
 
@@ -63,6 +68,9 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.setShortsId(shortsId)
+        binding.vm = viewModel
+        binding.rvComment.adapter = ShortsCommentAdapter()
     }
 
 }
