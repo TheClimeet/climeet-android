@@ -15,6 +15,7 @@ import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
@@ -142,4 +143,9 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun patchFavorite(shortsId: Long): BaseState<Unit> =
         runRemote { api.patchFavorites(shortsId) }
+
+    override suspend fun getMyStatsMonth(
+        year: Int,
+        month: Int
+    ): BaseState<MyStatsMonthResponse> = runRemote { api.getMyStatsMonth(year, month) }
 }

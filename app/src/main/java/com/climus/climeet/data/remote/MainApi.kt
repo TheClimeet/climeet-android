@@ -14,6 +14,7 @@ import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
@@ -153,5 +154,11 @@ interface MainApi {
     suspend fun patchFavorites(
         @Path("shortsId") shortsId: Long
     ): Response<Unit>
+
+    @GET("/api/climbing-records/users/statistics/months")
+    suspend fun getMyStatsMonth(
+        @Query("year") year: Int,
+        @Query("month") month: Int
+    ): Response<MyStatsMonthResponse>
 
 }
