@@ -4,6 +4,7 @@ data class RouteUiData(
     val routeId: Long = -1,
     val sectorId: Long = -1,
     val sectorName: String = "",
+    val difficulty: Int = 0,
     val gymLevelName: String = "",
     val gymLevelColor: String = "",
     val climeetLevelName: String = "",
