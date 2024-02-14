@@ -1,5 +1,6 @@
 package com.climus.climeet.data.remote
 
+import com.climus.climeet.data.model.request.AddShortsCommentRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
@@ -18,12 +19,13 @@ import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
+import com.climus.climeet.data.model.response.ShortsMainCommentResponse
+import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -69,14 +71,14 @@ interface MainApi {
     suspend fun getRecentShorts(
         @Query("page") page: Int,
         @Query("size") size: Int,
-        @QueryMap filter : Map<String, Long>,
+        @QueryMap filter: Map<String, Long>,
     ): Response<ShortsListResponse>
 
     @GET("api/shorts/popular")
     suspend fun getPopularShorts(
         @Query("page") page: Int,
         @Query("size") size: Int,
-        @QueryMap filter : Map<String, Long>,
+        @QueryMap filter: Map<String, Long>,
     ): Response<ShortsListResponse>
 
     @GET("api/shorts/profile")
@@ -154,4 +156,32 @@ interface MainApi {
         @Path("shortsId") shortsId: Long
     ): Response<Unit>
 
+    @GET("/api/shorts/{shortsId}/{parentCommentId}")
+    suspend fun getShortsSubCommentList(
+        @Path("shortsId") shortsId: Long,
+        @Path("parentCommentId") parentCommentId: Long,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<ShortsSubCommentResponse>
+
+    @GET("/api/shorts/{shortsId}/shortsComment")
+    suspend fun getShortsCommentList(
+        @Path("shortsId") shortsId: Long,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<ShortsMainCommentResponse>
+
+    @POST("/api/shorts/{shortsId}/shortsComments")
+    suspend fun addShortsComment(
+        @Path("shortsId") shortsId: Long,
+        @Query("parentCommentId") parentCommentId: Long,
+        @Body params: AddShortsCommentRequest
+    ): Response<Unit>
+
+    @PATCH("/api/shortsComments/{shortsCommentId}")
+    suspend fun patchShortsCommentInteraction(
+        @Path("shortsCommentId") shortsCommentId: Long,
+        @Query("isLike") isLike: Boolean,
+        @Query("isDislike") isDislike: Boolean
+    ): Response<Unit>
 }
