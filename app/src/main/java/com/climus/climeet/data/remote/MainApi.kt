@@ -20,8 +20,11 @@ import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
+import com.climus.climeet.data.model.response.UserFollowSimpleResponse
+import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -51,6 +54,10 @@ interface MainApi {
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<SearchAvailableGymResponse>
+
+    @GET("/climber-following")
+    suspend fun getClimberFollowing(
+    ): Response<List<UserFollowSimpleResponse>>
 
     @POST("refresh-token")
     suspend fun refreshToken(
@@ -90,6 +97,8 @@ interface MainApi {
     @GET("/api/home/rank/weeks/climbers/level")
     suspend fun findClimberRankingOrderLevel(): Response<List<BestLevelCimberSimpleResponse>>
 
+    @GET("/api/home/homegyms")
+    suspend fun getHomeGyms(): Response<List<UserHomeGymSimpleResponse>>
 
     @GET("/api/home/rank/weeks/gyms/follow")
     suspend fun findGymRankingOrderFollowCount(
@@ -118,7 +127,7 @@ interface MainApi {
     @POST("/api/climbing-records")
     suspend fun createTimerClimbingRecord(
         @Body params: CreateTimerClimbingRecordRequest
-    ): Response<String>
+    ): Response<ResponseBody>
 
     @GET("/api/gyms/{gymId}")
     suspend fun getGymProfile(

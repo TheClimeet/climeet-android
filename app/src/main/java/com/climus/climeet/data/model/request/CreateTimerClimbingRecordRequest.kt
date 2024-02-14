@@ -5,7 +5,7 @@ import java.time.LocalTime
 data class CreateTimerClimbingRecordRequest (
     val gymId: Long,
     val date: String,
-    val time: LocalTime,
+    val time: String,
     val avgDifficulty: Int,
     val routeRecordRequestDtoList : List<ClimbingRecord>
 )

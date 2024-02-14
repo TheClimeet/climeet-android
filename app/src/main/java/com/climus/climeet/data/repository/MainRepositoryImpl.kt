@@ -20,9 +20,13 @@ import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
+import com.climus.climeet.data.model.response.UserFollowSimpleResponse
+import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.runRemote
 import com.climus.climeet.data.remote.MainApi
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
+import retrofit2.http.Query
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
@@ -56,6 +60,11 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun getShortsUpdatedFollow(): BaseState<List<ShortsUpdatedFollowResponse>> =
         runRemote { api.getShortsUpdatedFollow() }
 
+    override suspend fun getHomeGyms(): BaseState<List<UserHomeGymSimpleResponse>> =
+        runRemote { api.getHomeGyms() }
+
+    override suspend fun getClimberFollowing(): BaseState<List<UserFollowSimpleResponse>> =
+        runRemote { api.getClimberFollowing() }
 
     override suspend fun findBannerListBetweenDates()
             : BaseState<List<BannerDetailInfoResponse>> =
@@ -93,11 +102,9 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun getGymFilteringKey(
         gymId: Long,
-    ): BaseState<GetGymFilteringKeyResponse> = runRemote {
-        api.getGymFilteringKey(
-            gymId
-        )
-    }
+    ): BaseState<GetGymFilteringKeyResponse> = runRemote { api.getGymFilteringKey(
+        gymId
+    ) }
 
     override suspend fun getGymRouteInfoList(
         gymId: Long,
@@ -115,7 +122,7 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun createTimerClimbingRecord(
         body: CreateTimerClimbingRecordRequest
-    ): BaseState<String> = runRemote { api.createTimerClimbingRecord(body) }
+    ): BaseState<ResponseBody> = runRemote { api.createTimerClimbingRecord(body) }
 
     override suspend fun getGymProfile(gymId: Long): BaseState<GetGymProfileResponse> =
         runRemote { api.getGymProfile(gymId) }

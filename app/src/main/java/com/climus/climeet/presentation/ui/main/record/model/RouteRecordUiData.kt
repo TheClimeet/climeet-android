@@ -1,6 +1,7 @@
 package com.climus.climeet.presentation.ui.main.record.model
 
 data class RouteRecordUiData(
+    val routeId: Long = 0,
     val sectorId: Long = 0,
     val sectorName: String = "",
     val levelName: String = "",

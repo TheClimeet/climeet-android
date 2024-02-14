@@ -121,7 +121,7 @@ class TimerViewModel @Inject constructor(
         requestBody = CreateTimerClimbingRecordRequest(
             gymId = recordData.gymId,
             date = recordData.date,
-            time = LocalTime.parse(recordData.time), // String을 LocalTime으로 변환
+            time = LocalTime.parse(recordData.time).toString(), // String을 LocalTime으로 변환
             avgDifficulty = recordData.avgDifficulty,
             routeRecordRequestDtoList = routeRecords
         )
