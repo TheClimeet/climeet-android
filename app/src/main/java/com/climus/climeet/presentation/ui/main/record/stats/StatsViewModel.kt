@@ -20,7 +20,9 @@ import javax.inject.Inject
 data class StatusUiState(
     val totalTime: String = "00:00:00",
     val totalCompletedCount: Int = 0,
-    val totalAttemptCount: Int = 0
+    val totalAttemptCount: Int = 0,
+    val completedCountString: String = "0문제 완등",
+    val attemptCountString: String = "100문제 도전!"
 )
 
 sealed class StatsEvent {
@@ -40,6 +42,8 @@ class StatsViewModel @Inject constructor(
     val selectedDate = MutableLiveData(LocalDate.now())
     val curDate =
         MutableStateFlow("${selectedDate.value?.year}년 ${selectedDate.value?.monthValue}월")
+    val cc = MutableStateFlow("0문제 완등")
+    val ac = MutableStateFlow("100문제 도전!")
 
     init {
         getMyStatus()
@@ -75,6 +79,7 @@ class StatsViewModel @Inject constructor(
                                 totalAttemptCount = body.attemptRouteCount
                             )
                         }
+                        setProgress()
                     }
 
                     is BaseState.Error -> {
@@ -85,9 +90,16 @@ class StatsViewModel @Inject constructor(
                                 totalAttemptCount = 0
                             )
                         }
+                        setProgress()
                     }
                 }
             }
         }
     }
+
+    fun setProgress(){
+        cc.value = "${uiState.value.totalCompletedCount}문제 완등"
+        ac.value = "${uiState.value.totalAttemptCount}문제 도전!"
+    }
+
 }
