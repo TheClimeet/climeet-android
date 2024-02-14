@@ -2,8 +2,10 @@ package com.climus.climeet.presentation.ui.main.record.timer.setrecord
 
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -12,6 +14,7 @@ import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.customview.DeleteDialog
 import com.climus.climeet.presentation.ui.main.global.selectsector.FloorBtnState
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.GymLevelUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.RouteUiData
@@ -90,11 +93,11 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     val isAvgToggleOn = MutableLiveData(true)
     val isRouteToggleOn = MutableLiveData(true)
 
+    val alpha = MutableLiveData(1f)
+
     val totalRoute = MutableLiveData("--")
     val totalComplete = MutableLiveData("--")
     val avgLevel = MutableLiveData<String>()
-
-    val alpha = MutableLiveData(1f)
 
     init {
         setTotalValue()
@@ -108,8 +111,12 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     }
 
     private fun getClimbingData() {
-        //val routeData = routeRepository.getAll()
-        // todo : db에서 루트기록 데이터 가져와 item에 넣어 루트기록 더보기에 보여주기
+        //val routeData = routeRepository.getAllRecord()
+
+        // todo : 루트기록 데이터 가져와 item에 넣어 루트기록 더보기에 보여주기
+//        if (routeData != null) {
+//
+//        }
     }
 
     fun selectedCrag(id: Long, name: String) {
@@ -383,6 +390,8 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 routeId = item.routeId,
                 sectorId = item.sectorId,
                 sectorName = item.sectorName,
+                difficulty = item.difficulty,
+                gymLevelName = item.gymLevelName,
                 gymLevelColor = item.gymLevelColor,
                 routeImg = item.routeImg,
                 isSelected = true,
@@ -428,6 +437,16 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             // roomDB 도전 횟수 감소
             setRoomChallengeNum(it, false)
         }
+    }
+
+    // 삭제 다이얼로그 띄우기
+    fun showDeleteDialog(context: Context, id: Long) {
+        val dialog = DeleteDialog(context) { isDelete ->
+            if (isDelete) {
+                removeItem(id)
+            }
+        }
+        dialog.show()
     }
 
     // 루트 기록 삭제
@@ -495,8 +514,9 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 val routeRecord = RouteRecordData(
                     sectorId = item.sectorId,
                     routeId = item.routeId,
-                    levelName = item.gymLevelColor,
+                    levelName = item.gymLevelName,
                     levelColor = item.gymLevelColor,
+                    difficulty = item.difficulty,
                     attemptCount = 0,
                     isCompleted = false
                 )
@@ -606,7 +626,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             sharedPreferences.edit().putString(TOP_CHALLENGE, num).apply()
 
             // 완등한 루트 기록이 삭제되면 완등 수도 업데이트
-            if(isCompleted) {
+            if (isCompleted) {
                 var num = totalComplete.value
                 if (num != null) {
                     num = if (totalComplete.value == "1" || totalComplete.value == "0") {

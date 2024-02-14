@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.record.timer.setrecord
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +18,8 @@ class ClimbingRecordAdapter(private val viewModel: SetTimerClimbingRecordViewMod
     }
 
     override fun onBindViewHolder(holder: ClimbingRecordViewHolder, position: Int) {
-        holder.bind(items[position])
+        val context = holder.itemView.context
+        holder.bind(items[position], context)
     }
 
     override fun getItemCount() = items.size
@@ -28,7 +30,7 @@ class ClimbingRecordViewHolder(
     private val viewModel: SetTimerClimbingRecordViewModel
 ) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: RouteUiData) {
+    fun bind(item: RouteUiData, context: Context) {
         binding.item = item
 
         binding.root.setOnClickListener {
@@ -47,7 +49,7 @@ class ClimbingRecordViewHolder(
         }
 
         binding.ivDelete.setOnClickListener {
-            viewModel.removeItem(item.routeId)
+            viewModel.showDeleteDialog(context, item.routeId)
         }
 
         binding.ivClear.setOnClickListener {
