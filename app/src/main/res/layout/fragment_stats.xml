@@ -44,7 +44,8 @@
                         style="@style/TextMediumSemiBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2024.12"
+                        android:text="@{vm.curDate}"
+                        android:onClick="@{()->vm.navigateToSelectMonthYearBottomSheetFragment()}"
                         app:layout_constraintEnd_toStartOf="@id/iv_date_next"
                         app:layout_constraintStart_toEndOf="@+id/iv_date_pre"
                         app:layout_constraintTop_toTopOf="parent"/>

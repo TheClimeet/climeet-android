@@ -16,6 +16,7 @@ import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomShe
 import com.climus.climeet.presentation.ui.main.record.calendar.CalendarEvent
 import com.climus.climeet.presentation.ui.main.record.calendar.CalendarViewModel
 import com.climus.climeet.presentation.ui.main.record.model.CreateRecordData
+import com.climus.climeet.presentation.ui.main.record.stats.datepicker.SelectYearMonthBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.YearMonth
 
@@ -34,10 +35,22 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
-                    else -> {}
+                    StatsEvent.NavigateToSelectMonthYearBottomSheetFragment -> showBottomSheet()
                 }
             }
         }
     }
+
+    private fun showBottomSheet(){
+        viewModel.selectedDate.value?.let {
+            SelectYearMonthBottomSheet(
+                requireContext(),
+                it
+            ) { date ->
+                viewModel.setSelectedDate(date)
+            }.show()
+        }
+    }
+
 
 }

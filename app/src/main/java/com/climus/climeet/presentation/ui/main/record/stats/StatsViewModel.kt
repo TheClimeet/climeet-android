@@ -1,19 +1,39 @@
 package com.climus.climeet.presentation.ui.main.record.stats
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.climus.climeet.presentation.ui.main.record.calendar.CalendarEvent
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
-sealed class StatsEvent{
-
+sealed class StatsEvent {
+    data object NavigateToSelectMonthYearBottomSheetFragment : StatsEvent()
 }
 
 @HiltViewModel
 class StatsViewModel @Inject constructor() : ViewModel() {
     private val _event = MutableSharedFlow<StatsEvent>()
     val event: SharedFlow<StatsEvent> = _event.asSharedFlow()
+
+    val selectedDate = MutableLiveData(LocalDate.now())
+    val curDate = MutableStateFlow("${selectedDate.value?.year}년 ${selectedDate.value?.monthValue}월")
+
+    fun navigateToSelectMonthYearBottomSheetFragment() {
+        viewModelScope.launch {
+            _event.emit(StatsEvent.NavigateToSelectMonthYearBottomSheetFragment)
+        }
+    }
+
+    fun setSelectedDate(date: LocalDate) {
+        selectedDate.value = date
+        curDate.value = "${date.year}년 ${date.monthValue}월"
+    }
+
+
 }
