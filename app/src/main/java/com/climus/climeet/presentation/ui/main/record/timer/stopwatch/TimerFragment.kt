@@ -75,8 +75,10 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
         // 암장 이름 설정
         initCragName()
-        // 평균 완등률
-        initAverage()
+        // 평균 완등률 설정
+        setAverage()
+        // 레벨 별 완등률
+        setAverageByLevel()
         // 루트 기록
         setRouteRecyclerView()
     }
@@ -125,6 +127,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
                 val cragName = cragData.name
                 val date = LocalDate.now().toString()
                 sharedPreferences.edit().putString("cragName", cragName).apply()
+                sharedPreferences.edit().putLong("cragId", cragId).apply()
 
                 // 선택된 암장의 이름 보여주기
                 binding.tvTitle.text = cragName
@@ -150,8 +153,17 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
     }
 
     // 평균 완등률 설정
-    // todo : 루트기록 추가, 삭제 될 때마다 업데이트
-    private fun initAverage() {
+    private fun setAverage() {
+        // 토글 위에 있는 총 평균 완등률
+        recordVM.avgCompleteRate.observe(viewLifecycleOwner, Observer { rate ->
+            val progress = (rate * 100).roundToInt()
+            binding.pbAvgComplete.progress = progress
+            binding.tvAvgComplete.text = "$progress%"
+        })
+    }
+
+    // 도전한 레벨 별 평균 완등
+    private fun setAverageByLevel() {
         val levelAdapter = RecordAverageAdapter(recordVM)
         binding.rvAvgRecord.adapter = levelAdapter
 
@@ -160,12 +172,6 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             LevelItemForAvg("V1", "#FFFFFF", 3, 2),
             LevelItemForAvg("V2", "#DDDDDD", 5, 3),
         )
-
-        // 토글 위에 있는 총 평균 완등률
-        val successRate = 5 / 8.toFloat()
-        val progress = (successRate * 100).roundToInt()
-        binding.pbAvgComplete.progress = progress
-        binding.tvAvgComplete.text = "$progress%"
 
         levelAdapter.setItems(items)
     }
@@ -188,6 +194,21 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
                 routeItemAdapter.notifyDataSetChanged()
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+//        val serviceState = TimerService.serviceRunning
+//
+//        if (serviceState.value != null) {
+//            val id = sharedPreferences.getLong("cragId", 0)
+//            val name = sharedPreferences.getString("cragName", getString(R.string.timer_crag_set_inform))
+//            if (name != null) {
+//                // 앱 재 시작시, 암장 정보 가져오는 API 재호출
+//                recordVM.selectedCrag(id, name)
+//                Log.d("recorddd", "TimerFragment onStart")
+//            }
+//        }
     }
 
     override fun onResume() {

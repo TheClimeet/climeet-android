@@ -98,6 +98,25 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     val totalRoute = MutableLiveData("--")
     val totalComplete = MutableLiveData("--")
     val avgLevel = MutableLiveData<String>()
+    val avgCompleteRate: MediatorLiveData<Double> = MediatorLiveData<Double>().apply {
+        addSource(totalRoute) { recalculateAvgRate() }
+        addSource(totalComplete) { recalculateAvgRate() }
+    }
+
+    private fun recalculateAvgRate() {
+        if (totalRoute.value == "--" || totalComplete.value == "--") {
+            avgCompleteRate.value = 0.0
+        } else {
+            val total = totalRoute.value?.toDoubleOrNull()
+            val complete = totalComplete.value?.toDoubleOrNull()
+
+            if (total != null && complete != null && total != 0.0) {
+                avgCompleteRate.value = complete / total
+            } else {
+                avgCompleteRate.value = 0.0
+            }
+        }
+    }
 
     init {
         setTotalValue()
