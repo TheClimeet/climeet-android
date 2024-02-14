@@ -47,6 +47,7 @@ import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.temporal.ChronoUnit
 import java.util.Locale
 import javax.inject.Inject
 
@@ -508,6 +509,19 @@ class CreateClimbingRecordViewModel @Inject constructor(
 
     }
 
+    fun getTimeDiff(): LocalTime{
+        val totalSeconds = ChronoUnit.SECONDS.between(
+            selectedStartTime.value,
+            selectedEndTime.value
+        )
+
+        val hours = totalSeconds / 3600
+        val minutes = (totalSeconds % 3600) / 60
+        val seconds = totalSeconds % 60
+
+        return LocalTime.of(hours.toInt(), minutes.toInt(), seconds.toInt())
+    }
+
     fun climbingComplete() {
 
         val climbingRecords: List<ClimbingRecord> = _items.value.map { routeUiData ->
@@ -527,7 +541,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
         val requestBody = CreateTimerClimbingRecordRequest(
             gymId = gymId,
             date = CreateRecordData.selectedDate.toString(),
-            time = CreateRecordData.getTimeDiff().toString(),
+            time = getTimeDiff().toString(),
             avgDifficulty = 3,
             routeRecordRequestDtoList = climbingRecords
         )
