@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.repository.MainRepository
@@ -89,11 +90,21 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     val isAvgToggleOn = MutableLiveData(true)
     val isRouteToggleOn = MutableLiveData(true)
 
+    val totalRoute = MutableLiveData("--")
+    val totalComplete = MutableLiveData("--")
+    val avgLevel = MutableLiveData<String>()
+
     val alpha = MutableLiveData(1f)
 
     init {
-        // 루트기록 더보기 부분 db에서 가져와 보여주기
+        setTotalValue()
         getClimbingData()
+    }
+
+    private fun setTotalValue() {
+        totalRoute.value = sharedPreferences.getString(TOP_CHALLENGE, "--")
+        totalComplete.value = sharedPreferences.getString(TOP_COMPLETE, "--")
+        avgLevel.value = sharedPreferences.getString(TOP_LEVEL, "--")
     }
 
     private fun getClimbingData() {
@@ -355,7 +366,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             } else it
         }
 
-        if(uiState.value.clearBtnState){
+        if (uiState.value.clearBtnState) {
             animateImage()
         }
 
@@ -378,6 +389,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 onClickListener = { it -> itemClicked(it) }
             )
             _items.value = _items.value + newItem
+
             // roomDB에 루트 기록 저장
             saveRouteRecord(newItem)
         } else {
@@ -423,7 +435,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         val itemToRemove = _items.value.find { it.routeId == id }
         if (itemToRemove != null) {
             // roomDB 루트 기록 삭제
-            deleteRouteRecord(itemToRemove)
+            deleteRouteRecord(itemToRemove, itemToRemove.clearBtnState)
         }
         _items.value = _items.value.filter { it.routeId != id }
         _uiState.update { state ->
@@ -450,7 +462,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             } else it
         }
 
-        if(uiState.value.clearBtnState){
+        if (uiState.value.clearBtnState) {
             animateImage()
         }
 
@@ -491,6 +503,18 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 routeRepository.insert(routeRecord)
             }
         }
+
+        // 상단 총 도전 수 업데이트
+        var num = totalRoute.value
+        if (num != null) {
+            num = if (totalRoute.value == "--") {
+                "1"
+            } else {
+                (num.toInt() + 1).toString()
+            }
+            totalRoute.value = num
+            sharedPreferences.edit().putString(TOP_CHALLENGE, num).apply()
+        }
     }
 
     private fun setRoomChallengeNum(item: RouteUiData, plus: Boolean) {
@@ -515,11 +539,11 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         }
     }
 
-    private fun setComplete(item: RouteUiData, complete : Boolean) {
+    private fun setComplete(item: RouteUiData, complete: Boolean) {
         CoroutineScope(Dispatchers.IO).launch {
             val record = routeRepository.findExistRecord(item.sectorId, item.routeId)
             if (record != null) {
-                if (complete){
+                if (complete) {
                     // 루트 완등
                     record.isCompleted = true
                     routeRepository.update(record)
@@ -532,9 +556,35 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 }
             }
         }
+
+        if (complete) {
+            // 상단 총 완등 수 업데이트
+            var num = totalComplete.value
+            if (num != null) {
+                num = if (totalComplete.value == "--") {
+                    "1"
+                } else {
+                    (num.toInt() + 1).toString()
+                }
+                totalComplete.value = num
+                sharedPreferences.edit().putString(TOP_COMPLETE, num).apply()
+            }
+        } else {
+            // 상단 총 완등 수 업데이트
+            var num = totalComplete.value
+            if (num != null) {
+                num = if (totalComplete.value == "1" || totalComplete.value == "0") {
+                    "--"
+                } else {
+                    (num.toInt() - 1).toString()
+                }
+                totalComplete.value = num
+                sharedPreferences.edit().putString(TOP_COMPLETE, num).apply()
+            }
+        }
     }
 
-    private fun deleteRouteRecord(item: RouteUiData) {
+    private fun deleteRouteRecord(item: RouteUiData, isCompleted: Boolean) {
         CoroutineScope(Dispatchers.IO).launch {
             val target = routeRepository.findExistRecord(item.sectorId, item.routeId)
             if (target != null) {
@@ -543,5 +593,37 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 //Log.d("recorddd", "id ${target.id} 루트 기록 삭제")
             }
         }
+
+        // 상단 총 도전 수 업데이트
+        var num = totalRoute.value
+        if (num != null) {
+            num = if (totalRoute.value == "1" || totalRoute.value == "0") {
+                "--"
+            } else {
+                (num.toInt() - 1).toString()
+            }
+            totalRoute.value = num
+            sharedPreferences.edit().putString(TOP_CHALLENGE, num).apply()
+
+            // 완등한 루트 기록이 삭제되면 완등 수도 업데이트
+            if(isCompleted) {
+                var num = totalComplete.value
+                if (num != null) {
+                    num = if (totalComplete.value == "1" || totalComplete.value == "0") {
+                        "--"
+                    } else {
+                        (num.toInt() - 1).toString()
+                    }
+                    totalComplete.value = num
+                    sharedPreferences.edit().putString(TOP_COMPLETE, num).apply()
+                }
+            }
+        }
+    }
+
+    companion object {
+        const val TOP_CHALLENGE = "timerChallenge"
+        const val TOP_COMPLETE = "timerComplete"
+        const val TOP_LEVEL = "timerLevel"
     }
 }

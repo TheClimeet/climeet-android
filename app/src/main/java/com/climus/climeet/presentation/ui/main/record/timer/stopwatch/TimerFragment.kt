@@ -192,11 +192,13 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
     override fun onResume() {
         super.onResume()
-        // 암장 이름 설정
+        // 암장 이름 및 상단 요소 설정
         if (timerVM.isStop.value == true) {
             binding.tvTitle.text = getString(R.string.timer_crag_set_inform)
+            recordVM.totalRoute.value = "--"
+            recordVM.totalComplete.value = "--"
+            recordVM.avgLevel.value = "--"
         } else {
-            // 스톱워치가 정지된 상태가 아니라면 선택된 암장의 이름을 화면에 보여준다
             binding.tvTitle.text =
                 sharedPreferences.getString("cragName", getString(R.string.timer_crag_set_inform))
         }
@@ -389,7 +391,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             // 루트기록 API로 전송
             //timerVM.sendClimbingRecord()
 
-            // todo : 루트기록 저장 로직 완성되면 뷰모델에서 데이터 지우기
+            // todo : 루트기록 저장 로직 완성되면 뷰모델 데이터들 초기화 및 아래 deleteAll 삭제
             CoroutineScope(Dispatchers.IO).launch {
                 routeRepository.deleteAll()
             }
@@ -457,6 +459,14 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
         // todo : 서비스가 실행된 뒤 setViewModel함수를 호출해 spf값을 반영해주는게 가능하면 아래처럼 일일이 변수 업데이트 할 필요 없음
         updateViewModel(start = false, pause = false, restart = false, stop = true, running = false)
+
+        sharedPreferences.edit().putString(TOP_CHALLENGE, "--").apply()
+        sharedPreferences.edit().putString(TOP_COMPLETE, "--").apply()
+        sharedPreferences.edit().putString(TOP_LEVEL, "--").apply()
+
+        recordVM.totalRoute.value = "--"
+        recordVM.totalComplete.value = "--"
+        recordVM.avgLevel.value = "--"
 
         //Log.d("stopStopwatch", "stopStopwatch 호출")
     }
@@ -530,5 +540,8 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         const val KEY_IS_RESTART = "isRestart"
         const val KEY_IS_STOP = "isStop"
         const val KEY_IS_RUNNING = "isRunning"
+        const val TOP_CHALLENGE = "timerChallenge"
+        const val TOP_COMPLETE = "timerComplete"
+        const val TOP_LEVEL = "timerLevel"
     }
 }
