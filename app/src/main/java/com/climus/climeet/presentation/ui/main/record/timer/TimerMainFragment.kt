@@ -84,7 +84,6 @@ class TimerMainFragment :
     private fun moveToTimerFragment() {
         viewModel.moveToTimerFragmentEvent.observe(viewLifecycleOwner, Observer {
             binding.vpTimer.currentItem = 0
-            Log.d("move", "메인에서 화면 이동시켜야함")
         })
     }
 }

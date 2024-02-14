@@ -13,7 +13,6 @@ import com.climus.climeet.presentation.customview.NoticePopup
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLevelAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.SectorNameAdapter
-import com.climus.climeet.presentation.ui.main.record.adapter.RouteRecordAdapter
 import com.climus.climeet.presentation.ui.main.record.timer.TimerMainViewModel
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerViewModel
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.TimerCragSelectBottomSheetViewModel
@@ -84,7 +83,6 @@ class SetTimerClimbingRecordFragment :
         // 시간 클릭시 스톱워치 화면으로 이동하기 위한 이벤트를 발생시킨다
         binding.layoutIdcTime.setOnClickListener {
             mainVM.moveToStopwatch()
-            Log.d("move", "시간 눌림")
         }
     }
 
