@@ -66,3 +66,13 @@ fun bindPlayerAlpha(pv: PlayerView, state: Boolean){
         pv.alpha = 1F
     }
 }
+
+@BindingAdapter("isDataNull")
+fun bindIsDataNull(v: View, data: String?){
+    data?.let{
+        v.visibility = View.VISIBLE
+    } ?: run{
+        v.visibility = View.INVISIBLE
+    }
+
+}

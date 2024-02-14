@@ -38,15 +38,15 @@ class ShortsThumbnailViewHolder(private val binding: ItemShortsThumbnailBinding)
         }
 
         with(binding) {
-            item.originLevelColor?.let{
+            item.originLevelColor?.let {
                 vCragLevelColor.cvColor = it.toColorInt()
-            } ?: run{
-                vCragLevelColor.visibility = View.INVISIBLE
+            } ?: run {
+                layoutLabel.visibility = View.INVISIBLE
             }
 
-            item.climeetLevelColor?.let{
-                ivClimeetLevel.ecColor = it.toColorInt()
-            } ?: run{
+            if (item.climeetLevelColor.isNotBlank()) {
+                ivClimeetLevel.ecColor = item.climeetLevelColor.toColorInt()
+            } else {
                 ivClimeetLevel.visibility = View.INVISIBLE
             }
         }

@@ -45,12 +45,14 @@ interface MainRepository {
 
     suspend fun getRecentShorts(
         page: Int,
-        size: Int
+        size: Int,
+        filter: Map<String, Long>
     ): BaseState<ShortsListResponse>
 
     suspend fun getPopularShorts(
         page: Int,
-        size: Int
+        size: Int,
+        filter: Map<String, Long>
     ): BaseState<ShortsListResponse>
 
     suspend fun getShortsUpdatedFollow(): BaseState<List<ShortsUpdatedFollowResponse>>

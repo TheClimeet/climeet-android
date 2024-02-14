@@ -43,11 +43,19 @@ class MainRepositoryImpl @Inject constructor(
     ): BaseState<SearchGymResponse> =
         runRemote { api.searchGym(gymName, page, size) }
 
-    override suspend fun getRecentShorts(page: Int, size: Int): BaseState<ShortsListResponse> =
-        runRemote { api.getRecentShorts(page, size) }
+    override suspend fun getRecentShorts(
+        page: Int,
+        size: Int,
+        filter: Map<String, Long>
+    ): BaseState<ShortsListResponse> =
+        runRemote { api.getRecentShorts(page, size, filter) }
 
-    override suspend fun getPopularShorts(page: Int, size: Int): BaseState<ShortsListResponse> =
-        runRemote { api.getPopularShorts(page, size) }
+    override suspend fun getPopularShorts(
+        page: Int,
+        size: Int,
+        filter: Map<String, Long>
+    ): BaseState<ShortsListResponse> =
+        runRemote { api.getPopularShorts(page, size, filter) }
 
     override suspend fun searchAvailableGym(
         gymName: String,

@@ -22,18 +22,26 @@ fun SearchAvailableGymItem.toSearchCragUiData(
 
 fun ShortsItem.toShortsThumbnailUiData(
     onClickListener: (Long, Int) -> Unit
-) = ShortsThumbnailUiData(
-    shortsId = shortsId,
-    thumbnailImg = thumbnailImageUrl,
-    gymName = gymName,
-    originLevelColor = shortsDetailInfo.gymDifficultyColor,
-    climeetLevelColor = "#DDDDDD",
-    onClickListener = onClickListener
-)
+): ShortsThumbnailUiData {
+
+    var climeetLevelColor = ""
+    climeetColor[climeetDifficultyName]?.let {
+        climeetLevelColor = it
+    }
+
+    return ShortsThumbnailUiData(
+        shortsId = shortsId,
+        thumbnailImg = thumbnailImageUrl,
+        gymName = gymName,
+        originLevelColor = shortsDetailInfo.gymDifficultyColor,
+        climeetLevelColor = climeetLevelColor,
+        onClickListener = onClickListener
+    )
+}
 
 fun ShortsItem.toShortsUiData(): ShortsUiData {
 
-    var climeetLevelColor = "#FFFFFF"
+    var climeetLevelColor = ""
     climeetColor[climeetDifficultyName]?.let {
         climeetLevelColor = it
     }

@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.main.shorts.player
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.annotation.OptIn
 import androidx.fragment.app.viewModels
@@ -22,6 +23,7 @@ import com.climus.climeet.databinding.FragmentShortsDetailBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsDetailListener
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
+import com.climus.climeet.presentation.util.Constants.TAG
 import com.climus.climeet.presentation.util.Constants.TEST_IMG
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -45,6 +47,7 @@ class ShortsDetailFragment @Inject constructor(
         initEventObserve()
         setImage()
         setPlayer()
+
     }
 
     private fun initEventObserve() {

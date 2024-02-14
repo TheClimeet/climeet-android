@@ -34,6 +34,7 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface MainApi {
 
@@ -67,13 +68,15 @@ interface MainApi {
     @GET("api/shorts/latest")
     suspend fun getRecentShorts(
         @Query("page") page: Int,
-        @Query("size") size: Int
+        @Query("size") size: Int,
+        @QueryMap filter : Map<String, Long>,
     ): Response<ShortsListResponse>
 
     @GET("api/shorts/popular")
     suspend fun getPopularShorts(
         @Query("page") page: Int,
-        @Query("size") size: Int
+        @Query("size") size: Int,
+        @QueryMap filter : Map<String, Long>,
     ): Response<ShortsListResponse>
 
     @GET("api/shorts/profile")

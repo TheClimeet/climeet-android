@@ -1,17 +1,18 @@
 package com.climus.climeet.presentation.ui.main.shorts.player
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedFilter
-import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsDetailListener
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.UpdatedFollowUiData
 import com.climus.climeet.presentation.ui.main.shorts.toShortsThumbnailUiData
 import com.climus.climeet.presentation.ui.main.shorts.toShortsUiData
 import com.climus.climeet.presentation.ui.main.shorts.toUpdatedFollowUiData
+import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -91,15 +92,32 @@ class ShortsPlayerViewModel @Inject constructor(
 
         // todo API 업데이트 되면, 필터 적용해서 API CALL
 
+        val filterMap = hashMapOf<String, Long>()
+
+        uiState.value.curFilter.let {
+            if (it.cragId != -1L) {
+                filterMap["gymId"] = it.cragId
+            }
+
+            if (it.sectorId != -1L) {
+                filterMap["sectorId"] = it.sectorId
+            }
+
+            if (it.routeId != -1L) {
+                filterMap["routeId"] = it.routeId
+            }
+        }
+
+
         viewModelScope.launch {
             if (uiState.value.hasNext) {
                 val result = when (uiState.value.sortType) {
                     SortType.POPULAR -> {
-                        repository.getPopularShorts(uiState.value.page, 10)
+                        repository.getPopularShorts(uiState.value.page, 10, filterMap)
                     }
 
                     SortType.RECENT -> {
-                        repository.getRecentShorts(uiState.value.page, 10)
+                        repository.getRecentShorts(uiState.value.page, 10, filterMap)
                     }
                 }
 
@@ -163,6 +181,9 @@ class ShortsPlayerViewModel @Inject constructor(
     }
 
     fun applyFilter(sectorInfo: SelectedFilter) {
+        Log.d(TAG, sectorInfo.sectorId.toString())
+        Log.d(TAG, sectorInfo.cragId.toString())
+        Log.d(TAG, sectorInfo.routeId.toString())
         _uiState.update { state ->
             state.copy(
                 page = 0,
@@ -170,6 +191,8 @@ class ShortsPlayerViewModel @Inject constructor(
                 curFilter = sectorInfo
             )
         }
+
+        getShorts(ShortsOption.NEW_SORT)
     }
 
     fun deleteFilter() {
