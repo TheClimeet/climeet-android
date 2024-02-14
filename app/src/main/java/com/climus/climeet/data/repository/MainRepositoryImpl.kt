@@ -26,6 +26,7 @@ import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.runRemote
 import com.climus.climeet.data.remote.MainApi
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.http.Query
 import javax.inject.Inject
 
@@ -119,7 +120,7 @@ class MainRepositoryImpl @Inject constructor(
         }
     override suspend fun createTimerClimbingRecord(
         body: CreateTimerClimbingRecordRequest
-    ): BaseState<String> = runRemote { api.createTimerClimbingRecord(body) }
+    ): BaseState<ResponseBody> = runRemote { api.createTimerClimbingRecord(body) }
 
     override suspend fun getGymProfile(gymId: Long): BaseState<GetGymProfileResponse> =
         runRemote { api.getGymProfile(gymId) }
