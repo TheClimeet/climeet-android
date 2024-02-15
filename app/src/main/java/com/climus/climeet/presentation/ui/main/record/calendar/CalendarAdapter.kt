@@ -30,7 +30,6 @@ class CalendarAdapter() : RecyclerView.Adapter<CalendarViewHolder>() {
     @SuppressLint("NotifyDataSetChanged")
     fun setList(list: List<ClimbingRecordData>){
         climbingRecordList = list
-        Log.d("dateTest", "b $climbingRecordList")
         notifyDataSetChanged()
     }
 

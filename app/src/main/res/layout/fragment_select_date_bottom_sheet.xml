@@ -9,7 +9,7 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.main.record.bottomsheet.selectdate.SelectDateBottomSheetViewModel" />
+            type="com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheetViewModel" />
 
     </data>
 

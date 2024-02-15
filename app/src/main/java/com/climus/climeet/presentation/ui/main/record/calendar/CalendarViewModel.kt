@@ -1,6 +1,7 @@
 package com.climus.climeet.presentation.ui.main.record.calendar
 
 import android.util.Log
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStore
@@ -42,7 +43,8 @@ sealed class CalendarEvent {
 
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
-    private val repository: MainRepository
+    private val repository: MainRepository,
+    private val notificationManager: NotificationManagerCompat
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(CalendarUiState())
     val uiState: StateFlow<CalendarUiState> = _uiState.asStateFlow()
@@ -158,8 +160,17 @@ class CalendarViewModel @Inject constructor(
     }
 
     fun navigateToTimerMain(){
-        viewModelScope.launch {
-            _event.emit(CalendarEvent.NavigateToTimerMain)
+        val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
+
+        if (areNotificationsEnabled) {
+            viewModelScope.launch {
+                _event.emit(CalendarEvent.NavigateToTimerMain)
+            }
+        } else {
+            // 알림 권한이 허용되지 않았을 때 처리, 필요에 따라 수정
+            viewModelScope.launch {
+                _event.emit(CalendarEvent.ShowToastMessage("알림 권한을 허용해야 사용할 수 있습니다!"))
+            }
         }
     }
 

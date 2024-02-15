@@ -5,21 +5,32 @@
 
     <data>
 
+        <variable
+            name="position"
+            type="java.lang.Integer" />
+
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/black">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_shorts"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:currentPosition="@{position}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shortsList="@{vm.uiState.shortsList}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_top"

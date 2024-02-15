@@ -8,28 +8,21 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.ActivityMainBinding
 import com.climus.climeet.presentation.base.BaseActivity
-import com.climus.climeet.presentation.customview.Permission
-import com.climus.climeet.presentation.ui.toMultiPart
-import com.climus.climeet.presentation.ui.toVideoMultiPart
 import com.climus.climeet.presentation.ui.toVideoThumbnail
 import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION
-import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
@@ -101,7 +94,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             if (destination.id == R.id.home_fragment || destination.id == R.id.shorts_fragment
                 || destination.id == R.id.myPage_fragment || destination.id == R.id.bestClimerFragment || destination.id == R.id.popularShortsFragment
                 || destination.id == R.id.popularCragsFragment || destination.id == R.id.popularRoutesFragment
-                || destination.id == R.id.searchCragFragment || destination.id == R.id.set_timer_climbing_record_fragment || destination.id == R.id.calendar_fragment
+                || destination.id == R.id.set_timer_climbing_record_fragment || destination.id == R.id.calendar_fragment
                 || destination.id == R.id.timerMainFragment
             ) {
                 // todo bnv show 해야되는 frag
@@ -118,6 +111,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 when (it) {
                     is MainEvent.GoToGalleryForVideo -> onCheckStoragePermissions()
                     is MainEvent.ShowToastMessage -> showToastMessage(it.msg)
+                    is MainEvent.ChangeStatusBarBlack -> {
+                        window.statusBarColor = ContextCompat.getColor(this@MainActivity,R.color.black)
+                    }
+                    is MainEvent.ChangeStatusBarBackground -> {
+                        window.statusBarColor = ContextCompat.getColor(this@MainActivity,R.color.cm_background)
+                    }
                 }
             }
         }

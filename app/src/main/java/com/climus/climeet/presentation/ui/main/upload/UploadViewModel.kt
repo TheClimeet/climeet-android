@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.ShortsDetailRequest
-import com.climus.climeet.data.model.request.ShortsUploadRequest
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.customview.PublicType
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedFilter
@@ -128,20 +127,21 @@ class UploadViewModel @Inject constructor(
         }
     }
 
-    private fun uploadShorts(videoUrl: String) {
+    fun uploadShorts() {
         viewModelScope.launch {
+            startUploadCount()
+            _event.emit(UploadEvent.NavigateToUploadComplete)
             repository.uploadShorts(
-                ShortsUploadRequest(
-                    video = videoUrl,
-                    thumbnailImage = thumbnailImg.value,
-                    createShortsRequest = ShortsDetailRequest(
-                        climbingGymId = uiState.value.selectedFilter.cragId,
-                        routeId = uiState.value.selectedFilter.routeId,
-                        sectorId = uiState.value.selectedFilter.sectorId,
-                        description = description.value,
-                        public = true,
-                        soundEnabled = soundEnabled.value
-                    )
+                video = videoFile,
+                body = ShortsDetailRequest(
+                    climbingGymId = if (uiState.value.selectedFilter.cragId == -1L) null else uiState.value.selectedFilter.cragId,
+                    routeId = if (uiState.value.selectedFilter.routeId == -1L) null else uiState.value.selectedFilter.routeId,
+                    sectorId = if (uiState.value.selectedFilter.sectorId == -1L) null else uiState.value.selectedFilter.sectorId,
+                    description = description.value,
+                    public = uiState.value.publicState.value,
+                    soundEnabled = soundEnabled.value,
+                    thumbnailImageUrl = thumbnailImg.value,
+                    shortsVisibility = uiState.value.publicState.value
                 )
             ).let {
                 when (it) {
@@ -154,27 +154,6 @@ class UploadViewModel @Inject constructor(
                         isUploadDone.value = true
                         _event.emit(UploadEvent.ShowToastMessage(it.msg))
                         _uploadComplete.emit(false)
-                    }
-                }
-            }
-        }
-    }
-
-    fun storeVideo() {
-        viewModelScope.launch {
-            startUploadCount()
-            _event.emit(UploadEvent.NavigateToUploadComplete)
-            videoFile?.let {
-                repository.uploadFile(it).let { state ->
-                    when (state) {
-                        is BaseState.Success -> {
-                            uploadShorts(state.body.imgUrl)
-                        }
-
-                        is BaseState.Error -> {
-                            isUploadDone.value = true
-                            _uploadComplete.emit(false)
-                        }
                     }
                 }
             }
