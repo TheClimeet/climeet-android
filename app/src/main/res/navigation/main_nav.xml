@@ -48,7 +48,38 @@
     <fragment
         android:id="@+id/myPage_fragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.MyPageFragment"
-        android:label="MyPageFragment" />
+        android:label="MyPageFragment" >
+        <action
+            android:id="@+id/action_myPage_fragment_to_myPageAdminMyProfileFragment"
+            app:destination="@id/myPageAdminMyProfileFragment" />
+        <action
+            android:id="@+id/action_myPage_fragment_to_myPageAccountFragment"
+            app:destination="@id/myPageAccountFragment" />
+        <action
+            android:id="@+id/action_myPage_fragment_to_myPageAlarmFragment"
+            app:destination="@id/myPageAlarmFragment" />
+        <action
+            android:id="@+id/action_myPage_fragment_to_myPageAnnounceFragment"
+            app:destination="@id/myPageAnnounceFragment" />
+        <action
+            android:id="@+id/action_myPage_fragment_to_myPageFollowFragment"
+            app:destination="@id/myPageFollowFragment" />
+        <action
+            android:id="@+id/action_myPage_fragment_to_myPageCheerUpFragment"
+            app:destination="@id/myPageCheerUpFragment" />
+        <action
+            android:id="@+id/action_myPage_fragment_to_myPageClimerMyProfileFragment"
+            app:destination="@id/myPageClimerMyProfileFragment" />
+        <action
+            android:id="@+id/action_myPage_fragment_to_myPagePolicyFragment"
+            app:destination="@id/myPagePolicyFragment" />
+        <action
+            android:id="@+id/action_myPage_fragment_to_myPageMyShortsFragment"
+            app:destination="@id/myPageMyShortsFragment" />
+        <action
+            android:id="@+id/action_myPage_fragment_to_myPageSendOpinionFragment"
+            app:destination="@id/myPageSendOpinionFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/bestClimerFragment"
@@ -221,6 +252,46 @@
     <action
         android:id="@+id/globalActionToShortsPlayerFragment"
         app:destination="@id/shortsPlayerFragment" />
+    <fragment
+        android:id="@+id/myPageAccountFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.account.MyPageAccountFragment"
+        android:label="MyPageAccountFragment" />
+    <fragment
+        android:id="@+id/myPageAlarmFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.alarm.MyPageAlarmFragment"
+        android:label="MyPageAlarmFragment" />
+    <fragment
+        android:id="@+id/myPageAnnounceFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.announce.MyPageAnnounceFragment"
+        android:label="MyPageAnnounceFragment" />
+    <fragment
+        android:id="@+id/myPageCheerUpFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.cheerup.MyPageCheerUpFragment"
+        android:label="MyPageCheerUpFragment" />
+    <fragment
+        android:id="@+id/myPageFollowFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.follow.MyPageFollowFragment"
+        android:label="MyPageFollowFragment" />
+    <fragment
+        android:id="@+id/myPageAdminMyProfileFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.MyPageAdminMyProfileFragment"
+        android:label="MyPageAdminMyProfileFragment" />
+    <fragment
+        android:id="@+id/myPageClimerMyProfileFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.MyPageClimerMyProfileFragment"
+        android:label="MyPageClimerMyProfileFragment" />
+    <fragment
+        android:id="@+id/myPageMyShortsFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.myshorts.MyPageMyShortsFragment"
+        android:label="MyPageMyShortsFragment" />
+    <fragment
+        android:id="@+id/myPagePolicyFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.policy.MyPagePolicyFragment"
+        android:label="MyPagePolicyFragment" />
+    <fragment
+        android:id="@+id/myPageSendOpinionFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.sendopinion.MyPageSendOpinionFragment"
+        android:label="MyPageSendOpinionFragment" />
 
 
 </navigation>
