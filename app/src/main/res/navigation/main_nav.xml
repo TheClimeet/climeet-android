@@ -292,6 +292,22 @@
         android:id="@+id/myPageSendOpinionFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.sendopinion.MyPageSendOpinionFragment"
         android:label="MyPageSendOpinionFragment" />
+    <fragment
+        android:id="@+id/gymProfileFragment"
+        android:name="com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileFragment"
+        android:label="GymProfileFragment" />
+    <fragment
+        android:id="@+id/climerProfileFragment"
+        android:name="com.climus.climeet.presentation.ui.main.global.climerprofile.ClimerProfileFragment"
+        android:label="ClimerProfileFragment" />
+
+    <action
+        android:id="@+id/globalActionToClimerProfileFragment"
+        app:destination="@id/climerProfileFragment" />
+
+    <action
+        android:id="@+id/globalActionToGymProfileFragment"
+        app:destination="@id/gymProfileFragment" />
 
 
 </navigation>
