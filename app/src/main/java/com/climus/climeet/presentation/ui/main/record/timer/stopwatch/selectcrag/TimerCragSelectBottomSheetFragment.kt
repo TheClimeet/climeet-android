@@ -1,7 +1,6 @@
 package com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,22 +68,18 @@ class TimerCragSelectBottomSheetFragment : BottomSheetDialogFragment() {
                 //XML에서 visibility를 설정하면 적용이 안 됨 -> fragment에서 설정
                 if (uiState.progressState) {
                     // progress 상태일 때의 UI 처리
-                    Log.d("test", "프로그래스 보임")
                     binding.pbLoading.visibility = View.VISIBLE
 
                 } else {
                     // non-progress 상태일 때의 UI 처리
-                    Log.d("test", "프로그래스 안 보임")
                     binding.pbLoading.visibility = View.INVISIBLE
                 }
 
                 if (uiState.emptyResultState) {
                     // empty result 상태일 때의 UI 처리
-                    Log.d("test", "결과 없음")
                     binding.layoutSearchNone.visibility = View.VISIBLE
                 } else {
                     // non-empty result 상태일 때의 UI 처리
-                    Log.d("test", "결과 있음")
                     binding.layoutSearchNone.visibility = View.INVISIBLE
                 }
 

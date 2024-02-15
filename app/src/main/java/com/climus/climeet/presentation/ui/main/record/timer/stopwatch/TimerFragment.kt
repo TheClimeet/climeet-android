@@ -218,20 +218,18 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         }
     }
 
-    // todo : 앱 재시작하면 암장 루트정보 API 다시 호출, 저장된 루트 기록과 평균 완등률 복구
     override fun onStart() {
         super.onStart()
-//        val serviceState = TimerService.serviceRunning
-//
-//        if (serviceState.value != null) {
-//            val id = sharedPreferences.getLong("cragId", 0)
-//            val name = sharedPreferences.getString("cragName", getString(R.string.timer_crag_set_inform))
-//            if (name != null) {
-//                // 앱 재 시작시, 암장 정보 가져오는 API 재호출
-//                recordVM.selectedCrag(id, name)
-//                Log.d("recorddd", "TimerFragment onStart")
-//            }
-//        }
+        val serviceState = TimerService.serviceRunning
+
+        if (serviceState.value != null) {
+            val id = sharedPreferences.getLong("cragId", 0)
+            val name = sharedPreferences.getString("cragName", getString(R.string.timer_crag_set_inform))
+            if (name != null) {
+                // 앱 재시작 시, 암장 정보 가져오는 API 재호출
+                recordVM.selectedCrag(id, name)
+            }
+        }
     }
 
     override fun onResume() {
@@ -420,7 +418,11 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         binding.ivStop.setOnLongClickListener {
             // 종료 시간 저장
             CoroutineScope(Dispatchers.IO).launch {
-                sharedPreferences.edit().putString("stopTime", timerVM.timeFormat.value).commit()
+                if(timerVM.isPaused.value == true){
+                    sharedPreferences.edit().putString("stopTime", timerVM.pauseTimeFormat.value).commit()
+                } else {
+                    sharedPreferences.edit().putString("stopTime", timerVM.timeFormat.value).commit()
+                }
             }
             stopStopwatch()
 
@@ -497,6 +499,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         sharedPreferences.edit().putString(TOP_CHALLENGE, "--").apply()
         sharedPreferences.edit().putString(TOP_COMPLETE, "--").apply()
         sharedPreferences.edit().putString(TOP_LEVEL, "--").apply()
+        binding.tvTitle.text = getString(R.string.timer_crag_set_inform)
 
         recordVM.totalRoute.value = "--"
         recordVM.totalComplete.value = "--"

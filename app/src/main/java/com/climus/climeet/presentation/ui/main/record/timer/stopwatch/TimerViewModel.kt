@@ -58,7 +58,6 @@ class TimerViewModel @Inject constructor(
             if (state != null) {
                 pauseState.value = state.toString()
                 pauseTime.value = sharedPreferences.getLong("pauseTime", 0L)
-                Log.d("TIMER", "알림창 일시정지 : ${pauseState.value}")
             }
         }
     }
@@ -114,41 +113,45 @@ class TimerViewModel @Inject constructor(
         } else {
             0
         }
-        Log.d("recorddd", "평균 난이도 : $avgDifficulty\n기본 정보 : $recordData \n" +
-                "루트 기록 : $routeData")
 
         // 루트 기록 생성
         val routeRecords = routeData.map { route ->
             ClimbingRecord(route.routeId, route.attemptCount, route.isCompleted)
         }
 
-        val time = sharedPreferences.getString("stopTime", "00:00:00")
-        Log.d("recorddd", "시간 정보 : $time")
+        var endTime = sharedPreferences.getString("stopTime", "00:00:00")
+
+        if(endTime == "00:00"){
+            endTime = "00:00:00"
+        }
+//        Log.d("recorddd", "시간 정보 : $endTime")
+//        Log.d("recorddd", "평균 난이도 : $avgDifficulty\n기본 정보 : $recordData \n" +
+//                "루트 기록 : $routeData")
 
         // 요청 바디 생성
         requestBody = CreateTimerClimbingRecordRequest(
             gymId = recordData.gymId,
             date = recordData.date,
-            time = time!!,
+            time = endTime!!,
             avgDifficulty = avgDifficulty,
             routeRecordRequestDtoList = routeRecords ?: listOf()
         )
 
-        viewModelScope.launch {
-            repository.createTimerClimbingRecord(requestBody).let {
-                when (it) {
-                    is BaseState.Success -> {
-                        // 성공
-                        Log.d("testss", it.toString())
-                    }
-
-                    is BaseState.Error -> {
-                        it.msg // 서버 에러 메시지
-                        Log.d("testss", it.msg)
-                    }
-                }
-            }
-        }
+//        viewModelScope.launch {
+//            repository.createTimerClimbingRecord(requestBody).let {
+//                when (it) {
+//                    is BaseState.Success -> {
+//                        // 성공
+//                        Log.d("testss", it.toString())
+//                    }
+//
+//                    is BaseState.Error -> {
+//                        it.msg // 서버 에러 메시지
+//                        Log.d("testss", it.msg)
+//                    }
+//                }
+//            }
+//        }
 
         // 다음 운동 기록을 위해 루트기록 초기화
         withContext(Dispatchers.IO) {

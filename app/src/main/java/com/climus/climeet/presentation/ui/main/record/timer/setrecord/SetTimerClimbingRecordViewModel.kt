@@ -82,6 +82,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
 
     var cragId: Long = 0
     var cragName: String = ""
+    var apiCheck: Boolean = false
 
     private var sectorNameList = listOf<SectorNameUiData>()
     private var gymLevelList = listOf<GymLevelUiData>()
@@ -134,19 +135,29 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     }
 
     private fun getClimbingData() {
-        //val routeData = routeRepository.getAllRecord()
+        var routeData: List<RouteRecordData>? = null
 
-        // todo : 루트기록 데이터 가져와 item에 넣어 루트기록 더보기에 보여주기
-//        if (routeData != null) {
-//
-//        }
+        CoroutineScope(Dispatchers.IO).launch {
+            routeData = routeRepository.getAllRecord()
+        }
+
+        // todo
+        //  : 루트기록 데이터 가져와 items에 넣어 루트기록 더보기에 보여주기
+        //  : RouteRecordData형식을 RecordUiData로 저장해야함 -> API로 가져온 루트정보에서 recordId, sectorId 일치하는거 가져오기?
+        //  : uiState에도 값 넣어주기?
+        if (routeData != null) {
+            isSelectedCrag.value = true
+        }
     }
 
     fun selectedCrag(id: Long, name: String) {
-        selectedCragEvent.value = Pair(id, name)
-        cragId = id
-        cragName = name
-        getCragInfo(cragId)
+        if (!apiCheck) {
+            selectedCragEvent.value = Pair(id, name)
+            cragId = id
+            cragName = name
+            getCragInfo(cragId)
+            apiCheck = true
+        }
     }
 
     // 1. 암장의 섹터와 난이도 정보 가져오기 (총 몇층인기 저장)
@@ -165,7 +176,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                         }
 
                         if (it.body.maxFloor == 1) {
-                            Log.d("recorddd", "암장 정보 1층")
+                            //Log.d("recorddd", "암장 정보 1층")
                             _uiState.update { state ->
                                 state.copy(
                                     isSingleFloor = true,
@@ -173,7 +184,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                                 )
                             }
                         } else {
-                            Log.d("recorddd", "암장 정보 2층")
+                            //Log.d("recorddd", "암장 정보 2층")
                             _uiState.update { state ->
                                 state.copy(
                                     isSingleFloor = false,
@@ -186,7 +197,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        Log.d("recorddd", "암장 정보 가져오기 실패")
+                        //Log.d("recorddd", "암장 정보 가져오기 실패")
                         _event.emit(CreateRecordEvent.ShowToastMessage(it.msg))
                     }
                 }
@@ -218,7 +229,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             repository.getGymRouteInfoList(cragId, GetGymRouteInfoRequest(0, 10, floor)).let {
                 when (it) {
                     is BaseState.Success -> {
-                        Log.d("recorddd", "루트정보 가져오기 성공")
+                        //Log.d("recorddd", "루트정보 가져오기 성공")
                         _uiState.update { state ->
                             state.copy(
                                 sectorNameList = sectorNameList.filter { data -> data.floor == floor },
@@ -386,7 +397,6 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 clearBtnState = !state.clearBtnState
             )
         }
-        Log.d("recorddd", "uiState ${uiState.value.clearBtnState}으로 바뀜")
 
         _items.value = _items.value.map {
             if (it.routeId == uiState.value.selectedRoute.routeId) {
