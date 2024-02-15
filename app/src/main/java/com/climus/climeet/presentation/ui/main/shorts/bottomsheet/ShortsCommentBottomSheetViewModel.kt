@@ -152,16 +152,27 @@ class ShortsCommentBottomSheetViewModel @Inject constructor(
 
     }
 
-    private fun changeLikeStatus(commentId: Long, isLike: Boolean, isDislike: Boolean) {
+    private fun changeLikeStatus(commentId: Long, position: Int, isLike: Boolean, isDislike: Boolean) {
         viewModelScope.launch {
             repository.patchShortsCommentInteraction(commentId, isLike, isDislike).let {
                 when (it) {
-                    is BaseState.Success -> {
 
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                shortsCommentList = uiState.value.shortsCommentList.map { data ->
+                                    if(data.commentId == commentId){
+                                        data.copy(commentLikeStatus = it.body)
+                                    } else {
+                                        data.copy()
+                                    }
+                                }
+                            )
+                        }
                     }
 
                     is BaseState.Error -> {
-
+                        _event.emit(ShortsCommentBottomSheetEvent.ShowToastMessage(it.msg))
                     }
                 }
             }

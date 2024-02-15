@@ -171,6 +171,6 @@ class MainRepositoryImpl @Inject constructor(
         shortsCommentId: Long,
         isLike: Boolean,
         isDislike: Boolean
-    ): BaseState<Unit> =
+    ): BaseState<String> =
         runRemote { api.patchShortsCommentInteraction(shortsCommentId, isLike, isDislike) }
 }

@@ -90,7 +90,7 @@ fun ShortsUpdatedFollowResponse.toUpdatedFollowUiData(
 )
 
 fun ShortsMainCommentItem.toShortsCommentUiData(
-    changeLikeStatus: (Long, Boolean, Boolean) -> Unit,
+    changeLikeStatus: (Long, Int, Boolean, Boolean) -> Unit,
     showMoreComment: (Long, Int, Int, Int) -> Unit,
     addSubComment: (Long) -> Unit,
     remainSubCommentCount: Int = -1,
@@ -115,7 +115,7 @@ fun ShortsMainCommentItem.toShortsCommentUiData(
 )
 
 fun ShortsSubCommentItem.toShortsCommentUiData(
-    changeLikeStatus: (Long, Boolean, Boolean) -> Unit,
+    changeLikeStatus: (Long, Int, Boolean, Boolean) -> Unit,
     showMoreComment: (Long, Int, Int, Int) -> Unit,
     addSubComment: (Long) -> Unit,
     remainSubCommentCount: Int = -1,

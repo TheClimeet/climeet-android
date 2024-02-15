@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.climus.climeet.R
 import com.climus.climeet.databinding.ItemMainCommentBinding
 import com.climus.climeet.databinding.ItemSubCommentBinding
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsCommentUiData
@@ -18,12 +19,18 @@ class ShortsCommentAdapter :
         const val MAIN_COMMENT = 0
         const val SUB_COMMENT = 1
 
-        val diffCallback = object : DiffUtil.ItemCallback<ShortsCommentUiData>(){
-            override fun areItemsTheSame(oldItem: ShortsCommentUiData, newItem: ShortsCommentUiData): Boolean {
+        val diffCallback = object : DiffUtil.ItemCallback<ShortsCommentUiData>() {
+            override fun areItemsTheSame(
+                oldItem: ShortsCommentUiData,
+                newItem: ShortsCommentUiData
+            ): Boolean {
                 return oldItem.commentId == newItem.commentId
             }
 
-            override fun areContentsTheSame(oldItem: ShortsCommentUiData, newItem: ShortsCommentUiData): Boolean {
+            override fun areContentsTheSame(
+                oldItem: ShortsCommentUiData,
+                newItem: ShortsCommentUiData
+            ): Boolean {
                 return oldItem == newItem
             }
         }
@@ -83,12 +90,58 @@ class ShortsMainCommentViewHolder(private val binding: ItemMainCommentBinding) :
         with(binding) {
             tvThumbsDownCount.text = item.dislikeCount.toString()
             tvThumbsUpCount.text = item.likeCount.toString()
-            btnThumbsDown.setOnClickListener {
 
+            when (item.commentLikeStatus) {
+                "LIKE" -> {
+                    binding.btnThumbsUp.setImageResource(R.drawable.ic_thumbs_up_on)
+                    binding.btnThumbsDown.setImageResource(R.drawable.ic_thumbs_down_off)
+                }
+
+                "DISLIKE" -> {
+                    binding.btnThumbsDown.setImageResource(R.drawable.ic_thumbs_down_on)
+                    binding.btnThumbsUp.setImageResource(R.drawable.ic_thumbs_up_off)
+                }
+
+                "NONE" -> {
+                    binding.btnThumbsDown.setImageResource(R.drawable.ic_thumbs_down_off)
+                    binding.btnThumbsUp.setImageResource(R.drawable.ic_thumbs_up_off)
+                }
+            }
+
+            btnThumbsDown.setOnClickListener {
+                when (item.commentLikeStatus) {
+                    "DISLIKE" -> item.changeLikeStatus(
+                        item.commentId,
+                        absoluteAdapterPosition,
+                        false,
+                        false
+                    )
+
+                    else -> item.changeLikeStatus(
+                        item.commentId,
+                        absoluteAdapterPosition,
+                        false,
+                        true
+                    )
+                }
             }
 
             btnThumbsUp.setOnClickListener {
+                when (item.commentLikeStatus) {
+                    "LIKE" -> item.changeLikeStatus(
+                        item.commentId,
+                        absoluteAdapterPosition,
+                        false,
+                        false
+                    )
 
+                    else -> item.changeLikeStatus(
+                        item.commentId,
+                        absoluteAdapterPosition,
+                        true,
+                        false
+                    )
+                }
             }
         }
     }
@@ -107,20 +160,70 @@ class ShortsSubCommentViewHolder(private val binding: ItemSubCommentBinding) :
             binding.btnShowMoreComment.visibility = View.GONE
         }
 
+        when (item.commentLikeStatus) {
+            "LIKE" -> {
+                binding.btnThumbsUp.setImageResource(R.drawable.ic_thumbs_up_on)
+                binding.btnThumbsDown.setImageResource(R.drawable.ic_thumbs_down_off)
+            }
+
+            "DISLIKE" -> {
+                binding.btnThumbsDown.setImageResource(R.drawable.ic_thumbs_down_on)
+                binding.btnThumbsUp.setImageResource(R.drawable.ic_thumbs_up_off)
+            }
+
+            "NONE" -> {
+                binding.btnThumbsDown.setImageResource(R.drawable.ic_thumbs_down_off)
+                binding.btnThumbsUp.setImageResource(R.drawable.ic_thumbs_up_off)
+            }
+        }
+
         with(binding) {
             tvThumbsDownCount.text = item.dislikeCount.toString()
             tvThumbsUpCount.text = item.likeCount.toString()
 
             btnThumbsDown.setOnClickListener {
+                when (item.commentLikeStatus) {
+                    "DISLIKE" -> item.changeLikeStatus(
+                        item.commentId,
+                        absoluteAdapterPosition,
+                        false,
+                        false
+                    )
 
+                    else -> item.changeLikeStatus(
+                        item.commentId,
+                        absoluteAdapterPosition,
+                        false,
+                        true
+                    )
+                }
             }
 
             btnThumbsUp.setOnClickListener {
+                when (item.commentLikeStatus) {
+                    "LIKE" -> item.changeLikeStatus(
+                        item.commentId,
+                        absoluteAdapterPosition,
+                        false,
+                        false
+                    )
 
+                    else -> item.changeLikeStatus(
+                        item.commentId,
+                        absoluteAdapterPosition,
+                        true,
+                        false
+                    )
+                }
             }
 
             btnShowMoreComment.setOnClickListener {
-                item.showMoreComment(item.parentCommentId, absoluteAdapterPosition, item.remainSubCommentCount, item.subCommentPage)
+                item.showMoreComment(
+                    item.parentCommentId,
+                    absoluteAdapterPosition,
+                    item.remainSubCommentCount,
+                    item.subCommentPage
+                )
             }
         }
     }

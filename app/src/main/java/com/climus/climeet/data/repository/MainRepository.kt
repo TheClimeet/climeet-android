@@ -136,5 +136,5 @@ interface MainRepository {
         shortsCommentId: Long,
         isLike: Boolean,
         isDislike: Boolean
-    ): BaseState<Unit>
+    ): BaseState<String>
 }

@@ -183,5 +183,5 @@ interface MainApi {
         @Path("shortsCommentId") shortsCommentId: Long,
         @Query("isLike") isLike: Boolean,
         @Query("isDislike") isDislike: Boolean
-    ): Response<Unit>
+    ): Response<String>
 }
