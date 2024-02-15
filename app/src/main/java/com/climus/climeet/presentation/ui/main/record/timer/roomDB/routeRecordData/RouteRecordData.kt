@@ -12,6 +12,7 @@ data class RouteRecordData(
     val routeId: Long = 0,
     val levelName: String = "",
     val levelColor: String = "",
-    val attemptCount: Int = 0,
-    val isCompleted: Boolean = false
+    val difficulty: Int = 0,
+    var attemptCount: Int = 0,
+    var isCompleted: Boolean = false
 )
