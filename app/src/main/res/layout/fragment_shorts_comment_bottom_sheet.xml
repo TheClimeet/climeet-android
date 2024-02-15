@@ -13,7 +13,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rect_grey9fill_nostroke_top_20radius">
+        android:background="@drawable/rect_grey9fill_nostroke_top_20radius"
+        android:paddingBottom="20dp">
 
         <ImageView
             android:id="@+id/iv_top_stick"
@@ -41,13 +42,58 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            app:list="@{vm.uiState.shortsCommentList}"
+            android:clipToPadding="false"
             android:orientation="vertical"
-            android:paddingBottom="50dp"
+            android:paddingBottom="200dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_comment_label" />
+            app:layout_constraintTop_toBottomOf="@id/tv_comment_label"
+            app:list="@{vm.uiState.shortsCommentList}" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/cm_grey9"
+            android:paddingTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:profileImgUrl="@{vm.uiState.profileImgUrl}" />
+
+            <EditText
+                android:id="@+id/et_comment"
+                style="@style/TextRegular"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/rect_nofill_grey7stroke_20radius"
+                android:paddingHorizontal="10dp"
+                app:layout_constraintBottom_toBottomOf="@id/iv_profile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_profile"
+                app:layout_constraintTop_toTopOf="@id/iv_profile" />
+
+            <ImageView
+                android:id="@+id/btn_add_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_arrow_up_btn"
+                app:layout_constraintBottom_toBottomOf="@id/et_comment"
+                app:layout_constraintEnd_toEndOf="@id/et_comment"
+                app:layout_constraintTop_toTopOf="@id/et_comment" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

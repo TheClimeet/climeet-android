@@ -20,7 +20,8 @@ import javax.inject.Inject
 data class ShortsCommentBottomSheetUiState(
     val page: Int = 0,
     val hasNext: Boolean = true,
-    val shortsCommentList: List<ShortsCommentUiData> = emptyList()
+    val shortsCommentList: List<ShortsCommentUiData> = emptyList(),
+    val profileImgUrl: String?=""
 )
 
 sealed class ShortsCommentBottomSheetEvent {
@@ -40,8 +41,13 @@ class ShortsCommentBottomSheetViewModel @Inject constructor(
 
     private var shortsId: Long = -1L
 
-    fun setShortsId(id: Long) {
+    fun setShortsId(id: Long, profileImgUrl: String) {
         shortsId = id
+        _uiState.update { state ->
+            state.copy(
+                profileImgUrl = profileImgUrl
+            )
+        }
         getCommentList()
     }
 

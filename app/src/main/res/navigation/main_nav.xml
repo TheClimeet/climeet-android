@@ -193,6 +193,10 @@
             app:argType="long"
             android:name="shortsId"/>
 
+        <argument
+            app:argType="string"
+            android:name="profileImg"/>
+
     </dialog>
 
     <dialog

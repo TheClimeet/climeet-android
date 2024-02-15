@@ -32,6 +32,7 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
 
     private val args: ShortsCommentBottomSheetFragmentArgs by navArgs()
     private val shortsId by lazy { args.shortsId }
+    private val profileImgUrl by lazy { args.profileImg }
 
     private val viewModel : ShortsCommentBottomSheetViewModel by viewModels()
 
@@ -77,7 +78,7 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
         binding.vm = viewModel
         adapter = ShortsCommentAdapter()
         binding.rvComment.adapter = adapter
-        viewModel.setShortsId(shortsId)
+        viewModel.setShortsId(shortsId, profileImgUrl)
         initStateObserver()
         recyclerViewListener()
     }

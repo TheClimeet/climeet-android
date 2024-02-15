@@ -68,7 +68,7 @@ class ShortsDetailFragment @Inject constructor(
                         // todo 어떤정보로 Share 할지 결정된뒤 수정
                         listener?.showShareDialog()
                     }
-                    is ShortsDetailEvent.ShowCommentDialog -> listener?.showCommentDialog(data.shortsId)
+                    is ShortsDetailEvent.ShowCommentDialog -> listener?.showCommentDialog(data.shortsId, data.profileImgUrl)
                 }
             }
         }
