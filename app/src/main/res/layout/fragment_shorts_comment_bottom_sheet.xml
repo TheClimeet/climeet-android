@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -13,6 +14,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rect_grey9fill_nostroke_top_20radius"
@@ -63,6 +65,18 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tv_adding_sub_comment"
+                style="@style/TextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toTopOf="@id/iv_profile"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="sadf 에게 답글 남기는중..." />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_profile"

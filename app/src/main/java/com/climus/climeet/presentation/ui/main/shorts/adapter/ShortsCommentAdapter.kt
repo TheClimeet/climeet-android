@@ -145,7 +145,7 @@ class ShortsMainCommentViewHolder(private val binding: ItemMainCommentBinding) :
             }
 
             btnAddComment.setOnClickListener {
-                item.addSubComment(item.commentId, absoluteAdapterPosition)
+                item.addSubComment(item.commentId, absoluteAdapterPosition, item.nickName)
             }
         }
     }

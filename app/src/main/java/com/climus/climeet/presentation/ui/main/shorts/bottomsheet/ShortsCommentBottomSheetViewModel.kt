@@ -10,6 +10,7 @@ import com.climus.climeet.presentation.ui.main.shorts.model.ShortsCommentUiData
 import com.climus.climeet.presentation.ui.main.shorts.toShortsCommentUiData
 import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -29,7 +30,9 @@ data class ShortsCommentBottomSheetUiState(
 
 sealed class ShortsCommentBottomSheetEvent {
     data class ShowToastMessage(val msg: String) : ShortsCommentBottomSheetEvent()
-    data object AddCommentComplete: ShortsCommentBottomSheetEvent()
+    data object AddCommentComplete : ShortsCommentBottomSheetEvent()
+    data class GoToPosition(val position: Int): ShortsCommentBottomSheetEvent()
+    data class StartAddSubComment(val nick: String): ShortsCommentBottomSheetEvent()
 }
 
 @HiltViewModel
@@ -162,10 +165,19 @@ class ShortsCommentBottomSheetViewModel @Inject constructor(
         }
     }
 
-    private fun readyToAddSubComment(parentCommentId: Long, position: Int) {
+    private fun readyToAddSubComment(parentCommentId: Long, position: Int, nick: String) {
+        Log.d(TAG,position.toString())
         addCommentMode = AddCommentType.SUB
         addCommentParentId = parentCommentId
         addCommentPosition = position
+        viewModelScope.launch {
+            _event.emit(ShortsCommentBottomSheetEvent.GoToPosition(position))
+            _event.emit(ShortsCommentBottomSheetEvent.StartAddSubComment(nick))
+        }
+    }
+
+    fun changeAddCommentType(type: AddCommentType){
+        addCommentMode = type
     }
 
     fun addComment() {
@@ -189,23 +201,49 @@ class ShortsCommentBottomSheetViewModel @Inject constructor(
                 when (it) {
                     is BaseState.Success -> {
 
+                        val fixedCommentList = uiState.value.shortsCommentList.toMutableList()
+                        when (addCommentMode) {
+                            AddCommentType.SUB -> {
+                                fixedCommentList.add(
+                                    addCommentPosition + 1, it.body.toShortsCommentUiData(
+                                        showMoreComment = ::getMoreSubComment,
+                                        addSubComment = ::readyToAddSubComment,
+                                        changeLikeStatus = ::changeLikeStatus,
+                                        isLastSubComment = false,
+                                    )
+                                )
+
+                                _uiState.update { state ->
+                                    state.copy(
+                                        shortsCommentList = fixedCommentList
+                                    )
+                                }
+                            }
+
+                            AddCommentType.MAIN -> {
+                                fixedCommentList.add(
+                                    0, it.body.toShortsCommentUiData(
+                                        showMoreComment = ::getMoreSubComment,
+                                        addSubComment = ::readyToAddSubComment,
+                                        changeLikeStatus = ::changeLikeStatus,
+                                        isLastSubComment = false,
+                                    )
+                                )
+
+                                _uiState.update { state ->
+                                    state.copy(
+                                        shortsCommentList = fixedCommentList
+                                    )
+                                }
+
+                                delay(500)
+                                _event.emit(ShortsCommentBottomSheetEvent.GoToPosition(0))
+                            }
+                        }
+
                         addCommentMode = AddCommentType.MAIN
                         comment.emit("")
                         _event.emit(ShortsCommentBottomSheetEvent.AddCommentComplete)
-
-                        val fixedCommentList = uiState.value.shortsCommentList.toMutableList()
-                        fixedCommentList.add(addCommentPosition + 1, it.body.toShortsCommentUiData(
-                            showMoreComment = ::getMoreSubComment,
-                            addSubComment = ::readyToAddSubComment,
-                            changeLikeStatus = ::changeLikeStatus,
-                            isLastSubComment = false,
-                        ))
-
-                        _uiState.update { state ->
-                            state.copy(
-                                shortsCommentList = fixedCommentList
-                            )
-                        }
                     }
 
                     is BaseState.Error -> {

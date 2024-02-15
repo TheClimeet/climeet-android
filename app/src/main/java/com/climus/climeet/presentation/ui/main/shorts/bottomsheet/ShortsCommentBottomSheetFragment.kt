@@ -1,10 +1,12 @@
 package com.climus.climeet.presentation.ui.main.shorts.bottomsheet
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -13,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentShortsCommentBottomSheetBinding
@@ -22,6 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -37,6 +41,7 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
     private val viewModel : ShortsCommentBottomSheetViewModel by viewModels()
 
     private var adapter: ShortsCommentAdapter? = null
+    private var inputMethodManager : InputMethodManager? = null
 
     fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -75,6 +80,7 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
         binding.vm = viewModel
         adapter = ShortsCommentAdapter()
         binding.rvComment.adapter = adapter
@@ -82,6 +88,7 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
         initStateObserver()
         initEventObserver()
         recyclerViewListener()
+        editTextListener()
     }
 
     private fun initStateObserver(){
@@ -113,6 +120,11 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
                     }
 
                     is ShortsCommentBottomSheetEvent.ShowToastMessage -> {}
+                    is ShortsCommentBottomSheetEvent.GoToPosition -> {
+                        smoothScroller.targetPosition = it.position
+                        binding.rvComment.layoutManager?.startSmoothScroll(smoothScroller)
+                    }
+                    is ShortsCommentBottomSheetEvent.StartAddSubComment -> focusEditText(it.nick)
                 }
             }
         }
@@ -132,6 +144,33 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
                 }
             }
         })
+    }
+
+    private fun editTextListener(){
+        binding.etComment.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus) {
+                viewModel.changeAddCommentType(AddCommentType.MAIN)
+                binding.tvAddingSubComment.visibility = View.GONE
+                inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+        }
+
+        binding.layoutRoot.setOnClickListener {
+            binding.etComment.clearFocus()
+        }
+    }
+
+    private val smoothScroller: RecyclerView.SmoothScroller by lazy {
+        object : LinearSmoothScroller(context) {
+            override fun getVerticalSnapPreference() = SNAP_TO_START
+        }
+    }
+
+    private fun focusEditText(nick : String){
+        binding.tvAddingSubComment.text = "$nick 님에게 답글 남기는중..."
+        binding.tvAddingSubComment.visibility = View.VISIBLE
+        binding.etComment.requestFocus()
+        inputMethodManager?.showSoftInput(binding.etComment,0)
     }
 
 }
