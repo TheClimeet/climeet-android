@@ -295,11 +295,19 @@
     <fragment
         android:id="@+id/gymProfileFragment"
         android:name="com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileFragment"
-        android:label="GymProfileFragment" />
+        android:label="GymProfileFragment" >
+        <argument
+            android:name="userId"
+            app:argType="long"/>
+    </fragment>
     <fragment
         android:id="@+id/climerProfileFragment"
         android:name="com.climus.climeet.presentation.ui.main.global.climerprofile.ClimerProfileFragment"
-        android:label="ClimerProfileFragment" />
+        android:label="ClimerProfileFragment" >
+        <argument
+            android:name="gymId"
+            app:argType="long"/>
+    </fragment>
 
     <action
         android:id="@+id/globalActionToClimerProfileFragment"
