@@ -21,21 +21,29 @@ fun SearchAvailableGymItem.toSearchCragUiData(
 )
 
 fun ShortsItem.toShortsThumbnailUiData(
-    onClickListener: (Long) -> Unit
-) = ShortsThumbnailUiData(
-    shortsId = shortsId,
-    thumbnailImg = thumbnailImageUrl,
-    gymName = gymName,
-    originLevelColor = shortsDetailInfo.gymDifficultyColor,
-    climeetLevelColor = "#DDDDDD",
-    onClickListener = onClickListener
-)
+    onClickListener: (Long, Int) -> Unit
+): ShortsThumbnailUiData {
 
-fun ShortsItem.toShortsUiData() : ShortsUiData{
+    var climeetLevelColor = ""
+    climeetColor[climeetDifficultyName]?.let {
+        climeetLevelColor = it
+    }
 
-    var climeetLevelColor = "#FFFFFF"
-    climeetColor[climeetDifficultyName]?.let{
-       climeetLevelColor = it
+    return ShortsThumbnailUiData(
+        shortsId = shortsId,
+        thumbnailImg = thumbnailImageUrl,
+        gymName = gymName,
+        originLevelColor = shortsDetailInfo.gymDifficultyColor,
+        climeetLevelColor = climeetLevelColor,
+        onClickListener = onClickListener
+    )
+}
+
+fun ShortsItem.toShortsUiData(): ShortsUiData {
+
+    var climeetLevelColor = ""
+    climeetColor[climeetDifficultyName]?.let {
+        climeetLevelColor = it
     }
 
     return ShortsUiData(
@@ -44,6 +52,9 @@ fun ShortsItem.toShortsUiData() : ShortsUiData{
         gymId = shortsDetailInfo.gymId,
         gymName = gymName,
         climeetLevelColor = climeetLevelColor,
+        gymLevelName = gymDifficultyName,
+        routeImgUrl = shortsDetailInfo.routeImageUrl,
+        gymLevelColor = gymDifficultyColor,
         videoUrl = shortsDetailInfo.videoUrl,
         profileImgUrl = shortsDetailInfo.userShortsSimpleInfo.profileImgUrl,
         userName = shortsDetailInfo.userShortsSimpleInfo.profileName,
@@ -60,7 +71,6 @@ fun ShortsItem.toShortsUiData() : ShortsUiData{
         isBookMarked = shortsDetailInfo.bookmarked
     )
 }
-
 
 
 fun ShortsUpdatedFollowResponse.toUpdatedFollowUiData(

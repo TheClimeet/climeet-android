@@ -16,6 +16,8 @@ import javax.inject.Inject
 sealed class MainEvent{
     data object GoToGalleryForVideo: MainEvent()
     data class ShowToastMessage(val msg: String) : MainEvent()
+    data object ChangeStatusBarBlack : MainEvent()
+    data object ChangeStatusBarBackground : MainEvent()
 }
 
 @HiltViewModel
@@ -59,6 +61,18 @@ class MainViewModel @Inject constructor(
                     is BaseState.Error -> _event.emit(MainEvent.ShowToastMessage(it.msg))
                 }
             }
+        }
+    }
+
+    fun changeStatusBarBlack(){
+        viewModelScope.launch {
+            _event.emit(MainEvent.ChangeStatusBarBlack)
+        }
+    }
+
+    fun changeStatusBarBackground(){
+        viewModelScope.launch {
+            _event.emit(MainEvent.ChangeStatusBarBackground)
         }
     }
 }

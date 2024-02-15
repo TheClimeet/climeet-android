@@ -2,7 +2,7 @@ package com.climus.climeet.data.remote
 
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
-import com.climus.climeet.data.model.request.ShortsUploadRequest
+import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -20,16 +20,21 @@ import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
+import com.climus.climeet.data.model.response.UserFollowSimpleResponse
+import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface MainApi {
 
@@ -51,6 +56,10 @@ interface MainApi {
         @Query("size") size: Int
     ): Response<SearchAvailableGymResponse>
 
+    @GET("/climber-following")
+    suspend fun getClimberFollowing(
+    ): Response<List<UserFollowSimpleResponse>>
+
     @POST("refresh-token")
     suspend fun refreshToken(
         @Query("refreshToken") refreshToken: String
@@ -59,13 +68,15 @@ interface MainApi {
     @GET("api/shorts/latest")
     suspend fun getRecentShorts(
         @Query("page") page: Int,
-        @Query("size") size: Int
+        @Query("size") size: Int,
+        @QueryMap filter : Map<String, Long>,
     ): Response<ShortsListResponse>
 
     @GET("api/shorts/popular")
     suspend fun getPopularShorts(
         @Query("page") page: Int,
-        @Query("size") size: Int
+        @Query("size") size: Int,
+        @QueryMap filter : Map<String, Long>,
     ): Response<ShortsListResponse>
 
     @GET("api/shorts/profile")
@@ -89,6 +100,8 @@ interface MainApi {
     @GET("/api/home/rank/weeks/climbers/level")
     suspend fun findClimberRankingOrderLevel(): Response<List<BestLevelCimberSimpleResponse>>
 
+    @GET("/api/home/homegyms")
+    suspend fun getHomeGyms(): Response<List<UserHomeGymSimpleResponse>>
 
     @GET("/api/home/rank/weeks/gyms/follow")
     suspend fun findGymRankingOrderFollowCount(
@@ -119,14 +132,26 @@ interface MainApi {
         @Body params: CreateTimerClimbingRecordRequest
     ): Response<ResponseBody>
 
-    @GET("/api/gym/{gymId}")
+    @GET("/api/gyms/{gymId}")
     suspend fun getGymProfile(
         @Path("gymId") gymId: Long
     ): Response<GetGymProfileResponse>
 
+    @Multipart
     @POST("/api/shorts")
     suspend fun uploadShorts(
-        @Body params: ShortsUploadRequest
+        @Part video: MultipartBody.Part?,
+        @Part("createShortsRequest") createShortsRequest: ShortsDetailRequest
+    ): Response<Unit>
+
+    @PATCH("/api/shorts/{shortsId}/bookmarks")
+    suspend fun patchBookMarks(
+        @Path("shortsId") shortsId: Long
+    ): Response<Unit>
+
+    @PATCH("/api/Shorts/{shortsId}/likes")
+    suspend fun patchFavorites(
+        @Path("shortsId") shortsId: Long
     ): Response<Unit>
 
 }

@@ -29,9 +29,6 @@
         <action
             android:id="@+id/action_shorts_fragment_to_shortsBottomSheetFragment"
             app:destination="@id/shortsBottomSheetFragment" />
-        <action
-            android:id="@+id/action_shorts_fragment_to_shortsPlayerFragment"
-            app:destination="@id/shortsPlayerFragment" />
     </fragment>
 
     <fragment
@@ -125,16 +122,15 @@
         <action
             android:id="@+id/action_create_climbing_record_fragment_to_selectTimeBottomFragment"
             app:destination="@id/select_time_bottom_fragment" />
+        <action
+            android:id="@+id/action_create_climbing_record_fragment_to_fragment_climbing_record_complete"
+            app:destination="@id/fragment_climbing_record_complete" />
     </fragment>
 
     <fragment
         android:id="@+id/fragment_create_select_crag"
         android:name="com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag.CreateSelectCragFragment"
         android:label="CreateSelectCragFragment" />
-    <dialog
-        android:id="@+id/select_date_bottom_sheet_fragment"
-        android:name="com.climus.climeet.presentation.ui.main.record.bottomsheet.selectdate.SelectDateBottomSheetFragment"
-        android:label="SelectDateBottomSheetFragment" />
 
     <dialog
         android:id="@+id/select_time_bottom_fragment"
@@ -164,9 +160,6 @@
         <action
             android:id="@+id/action_uploadCompleteFragment_to_shorts_fragment"
             app:destination="@id/shorts_fragment" />
-        <action
-            android:id="@+id/action_uploadCompleteFragment_to_shortsPlayerFragment"
-            app:destination="@id/shortsPlayerFragment" />
     </fragment>
 
     <fragment
@@ -176,7 +169,36 @@
         <action
             android:id="@+id/action_shortsPlayerFragment_to_routeShortsFragment"
             app:destination="@id/routeShortsFragment" />
+        <argument
+            app:argType="long"
+            android:name="shortsId"/>
+
+        <argument
+            app:argType="integer"
+            android:name="position"/>
+        <action
+            android:id="@+id/action_shortsPlayerFragment_to_shortsShareBottomSheetFragment"
+            app:destination="@id/shortsShareBottomSheetFragment" />
+        <action
+            android:id="@+id/action_shortsPlayerFragment_to_shortsCommentBottomSheetFragment"
+            app:destination="@id/shortsCommentBottomSheetFragment" />
     </fragment>
+
+
+    <dialog
+        android:id="@+id/shortsCommentBottomSheetFragment"
+        android:name="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsCommentBottomSheetFragment"
+        android:label="ShortsCommentBottomSheetFragment" >
+        <argument
+            app:argType="long"
+            android:name="shortsId"/>
+
+    </dialog>
+
+    <dialog
+        android:id="@+id/shortsShareBottomSheetFragment"
+        android:name="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsShareBottomSheetFragment"
+        android:label="ShortsShareBottomSheetFragment" />
 
     <fragment
         android:id="@+id/routeShortsFragment"
@@ -184,11 +206,21 @@
         android:label="RouteShortsFragment" />
 
     <action
-        android:id="@+id/globalActionToSelectDateBottomSheetFragment"
-        app:destination="@id/select_date_bottom_sheet_fragment" />
-
-    <action
         android:id="@+id/action_home_fragment_to_searchCragFragment"
         app:destination="@id/searchCragFragment" />
+    <fragment
+        android:id="@+id/fragment_climbing_record_complete"
+        android:name="com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.ClimbingRecordCompleteFragment"
+        android:label="ClimbingRecordCompleteFragment" >
+        <action
+            android:id="@+id/action_fragment_climbing_record_complete_to_calendar_fragment"
+            app:popUpTo="@id/home_fragment"
+            app:destination="@id/calendar_fragment" />
+    </fragment>
+
+    <action
+        android:id="@+id/globalActionToShortsPlayerFragment"
+        app:destination="@id/shortsPlayerFragment" />
+
 
 </navigation>

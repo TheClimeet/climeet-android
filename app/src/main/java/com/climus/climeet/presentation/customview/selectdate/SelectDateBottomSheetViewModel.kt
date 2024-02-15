@@ -1,16 +1,13 @@
-package com.climus.climeet.presentation.ui.main.record.bottomsheet.selectdate
+package com.climus.climeet.presentation.customview.selectdate
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 sealed class SelectDateBottomEvent {
     data object CloseFragment : SelectDateBottomEvent()
@@ -18,8 +15,7 @@ sealed class SelectDateBottomEvent {
     data object SetDate : SelectDateBottomEvent()
 }
 
-@HiltViewModel
-class SelectDateBottomSheetViewModel @Inject constructor() : ViewModel() {
+class SelectDateBottomSheetViewModel : ViewModel() {
     private val _event = MutableSharedFlow<SelectDateBottomEvent>()
     val event: SharedFlow<SelectDateBottomEvent> = _event.asSharedFlow()
 

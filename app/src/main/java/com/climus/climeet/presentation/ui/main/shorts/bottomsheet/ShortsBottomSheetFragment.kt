@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentShortsBottomSheetBinding
-import com.climus.climeet.presentation.ui.main.shorts.ShortsViewModel
+import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -28,7 +28,7 @@ class ShortsBottomSheetFragment : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ShortsBottomSheetViewModel by activityViewModels()
-    private val parentViewModel: ShortsViewModel by activityViewModels()
+    private val parentViewModel: ShortsPlayerViewModel by activityViewModels()
 
     fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
         viewLifecycleOwner.lifecycleScope.launch {
