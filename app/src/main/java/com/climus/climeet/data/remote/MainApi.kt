@@ -19,6 +19,7 @@ import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
+import com.climus.climeet.data.model.response.ShortsMainCommentItem
 import com.climus.climeet.data.model.response.ShortsMainCommentResponse
 import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
@@ -174,9 +175,9 @@ interface MainApi {
     @POST("/api/shorts/{shortsId}/shortsComments")
     suspend fun addShortsComment(
         @Path("shortsId") shortsId: Long,
-        @Query("parentCommentId") parentCommentId: Long,
+        @QueryMap filter: Map<String, Long>,
         @Body params: AddShortsCommentRequest
-    ): Response<Unit>
+    ): Response<ShortsMainCommentItem>
 
     @PATCH("/api/shortsComments/{shortsCommentId}")
     suspend fun patchShortsCommentInteraction(

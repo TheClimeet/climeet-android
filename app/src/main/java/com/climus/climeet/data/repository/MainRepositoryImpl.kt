@@ -19,6 +19,7 @@ import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
+import com.climus.climeet.data.model.response.ShortsMainCommentItem
 import com.climus.climeet.data.model.response.ShortsMainCommentResponse
 import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
@@ -148,9 +149,9 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun addShortsComment(
         shortsId: Long,
-        parentCommentId: Long,
+        filter: Map<String, Long>,
         body: AddShortsCommentRequest
-    ): BaseState<Unit> = runRemote { api.addShortsComment(shortsId, parentCommentId, body) }
+    ): BaseState<ShortsMainCommentItem> = runRemote { api.addShortsComment(shortsId, filter, body) }
 
     override suspend fun getShortsCommentList(
         shortsId: Long,

@@ -80,6 +80,7 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
         binding.rvComment.adapter = adapter
         viewModel.setShortsId(shortsId, profileImgUrl)
         initStateObserver()
+        initEventObserver()
         recyclerViewListener()
     }
 
@@ -87,6 +88,20 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
         repeatOnStarted {
             viewModel.uiState.collect{
                 adapter?.submitList(it.shortsCommentList)
+            }
+        }
+    }
+
+    private fun initEventObserver(){
+        repeatOnStarted {
+            viewModel.event.collect{
+                when(it){
+                    is ShortsCommentBottomSheetEvent.AddCommentComplete -> {
+                        binding.etComment.setText("")
+                    }
+
+                    is ShortsCommentBottomSheetEvent.ShowToastMessage -> {}
+                }
             }
         }
     }

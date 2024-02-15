@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsCommentBottomSheetViewModel" />
@@ -78,6 +80,7 @@
                 android:layout_marginStart="20dp"
                 android:background="@drawable/rect_nofill_grey7stroke_20radius"
                 android:paddingHorizontal="10dp"
+                android:text="@={vm.comment}"
                 app:layout_constraintBottom_toBottomOf="@id/iv_profile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_profile"
@@ -88,6 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:onClick="@{() -> vm.addComment()}"
                 android:src="@drawable/ic_arrow_up_btn"
                 app:layout_constraintBottom_toBottomOf="@id/et_comment"
                 app:layout_constraintEnd_toEndOf="@id/et_comment"

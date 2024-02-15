@@ -19,6 +19,7 @@ import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
+import com.climus.climeet.data.model.response.ShortsMainCommentItem
 import com.climus.climeet.data.model.response.ShortsMainCommentResponse
 import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
@@ -128,9 +129,9 @@ interface MainRepository {
 
     suspend fun addShortsComment(
         shortsId: Long,
-        parentCommentId: Long,
+        filter: Map<String, Long>,
         body: AddShortsCommentRequest
-    ): BaseState<Unit>
+    ): BaseState<ShortsMainCommentItem>
 
     suspend fun patchShortsCommentInteraction(
         shortsCommentId: Long,
