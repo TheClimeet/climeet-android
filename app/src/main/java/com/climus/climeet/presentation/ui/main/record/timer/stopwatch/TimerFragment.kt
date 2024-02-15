@@ -17,10 +17,9 @@ import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLe
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.SectorNameAdapter
 import com.climus.climeet.presentation.ui.main.record.model.LevelItemForAvg
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordData
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordRepository
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordData
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordRepository
+import com.climus.climeet.data.local.ClimbingRecordData
+import com.climus.climeet.data.local.RouteRecordData
+import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.record.timer.setrecord.ClimbingRecordAdapter
 import com.climus.climeet.presentation.ui.main.record.timer.setrecord.RecordAverageAdapter
 import com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerClimbingRecordViewModel
@@ -46,10 +45,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
     // room DB
     @Inject
-    lateinit var climbingRepository: ClimbingRecordRepository
-
-    @Inject
-    lateinit var routeRepository: RouteRecordRepository
+    lateinit var repository: MainRepository
 
     private val timerVM: TimerViewModel by activityViewModels()
     private val recordVM: SetTimerClimbingRecordViewModel by activityViewModels()   // 일시정지하면 보이는 루트기록을 위해 연결
@@ -115,8 +111,9 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
     private fun clearRouteRecord() {
         // 저장된 루트기록 초기화
         CoroutineScope(Dispatchers.IO).launch {
-            routeRepository.deleteAll()
-            val result = routeRepository.getAllRecord()
+            repository.deleteAllRoute()
+            // 잘 지워졌나 확인
+            val result = repository.getAllRoute()
             delay(1000)
             Log.d("recorddd", "저장된 기록들 reset $result")
         }
@@ -144,10 +141,12 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
                     time = "",
                     avgDifficulty = 0
                 )
-                // 결과 확인
+
                 CoroutineScope(Dispatchers.IO).launch {
-                    climbingRepository.insert(recordData)
-                    val result = climbingRepository.getAll()
+                    // 저장
+                    repository.insert(recordData)
+                    // 저장된 값 확인
+                    val result = repository.getAllRecord()
                     delay(1000)
                     Log.d("recorddd", result.toString())
                 }
@@ -172,7 +171,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             binding.rvAvgRecord.adapter = levelAdapter
 
             CoroutineScope(Dispatchers.IO).launch {
-                val levelData = routeRepository.getAllLevelRecord()
+                val levelData = repository.getAllLevelRecord()
                 val firstRecords = mutableListOf<RouteRecordData>() // 중복 없게 각 레벨별 첫번째 데이터만 골라냄
 
                 val levelNameSet = mutableSetOf<String>()
@@ -184,8 +183,8 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
                 }
                 if (firstRecords != null) {
                     items = firstRecords.map { data ->
-                        val attemptCount = routeRepository.getAttemptCount(data.levelName)
-                        val successCount = routeRepository.getSuccessCount(data.levelName)
+                        val attemptCount = repository.getAttemptCount(data.levelName)
+                        val successCount = repository.getSuccessCount(data.levelName)
                         val levelColor = data.levelColor
                         LevelItemForAvg(data.levelName, levelColor, attemptCount, successCount)
                     }
@@ -226,8 +225,9 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             val id = sharedPreferences.getLong("cragId", 0)
             val name = sharedPreferences.getString("cragName", getString(R.string.timer_crag_set_inform))
             if (name != null) {
-                // 앱 재시작 시, 암장 정보 가져오는 API 재호출
+                // 앱 재시작 시, 암장 정보 가져오는 API 재호출 및 데이터 다시 저장
                 recordVM.selectedCrag(id, name)
+                recordVM.getClimbingData()
             }
         }
     }

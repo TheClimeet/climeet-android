@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.app.App.Companion.sharedPreferences
+import com.climus.climeet.data.local.RouteRecordData
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.repository.MainRepository
@@ -23,9 +24,6 @@ import com.climus.climeet.presentation.ui.main.global.selectsector.model.Selecte
 import com.climus.climeet.presentation.ui.main.global.toGymLevelUiData
 import com.climus.climeet.presentation.ui.main.global.toRouteUiData
 import com.climus.climeet.presentation.ui.main.global.toSectorNameUiData
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordRepository
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordData
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -65,9 +63,7 @@ sealed class CreateRecordEvent {
 
 @HiltViewModel
 class SetTimerClimbingRecordViewModel @Inject constructor(
-    private val repository: MainRepository,
-    private val climbingRepository: ClimbingRecordRepository,
-    private val routeRepository: RouteRecordRepository
+    private val repository: MainRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CreateRecordUiState())
@@ -125,7 +121,6 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
 
     init {
         setTotalValue()
-        getClimbingData()
     }
 
     private fun setTotalValue() {
@@ -134,19 +129,23 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         avgLevel.value = sharedPreferences.getString(TOP_LEVEL, "--")
     }
 
-    private fun getClimbingData() {
-        var routeData: List<RouteRecordData>? = null
+    fun getClimbingData() {
+        var routeData: List<RouteRecordData>?
 
         CoroutineScope(Dispatchers.IO).launch {
-            routeData = routeRepository.getAllRecord()
-        }
+            routeData = repository.getAllRoute()
 
-        // todo
-        //  : 루트기록 데이터 가져와 items에 넣어 루트기록 더보기에 보여주기
-        //  : RouteRecordData형식을 RecordUiData로 저장해야함 -> API로 가져온 루트정보에서 recordId, sectorId 일치하는거 가져오기?
-        //  : uiState에도 값 넣어주기?
-        if (routeData != null) {
-            isSelectedCrag.value = true
+            // todo
+            //  : 루트기록 데이터 가져와 items에 넣어 루트기록 더보기에 보여주기
+            //  : RouteRecordData형식을 RecordUiData로 저장해야함 -> API로 가져온 루트정보에서 recordId, sectorId 일치하는거 가져오기?
+            //  : uiState 값도 업데이트 되야한다
+            withContext(Dispatchers.Main) {
+                if (routeData != null) {
+                    isSelectedCrag.value = true
+
+
+                }
+            }
         }
     }
 
@@ -220,6 +219,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             )
         }
         setFloorInfo(floor)
+        Log.d("recorddd", "층 선택")
     }
 
     // 2. 1번에서 호출 -> 가져온 정보를 층에 맞는 섹터, 레벨, 루트 보여주게 설정
@@ -250,13 +250,13 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         }
     }
 
-    // 3. 4에서 호출 -> 해당 층, 섹터, 난이도의 루트 정보들 가져오기
+    // 3. 4, 5에서 호출 (섹터, 레벨 선택) -> 해당 층, 섹터, 레벨을 가진 루트 정보 가져오기
     private fun getRouteList(
         floor: Int,
         sectorId: Long? = null,
         difficulty: Int? = null,
     ) {
-        cragId = selectedCragEvent.value?.let { it.first } ?: run { 0 }
+        cragId = selectedCragEvent.value?.first ?: run { 0 }
         viewModelScope.launch {
             repository.getGymRouteInfoList(
                 cragId, GetGymRouteInfoRequest(
@@ -281,6 +281,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
 
             }
         }
+        Log.d("recorddd", "routeList 업데이트")
     }
 
     // 4. 1에서 호출 -> 선택된 섹터의 레벨과 루트정보 보여주기
@@ -340,6 +341,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         addItem(item)
     }
 
+    // 루트기록 item 클릭 시 RouteUiData에 저장된 challengeNum 가져옴
     fun setChallengeNum(count: Int) {
         _challengeNumber.value = count
     }
@@ -375,7 +377,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         }
     }
 
-    fun animateImage() {
+    private fun animateImage() {
         val alphaAnimator = ValueAnimator.ofFloat(1f, 0f)
 
         alphaAnimator.duration = 2000
@@ -546,7 +548,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     private fun saveRouteRecord(item: RouteUiData) {
         // 중복된 값 없을 때만 루트 기록 저장
         CoroutineScope(Dispatchers.IO).launch {
-            val existCheck = routeRepository.findExistRecord(item.sectorId, item.routeId)
+            val existCheck = repository.findExistRoute(item.sectorId, item.routeId)
             if (existCheck == null) {
                 val routeRecord = RouteRecordData(
                     sectorId = item.sectorId,
@@ -557,7 +559,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                     attemptCount = 0,
                     isCompleted = false
                 )
-                routeRepository.insert(routeRecord)
+                repository.insert(routeRecord)
 
                 delay(500)
                 withContext(Dispatchers.Main) {
@@ -583,18 +585,18 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         CoroutineScope(Dispatchers.IO).launch {
             if (plus) {
                 // 도전 횟수 증가
-                val record = routeRepository.findExistRecord(item.sectorId, item.routeId)
+                val record = repository.findExistRoute(item.sectorId, item.routeId)
                 if (record != null) {
                     record.attemptCount += 1
-                    routeRepository.update(record)
+                    repository.update(record)
                     //Log.d("recorddd", "도전 횟수 증가 db 반영")
                 }
             } else {
                 // 도전 횟수 감소
-                val record = routeRepository.findExistRecord(item.sectorId, item.routeId)
+                val record = repository.findExistRoute(item.sectorId, item.routeId)
                 if (record != null) {
                     record.attemptCount -= 1
-                    routeRepository.update(record)
+                    repository.update(record)
                     //Log.d("recorddd", "도전 횟수 감소 db 반영")
                 }
             }
@@ -603,12 +605,12 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
 
     private fun setComplete(item: RouteUiData, complete: Boolean) {
         CoroutineScope(Dispatchers.IO).launch {
-            val record = routeRepository.findExistRecord(item.sectorId, item.routeId)
+            val record = repository.findExistRoute(item.sectorId, item.routeId)
             if (record != null) {
                 if (complete) {
                     // 루트 완등
                     record.isCompleted = true
-                    routeRepository.update(record)
+                    repository.update(record)
 
                     delay(500)
                     withContext(Dispatchers.Main) {
@@ -618,7 +620,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 } else {
                     // 루트 완등 취소
                     record.isCompleted = false
-                    routeRepository.update(record)
+                    repository.update(record)
 
                     delay(500)
                     withContext(Dispatchers.Main) {
@@ -658,10 +660,10 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
 
     private fun deleteRouteRecord(item: RouteUiData, isCompleted: Boolean) {
         CoroutineScope(Dispatchers.IO).launch {
-            val target = routeRepository.findExistRecord(item.sectorId, item.routeId)
+            val target = repository.findExistRoute(item.sectorId, item.routeId)
             if (target != null) {
                 // 루트 기록 삭제
-                routeRepository.deleteById(target.id)
+                repository.deleteById(target.id)
 
                 delay(500)
                 withContext(Dispatchers.Main) {
@@ -702,7 +704,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     private fun setAvgLevel() {
         CoroutineScope(Dispatchers.IO).launch {
             delay(1000)
-            val completedRoutes = routeRepository.getAverageDifficultyOfCompleted().roundToInt()
+            val completedRoutes = repository.getAverageDifficultyOfCompleted().roundToInt()
             withContext(Dispatchers.Main) {
                 if (completedRoutes != null && totalComplete.value != "--") {
                     // 난이도 이름과 매칭

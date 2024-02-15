@@ -4,26 +4,20 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
-import androidx.lifecycle.viewModelScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.climus.climeet.app.App.Companion.sharedPreferences
-import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.ClimbingRecord
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.repository.MainRepository
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordData
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordRepository
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordData
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordRepository
+import com.climus.climeet.data.local.ClimbingRecordData
+import com.climus.climeet.data.local.RouteRecordData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
@@ -31,9 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TimerViewModel @Inject constructor(
-    private val repository: MainRepository,
-    private val routeRepository: RouteRecordRepository,
-    private val climbingRepository: ClimbingRecordRepository
+    private val repository: MainRepository
 ) : ViewModel() {
 
     private val _time = MutableLiveData<Long>().apply { value = 0L }
@@ -103,8 +95,8 @@ class TimerViewModel @Inject constructor(
         val routeData: List<RouteRecordData>?
         val requestBody: CreateTimerClimbingRecordRequest
 
-        recordData = withContext(Dispatchers.IO) { climbingRepository.getRoute(1) }
-        routeData = withContext(Dispatchers.IO) { routeRepository.getAllRecord() }
+        recordData = withContext(Dispatchers.IO) { repository.getRecord(1) }
+        routeData = withContext(Dispatchers.IO) { repository.getAllRoute() }
 
         // avgDifficulty 계산
         val avgDifficulty = if (routeData?.isNotEmpty() == true) {
@@ -155,8 +147,8 @@ class TimerViewModel @Inject constructor(
 
         // 다음 운동 기록을 위해 루트기록 초기화
         withContext(Dispatchers.IO) {
-            routeRepository.deleteAll()
-            climbingRepository.deleteAll()
+            repository.deleteAllRoute()
+            repository.deleteAllRecord()
         }
     }
 
