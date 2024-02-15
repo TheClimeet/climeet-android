@@ -3,6 +3,7 @@ package com.climus.climeet.presentation.ui.main.shorts
 import com.climus.climeet.data.model.response.SearchAvailableGymItem
 import com.climus.climeet.data.model.response.ShortsItem
 import com.climus.climeet.data.model.response.ShortsMainCommentItem
+import com.climus.climeet.data.model.response.ShortsSubCommentItem
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsCommentUiData
@@ -90,8 +91,10 @@ fun ShortsUpdatedFollowResponse.toUpdatedFollowUiData(
 
 fun ShortsMainCommentItem.toShortsCommentUiData(
     changeLikeStatus: (Long, Boolean, Boolean) -> Unit,
-    showMoreComment: (Long) -> Unit,
-    addSubComment: (Long) -> Unit
+    showMoreComment: (Long, Int, Int, Int) -> Unit,
+    addSubComment: (Long) -> Unit,
+    remainSubCommentCount: Int = -1,
+    isLastSubComment: Boolean = false,
 ) = ShortsCommentUiData(
     commentId = commentId,
     nickName = nickname,
@@ -100,12 +103,39 @@ fun ShortsMainCommentItem.toShortsCommentUiData(
     commentLikeStatus = commentLikeStatus,
     likeCount = likeCount,
     dislikeCount = dislikeCount,
-    type = if (isParent) 1 else 0,
+    type = if (isParent) 0 else 1,
     parentCommentId = parentCommentId,
     childCommentCount = childCommentCount,
     createDate = createdDate,
     changeLikeStatus = changeLikeStatus,
     showMoreComment = showMoreComment,
-    addSubComment = addSubComment
+    addSubComment = addSubComment,
+    remainSubCommentCount = remainSubCommentCount,
+    isLastSubComment = isLastSubComment
+)
 
+fun ShortsSubCommentItem.toShortsCommentUiData(
+    changeLikeStatus: (Long, Boolean, Boolean) -> Unit,
+    showMoreComment: (Long, Int, Int, Int) -> Unit,
+    addSubComment: (Long) -> Unit,
+    remainSubCommentCount: Int = -1,
+    isLastSubComment: Boolean = false,
+    subCommentPage: Int = 0
+) = ShortsCommentUiData(
+    commentId = commentId,
+    nickName = nickname,
+    profileImageUrl = profileImageUrl,
+    content = content,
+    commentLikeStatus = commentLikeStatus,
+    likeCount = likeCount,
+    dislikeCount = dislikeCount,
+    type = 1,
+    parentCommentId = parentCommentId,
+    createDate = createdDate,
+    changeLikeStatus = changeLikeStatus,
+    showMoreComment = showMoreComment,
+    addSubComment = addSubComment,
+    remainSubCommentCount = remainSubCommentCount,
+    isLastSubComment = isLastSubComment,
+    subCommentPage = subCommentPage
 )
