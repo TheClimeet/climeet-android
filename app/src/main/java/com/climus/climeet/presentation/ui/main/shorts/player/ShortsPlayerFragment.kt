@@ -65,8 +65,9 @@ class ShortsPlayerFragment: BaseFragment<FragmentShortsPlayerBinding>(R.layout.f
         showToastMessage("루트별 숏츠보기로 이동")
     }
 
-    override fun showCommentDialog(shortsId: Long) {
-        val action = ShortsPlayerFragmentDirections.actionShortsPlayerFragmentToShortsCommentBottomSheetFragment(shortsId)
+    override fun showCommentDialog(shortsId: Long, profileImgUrl: String?) {
+        val url = profileImgUrl ?:run{""}
+        val action = ShortsPlayerFragmentDirections.actionShortsPlayerFragmentToShortsCommentBottomSheetFragment(shortsId, url)
         findNavController().navigate(action)
     }
 

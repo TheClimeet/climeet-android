@@ -1,6 +1,7 @@
 package com.climus.climeet.data.repository
 
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.request.AddShortsCommentRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
@@ -18,6 +19,9 @@ import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
+import com.climus.climeet.data.model.response.ShortsMainCommentItem
+import com.climus.climeet.data.model.response.ShortsMainCommentResponse
+import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
@@ -109,4 +113,29 @@ interface MainRepository {
     suspend fun patchFavorite(
         shortsId: Long
     ): BaseState<Unit>
+
+    suspend fun getShortsSubCommentList(
+        shortsId: Long,
+        parentCommentId: Long,
+        page: Int,
+        size: Int
+    ): BaseState<ShortsSubCommentResponse>
+
+    suspend fun getShortsCommentList(
+        shortsId: Long,
+        page: Int,
+        size: Int
+    ): BaseState<ShortsMainCommentResponse>
+
+    suspend fun addShortsComment(
+        shortsId: Long,
+        filter: Map<String, Long>,
+        body: AddShortsCommentRequest
+    ): BaseState<ShortsMainCommentItem>
+
+    suspend fun patchShortsCommentInteraction(
+        shortsCommentId: Long,
+        isLike: Boolean,
+        isDislike: Boolean
+    ): BaseState<String>
 }
