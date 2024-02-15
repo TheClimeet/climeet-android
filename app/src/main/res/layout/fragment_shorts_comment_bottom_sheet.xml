@@ -79,7 +79,7 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="20dp"
                 android:background="@drawable/rect_nofill_grey7stroke_20radius"
-                android:paddingHorizontal="10dp"
+                android:paddingHorizontal="16dp"
                 android:text="@={vm.comment}"
                 app:layout_constraintBottom_toBottomOf="@id/iv_profile"
                 app:layout_constraintEnd_toEndOf="parent"

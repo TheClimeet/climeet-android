@@ -90,6 +90,18 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
                 adapter?.submitList(it.shortsCommentList)
             }
         }
+
+        repeatOnStarted {
+            viewModel.comment.collect{
+                if(it.isNotBlank()){
+                    binding.btnAddComment.isEnabled = true
+                    binding.btnAddComment.alpha = 1F
+                } else {
+                    binding.btnAddComment.isEnabled = false
+                    binding.btnAddComment.alpha = 0.2F
+                }
+            }
+        }
     }
 
     private fun initEventObserver(){
