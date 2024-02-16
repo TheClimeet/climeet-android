@@ -4,5 +4,5 @@ interface ShortsDetailListener {
     fun showShareDialog()
     fun navigateToProfileDetail(userId: Long)
     fun navigateToRouteShorts(routeId: Long)
-    fun showCommentDialog(shortsId: Long)
+    fun showCommentDialog(shortsId: Long, profileImgUrl: String?)
 }

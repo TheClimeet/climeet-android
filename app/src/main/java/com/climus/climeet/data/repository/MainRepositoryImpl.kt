@@ -5,6 +5,7 @@ import com.climus.climeet.data.local.ClimbingRecordData
 import com.climus.climeet.data.local.RouteRecordDao
 import com.climus.climeet.data.local.RouteRecordData
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.request.AddShortsCommentRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
@@ -22,6 +23,9 @@ import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
+import com.climus.climeet.data.model.response.ShortsMainCommentItem
+import com.climus.climeet.data.model.response.ShortsMainCommentResponse
+import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
@@ -149,6 +153,34 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun patchFavorite(shortsId: Long): BaseState<Unit> =
         runRemote { api.patchFavorites(shortsId) }
+
+    override suspend fun addShortsComment(
+        shortsId: Long,
+        filter: Map<String, Long>,
+        body: AddShortsCommentRequest
+    ): BaseState<ShortsMainCommentItem> = runRemote { api.addShortsComment(shortsId, filter, body) }
+
+    override suspend fun getShortsCommentList(
+        shortsId: Long,
+        page: Int,
+        size: Int
+    ): BaseState<ShortsMainCommentResponse> =
+        runRemote { api.getShortsCommentList(shortsId, page, size) }
+
+    override suspend fun getShortsSubCommentList(
+        shortsId: Long,
+        parentCommentId: Long,
+        page: Int,
+        size: Int
+    ): BaseState<ShortsSubCommentResponse> =
+        runRemote { api.getShortsSubCommentList(shortsId, parentCommentId, page, size) }
+
+    override suspend fun patchShortsCommentInteraction(
+        shortsCommentId: Long,
+        isLike: Boolean,
+        isDislike: Boolean
+    ): BaseState<String> =
+        runRemote { api.patchShortsCommentInteraction(shortsCommentId, isLike, isDislike) }
 
     // -------- RoomDB ClimbingRecordDa0 암장 정보 -----------
     override fun insert(climbingRecordData: ClimbingRecordData) {
