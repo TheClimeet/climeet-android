@@ -84,7 +84,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     private var gymLevelList = listOf<GymLevelUiData>()
 
     val isSelectedCrag = MutableStateFlow(false)
-    val selectedCragEvent = MutableLiveData<Pair<Long, String>>()
+    private val selectedCragEvent = MutableLiveData<Pair<Long, String>>()
 
     private val _challengeNumber = MutableLiveData(0)
     val challengeNumber: LiveData<Int> = _challengeNumber
@@ -102,7 +102,15 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         addSource(totalComplete) { recalculateAvgRate() }
     }
 
-    val updateRecord = MutableLiveData<Boolean>(false)
+    // 루트기록 재설정용
+    val updateRecord = MutableLiveData(false)   // 레벨 완등률 업데이트
+    val isRestart = MutableLiveData(false)
+    val resetView = MutableLiveData(false)
+    private var isSecondFloorExist: Boolean = false
+
+    private var maxFloor = 0
+    private var firstFloorRouteList: List<RouteUiData> = emptyList()
+    private var secondFloorRouteList: List<RouteUiData> = emptyList()
 
     private fun recalculateAvgRate() {
         if (totalRoute.value == "--" || totalComplete.value == "--") {
@@ -129,23 +137,56 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
         avgLevel.value = sharedPreferences.getString(TOP_LEVEL, "--")
     }
 
-    fun getClimbingData() {
-        var routeData: List<RouteRecordData>?
+    private fun getClimbingData() {
 
         CoroutineScope(Dispatchers.IO).launch {
-            routeData = repository.getAllRoute()
+            // Room DB에서 루트기록 가져오기
+            val routeDataList = repository.getAllRoute()
 
-            // todo
-            //  : 루트기록 데이터 가져와 items에 넣어 루트기록 더보기에 보여주기
-            //  : RouteRecordData형식을 RecordUiData로 저장해야함 -> API로 가져온 루트정보에서 recordId, sectorId 일치하는거 가져오기?
-            //  : uiState 값도 업데이트 되야한다
             withContext(Dispatchers.Main) {
-                if (routeData != null) {
+                if (routeDataList != null) {
                     isSelectedCrag.value = true
 
-
+                    routeDataList.forEach { routeData ->
+                        // API로 가져온 루트 정보 불러오기
+                        var matchedData = findMatchedData(routeData.routeId, routeData.sectorId, 1)
+                        if (matchedData != null) {
+                            setItem(matchedData, routeData)
+                        } else {
+                            // 2층이 존재하면 2층 데이터를 가져와 일치 확인하고, 있으면 넣어주기
+                            if (isSecondFloorExist) {
+                                matchedData =
+                                    findMatchedData(routeData.routeId, routeData.sectorId, 2)
+                                if (matchedData != null) {
+                                    setItem(matchedData, routeData)
+                                }
+                            }
+                        }
+                    }
+                    //Log.d("recorddd", "재설정 끝 items\n${items.value}")
+                    setAvgLevel()
+                    resetView.value = true  // 일시정지 일 때 루트기록 보이게 화면 재설정
                 }
             }
+        }
+    }
+
+    private fun setItem(crag: RouteUiData, item: RouteRecordData) {
+        crag.clearBtnState = item.isCompleted
+        crag.challengeNum = item.attemptCount
+        crag.isSelected = true
+
+        // items에 추가
+        _items.value = _items.value + crag
+    }
+
+
+    // routeList에서 일치하는 데이터를 return
+    private fun findMatchedData(routeId: Long, sectorId: Long, floor: Int): RouteUiData? {
+        return if (floor == 1) {
+            firstFloorRouteList.firstOrNull { it.routeId == routeId && it.sectorId == sectorId }
+        } else {
+            secondFloorRouteList.firstOrNull { it.routeId == routeId && it.sectorId == sectorId }
         }
     }
 
@@ -175,23 +216,26 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                         }
 
                         if (it.body.maxFloor == 1) {
-                            //Log.d("recorddd", "암장 정보 1층")
                             _uiState.update { state ->
                                 state.copy(
                                     isSingleFloor = true,
                                     layoutImg = it.body.layoutImageUrl
                                 )
                             }
+                            maxFloor = 1
+
                         } else {
-                            //Log.d("recorddd", "암장 정보 2층")
                             _uiState.update { state ->
                                 state.copy(
                                     isSingleFloor = false,
                                     layoutImg = it.body.layoutImageUrl
                                 )
                             }
+                            maxFloor = 2
+                            setFloorInfo(2)
+                            setFloorInfo(1)
+                            isSecondFloorExist = true
                         }
-
                         setFloorInfo(1)
                     }
 
@@ -201,7 +245,6 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                     }
                 }
             }
-
         }
     }
 
@@ -219,7 +262,6 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             )
         }
         setFloorInfo(floor)
-        Log.d("recorddd", "층 선택")
     }
 
     // 2. 1번에서 호출 -> 가져온 정보를 층에 맞는 섹터, 레벨, 루트 보여주게 설정
@@ -229,7 +271,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             repository.getGymRouteInfoList(cragId, GetGymRouteInfoRequest(0, 10, floor)).let {
                 when (it) {
                     is BaseState.Success -> {
-                        //Log.d("recorddd", "루트정보 가져오기 성공")
+                        Log.d("recorddd", "루트정보 가져오기 성공")
                         _uiState.update { state ->
                             state.copy(
                                 sectorNameList = sectorNameList.filter { data -> data.floor == floor },
@@ -244,6 +286,28 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                     is BaseState.Error -> {
                         Log.d("recorddd", "루트정보 가져오기 실패")
                         _event.emit(CreateRecordEvent.ShowToastMessage(it.msg))
+                    }
+                }
+            }
+            withContext(Dispatchers.Main) {
+                // 각 층 루트 저장
+                if (floor == 1 && firstFloorRouteList.isEmpty()) {
+                    firstFloorRouteList = uiState.value.routeList
+                } else if (floor == 2 && secondFloorRouteList.isEmpty()) {
+                    secondFloorRouteList = uiState.value.routeList
+                }
+
+                if (maxFloor == 1) {
+                    if (isRestart.value == true) {
+                        //Log.d("recorddd", "getCragInfo에서 item 재설정 호출 (1층짜리)")
+                        isRestart.value = false
+                        getClimbingData()
+                    }
+                } else {
+                    if (isRestart.value == true && floor == 2) {
+                        //Log.d("recorddd", "getCragInfo에서 item 재설정 호출 (2층짜리)")
+                        isRestart.value = false
+                        getClimbingData()
                     }
                 }
             }
@@ -443,13 +507,13 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     }
 
     // 토글 루트 기록 도전 수 증가
-    fun itemIncrease(id: Long) {
+    fun itemIncrease(id: Long, num: Int) {
         _items.value = _items.value.map {
             if (it.routeId == id) {
                 if (uiState.value.selectedRoute.routeId == it.routeId) {
-                    _challengeNumber.value = (_challengeNumber.value ?: 0) + 1
+                    _challengeNumber.value = (_challengeNumber.value ?: 0) + num
                 }
-                it.copy(challengeNum = it.challengeNum + 1)
+                it.copy(challengeNum = it.challengeNum + num)
             } else it
         }
         _items.value.filter { it.routeId == id }.forEach {
@@ -487,7 +551,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     }
 
     // 루트 기록 삭제
-    fun removeItem(id: Long) {
+    private fun removeItem(id: Long) {
         val itemToRemove = _items.value.find { it.routeId == id }
         if (itemToRemove != null) {
             // roomDB 루트 기록 삭제
@@ -542,6 +606,12 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     // 루트기록 더보기
     fun setRouteToggle() {
         isRouteToggleOn.value = !(isRouteToggleOn.value ?: false)
+    }
+
+    // uiState, items 초기화
+    fun resetAtStop() {
+        _uiState.value = CreateRecordUiState()
+        _items.value = emptyList()
     }
 
     // -------- room DB ----------

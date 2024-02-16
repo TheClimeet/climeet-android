@@ -4,10 +4,12 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.data.model.request.ClimbingRecord
@@ -15,6 +17,7 @@ import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.data.local.ClimbingRecordData
 import com.climus.climeet.data.local.RouteRecordData
+import com.climus.climeet.data.model.BaseState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +32,7 @@ class TimerViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _time = MutableLiveData<Long>().apply { value = 0L }
-    private val time: LiveData<Long> get() = _time
+    val time: LiveData<Long> get() = _time
     var pauseState = MutableLiveData<String>()
 
     var pauseTime = MutableLiveData<Long>()
@@ -90,65 +93,74 @@ class TimerViewModel @Inject constructor(
     }
 
     //
-    fun sendClimbingRecord() = CoroutineScope(Dispatchers.Main).launch {
-        val recordData: ClimbingRecordData
-        val routeData: List<RouteRecordData>?
-        val requestBody: CreateTimerClimbingRecordRequest
+    fun sendClimbingRecord() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val routeData: List<RouteRecordData>?
+            val requestBody: CreateTimerClimbingRecordRequest
 
-        recordData = withContext(Dispatchers.IO) { repository.getRecord(1) }
-        routeData = withContext(Dispatchers.IO) { repository.getAllRoute() }
+            val recordData: ClimbingRecordData = repository.getRecord(1)
+            routeData = repository.getAllRoute()
 
-        // avgDifficulty 계산
-        val avgDifficulty = if (routeData?.isNotEmpty() == true) {
-            val totalDifficulty = routeData.sumBy { it.difficulty }
-            totalDifficulty / routeData.size
-        } else {
-            0
-        }
+            // avgDifficulty 계산
+            val avgDifficulty = if (routeData?.isNotEmpty() == true) {
+                val totalDifficulty = routeData.sumBy { it.difficulty }
+                totalDifficulty / routeData.size
+            } else {
+                0
+            }
 
-        // 루트 기록 생성
-        val routeRecords = routeData.map { route ->
-            ClimbingRecord(route.routeId, route.attemptCount, route.isCompleted)
-        }
+            // 루트 기록 생성
+            val routeRecords = routeData.map { route ->
+                ClimbingRecord(route.routeId, route.attemptCount, route.isCompleted)
+            }
 
-        var endTime = sharedPreferences.getString("stopTime", "00:00:00")
+            var endTime: Long = if (isPaused.value == true) {
+                pauseTime.value!!
+            } else {
+                time.value!!
+            }
 
-        if(endTime == "00:00"){
-            endTime = "00:00:00"
-        }
-//        Log.d("recorddd", "시간 정보 : $endTime")
-//        Log.d("recorddd", "평균 난이도 : $avgDifficulty\n기본 정보 : $recordData \n" +
-//                "루트 기록 : $routeData")
+            val hours = TimeUnit.MILLISECONDS.toHours(endTime)
+            val minutes = TimeUnit.MILLISECONDS.toMinutes(endTime) - TimeUnit.HOURS.toMinutes(
+                TimeUnit.MILLISECONDS.toHours(endTime)
+            )
+            val seconds = TimeUnit.MILLISECONDS.toSeconds(endTime) - TimeUnit.MINUTES.toSeconds(
+                TimeUnit.MILLISECONDS.toMinutes(endTime)
+            )
 
-        // 요청 바디 생성
-        requestBody = CreateTimerClimbingRecordRequest(
-            gymId = recordData.gymId,
-            date = recordData.date,
-            time = endTime!!,
-            avgDifficulty = avgDifficulty,
-            routeRecordRequestDtoList = routeRecords ?: listOf()
-        )
+            val formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds)
 
-//        viewModelScope.launch {
-//            repository.createTimerClimbingRecord(requestBody).let {
-//                when (it) {
-//                    is BaseState.Success -> {
-//                        // 성공
-//                        Log.d("testss", it.toString())
-//                    }
-//
-//                    is BaseState.Error -> {
-//                        it.msg // 서버 에러 메시지
-//                        Log.d("testss", it.msg)
-//                    }
-//                }
-//            }
-//        }
+            // 요청 바디 생성
+            requestBody = CreateTimerClimbingRecordRequest(
+                gymId = recordData.gymId,
+                date = recordData.date,
+                time = formattedTime!!,
+                avgDifficulty = avgDifficulty,
+                routeRecordRequestDtoList = routeRecords ?: listOf()
+            )
+            // Log.d("recorddd", "리퀘스트 : $requestBody")
 
-        // 다음 운동 기록을 위해 루트기록 초기화
-        withContext(Dispatchers.IO) {
-            repository.deleteAllRoute()
-            repository.deleteAllRecord()
+            viewModelScope.launch {
+                repository.createTimerClimbingRecord(requestBody).let {
+                    when (it) {
+                        is BaseState.Success -> {
+                            // 성공
+                            Log.d("testss", it.toString())
+                        }
+
+                        is BaseState.Error -> {
+                            it.msg // 서버 에러 메시지
+                            Log.d("testss", it.msg)
+                        }
+                    }
+                }
+            }
+
+            // 다음 운동 기록을 위해 루트기록 초기화
+            withContext(Dispatchers.IO) {
+                repository.deleteAllRoute()
+                repository.deleteAllRecord()
+            }
         }
     }
 

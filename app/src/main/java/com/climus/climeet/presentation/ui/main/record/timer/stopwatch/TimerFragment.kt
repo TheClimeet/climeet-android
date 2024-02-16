@@ -21,6 +21,7 @@ import com.climus.climeet.data.local.ClimbingRecordData
 import com.climus.climeet.data.local.RouteRecordData
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.record.timer.setrecord.ClimbingRecordAdapter
+import com.climus.climeet.presentation.ui.main.record.timer.setrecord.CreateRecordUiState
 import com.climus.climeet.presentation.ui.main.record.timer.setrecord.RecordAverageAdapter
 import com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerClimbingRecordViewModel
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.TimerCragSelectBottomSheetFragment
@@ -79,6 +80,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         setAverageByLevel()
         // 루트 기록
         setRouteRecyclerView()
+
     }
 
     private fun checkService() {
@@ -193,7 +195,6 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
                     }
                 }
             }
-            Log.d("recorddd", "레벨 완등률 변경")
         })
     }
 
@@ -225,9 +226,9 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             val id = sharedPreferences.getLong("cragId", 0)
             val name = sharedPreferences.getString("cragName", getString(R.string.timer_crag_set_inform))
             if (name != null) {
-                // 앱 재시작 시, 암장 정보 가져오는 API 재호출 및 데이터 다시 저장
+                // 앱 재시작 시, 암장 정보 가져오는 API 재호출
                 recordVM.selectedCrag(id, name)
-                recordVM.getClimbingData()
+                recordVM.isRestart.value = true
             }
         }
     }
@@ -337,6 +338,19 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
                 )
             }
         })
+
+        recordVM.resetView.observe(viewLifecycleOwner, Observer { reset ->
+            if (reset){
+                if (timerVM.isPaused.value == true){
+                    // 일시정지 상태면 화면 재설정
+                    binding.layoutAvgComplete.visibility = View.VISIBLE
+                    binding.tvTimeTitle.visibility = View.VISIBLE
+                    binding.layoutRouteRecord.visibility = View.VISIBLE
+                    recordVM.isAvgToggleOn.value = false
+                    recordVM.isRouteToggleOn.value = true
+                }
+            }
+        })
     }
 
     // 화면 초기화 함수
@@ -419,9 +433,13 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             // 종료 시간 저장
             CoroutineScope(Dispatchers.IO).launch {
                 if(timerVM.isPaused.value == true){
-                    sharedPreferences.edit().putString("stopTime", timerVM.pauseTimeFormat.value).commit()
+                    timerVM.pauseTime.value?.let { pauseTime ->
+                        sharedPreferences.edit().putLong("stopTime", pauseTime).commit()
+                    }
                 } else {
-                    sharedPreferences.edit().putString("stopTime", timerVM.timeFormat.value).commit()
+                    timerVM.time.value?.let { time ->
+                        sharedPreferences.edit().putLong("stopTime", time).commit()
+                    }
                 }
             }
             stopStopwatch()
@@ -431,6 +449,8 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
             // 루트기록 API로 전송
             timerVM.sendClimbingRecord()
+
+            recordVM.resetAtStop()
 
             // 완료화면 띄우기
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
@@ -501,9 +521,13 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         sharedPreferences.edit().putString(TOP_LEVEL, "--").apply()
         binding.tvTitle.text = getString(R.string.timer_crag_set_inform)
 
+        // 루트기록 관련 초기화
         recordVM.totalRoute.value = "--"
         recordVM.totalComplete.value = "--"
         recordVM.avgLevel.value = "--"
+
+        recordVM.apiCheck = false
+        recordVM.isSelectedCrag.value = false
 
         //Log.d("stopStopwatch", "stopStopwatch 호출")
     }
