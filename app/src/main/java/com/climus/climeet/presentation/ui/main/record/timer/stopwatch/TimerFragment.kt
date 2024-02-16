@@ -534,6 +534,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
     // 암장 선택 바텀시트를 보여준다
     private fun showBottomSheet() {
+        cragSelectVM.resetItem()
         val bottomSheetFragment = TimerCragSelectBottomSheetFragment()
         bottomSheetFragment.show(parentFragmentManager, "timerCragSelectBottomSheet")
     }
