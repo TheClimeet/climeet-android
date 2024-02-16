@@ -271,7 +271,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             repository.getGymRouteInfoList(cragId, GetGymRouteInfoRequest(0, 10, floor)).let {
                 when (it) {
                     is BaseState.Success -> {
-                        Log.d("recorddd", "루트정보 가져오기 성공")
+                        Log.d("recorddd", "${floor}층 루트정보 가져오기 성공")
                         _uiState.update { state ->
                             state.copy(
                                 sectorNameList = sectorNameList.filter { data -> data.floor == floor },
