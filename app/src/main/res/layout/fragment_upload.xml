@@ -59,7 +59,7 @@
                 android:background="@android:color/transparent"
                 android:enabled="@{vm.isCompressDone()}"
                 android:minWidth="0dp"
-                android:onClick="@{() -> vm.storeVideo()}"
+                android:onClick="@{() -> vm.uploadShorts()}"
                 android:text="공유"
                 android:textColor="@color/selector_share_btn_text"
                 app:layout_constraintBottom_toBottomOf="parent"

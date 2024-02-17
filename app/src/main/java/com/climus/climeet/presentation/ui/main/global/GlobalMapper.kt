@@ -31,6 +31,7 @@ fun RouteItem.toRouteUiData(
     routeId = routeId,
     sectorId = sectorId,
     sectorName = sectorName,
+    difficulty = difficulty,
     gymLevelName = gymDifficultyName,
     gymLevelColor = gymDifficultyColor,
     climeetLevelName = climeetDifficultyName,

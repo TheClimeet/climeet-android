@@ -6,13 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.response.ShortsListResponse
 import com.climus.climeet.data.repository.MainRepository
-import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedFilter
-import com.climus.climeet.presentation.ui.main.home.HomeUiState
-import com.climus.climeet.presentation.ui.main.shorts.SortType
-import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsDetailListener
-import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
-import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
-import com.climus.climeet.presentation.ui.main.shorts.model.UpdatedFollowUiData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,7 +28,7 @@ class PopularShortsViewModel @Inject constructor(private val repository: MainRep
         // todo API 업데이트 되면, 필터 적용해서 API CALL
 
         viewModelScope.launch {
-            repository.getPopularShorts(0, 20).let {
+            repository.getPopularShorts(0, 20, hashMapOf()).let {
                 when(it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->

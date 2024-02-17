@@ -52,7 +52,7 @@ class BearerInterceptor : Interceptor {
                             }
 
                             is BaseState.Error -> {
-                                Log.d(TAG,it.msg)
+                                Log.d(TAG, it.msg)
                             }
                         }
                     }
@@ -71,7 +71,7 @@ class BearerInterceptor : Interceptor {
                 return chain.proceed(newRequest)
             } else {
                 // 해당 특정 에러코드가 그대로 내려간다면, IntroActivity로 이동. 세션 만료 처리
-                Log.d(TAG,"세션이 만료되었습니다")
+                Log.d(TAG, "세션이 만료되었습니다")
                 sharedPreferences.edit()
                     .remove(X_ACCESS_TOKEN)
                     .remove(X_REFRESH_TOKEN)

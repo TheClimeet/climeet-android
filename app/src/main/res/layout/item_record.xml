@@ -53,8 +53,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginStart="20dp"
             android:text="시간"
-            app:layout_constraintStart_toStartOf="@id/tv_crags_name"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_crags_name" />
 
         <TextView
@@ -71,7 +72,7 @@
             style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
+            android:layout_marginStart="70dp"
             android:text="도전"
             app:layout_constraintStart_toEndOf="@id/tv_time_title"
             app:layout_constraintTop_toTopOf="@id/tv_time_title" />

@@ -65,8 +65,8 @@ class UploadFragment : BaseFragment<FragmentUploadBinding>(R.layout.fragment_upl
             viewModel.event.collect {
                 when (it) {
                     is UploadEvent.ShowPublicBottomSheet -> {
-                        CheckPublicBottomSheet(requireContext(), it.type) {
-                            viewModel.setPublicState(it)
+                        CheckPublicBottomSheet(requireContext(), it.type) { type ->
+                            viewModel.setPublicState(type)
                         }.show()
                     }
 
@@ -116,7 +116,7 @@ class UploadFragment : BaseFragment<FragmentUploadBinding>(R.layout.fragment_upl
                             val file = File(it)
                             val requestFile = file.asRequestBody("video/mp4".toMediaTypeOrNull())
                             val videoFile =
-                                MultipartBody.Part.createFormData("file", file.name, requestFile)
+                                MultipartBody.Part.createFormData("video", file.name, requestFile)
                             viewModel.finishCompress(videoFile, size)
                         } ?: run {
 

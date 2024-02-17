@@ -4,10 +4,13 @@ data class RouteUiData(
     val routeId: Long = -1,
     val sectorId: Long = -1,
     val sectorName: String = "",
+    val difficulty: Int = 0,
     val gymLevelName: String = "",
     val gymLevelColor: String = "",
     val climeetLevelName: String = "",
     val routeImg: String = "",
     var isSelected: Boolean = false,
+    var challengeNum: Int = 0,
+    var clearBtnState: Boolean = false,
     val onClickListener: (RouteUiData) -> Unit
 )

@@ -1,9 +1,10 @@
 package com.climus.climeet.data.repository
 
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.request.AddShortsCommentRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
-import com.climus.climeet.data.model.request.ShortsUploadRequest
+import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -19,6 +20,9 @@ import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
+import com.climus.climeet.data.model.response.ShortsMainCommentItem
+import com.climus.climeet.data.model.response.ShortsMainCommentResponse
+import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
@@ -27,6 +31,7 @@ import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Path
 import retrofit2.http.Query
+import okhttp3.ResponseBody
 
 interface MainRepository {
 
@@ -48,12 +53,14 @@ interface MainRepository {
 
     suspend fun getRecentShorts(
         page: Int,
-        size: Int
+        size: Int,
+        filter: Map<String, Long>
     ): BaseState<ShortsListResponse>
 
     suspend fun getPopularShorts(
         page: Int,
-        size: Int
+        size: Int,
+        filter: Map<String, Long>
     ): BaseState<ShortsListResponse>
 
     suspend fun getShortsUpdatedFollow(): BaseState<List<ShortsUpdatedFollowResponse>>
@@ -106,14 +113,47 @@ interface MainRepository {
 
     suspend fun createTimerClimbingRecord(
         body: CreateTimerClimbingRecordRequest
-    ): BaseState<String>
+    ): BaseState<ResponseBody>
 
     suspend fun getGymProfile(
         gymId: Long
     ): BaseState<GetGymProfileResponse>
 
     suspend fun uploadShorts(
-        body: ShortsUploadRequest
+        video: MultipartBody.Part?,
+        body: ShortsDetailRequest
     ): BaseState<Unit>
 
+    suspend fun patchBookMark(
+        shortsId: Long
+    ): BaseState<Unit>
+
+    suspend fun patchFavorite(
+        shortsId: Long
+    ): BaseState<Unit>
+
+    suspend fun getShortsSubCommentList(
+        shortsId: Long,
+        parentCommentId: Long,
+        page: Int,
+        size: Int
+    ): BaseState<ShortsSubCommentResponse>
+
+    suspend fun getShortsCommentList(
+        shortsId: Long,
+        page: Int,
+        size: Int
+    ): BaseState<ShortsMainCommentResponse>
+
+    suspend fun addShortsComment(
+        shortsId: Long,
+        filter: Map<String, Long>,
+        body: AddShortsCommentRequest
+    ): BaseState<ShortsMainCommentItem>
+
+    suspend fun patchShortsCommentInteraction(
+        shortsCommentId: Long,
+        isLike: Boolean,
+        isDislike: Boolean
+    ): BaseState<String>
 }

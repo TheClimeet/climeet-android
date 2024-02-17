@@ -16,6 +16,5 @@ class TimerMainViewModel @Inject constructor() : ViewModel() {
     // TimerFragment로 이동하는 이벤트 발생
     fun moveToStopwatch() {
         _moveToTimerFragmentEvent.value = Unit
-        Log.d("move", "뷰모델 이벤트 발생")
     }
 }

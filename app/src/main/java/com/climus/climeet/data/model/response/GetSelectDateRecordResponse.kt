@@ -13,8 +13,9 @@ data class GetSelectDateRecordResponse(
 ) {
     fun getFormattedTime(): String {
         val localTime = LocalTime.parse(time)
-        val hour = localTime.hour
-        val minute = localTime.minute
-        return "${hour.toString().trimStart('0')}h ${minute.toString().trimStart('0')}m"
+        val hour = if (localTime.hour == 0) 0 else localTime.hour
+        val minute = if (localTime.minute == 0) 0 else localTime.minute
+        val second = if (localTime.second == 0) 0 else localTime.second
+        return "${hour}h ${minute}m ${second}s"
     }
 }

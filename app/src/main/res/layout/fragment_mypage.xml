@@ -5,21 +5,116 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.mypage.MyPageViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingHorizontal="20dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_show_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="@{() -> vm.navigateToMyProfile()}"
+            android:text="프로필 보기"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_login_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="@{() -> vm.navigateToAccount()}"
+            android:text="로그인 계정"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_show_profile" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_follow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="@{() -> vm.navigateToFollow()}"
+            android:text="팔로우"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_login_account" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_my_shorts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="@{() -> vm.navigateToMyShorts()}"
+            android:text="나의 숏츠"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_follow" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_announce"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="@{() -> vm.navigateToAnnounce()}"
+            android:text="공지사항"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_my_shorts" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="@{() -> vm.navigateToAlarm()}"
+            android:text="알림"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_announce" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_policy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="@{() -> vm.navigateToPolicy()}"
+            android:text="운영정책"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_alarm" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_send_opinion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="@{() -> vm.navigateToSendOpinion()}"
+            android:text="의견 보내기"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_policy" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_cheer_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="@{() -> vm.navigateToCheerUp()}"
+            android:text="클밋팀 응원하기"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_send_opinion" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="@{() -> vm.logout()}"
             android:text="로그아웃"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/btn_cheer_up" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

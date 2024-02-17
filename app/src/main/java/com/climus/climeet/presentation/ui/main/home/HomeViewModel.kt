@@ -7,31 +7,14 @@ import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
-import com.climus.climeet.data.model.response.BestRouteSimpleResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
 import com.climus.climeet.data.model.response.ShortsSimpleResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.repository.MainRepository
-import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedFilter
 import com.climus.climeet.presentation.ui.main.home.model.HomeGym
-import com.climus.climeet.presentation.ui.main.home.model.PopularCrag
-import com.climus.climeet.presentation.ui.main.home.model.PopularShorts
-import com.climus.climeet.presentation.ui.main.shorts.ShortsEvent
-import com.climus.climeet.presentation.ui.main.shorts.ShortsOption
-import com.climus.climeet.presentation.ui.main.shorts.ShortsViewModel
-import com.climus.climeet.presentation.ui.main.shorts.SortType
-import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
-import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
-import com.climus.climeet.presentation.ui.main.shorts.model.UpdatedFollowUiData
-import com.climus.climeet.presentation.ui.main.shorts.toShortsThumbnailUiData
-import com.climus.climeet.presentation.ui.main.shorts.toShortsUiData
-import com.climus.climeet.presentation.ui.main.shorts.toUpdatedFollowUiData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -96,7 +79,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
         // todo API 업데이트 되면, 필터 적용해서 API CALL
 
         viewModelScope.launch {
-            repository.getPopularShorts(0, 10).let {
+            repository.getPopularShorts(0, 10, hashMapOf()).let {
                 when(it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->

@@ -18,6 +18,10 @@ class ClimbingRecordRepositoryImpl @Inject constructor(
         climbingRecordDao.delete(climbingRecordData)
     }
 
+    override fun deleteAll() {
+        climbingRecordDao.deleteAll()
+    }
+
     override fun getAll(): List<ClimbingRecordData> {
         return climbingRecordDao.getAll()
     }
