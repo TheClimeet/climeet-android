@@ -36,18 +36,15 @@ class TimerMainFragment :
         if (timerVM.isRunning.value == true) {
             binding.idcTimer.visibility = View.VISIBLE
             binding.vpTimer.isUserInputEnabled = true   // 화면 넘길 수 있음
-            Log.d("TIMER", "[메인 프레그먼트 onResume] indicator 보임")
         } else {
             binding.idcTimer.visibility = View.INVISIBLE
             binding.vpTimer.isUserInputEnabled = false  // 화면 넘길 수 없음
-            Log.d("TIMER", "[메인 프레그먼트 onResume] indicator 안 보임")
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         timerVM.unregisterReceiver(requireContext())
-        Log.d("TIMER", "루트 기록 unregistered")
     }
 
     private fun setViewPager() {
@@ -63,11 +60,9 @@ class TimerMainFragment :
                 if (position == 0) {
                     if (timerVM.isRunning.value == true) {
                         binding.idcTimer.visibility = View.VISIBLE
-                        Log.d("TIMER", "[메인 프레그먼트] indicator 보임")
                     }
                 } else {
                     binding.idcTimer.visibility = View.INVISIBLE
-                    Log.d("TIMER", "[메인 프레그먼트] 스톱워치 화면이 아니라 indicator 안 보임")
                 }
             }
         })
@@ -78,11 +73,9 @@ class TimerMainFragment :
             if (stopwatchState) {
                 binding.idcTimer.visibility = View.VISIBLE
                 binding.vpTimer.isUserInputEnabled = true   // 화면 넘길 수 있음
-                Log.d("TIMER", "indicator 보임")
             } else {
                 binding.idcTimer.visibility = View.INVISIBLE
                 binding.vpTimer.isUserInputEnabled = false  // 화면 넘길 수 없음
-                Log.d("TIMER", "indicator 안 보임")
             }
         }
     }
@@ -91,7 +84,6 @@ class TimerMainFragment :
     private fun moveToTimerFragment() {
         viewModel.moveToTimerFragmentEvent.observe(viewLifecycleOwner, Observer {
             binding.vpTimer.currentItem = 0
-            Log.d("move", "메인에서 화면 이동시켜야함")
         })
     }
 }

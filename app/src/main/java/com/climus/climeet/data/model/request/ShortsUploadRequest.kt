@@ -1,16 +1,13 @@
 package com.climus.climeet.data.model.request
 
-data class ShortsUploadRequest(
-    val video: String,
-    val thumbnailImage: String,
-    val createShortsRequest: ShortsDetailRequest
-)
 
 data class ShortsDetailRequest(
-    val climbingGymId: Long,
-    val routeId: Long,
-    val sectorId: Long,
+    val public: String,
+    val thumbnailImageUrl: String,
     val description: String,
-    val public: Boolean,
-    val soundEnabled: Boolean
+    val soundEnabled: Boolean,
+    val climbingGymId: Long? = null,
+    val routeId: Long? = null,
+    val sectorId: Long? = null,
+    val shortsVisibility: String
 )

@@ -25,7 +25,9 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideRecordDatabase(@ApplicationContext context: Context): ClimbingDatabase {
-        return Room.databaseBuilder(context, ClimbingDatabase::class.java, DATABASE_NAME).build()
+        return Room.databaseBuilder(context, ClimbingDatabase::class.java, DATABASE_NAME)
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides

@@ -1,7 +1,6 @@
 package com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentTimerSelectCragBottomSheetBinding
+import com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerClimbingRecordViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 class TimerCragSelectBottomSheetFragment : BottomSheetDialogFragment() {
 
     private val viewModel: TimerCragSelectBottomSheetViewModel by activityViewModels()
+    private val routeVM: SetTimerClimbingRecordViewModel by activityViewModels()
     private lateinit var binding: FragmentTimerSelectCragBottomSheetBinding
 
     private var cragSearchAdapter: TimerCragSelectRVAdapter? = null
@@ -54,7 +55,7 @@ class TimerCragSelectBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun initRecyclerview() {
-        cragSearchAdapter = TimerCragSelectRVAdapter(viewModel)
+        cragSearchAdapter = TimerCragSelectRVAdapter(viewModel, routeVM)
         binding.rvSearchCrag.layoutManager = LinearLayoutManager(context)
         binding.rvSearchCrag.adapter = cragSearchAdapter
     }
@@ -67,26 +68,22 @@ class TimerCragSelectBottomSheetFragment : BottomSheetDialogFragment() {
                 //XML에서 visibility를 설정하면 적용이 안 됨 -> fragment에서 설정
                 if (uiState.progressState) {
                     // progress 상태일 때의 UI 처리
-                    Log.d("test", "프로그래스 보임")
                     binding.pbLoading.visibility = View.VISIBLE
 
                 } else {
                     // non-progress 상태일 때의 UI 처리
-                    Log.d("test", "프로그래스 안 보임")
                     binding.pbLoading.visibility = View.INVISIBLE
                 }
 
                 if (uiState.emptyResultState) {
                     // empty result 상태일 때의 UI 처리
-                    Log.d("test", "결과 없음")
                     binding.layoutSearchNone.visibility = View.VISIBLE
                 } else {
                     // non-empty result 상태일 때의 UI 처리
-                    Log.d("test", "결과 있음")
                     binding.layoutSearchNone.visibility = View.INVISIBLE
                 }
 
-                if (uiState.emptyTextState){
+                if (uiState.emptyTextState) {
                     binding.etCragName.setText("")
                 }
             }

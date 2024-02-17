@@ -15,6 +15,9 @@ interface ClimbingRecordDao {
     @Delete
     fun delete(climbingRecord: ClimbingRecordData)
 
+    @Query("DELETE FROM climbing_record")
+    fun deleteAll()
+
     @Query("SELECT * FROM climbing_record")
     fun getAll(): List<ClimbingRecordData>
 

@@ -26,7 +26,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -48,6 +47,8 @@ class TimerViewModel @Inject constructor(
     var isRestart = MutableLiveData<Boolean>().apply { value = false }
     var isStop = MutableLiveData<Boolean>().apply { value = true }
 
+    var challengeNum = MutableLiveData<Long>()
+
     // 스톱워치 경과시간과 일시정지 여부를 전달받음
     // pauseState를 String으로 전달받는 이유 : default값을 설정하지 않기 위해
     private val broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -57,7 +58,6 @@ class TimerViewModel @Inject constructor(
             if (state != null) {
                 pauseState.value = state.toString()
                 pauseTime.value = sharedPreferences.getLong("pauseTime", 0L)
-                Log.d("TIMER", "알림창 일시정지 : ${pauseState.value}")
             }
         }
     }
@@ -97,53 +97,68 @@ class TimerViewModel @Inject constructor(
         }
     }
 
-    // todo : 스톱워치가 정지되면, API로 루트 기록들을 넘겨준다
+    //
     fun sendClimbingRecord() = CoroutineScope(Dispatchers.Main).launch {
         val recordData: ClimbingRecordData
         val routeData: List<RouteRecordData>?
         val requestBody: CreateTimerClimbingRecordRequest
 
-        // todo : room db에서 정보 가져오기
-        // gymId, date, time, avgDifficulty 가져오기
         recordData = withContext(Dispatchers.IO) { climbingRepository.getRoute(1) }
-
-        // routeRecordRequestDtoList : routeId, attemptCount, isCompleted 가져오기
         routeData = withContext(Dispatchers.IO) { routeRepository.getAllRecord() }
 
-        delay(1000)  // 1초 대기
-        Log.d("room", "기본 정보 : $recordData.toString()\n 루트 기록 : $routeData.toString()")
+        // avgDifficulty 계산
+        val avgDifficulty = if (routeData?.isNotEmpty() == true) {
+            val totalDifficulty = routeData.sumBy { it.difficulty }
+            totalDifficulty / routeData.size
+        } else {
+            0
+        }
 
         // 루트 기록 생성
         val routeRecords = routeData.map { route ->
             ClimbingRecord(route.routeId, route.attemptCount, route.isCompleted)
         }
+
+        var endTime = sharedPreferences.getString("stopTime", "00:00:00")
+
+        if(endTime == "00:00"){
+            endTime = "00:00:00"
+        }
+//        Log.d("recorddd", "시간 정보 : $endTime")
+//        Log.d("recorddd", "평균 난이도 : $avgDifficulty\n기본 정보 : $recordData \n" +
+//                "루트 기록 : $routeData")
+
         // 요청 바디 생성
         requestBody = CreateTimerClimbingRecordRequest(
             gymId = recordData.gymId,
             date = recordData.date,
-            time = LocalTime.parse(recordData.time), // String을 LocalTime으로 변환
-            avgDifficulty = recordData.avgDifficulty,
-            routeRecordRequestDtoList = routeRecords
+            time = endTime!!,
+            avgDifficulty = avgDifficulty,
+            routeRecordRequestDtoList = routeRecords ?: listOf()
         )
 
-        // todo : API로 정보 잘 넘어가나 확인하기 (아직 test 안 해봄)
-        viewModelScope.launch {
-            repository.createTimerClimbingRecord(requestBody).let {
-                when (it) {
-                    is BaseState.Success -> {
-                        // 성공
-                        Log.d("API", it.toString())
-                    }
+//        viewModelScope.launch {
+//            repository.createTimerClimbingRecord(requestBody).let {
+//                when (it) {
+//                    is BaseState.Success -> {
+//                        // 성공
+//                        Log.d("testss", it.toString())
+//                    }
+//
+//                    is BaseState.Error -> {
+//                        it.msg // 서버 에러 메시지
+//                        Log.d("testss", it.msg)
+//                    }
+//                }
+//            }
+//        }
 
-                    is BaseState.Error -> {
-                        it.msg // 서버 에러 메시지
-                        Log.d("API", it.msg)
-                    }
-                }
-            }
+        // 다음 운동 기록을 위해 루트기록 초기화
+        withContext(Dispatchers.IO) {
+            routeRepository.deleteAll()
+            climbingRepository.deleteAll()
         }
     }
-
 
     fun registerReceiver(context: Context) {
         LocalBroadcastManager.getInstance(context).registerReceiver(
@@ -157,10 +172,5 @@ class TimerViewModel @Inject constructor(
 
     companion object {
         const val STOPWATCH_UPDATE = "StopwatchUpdate"
-        const val KEY_IS_START = "isStart"
-        const val KEY_IS_PAUSE = "isPause"
-        const val KEY_IS_RESTART = "isRestart"
-        const val KEY_IS_STOP = "isStop"
-        const val KEY_IS_RUNNING = "isRunning"
     }
 }

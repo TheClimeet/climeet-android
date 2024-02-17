@@ -47,9 +47,8 @@ class CheckPublicBottomSheet(
 
 }
 
-enum class PublicType(val text: String){
-    EMPTY(""),
-    PUBLIC("전체 공개"),
-    FOLLWER("팔로워만 공개"),
-    ONLYME("나만 보기")
+enum class PublicType(val text: String, val value: String){
+    PUBLIC("전체 공개", "PUBLIC"),
+    FOLLWER("팔로워만 공개", "FOLLOWERS_ONLY"),
+    ONLYME("나만 보기","PRIVATE")
 }
