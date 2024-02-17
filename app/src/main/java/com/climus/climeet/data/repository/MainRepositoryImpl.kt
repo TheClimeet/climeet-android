@@ -11,6 +11,7 @@ import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
 import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
+import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
@@ -65,6 +66,23 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun getClimberFollowing(): BaseState<List<UserFollowSimpleResponse>> =
         runRemote { api.getClimberFollowing() }
+
+    override suspend fun followUser(
+        followingUserId: Long
+    ): BaseState<String> =
+        runRemote { api.followUser(followingUserId) }
+
+    override suspend fun unfollowUser(
+        followingUserId: Long
+    ): BaseState<String> =
+        runRemote { api.unfollowUser(followingUserId) }
+
+    override suspend fun getClimberSearchingList(
+        page: Int,
+        size: Int,
+        climberName: String
+    ): BaseState<ClimberDetailInfoResponse> =
+        runRemote { api.getClimberSearchingList(page, size, climberName) }
 
     override suspend fun findBannerListBetweenDates()
             : BaseState<List<BannerDetailInfoResponse>> =

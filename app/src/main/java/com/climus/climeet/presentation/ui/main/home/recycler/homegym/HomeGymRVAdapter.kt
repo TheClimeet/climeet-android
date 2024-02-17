@@ -32,7 +32,7 @@ class HomeGymRVAdapter(private val homeGymList: List<UserHomeGymSimpleResponse>)
                     .into(binding.cragProfileArea)
             }
             binding.tvItemCragName.text = homeGym.gymName
-            binding.tvItemFollowers.text = "팔로워 33"
+            binding.tvItemFollowers.text = "팔로워 " + homeGym.followerCount.toString()
         }
     }
 }

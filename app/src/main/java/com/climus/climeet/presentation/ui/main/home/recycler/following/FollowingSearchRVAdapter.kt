@@ -10,11 +10,12 @@ import com.bumptech.glide.Glide
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.databinding.ItemFollowingBinding
 import com.climus.climeet.databinding.ItemSearchFollowingBinding
+import com.climus.climeet.presentation.ui.main.home.searchcrag.model.FollowClimber
 
 class FollowingSearchRVAdapter() : RecyclerView.Adapter<FollowingSearchRVAdapter.ViewHolder>(){
 
     private val followStatus = SparseBooleanArray()
-    private var searchList: List<UserFollowSimpleResponse> = emptyList()
+    private var searchList: List<FollowClimber> = emptyList()
     private var keyword: String = ""
 
     override fun onCreateViewHolder(
@@ -64,25 +65,30 @@ class FollowingSearchRVAdapter() : RecyclerView.Adapter<FollowingSearchRVAdapter
     override fun getItemCount(): Int = searchList.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setList(list: List<UserFollowSimpleResponse>, keyword: String) {
+    fun setList(list: List<FollowClimber>, keyword: String) {
         searchList = list
         this.keyword = keyword
         notifyDataSetChanged()
     }
 
     inner class ViewHolder(val binding: ItemSearchFollowingBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(following: UserFollowSimpleResponse, keyword: String) {
+        fun bind(following: FollowClimber, keyword: String) {
             binding.keyword = keyword
             binding.following = following
 
             binding.tvFollowing.text = following.followerCount.toString()
 
-            if (following.userProfileUrl != null) {
+            if (following.profileImageUrl != null) {
                 Glide.with(binding.root.context)
-                    .load(following.userProfileUrl)
+                    .load(following.profileImageUrl)
                     .into(binding.followingProfileArea)
             }
-            binding.tvFollowingName.text = following.userName
+            binding.tvFollowingName.text = following.climberName
+
+            if(following.isFollowing) {
+                binding.btnFollowing.visibility = View.INVISIBLE
+                binding.btnFollow.visibility = View.VISIBLE
+            }
 
         }
     }
