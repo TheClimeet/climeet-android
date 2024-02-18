@@ -26,6 +26,7 @@ import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
+import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.runRemote
 import com.climus.climeet.data.remote.MainApi
@@ -62,6 +63,9 @@ class MainRepositoryImpl @Inject constructor(
         filter: Map<String, Long>
     ): BaseState<ShortsListResponse> =
         runRemote { api.getPopularShorts(page, size, filter) }
+
+    override suspend fun getGymsFollowing(): BaseState<List<UserHomeGymDetailResponse>> =
+        runRemote { api.getGymsFollowing() }
 
     override suspend fun searchAvailableGym(
         gymName: String,

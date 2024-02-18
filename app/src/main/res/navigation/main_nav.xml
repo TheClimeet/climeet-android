@@ -108,7 +108,7 @@
 
     <fragment
         android:id="@+id/searchCragFragment"
-        android:name="com.climus.climeet.presentation.ui.main.home.searchcrag.SearchCragFragment"
+        android:name="com.climus.climeet.presentation.ui.main.home.search.SearchFragment"
         android:label="SearchCragFragment" />
 
     <fragment

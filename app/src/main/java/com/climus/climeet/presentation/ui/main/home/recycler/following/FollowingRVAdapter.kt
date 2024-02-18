@@ -1,19 +1,15 @@
 package com.climus.climeet.presentation.ui.main.home.recycler.following
 
 import android.annotation.SuppressLint
-import androidx.fragment.app.viewModels
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.databinding.ItemFollowingBinding
-import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
-import com.climus.climeet.presentation.ui.main.home.searchcrag.SearchCragViewModel
-import com.climus.climeet.presentation.ui.main.home.searchcrag.model.FollowClimber
+import com.climus.climeet.presentation.ui.main.home.search.model.FollowClimber
 
 class FollowingRVAdapter(private val followingList: List<UserFollowSimpleResponse>) : RecyclerView.Adapter<FollowingRVAdapter.ViewHolder>(){
 
