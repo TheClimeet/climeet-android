@@ -92,7 +92,7 @@ class ShortsCommentBottomSheetViewModel @Inject constructor(
                                             showMoreComment = ::getMoreSubComment,
                                             addSubComment = ::readyToAddSubComment,
                                             changeLikeStatus = ::changeLikeStatus,
-                                            remainSubCommentCount = childCommentCount - 1,
+                                            remainSubCommentCount = childCommentCount,
                                             isLastSubComment = true
                                         )
                                     )
