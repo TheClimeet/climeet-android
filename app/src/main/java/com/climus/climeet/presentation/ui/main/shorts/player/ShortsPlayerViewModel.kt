@@ -206,6 +206,8 @@ class ShortsPlayerViewModel @Inject constructor(
                 curFilter = SelectedFilter()
             )
         }
+
+        getShorts(ShortsOption.NEW_SORT)
     }
 
 
