@@ -315,4 +315,36 @@
         app:destination="@id/gymProfileFragment" />
 
 
+    <fragment
+        android:id="@+id/gymProfileInfoFragment"
+        android:name="com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymProfileInfoFragment"
+        android:label="GymProfileInfoFragment">
+
+        <argument
+            android:name="gymId"
+            app:argType="long"/>
+
+        <action
+            android:id="@+id/action_gymProfileInfoFragment_to_gymReviewBottomSheetFragment"
+            app:destination="@id/gymReviewBottomSheetFragment" />
+        <action
+            android:id="@+id/action_gymProfileInfoFragment_to_gymProfileFragment"
+            app:destination="@id/gymProfileFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/gymReviewBottomSheetFragment"
+        android:name="com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymReviewBottomSheetFragment"
+        android:label="GymReviewBottomSheetFragment">
+
+        <argument
+            android:name="gymId"
+            app:argType="long"/>
+
+        <action
+            android:id="@+id/action_gymReviewBottomSheetFragment_to_gymProfileInfoFragment"
+            app:destination="@id/gymProfileInfoFragment" />
+    </fragment>
+
 </navigation>
