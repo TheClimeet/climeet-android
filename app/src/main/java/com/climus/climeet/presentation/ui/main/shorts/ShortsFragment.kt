@@ -36,6 +36,7 @@ class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_sho
         binding.rvShortsThumbnail.adapter = ShortsThumbnailAdapter()
         binding.rvUpdatedFollow.adapter = UpdatedFollowAdapter()
 
+        sharedViewModel.initViewModel()
         sharedViewModel.getUpdatedFollow()
         sharedViewModel.getShorts(ShortsOption.NEW_SORT)
         addOnScrollListener()

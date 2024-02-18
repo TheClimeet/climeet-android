@@ -54,9 +54,8 @@ class App : Application(){
         FirebaseApp.initializeApp(this@App)
         CoroutineScope(Dispatchers.Main).launch {
             fcmToken = async { MyFirebaseMessagingService().getFirebaseToken() }.await()
-            Log.d("fcmToken", fcmToken)
+            Log.d(TAG, "fcmToken : $fcmToken")
         }
     }
-
 
 }

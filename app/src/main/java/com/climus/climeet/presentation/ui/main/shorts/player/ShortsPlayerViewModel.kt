@@ -56,6 +56,11 @@ class ShortsPlayerViewModel @Inject constructor(
         const val GOTO_FOLLOW = 1
     }
 
+    fun initViewModel(){
+        _uiState.update { ShortsPlayerUiState() }
+    }
+
+
     fun getUpdatedFollow() {
 
         viewModelScope.launch {
