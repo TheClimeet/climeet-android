@@ -188,7 +188,7 @@ class ShortsPlayerViewModel @Inject constructor(
                 curFilter = sectorInfo
             )
         }
-        Log.d(TAG,sectorInfo.sectorName)
+        Log.d(TAG, sectorInfo.sectorName)
         Log.d(TAG, sectorInfo.gymLevelName)
 
 
@@ -218,6 +218,42 @@ class ShortsPlayerViewModel @Inject constructor(
 
     private fun navigateToAddFollow() {
 
+    }
+
+    fun patchFavorite(shortsId: Long, likeState: Boolean) {
+        Log.d(TAG,"$shortsId   $likeState")
+
+//        _uiState.update { state ->
+//            state.copy(
+//                shortsList = uiState.value.shortsList.map {
+//                    if (it.shortsId == shortsId) {
+//                        it.copy(
+//                            isLiked = likeState,
+//                            likeCount = if (likeState) it.likeCount + 1 else it.likeCount - 1
+//                        )
+//                    } else {
+//                        it.copy()
+//                    }
+//                }
+//            )
+//        }
+    }
+
+    fun patchBookMark(shortsId: Long, bookMarkState: Boolean) {
+//        _uiState.update { state ->
+//            state.copy(
+//                shortsList = uiState.value.shortsList.map {
+//                    if (it.shortsId == shortsId) {
+//                        it.copy(
+//                            isBookMarked = bookMarkState,
+//                            bookMarkCount = if (bookMarkState) it.bookMarkCount + 1 else it.bookMarkCount - 1
+//                        )
+//                    } else {
+//                        it.copy()
+//                    }
+//                }
+//            )
+//        }
     }
 }
 

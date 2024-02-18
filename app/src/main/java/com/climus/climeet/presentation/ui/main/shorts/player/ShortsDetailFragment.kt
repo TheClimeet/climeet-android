@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.OptIn
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
@@ -35,17 +36,17 @@ class ShortsDetailFragment @Inject constructor(
     private var player: ExoPlayer? = null
     private val dataSourceFactory: DataSource.Factory = DefaultHttpDataSource.Factory()
     private val viewModel: ShortsDetailViewModel by viewModels()
+    private val parentViewModel: ShortsPlayerViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setInitData(data.shortsId, data.isBookMarked, data.isLiked, data.description)
+        viewModel.setInitData(data.shortsId, data.isBookMarked, data.bookMarkCount, data.isLiked, data.likeCount, data.description)
         binding.vm = viewModel
         binding.item = data
         initEventObserve()
         setImage()
         setPlayer()
-
     }
 
     private fun initEventObserve() {
@@ -69,6 +70,9 @@ class ShortsDetailFragment @Inject constructor(
                         listener?.showShareDialog()
                     }
                     is ShortsDetailEvent.ShowCommentDialog -> listener?.showCommentDialog(data.shortsId, data.profileImgUrl)
+
+                    is ShortsDetailEvent.PatchFavorite -> parentViewModel.patchFavorite(data.shortsId, it.state)
+                    is ShortsDetailEvent.PatchBookMark -> parentViewModel.patchBookMark(data.shortsId, it.state)
                 }
             }
         }

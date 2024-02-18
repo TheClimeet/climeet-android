@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.AddShortsCommentRequest
 import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.ui.main.shorts.adapter.LikeStatus
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsCommentUiData
 import com.climus.climeet.presentation.ui.main.shorts.toShortsCommentUiData
 import com.climus.climeet.presentation.util.Constants.TAG
@@ -259,9 +260,11 @@ class ShortsCommentBottomSheetViewModel @Inject constructor(
     private fun changeLikeStatus(
         commentId: Long,
         position: Int,
+        status: LikeStatus,
         isLike: Boolean,
         isDislike: Boolean
     ) {
+        Log.d(TAG,status.toString())
         viewModelScope.launch {
             repository.patchShortsCommentInteraction(commentId, isLike, isDislike).let {
                 when (it) {
@@ -271,7 +274,17 @@ class ShortsCommentBottomSheetViewModel @Inject constructor(
                             state.copy(
                                 shortsCommentList = uiState.value.shortsCommentList.map { data ->
                                     if (data.commentId == commentId) {
-                                        data.copy(commentLikeStatus = it.body)
+                                        data.copy(commentLikeStatus = it.body, likeCount = when(status){
+                                            LikeStatus.LIKE_PLUS -> data.likeCount + 1
+                                            LikeStatus.DISLIKE_PLUS_AND_LIKE_MINUS -> data.likeCount - 1
+                                            LikeStatus.LIKE_MINUS -> data.likeCount - 1
+                                            else -> data.likeCount
+                                        }, dislikeCount = when(status){
+                                            LikeStatus.DISLIKE_PLUS -> data.dislikeCount + 1
+                                            LikeStatus.DISLIKE_MINUS -> data.dislikeCount - 1
+                                            LikeStatus.LIKE_PLUS_AND_DISLIKE_MINUS -> data.dislikeCount - 1
+                                            else -> data.dislikeCount
+                                        })
                                     } else {
                                         data.copy()
                                     }

@@ -6,6 +6,7 @@ import com.climus.climeet.data.model.response.ShortsMainCommentItem
 import com.climus.climeet.data.model.response.ShortsSubCommentItem
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiData
+import com.climus.climeet.presentation.ui.main.shorts.adapter.LikeStatus
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsCommentUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
@@ -90,7 +91,7 @@ fun ShortsUpdatedFollowResponse.toUpdatedFollowUiData(
 )
 
 fun ShortsMainCommentItem.toShortsCommentUiData(
-    changeLikeStatus: (Long, Int, Boolean, Boolean) -> Unit,
+    changeLikeStatus: (Long, Int, LikeStatus, Boolean, Boolean) -> Unit,
     showMoreComment: (Long, Int, Int, Int) -> Unit,
     addSubComment: (Long, Int, String) -> Unit,
     remainSubCommentCount: Int = -1,
@@ -115,7 +116,7 @@ fun ShortsMainCommentItem.toShortsCommentUiData(
 )
 
 fun ShortsSubCommentItem.toShortsCommentUiData(
-    changeLikeStatus: (Long, Int, Boolean, Boolean) -> Unit,
+    changeLikeStatus: (Long, Int, LikeStatus, Boolean, Boolean) -> Unit,
     showMoreComment: (Long, Int, Int, Int) -> Unit,
     addSubComment: (Long, Int, String) -> Unit,
     remainSubCommentCount: Int = -1,
