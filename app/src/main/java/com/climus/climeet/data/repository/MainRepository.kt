@@ -1,5 +1,7 @@
 package com.climus.climeet.data.repository
 
+import com.climus.climeet.data.local.ClimbingRecordData
+import com.climus.climeet.data.local.RouteRecordData
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.AddShortsCommentRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
@@ -113,7 +115,7 @@ interface MainRepository {
     suspend fun patchFavorite(
         shortsId: Long
     ): BaseState<Unit>
-
+  
     suspend fun getShortsSubCommentList(
         shortsId: Long,
         parentCommentId: Long,
@@ -138,4 +140,37 @@ interface MainRepository {
         isLike: Boolean,
         isDislike: Boolean
     ): BaseState<String>
+
+    // -------- RoomDB ClimbingRecordDao 암장 정보 ----------
+    fun insert(climbingRecordData: ClimbingRecordData)
+    fun update(climbingRecordData: ClimbingRecordData)
+    fun delete(climbingRecordData: ClimbingRecordData)
+    fun deleteAllRecord()
+    fun getAllRecord(): List<ClimbingRecordData>
+    fun getRecord(id: Int): ClimbingRecordData
+
+    // ------ RoomDB RouteRecordDao 루트 기록 정보 ---------
+    fun insert(routeRecord: RouteRecordData)
+
+    fun update(routeRecord: RouteRecordData)
+
+    fun delete(routeRecord: RouteRecordData)
+
+    fun deleteAllRoute()
+
+    fun deleteById(id: Int)
+
+    fun getAllRoute(): List<RouteRecordData>
+
+    fun getRouteById(id: Int): RouteRecordData
+
+    fun findExistRoute(sectorId: Long, routeId: Long): RouteRecordData?
+
+    fun getAverageDifficultyOfCompleted(): Double
+
+    fun getAllLevelRecord(): List<RouteRecordData>
+
+    fun getSuccessCount(level: String): Int
+
+    fun getAttemptCount(level: String): Int
 }
