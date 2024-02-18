@@ -5,31 +5,47 @@ import android.graphics.BlendModeColorFilter
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentGymProfileBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.global.gymprofile.adapter.GymTabAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class GymProfileFragment : BaseFragment<FragmentGymProfileBinding>(R.layout.fragment_gym_profile) {
 
     private val viewModel: GymProfileViewModel by activityViewModels()
     private var adapter : GymTabAdapter? = null
+
+    private val args : GymProfileFragmentArgs by navArgs()
+    private val gymId by lazy { args.gymId }
+    private val gymName by lazy { args.gymName }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
 
+        initCragInfo()
         initViewPager()
         initClickListener()
     }
 
+    private fun initCragInfo() {
+        Log.d("gym_profile", "짐 프레그먼트에서 아이디 : $gymId, 이름 : $gymName")
+        viewModel.gymId.value = gymId
+        viewModel.gymName.value = gymName
+    }
+
     private fun initViewPager() {
+        adapter = GymTabAdapter(this)
         binding.vpTabDetail.adapter = adapter
 
         val tabMenu = arrayListOf("커뮤니티", "루트", "정보")
