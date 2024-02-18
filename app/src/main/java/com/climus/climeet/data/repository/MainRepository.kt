@@ -14,6 +14,7 @@ import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
 import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
+import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
@@ -29,6 +30,9 @@ import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import okhttp3.MultipartBody
+import retrofit2.Response
+import retrofit2.http.Path
+import retrofit2.http.Query
 import okhttp3.ResponseBody
 
 interface MainRepository {
@@ -81,10 +85,24 @@ interface MainRepository {
 
     suspend fun getHomeGyms(): BaseState<List<UserHomeGymSimpleResponse>>
 
+    suspend fun getClimberSearchingList(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("climberName") climberName: String
+    ): BaseState<ClimberDetailInfoResponse>
+
     suspend fun getSelectDateRecord(
         startDate: String,
         endDate: String
     ): BaseState<List<GetSelectDateRecordResponse>>
+
+    suspend fun followUser(
+        @Path("followingUserId") followingUserId: Long
+    ): BaseState<String>
+
+    suspend fun unfollowUser(
+        @Path("followingUserId") followingUserId: Long
+    ): BaseState<String>
 
     suspend fun getGymFilteringKey(
         gymId: Long,

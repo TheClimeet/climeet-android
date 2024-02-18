@@ -1,7 +1,7 @@
 package com.climus.climeet.presentation.ui.main.home.recycler.following
 
 import android.annotation.SuppressLint
-import android.util.Log
+import androidx.fragment.app.viewModels
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +11,15 @@ import com.bumptech.glide.Glide
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.databinding.ItemFollowingBinding
+import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
+import com.climus.climeet.presentation.ui.main.home.searchcrag.SearchCragViewModel
+import com.climus.climeet.presentation.ui.main.home.searchcrag.model.FollowClimber
 
 class FollowingRVAdapter(private val followingList: List<UserFollowSimpleResponse>) : RecyclerView.Adapter<FollowingRVAdapter.ViewHolder>(){
 
     private val followStatus = SparseBooleanArray()
+    private var searchList: List<FollowClimber> = emptyList()
+    private var keyword: String = ""
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -57,6 +62,13 @@ class FollowingRVAdapter(private val followingList: List<UserFollowSimpleRespons
             notifyItemChanged(position)
             followingList[position].followerCount -= 1
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setList(list: List<FollowClimber>, keyword: String) {
+        searchList = list
+        this.keyword = keyword
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = followingList.size
