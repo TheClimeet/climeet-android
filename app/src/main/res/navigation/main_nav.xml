@@ -43,8 +43,6 @@
             app:destination="@id/uploadCompleteFragment" />
     </fragment>
 
-    <!--  TimerMainFragment에 연결해둠  -->
-
     <fragment
         android:id="@+id/myPage_fragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.MyPageFragment"
@@ -107,23 +105,18 @@
         android:label="SearchCragFragment" />
 
     <fragment
-        android:id="@+id/record_complete_fragment"
-        android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.ClimbingCompleteFragment"
-        android:label="ClimbingCompleteFragment" />
-
-    <fragment
         android:id="@+id/timer_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerFragment"
-        android:label="TimerFragment" />
+        android:label="TimerFragment" >
+        <action
+            android:id="@+id/action_timer_fragment_to_timerCragSelectBottomSheetFragment"
+            app:destination="@id/timerCragSelectBottomSheetFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/timerCragSelectBottomSheetFragment"
         android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.TimerCragSelectBottomSheetFragment"
         android:label="TimerCragSelectBottomSheetFragment">
-
-        <action
-            android:id="@+id/action_timerCragSelectBottomSheetFragment_to_timer_fragment"
-            app:destination="@id/timer_fragment" />
     </fragment>
 
     <fragment
