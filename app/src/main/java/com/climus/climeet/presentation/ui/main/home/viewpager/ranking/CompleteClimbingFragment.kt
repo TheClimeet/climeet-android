@@ -60,7 +60,6 @@ class CompleteClimbingFragment: Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment using DataBindingUtil
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_complete_climbing, container, false)
         return binding.root
     }

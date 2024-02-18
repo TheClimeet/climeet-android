@@ -50,6 +50,7 @@ class MyPageFragment: BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypa
                         val intent = Intent(requireContext(),IntroActivity::class.java)
                         startActivity(intent)
                     }
+                    is MyPageEvent.NavigateToReview -> findNavController().toReview()
                 }
             }
         }
@@ -103,6 +104,11 @@ class MyPageFragment: BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypa
 
     private fun NavController.toSendOpinion(){
         val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageSendOpinionFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toReview(){
+        val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageReviewFragment()
         navigate(action)
     }
 
