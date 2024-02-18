@@ -159,7 +159,7 @@
                                 android:id="@+id/iv_star"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_small_star"
+                                android:src="@drawable/ic_tiny_star"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />

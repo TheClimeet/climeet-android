@@ -7,8 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
+import androidx.fragment.app.activityViewModels
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentGymProfileBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -18,7 +17,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class GymProfileFragment : BaseFragment<FragmentGymProfileBinding>(R.layout.fragment_gym_profile) {
 
-    private val viewModel: GymProfileViewModel by viewModels()
+    private val viewModel: GymProfileViewModel by activityViewModels()
     private var adapter : GymTabAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
