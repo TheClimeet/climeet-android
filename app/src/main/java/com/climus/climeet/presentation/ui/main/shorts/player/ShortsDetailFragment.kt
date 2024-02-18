@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.shorts.player
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -66,8 +67,10 @@ class ShortsDetailFragment @Inject constructor(
                     }
 
                     is ShortsDetailEvent.ShowShareDialog -> {
-                        // todo 어떤정보로 Share 할지 결정된뒤 수정
-                        listener?.showShareDialog()
+                        val intent = Intent(Intent.ACTION_SEND_MULTIPLE)
+                        intent.type = "text/plain"
+                        intent.putExtra(Intent.EXTRA_TEXT, "클밋 에서 숏츠를 공유했어요!\n${data.videoUrl}\n\n클밋 다운로드 하기\nplaystore:://climeet.com")
+                        startActivity(Intent.createChooser(intent,"공유"))
                     }
                     is ShortsDetailEvent.ShowCommentDialog -> listener?.showCommentDialog(data.shortsId, data.profileImgUrl)
 

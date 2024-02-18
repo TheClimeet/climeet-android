@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.shorts.player
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -68,11 +69,6 @@ class ShortsPlayerFragment: BaseFragment<FragmentShortsPlayerBinding>(R.layout.f
     override fun showCommentDialog(shortsId: Long, profileImgUrl: String?) {
         val url = profileImgUrl ?:run{""}
         val action = ShortsPlayerFragmentDirections.actionShortsPlayerFragmentToShortsCommentBottomSheetFragment(shortsId, url)
-        findNavController().navigate(action)
-    }
-
-    override fun showShareDialog() {
-        val action = ShortsPlayerFragmentDirections.actionShortsPlayerFragmentToShortsShareBottomSheetFragment()
         findNavController().navigate(action)
     }
 }
