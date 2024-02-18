@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="svm"
+            type="com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel" />
+
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.global.gymprofile.route.GymProfileRouteViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        style="@style/TextRegularSemiBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="루트 파인딩"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!--    날짜 선택    -->
+                    <TextView
+                        android:id="@+id/tv_choice_date"
+                        style="@style/TextSmallSemiBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:onClick="@{()->vm.showDatePicker()}"
+                        android:text="2024년 10월 24일"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/iv_date_toggle"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/iv_date_toggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_gym_profile_toggle"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_route"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_header">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_main"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rect_grey8fill_nostroke_10radius"
+                        android:paddingVertical="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_toggle_button"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
+                            android:background="@drawable/rect_silver2fill_nostroke_20radius"
+                            android:paddingHorizontal="4dp"
+                            android:paddingVertical="3dp"
+                            android:visibility="@{vm.uiState.singleFloor? View.GONE : View.VISIBLE}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <androidx.constraintlayout.widget.Guideline
+                                android:id="@+id/guidline_toggle_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                app:layout_constraintGuide_end="181dp" />
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/btn_floor_one"
+                                style="@style/TextRegularSemiBold"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/rect_silver2fill_nostroke_20radius"
+                                android:minHeight="0dp"
+                                android:onClick="@{() -> vm.selectFloor(1)}"
+                                android:outlineProvider="none"
+                                android:paddingVertical="5dp"
+                                android:text="1층"
+                                android:textColor="@color/white"
+                                app:floorBtnState="@{vm.uiState.firstFloorBtnState}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="@id/guidline_toggle_button"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/btn_floor_two"
+                                style="@style/TextRegularSemiBold"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/rect_mainfill_nostroke_20radius"
+                                android:minHeight="0dp"
+                                android:onClick="@{() ->  vm.selectFloor(2)}"
+                                android:outlineProvider="none"
+                                android:paddingVertical="5dp"
+                                android:text="2층"
+                                android:textColor="@color/black"
+                                app:floorBtnState="@{vm.uiState.secondFloorBtnState}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/guidline_toggle_button"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/iv_sector"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginHorizontal="12dp"
+                            android:layout_marginTop="16dp"
+                            android:scaleType="centerCrop"
+                            app:imgUrl="@{vm.uiState.layoutImg}"
+                            app:layout_constraintDimensionRatio="2.3:1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layout_toggle_button"
+                            app:shapeAppearanceOverlay="@style/All10RadiusImageView"
+                            tools:src="@drawable/test" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_sector_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
+                            android:layout_marginTop="8dp"
+                            android:clipToPadding="false"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/iv_sector"
+                            app:list="@{vm.uiState.sectorNameList}"
+                            tools:listitem="@layout/item_sector_name" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_sector_level"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
+                            android:layout_marginTop="8dp"
+                            android:clipToPadding="false"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/rv_sector_name"
+                            app:list="@{vm.uiState.gymLevelList}"
+                            tools:listitem="@layout/item_gym_level" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_sector_image"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
+                            android:layout_marginTop="16dp"
+                            android:clipToPadding="false"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/rv_sector_level"
+                            app:list="@{vm.uiState.routeList}"
+                            tools:listitem="@layout/item_route_image" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <com.climus.climeet.presentation.customview.RouteView
+                        android:id="@+id/select_sector"
+                        android:layout_width="100dp"
+                        android:layout_height="124dp"
+                        android:layout_marginTop="20dp"
+                        android:visibility="@{vm.uiState.selectedRoute.sectorId == -1 ? View.GONE : View.VISIBLE}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/layout_main"
+                        app:routeImgUrl="@{vm.uiState.selectedRoute.routeImg}"
+                        app:routeLevelColor="@{vm.uiState.selectedRoute.gymLevelColor}"
+                        app:routeLevelName="@{vm.uiState.selectedRoute.gymLevelName}" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_cancel"
+                        style="@style/TextMediumBold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/rect_silver2fill_nostroke_8radius"
+                        android:onClick="@{() -> vm.dismissDialog()}"
+                        android:text="취소"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toStartOf="@id/btn_accept"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/select_sector" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_accept"
+                        style="@style/TextMediumBold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@drawable/rect_mainfill_nostroke_8radius"
+                        android:onClick="@{() -> vm.applySectorFilter()}"
+                        android:text="적용하기"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/btn_cancel"
+                        app:layout_constraintTop_toBottomOf="@id/select_sector" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--    루트 영상    -->
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/cg_sector_filter"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/cm_lightblack"
+                    android:paddingVertical="12dp"
+                    android:visibility="@{svm.uiState.curFilter.cragName.empty? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_route">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/rect_grey8fill_nostroke_5radius"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="2dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/tv_crag_filter"
+                            style="@style/TextSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{svm.uiState.curFilter.cragName}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="더클라임 연남" />
+
+                        <View
+                            android:id="@+id/dv_crag_filter"
+                            android:layout_width="1dp"
+                            android:layout_height="0dp"
+                            android:layout_marginVertical="4dp"
+                            android:layout_marginStart="8dp"
+                            android:background="@color/cm_grey6"
+                            android:visibility="@{svm.uiState.curFilter.sectorName.empty? View.GONE : View.VISIBLE}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/tv_crag_filter"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_sector_filter"
+                            style="@style/TextSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="@{svm.uiState.curFilter.sectorName}"
+                            android:visibility="@{svm.uiState.curFilter.sectorName.empty? View.GONE : View.VISIBLE}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/dv_crag_filter"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="SECTOR 2-2" />
+
+                        <View
+                            android:id="@+id/dv_sector_filter"
+                            android:layout_width="1dp"
+                            android:layout_height="0dp"
+                            android:layout_marginVertical="4dp"
+                            android:layout_marginStart="8dp"
+                            android:background="@color/cm_grey6"
+                            android:visibility="@{svm.uiState.curFilter.gymLevelName.empty? View.GONE : View.VISIBLE}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/tv_sector_filter"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_level_filter"
+                            style="@style/TextSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="@{svm.uiState.curFilter.gymLevelName}"
+                            android:visibility="@{svm.uiState.curFilter.gymLevelName.empty? View.GONE : View.VISIBLE}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/dv_sector_filter"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="V8" />
+
+                        <ImageButton
+                            android:id="@+id/btn_remove_filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:background="@android:color/transparent"
+                            android:onClick="@{() -> svm.deleteFilter()}"
+                            android:src="@drawable/ic_main_exit"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/tv_level_filter"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.chip.ChipGroup>
+
+                <View
+                    android:id="@+id/v_margin"
+                    android:layout_width="0dp"
+                    android:layout_height="16dp"
+                    android:visibility="@{svm.uiState.curFilter.cragName.empty? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cg_sector_filter" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_shorts_thumbnail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/v_margin"
+                    app:list="@{svm.uiState.shortsThumbnailList}"
+                    app:spanCount="2"
+                    tools:listitem="@layout/item_shorts_thumbnail" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
