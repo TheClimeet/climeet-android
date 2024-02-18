@@ -139,4 +139,7 @@ dependencies {
     implementation("androidx.media3:media3-ui:$media3Version")
     implementation("androidx.media3:media3-exoplayer-hls:$media3Version")
 
+    // FCM
+    implementation("com.google.firebase:firebase-messaging-ktx")
+
 }
