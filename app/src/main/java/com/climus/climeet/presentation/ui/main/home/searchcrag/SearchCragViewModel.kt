@@ -15,6 +15,7 @@ import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
 import com.climus.climeet.presentation.ui.intro.signup.climer.toFollowCrag
 import com.climus.climeet.presentation.ui.main.home.HomeUiState
 import com.climus.climeet.presentation.ui.main.home.model.HomeGym
+import com.climus.climeet.presentation.ui.main.home.searchcrag.model.FollowClimber
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -34,8 +35,9 @@ data class SearchCragUiState(
     val routeList: List<BestRouteDetailInfoResponse> = emptyList(),
     val followingList: List<UserFollowSimpleResponse> = emptyList(),
     val searchList: List<FollowCrag> = emptyList(),
+    val searchClimberList: List<FollowClimber> = emptyList(),
     val progressState: Boolean = false,
-    val emptyResultState: Boolean = false
+    val emptyResultState: Boolean = false,
 )
 
 sealed class SearchCragEvent{
@@ -99,12 +101,45 @@ class SearchCragViewModel @Inject constructor(private val repository: MainReposi
         }
     }
 
+    fun followUser(userId: Long) {
+        viewModelScope.launch {
+            repository.followUser(userId).let {
+                when(it) {
+                    is BaseState.Success -> {
+
+                    }
+                    is BaseState.Error -> {
+                        it.msg // 서버 에러 메시지
+                        Log.d("API", it.msg)
+                    }
+                }
+            }
+        }
+    }
+
+    fun unfollowUser(userId: Long) {
+        viewModelScope.launch {
+            repository.unfollowUser(userId).let {
+                when(it) {
+                    is BaseState.Success -> {
+
+                    }
+                    is BaseState.Error -> {
+                        it.msg // 서버 에러 메시지
+                        Log.d("API", it.msg)
+                    }
+                }
+            }
+        }
+    }
+
     private fun observeKeyword() {
         keyword.onEach {
             if (it.isBlank()) {
                 _uiState.update { state ->
                     state.copy(
                         searchList = emptyList(),
+                        searchClimberList = emptyList(),
                         emptyResultState = false
                     )
                 }
@@ -154,6 +189,40 @@ class SearchCragViewModel @Inject constructor(private val repository: MainReposi
                             }
                         }
                     }
+
+                    repository.getClimberSearchingList(0, 15, it).let { result ->
+                        when (result) {
+                            is BaseState.Success -> {
+                                if (result.body.result.isNotEmpty()) {
+                                    _uiState.update { state ->
+                                        state.copy(
+                                            searchClimberList = result.body.result.map { item ->
+                                                item.toFollowClimber(it)
+                                            },
+                                            progressState = false
+                                        )
+                                    }
+                                } else {
+                                    _uiState.update { state ->
+                                        state.copy(
+                                            searchClimberList = emptyList(),
+                                            progressState = false,
+                                            emptyResultState = true
+                                        )
+                                    }
+                                }
+                            }
+
+                            is BaseState.Error -> {
+                                _uiState.update { state ->
+                                    state.copy(
+                                        progressState = false,
+                                        emptyResultState = true
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }.launchIn(viewModelScope)
@@ -163,7 +232,8 @@ class SearchCragViewModel @Inject constructor(private val repository: MainReposi
         keyword.value = ""
         _uiState.update { state ->
             state.copy(
-                searchList = emptyList()
+                searchList = emptyList(),
+                searchClimberList = emptyList()
             )
         }
     }

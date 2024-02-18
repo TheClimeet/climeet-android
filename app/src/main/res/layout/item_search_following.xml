@@ -10,7 +10,7 @@
             type="String" />
         <variable
             name="following"
-            type="com.climus.climeet.data.model.response.UserFollowSimpleResponse" />
+            type="com.climus.climeet.presentation.ui.main.home.searchcrag.model.FollowClimber"/>
 
     </data>
 
@@ -81,11 +81,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:text="@{following.userName}"
+                    android:text="@{following.climberName}"
                     app:keyword="@{keyword}"
                     android:textSize="16sp"
                     tools:text="더클라임 클라이밍 강남점"
-                    app:searchResult="@{following.userName}"/>
+                    app:searchResult="@{following.climberName}"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"

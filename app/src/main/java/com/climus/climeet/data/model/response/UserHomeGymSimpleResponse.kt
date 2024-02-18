@@ -13,4 +13,7 @@ data class UserHomeGymSimpleResponse (
     @SerializedName("gymName")
     val gymName : String,
 
+    @SerializedName("followerCount")
+    val followerCount : Int,
+
 )

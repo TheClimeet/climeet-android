@@ -2,13 +2,12 @@ package com.climus.climeet.app.di
 
 import android.content.Context
 import androidx.room.Room
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordDao
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.ClimbingDatabase
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordRepository
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordRepositoryImpl
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordDao
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordRepository
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordRepositoryImpl
+import com.climus.climeet.data.local.ClimbingDatabase
+import com.climus.climeet.data.local.ClimbingRecordDao
+import com.climus.climeet.data.local.RouteRecordDao
+import com.climus.climeet.data.remote.MainApi
+import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.data.repository.MainRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,19 +37,7 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideClimbingRecordRepository(climbingRecordDao: ClimbingRecordDao): ClimbingRecordRepository {
-        return ClimbingRecordRepositoryImpl(climbingRecordDao)
-    }
-
-    @Provides
-    @Singleton
     fun provideRouteRecordDao(recordDatabase: ClimbingDatabase): RouteRecordDao {
         return recordDatabase.RouteRecordDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideRouteRecordRepository(routeRecordDao: RouteRecordDao): RouteRecordRepository {
-        return RouteRecordRepositoryImpl(routeRecordDao)
     }
 }

@@ -17,11 +17,11 @@ import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLe
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.SectorNameAdapter
 import com.climus.climeet.presentation.ui.main.record.model.LevelItemForAvg
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordData
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordRepository
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordData
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordRepository
+import com.climus.climeet.data.local.ClimbingRecordData
+import com.climus.climeet.data.local.RouteRecordData
+import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.record.timer.setrecord.ClimbingRecordAdapter
+import com.climus.climeet.presentation.ui.main.record.timer.setrecord.CreateRecordUiState
 import com.climus.climeet.presentation.ui.main.record.timer.setrecord.RecordAverageAdapter
 import com.climus.climeet.presentation.ui.main.record.timer.setrecord.SetTimerClimbingRecordViewModel
 import com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.TimerCragSelectBottomSheetFragment
@@ -46,10 +46,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
     // room DB
     @Inject
-    lateinit var climbingRepository: ClimbingRecordRepository
-
-    @Inject
-    lateinit var routeRepository: RouteRecordRepository
+    lateinit var repository: MainRepository
 
     private val timerVM: TimerViewModel by activityViewModels()
     private val recordVM: SetTimerClimbingRecordViewModel by activityViewModels()   // 일시정지하면 보이는 루트기록을 위해 연결
@@ -83,6 +80,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         setAverageByLevel()
         // 루트 기록
         setRouteRecyclerView()
+
     }
 
     private fun checkService() {
@@ -115,8 +113,9 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
     private fun clearRouteRecord() {
         // 저장된 루트기록 초기화
         CoroutineScope(Dispatchers.IO).launch {
-            routeRepository.deleteAll()
-            val result = routeRepository.getAllRecord()
+            repository.deleteAllRoute()
+            // 잘 지워졌나 확인
+            val result = repository.getAllRoute()
             delay(1000)
             Log.d("recorddd", "저장된 기록들 reset $result")
         }
@@ -144,10 +143,12 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
                     time = "",
                     avgDifficulty = 0
                 )
-                // 결과 확인
+
                 CoroutineScope(Dispatchers.IO).launch {
-                    climbingRepository.insert(recordData)
-                    val result = climbingRepository.getAll()
+                    // 저장
+                    repository.insert(recordData)
+                    // 저장된 값 확인
+                    val result = repository.getAllRecord()
                     delay(1000)
                     Log.d("recorddd", result.toString())
                 }
@@ -172,7 +173,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             binding.rvAvgRecord.adapter = levelAdapter
 
             CoroutineScope(Dispatchers.IO).launch {
-                val levelData = routeRepository.getAllLevelRecord()
+                val levelData = repository.getAllLevelRecord()
                 val firstRecords = mutableListOf<RouteRecordData>() // 중복 없게 각 레벨별 첫번째 데이터만 골라냄
 
                 val levelNameSet = mutableSetOf<String>()
@@ -184,8 +185,8 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
                 }
                 if (firstRecords != null) {
                     items = firstRecords.map { data ->
-                        val attemptCount = routeRepository.getAttemptCount(data.levelName)
-                        val successCount = routeRepository.getSuccessCount(data.levelName)
+                        val attemptCount = repository.getAttemptCount(data.levelName)
+                        val successCount = repository.getSuccessCount(data.levelName)
                         val levelColor = data.levelColor
                         LevelItemForAvg(data.levelName, levelColor, attemptCount, successCount)
                     }
@@ -194,7 +195,6 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
                     }
                 }
             }
-            Log.d("recorddd", "레벨 완등률 변경")
         })
     }
 
@@ -228,6 +228,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             if (name != null) {
                 // 앱 재시작 시, 암장 정보 가져오는 API 재호출
                 recordVM.selectedCrag(id, name)
+                recordVM.isRestart.value = true
             }
         }
     }
@@ -337,6 +338,19 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
                 )
             }
         })
+
+        recordVM.resetView.observe(viewLifecycleOwner, Observer { reset ->
+            if (reset){
+                if (timerVM.isPaused.value == true){
+                    // 일시정지 상태면 화면 재설정
+                    binding.layoutAvgComplete.visibility = View.VISIBLE
+                    binding.tvTimeTitle.visibility = View.VISIBLE
+                    binding.layoutRouteRecord.visibility = View.VISIBLE
+                    recordVM.isAvgToggleOn.value = false
+                    recordVM.isRouteToggleOn.value = true
+                }
+            }
+        })
     }
 
     // 화면 초기화 함수
@@ -419,9 +433,13 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             // 종료 시간 저장
             CoroutineScope(Dispatchers.IO).launch {
                 if(timerVM.isPaused.value == true){
-                    sharedPreferences.edit().putString("stopTime", timerVM.pauseTimeFormat.value).commit()
+                    timerVM.pauseTime.value?.let { pauseTime ->
+                        sharedPreferences.edit().putLong("stopTime", pauseTime).commit()
+                    }
                 } else {
-                    sharedPreferences.edit().putString("stopTime", timerVM.timeFormat.value).commit()
+                    timerVM.time.value?.let { time ->
+                        sharedPreferences.edit().putLong("stopTime", time).commit()
+                    }
                 }
             }
             stopStopwatch()
@@ -431,6 +449,8 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
 
             // 루트기록 API로 전송
             timerVM.sendClimbingRecord()
+
+            recordVM.resetAtStop()
 
             // 완료화면 띄우기
             val transaction = requireActivity().supportFragmentManager.beginTransaction()
@@ -501,15 +521,21 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
         sharedPreferences.edit().putString(TOP_LEVEL, "--").apply()
         binding.tvTitle.text = getString(R.string.timer_crag_set_inform)
 
+        // 루트기록 관련 초기화
         recordVM.totalRoute.value = "--"
         recordVM.totalComplete.value = "--"
         recordVM.avgLevel.value = "--"
+
+        recordVM.apiCheck = false
+        recordVM.isSelectedCrag.value = false
 
         //Log.d("stopStopwatch", "stopStopwatch 호출")
     }
 
     // 암장 선택 바텀시트를 보여준다
     private fun showBottomSheet() {
+        cragSelectVM.resetItem()
+        recordVM.apiCheck = false
         val bottomSheetFragment = TimerCragSelectBottomSheetFragment()
         bottomSheetFragment.show(parentFragmentManager, "timerCragSelectBottomSheet")
     }
