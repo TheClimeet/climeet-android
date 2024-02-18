@@ -90,8 +90,6 @@ class ShortsPlayerViewModel @Inject constructor(
 
     fun getShorts(option: ShortsOption) {
 
-        // todo API 업데이트 되면, 필터 적용해서 API CALL
-
         val filterMap = hashMapOf<String, Long>()
 
         uiState.value.curFilter.let {
