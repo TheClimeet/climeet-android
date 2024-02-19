@@ -75,8 +75,8 @@
 
         <androidx.constraintlayout.utils.widget.ImageFilterButton
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginHorizontal="20dp"
+            android:layout_height="55dp"
+            android:layout_marginHorizontal="30dp"
             android:scaleType="fitXY"
             android:src="@drawable/kakao_opinion"
             app:layout_constraintBottom_toBottomOf="parent"

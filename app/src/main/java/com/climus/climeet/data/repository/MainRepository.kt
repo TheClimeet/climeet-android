@@ -28,6 +28,7 @@ import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
+import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Path
@@ -51,6 +52,9 @@ interface MainRepository {
         page: Int,
         size: Int
     ): BaseState<SearchAvailableGymResponse>
+
+    suspend fun getUserProfile(
+    ): BaseState<UserProfileInfoResponse>
 
     suspend fun getRecentShorts(
         page: Int,

@@ -28,6 +28,7 @@ import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
+import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.data.model.runRemote
 import com.climus.climeet.data.remote.MainApi
 import okhttp3.MultipartBody
@@ -73,6 +74,9 @@ class MainRepositoryImpl @Inject constructor(
         size: Int
     ): BaseState<SearchAvailableGymResponse> =
         runRemote { api.searchAvailableGym(gymName, page, size) }
+
+    override suspend fun getUserProfile(): BaseState<UserProfileInfoResponse> =
+        runRemote { api.getUserProfile() }
 
     override suspend fun getShortsUpdatedFollow(): BaseState<List<ShortsUpdatedFollowResponse>> =
         runRemote { api.getShortsUpdatedFollow() }

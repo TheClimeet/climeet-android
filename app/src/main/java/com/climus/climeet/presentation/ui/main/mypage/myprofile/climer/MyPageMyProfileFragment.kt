@@ -1,6 +1,7 @@
 package com.climus.climeet.presentation.ui.main.mypage.myprofile.climer
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -8,10 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.app.App
+import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.databinding.FragmentMypageClimerMyprofileBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.intro.IntroActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,14 +23,39 @@ class MyPageMyProfileFragment: BaseFragment<FragmentMypageClimerMyprofileBinding
 
     private val viewModel: MyPageMyProfileViewModel by viewModels()
     private var isManger: Boolean = true
+    private var userProfile: UserProfileInfoResponse? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        isManger = checkUserType() // Manager
+        binding.vm = viewModel
+        viewModel.getUserProfile()
+        initStateObserve()
+
         setUpInitialSetting()
         setupOnClickListener()
     }
 
+    private fun initStateObserve() {
+        repeatOnStarted {
+            viewModel?.let { vm ->
+                vm.uiState.collect { uiState ->
+                    userProfile = uiState.myProfile
+                    if(userProfile != null) {
+                        binding.tvMypageNickname.text = userProfile!!.userName
+                        if(userProfile!!.profileImgUrl != null) {
+                            Glide.with(binding.root.context)
+                                .load(userProfile!!.profileImgUrl)
+                                .into(binding.ivMypageMyProfile)
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
     private fun setUpInitialSetting() {
+        isManger = checkUserType()
 
         if(!isManger) {
             binding.icVerified.visibility = View.GONE
@@ -60,6 +89,11 @@ class MyPageMyProfileFragment: BaseFragment<FragmentMypageClimerMyprofileBinding
 
             logoutBtn!!.setOnClickListener {
                 alertDialog.dismiss()
+                App.sharedPreferences.edit()
+                    .clear()
+                    .apply()
+                val intent = Intent(requireContext(), IntroActivity::class.java)
+                startActivity(intent)
             }
         }
 

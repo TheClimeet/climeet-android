@@ -19,6 +19,7 @@ import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.databinding.FragmentSearchCragBinding
 import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.adapter.FollowCragRVAdapter
 import com.climus.climeet.presentation.ui.main.home.search.recycler.FollowGymRVAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -29,7 +30,6 @@ class SearchCragFragment : Fragment() {
     private lateinit var binding: FragmentSearchCragBinding
     private val viewModel: SearchCragViewModel by viewModels()
     private var recyclerGymFollowing: List<UserHomeGymDetailResponse> = emptyList()
-    private var cragAdapter: FollowCragRVAdapter? = null
 
     fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -49,15 +49,17 @@ class SearchCragFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getGymFollowing()
+
         initStateObserve()
     }
+
 
     private fun initStateObserve() {
         repeatOnStarted {
             viewModel?.let { vm ->
                 vm.uiState.collect { uiState ->
                     uiState.followGymList.let { followGymList ->
-                        Log.d("FollowList", followGymList.toString())
+
                         recyclerGymFollowing = followGymList
                         setupFollowingGymList()
 

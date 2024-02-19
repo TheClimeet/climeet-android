@@ -3,6 +3,10 @@ package com.climus.climeet.data.model.response
 import com.google.gson.annotations.SerializedName
 
 data class BestTimeClimberSimpleResponse(
+
+    @SerializedName("userId")
+    val userId : Long,
+
     @SerializedName("ranking")
     val ranking : Int,
 
@@ -13,5 +17,5 @@ data class BestTimeClimberSimpleResponse(
     val profileName : String,
 
     @SerializedName("thisWeekTotalClimbingTime")
-    val thisWeekTotalClimbingTime : Long
+    val thisWeekTotalClimbingTime : String
 )
