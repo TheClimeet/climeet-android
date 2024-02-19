@@ -14,6 +14,7 @@ import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
+import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
@@ -224,4 +225,10 @@ interface MainApi {
         @Query("month") month: Int
     ): Response<MyStatsMonthResponse>
 
+    @GET("/api/gyms/{gymId}/review")
+    suspend fun getGymReview(
+        @Path("gymId") gymID: Long,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<GetGymProfileReviewResponse>
 }

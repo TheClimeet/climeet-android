@@ -17,6 +17,7 @@ import com.climus.climeet.presentation.ui.main.global.gymprofile.adapter.GymPric
 import com.climus.climeet.presentation.ui.main.global.gymprofile.adapter.GymReviewAdapter
 import com.climus.climeet.presentation.ui.main.global.gymprofile.adapter.GymServiceAdapter
 import com.climus.climeet.presentation.ui.main.global.gymprofile.adapter.GymTimeAdapter
+import com.climus.climeet.presentation.ui.main.global.gymprofile.model.GymReview
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -66,6 +67,36 @@ class GymProfileInfoFragment :
     private fun initStateObserve() {
         repeatOnStarted {
             viewModel.uiState.collect {
+
+                val combinedReviewList = mutableListOf<GymReview>()
+
+                // 내 리뷰가 있을 경우, 리스트의 첫 번째 요소로 추가
+                it.myGymReview?.let {
+                    combinedReviewList.add(
+                        GymReview(
+                            profileImageUrl = it.profileImageUrl,
+                            profileName = it.profileName,
+                            rating = it.rating,
+                            content = it.content,
+                            updatedAt = it.updatedAt
+                        )
+                    )
+                }
+
+                // 다른 사람들의 리뷰를 리스트에 추가
+                it.gymReviewList?.forEach { review ->
+                    combinedReviewList.add(
+                        GymReview(
+                            profileImageUrl = review.profileImageUrl,
+                            profileName = review.profileName,
+                            rating = review.rating,
+                            content = review.content,
+                            updatedAt = review.updatedAt
+                        )
+                    )
+                }
+
+                // 서비스
                 if(it.gymServiceList?.isEmpty() == true) {
                     binding.rvService.visibility = View.GONE
                     binding.tvServiceError.visibility = View.VISIBLE
@@ -75,6 +106,7 @@ class GymProfileInfoFragment :
                     serviceAdapter?.setList(it.gymServiceList!!)
                 }
 
+                // 영업 시간
                 if(it.gymBusinessHours?.isEmpty() == true) {
                     binding.rvTime.visibility = View.GONE
                     binding.tvTimeError.visibility = View.VISIBLE
@@ -84,6 +116,7 @@ class GymProfileInfoFragment :
                     timeAdapter?.setList(it.gymBusinessHours!!)
                 }
 
+                // 요금 정보
                 if(it.gymPriceList?.isEmpty() == true) {
                     binding.rvPrice.visibility = View.GONE
                     binding.tvPriceError.visibility = View.VISIBLE
@@ -91,6 +124,18 @@ class GymProfileInfoFragment :
                     binding.rvPrice.visibility = View.VISIBLE
                     binding.tvPriceError.visibility = View.GONE
                     priceAdapter?.setList(it.gymPriceList!!)
+                }
+
+                // 리뷰
+                if(it.reviewNum == 0){
+                    // 리뷰가 0개일 때
+                    binding.rvReview.visibility = View.GONE
+                    binding.layoutEmptyReview.visibility = View.VISIBLE
+                } else {
+                    // 리뷰 있을 때
+                    binding.rvReview.visibility = View.VISIBLE
+                    binding.layoutEmptyReview.visibility = View.GONE
+                    reviewAdapter?.setList(combinedReviewList)
                 }
             }
         }

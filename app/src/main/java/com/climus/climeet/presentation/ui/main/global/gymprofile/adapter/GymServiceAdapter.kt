@@ -1,17 +1,15 @@
 package com.climus.climeet.presentation.ui.main.global.gymprofile.adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.databinding.ItemProfileServiceBinding
 import com.climus.climeet.presentation.ui.main.global.gymprofile.model.GymService
-import com.climus.climeet.presentation.ui.main.record.model.ClimbingRecordData
 
-class GymServiceAdapter(): RecyclerView.Adapter<GymServiceViewHolder>() {
+class GymServiceAdapter() : RecyclerView.Adapter<GymServiceViewHolder>() {
 
-    private var serviceList : List<GymService> = emptyList()
+    private var serviceList: List<GymService> = emptyList()
 
     override fun onBindViewHolder(holder: GymServiceViewHolder, position: Int) {
         holder.bind(serviceList[position])
@@ -29,17 +27,16 @@ class GymServiceAdapter(): RecyclerView.Adapter<GymServiceViewHolder>() {
     override fun getItemCount() = serviceList.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setList(list: List<GymService>){
+    fun setList(list: List<GymService>) {
         serviceList = list
         notifyDataSetChanged()
     }
 }
 
-class GymServiceViewHolder (private val binding: ItemProfileServiceBinding) :
+class GymServiceViewHolder(private val binding: ItemProfileServiceBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: GymService) {
         binding.tvService.text = item.name
-        Log.d("gym_profile", "서비스 아이템 : ${item.name}")
     }
 }

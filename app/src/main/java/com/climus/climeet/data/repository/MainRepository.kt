@@ -17,6 +17,7 @@ import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
+import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
@@ -174,6 +175,12 @@ interface MainRepository {
         year: Int,
         month: Int
     ): BaseState<MyStatsMonthResponse>
+
+    suspend fun getGymReview(
+        gymId: Long,
+        page: Int,
+        size: Int
+    ): BaseState<GetGymProfileReviewResponse>
 
     // -------- RoomDB ClimbingRecordDao 암장 정보 ----------
     fun insert(climbingRecordData: ClimbingRecordData)
