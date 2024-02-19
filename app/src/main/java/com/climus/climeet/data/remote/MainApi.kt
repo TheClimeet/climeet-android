@@ -1,6 +1,7 @@
 package com.climus.climeet.data.remote
 
 import com.climus.climeet.data.model.request.AddShortsCommentRequest
+import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
@@ -231,4 +232,10 @@ interface MainApi {
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<GetGymProfileReviewResponse>
+
+    @POST("/api/gyms/{gymId}/review")
+    suspend fun createGymReview(
+        @Path("gymId") gymID: Long,
+        @Body params: CreateGymProfileReviewRequest
+    ): Response<ResponseBody>
 }

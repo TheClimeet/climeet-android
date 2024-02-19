@@ -38,7 +38,6 @@ class GymProfileViewModel @Inject constructor(
     val followState = MutableStateFlow(false)
 
     fun getGymProfileInfo() {
-        Log.d("gym_profile", "상단 정보 불러오기 api 호출")
         viewModelScope.launch {
             gymId.value?.let {
                 repository.getGymProfileTopInfo(it).let { it ->
@@ -57,7 +56,6 @@ class GymProfileViewModel @Inject constructor(
                                     reviewCount = it.body.reviewCount
                                 )
                             }
-                            Log.d("gym_profile", "상단 정보 불러오기 성공")
                         }
 
                         is BaseState.Error -> {

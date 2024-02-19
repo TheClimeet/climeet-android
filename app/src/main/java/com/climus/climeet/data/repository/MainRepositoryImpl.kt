@@ -6,6 +6,7 @@ import com.climus.climeet.data.local.RouteRecordDao
 import com.climus.climeet.data.local.RouteRecordData
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.AddShortsCommentRequest
+import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
@@ -222,6 +223,11 @@ class MainRepositoryImpl @Inject constructor(
         page: Int,
         size: Int
     ): BaseState<GetGymProfileReviewResponse> = runRemote { api.getGymReview(gymId, page, size) }
+
+    override suspend fun createGymReview(
+        gymId: Long,
+        body: CreateGymProfileReviewRequest
+    ): BaseState<ResponseBody> = runRemote { api.createGymReview(gymId, body) }
 
 
     // -------- RoomDB ClimbingRecordDa0 암장 정보 -----------
