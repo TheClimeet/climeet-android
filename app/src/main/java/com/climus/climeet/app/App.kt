@@ -6,10 +6,16 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.climus.climeet.BuildConfig
 import com.climus.climeet.presentation.util.Constants.TAG
+import com.climus.climeet.service.MyFirebaseMessagingService
+import com.google.firebase.FirebaseApp
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.util.Utility
 import com.navercorp.nid.NaverIdLoginSDK
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 @HiltAndroidApp
 class App : Application(){
@@ -21,6 +27,7 @@ class App : Application(){
     companion object{
         lateinit var instance : App
         lateinit var sharedPreferences: SharedPreferences
+        var fcmToken = ""
         fun getContext(): Context = instance.applicationContext
     }
 
@@ -29,6 +36,7 @@ class App : Application(){
         sharedPreferences =
             applicationContext.getSharedPreferences("APP", MODE_PRIVATE)
         initSocialLogin()
+        getFCMToken()
     }
 
     private fun initSocialLogin(){
@@ -42,5 +50,12 @@ class App : Application(){
         )
     }
 
+    private fun getFCMToken() {
+        FirebaseApp.initializeApp(this@App)
+        CoroutineScope(Dispatchers.Main).launch {
+            fcmToken = async { MyFirebaseMessagingService().getFirebaseToken() }.await()
+            Log.d(TAG, "fcmToken : $fcmToken")
+        }
+    }
 
 }

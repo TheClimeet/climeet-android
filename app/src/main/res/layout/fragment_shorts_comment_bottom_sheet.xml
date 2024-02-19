@@ -72,11 +72,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:visibility="gone"
                 android:layout_marginBottom="16dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@id/iv_profile"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="sadf 에게 답글 남기는중..." />
+
+            <ImageView
+                android:id="@+id/btn_cancel_adding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_main_exit"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/tv_adding_sub_comment"
+                app:layout_constraintStart_toEndOf="@id/tv_adding_sub_comment"
+                app:layout_constraintTop_toTopOf="@id/tv_adding_sub_comment" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_profile"
