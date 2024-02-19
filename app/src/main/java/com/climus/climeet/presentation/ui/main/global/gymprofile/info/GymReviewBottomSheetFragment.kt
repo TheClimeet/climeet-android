@@ -16,14 +16,11 @@ class GymReviewBottomSheetFragment : BaseFragment<FragmentProfileReviewBottomShe
 
     private val viewModel: GymReviewBottomSheetFragmentViewModel by viewModels()
 
-    private val args: GymReviewBottomSheetFragmentArgs by navArgs()
-    private val gymId by lazy { args.gymId }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
-        viewModel.setGymId(gymId)
+        viewModel.getGymId()
         initEventObserve()
     }
 
@@ -38,7 +35,7 @@ class GymReviewBottomSheetFragment : BaseFragment<FragmentProfileReviewBottomShe
     }
 
     private fun NavController.toBack(){
-        val action = GymReviewBottomSheetFragmentDirections.actionGymReviewBottomSheetFragmentToGymProfileInfoFragment(gymId)
+        val action = GymReviewBottomSheetFragmentDirections.actionGymReviewBottomSheetFragmentToGymProfileInfoFragment()
         navigate(action)
     }
 }

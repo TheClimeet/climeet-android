@@ -16,6 +16,7 @@ import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
@@ -175,4 +176,8 @@ class MainRepositoryImpl @Inject constructor(
         isDislike: Boolean
     ): BaseState<String> =
         runRemote { api.patchShortsCommentInteraction(shortsCommentId, isLike, isDislike) }
+
+    override suspend fun getGymProfileTopInfo(
+        gymId: Long
+    ): BaseState<GymProfileTopInfoResponse> = runRemote { api.getGymProfileTopInfo(gymId) }
 }

@@ -219,16 +219,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     // 선택한 암장 프로필로 이동
-    private fun navToGymProfile(gymId: Long, gymName: String) {
+    private fun navToGymProfile(gymId: Long) {
 
         sharedPreferences.edit().putLong("gymId", gymId)
-        sharedPreferences.edit().putString("gymName", gymName)
-        Log.d("gym_profile", "홈에서 암장 아이디 : $gymId, 이름 : $gymName")
+        //Log.d("gym_profile", "홈에서 암장 아이디 : $gymId)
 
         val access = sharedPreferences.getString(X_MODE, null)
 
         if (access == "CLIMER") {
-            val action = HomeFragmentDirections.globalActionToGymProfileFragment(gymId, gymName)
+            val action = HomeFragmentDirections.globalActionToGymProfileFragment(gymId)
             findNavController().navigate(action)
         } else if (access == "ADMIN") {
             Toast.makeText(requireContext(), "암장 관리자의 암장 프로필 접근", Toast.LENGTH_SHORT).show()

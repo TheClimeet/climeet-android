@@ -10,7 +10,10 @@ import com.climus.climeet.databinding.ItemPopularCragsBinding
 import com.climus.climeet.presentation.ui.main.home.model.PopularCrag
 import kotlin.math.min
 
-class PopularCragRVAdapter (private val cragList: List<BestFollowGymSimpleResponse>) : RecyclerView.Adapter<PopularCragRVAdapter.ViewHolder>(){
+class PopularCragRVAdapter (
+    private val cragList: List<BestFollowGymSimpleResponse>,
+    //private val itemClickAction: (Long) -> Unit
+) : RecyclerView.Adapter<PopularCragRVAdapter.ViewHolder>(){
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -21,6 +24,11 @@ class PopularCragRVAdapter (private val cragList: List<BestFollowGymSimpleRespon
 
     override fun onBindViewHolder(holder: PopularCragRVAdapter.ViewHolder, position: Int) {
         holder.bind(cragList[position])
+
+        // todo: 암장 id 넘겨 받기
+//        holder.binding.root.setOnClickListener {
+//            itemClickAction(1)
+//        }
     }
 
     override fun getItemCount(): Int {

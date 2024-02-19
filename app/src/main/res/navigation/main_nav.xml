@@ -296,9 +296,6 @@
         <argument
             android:name="gymId"
             app:argType="long"/>
-        <argument
-            android:name="gymName"
-            app:argType="string"/>
     </fragment>
     <fragment
         android:id="@+id/climerProfileFragment"

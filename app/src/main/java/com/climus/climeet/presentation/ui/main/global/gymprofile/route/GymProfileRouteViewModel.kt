@@ -1,8 +1,10 @@
 package com.climus.climeet.presentation.ui.main.global.gymprofile.route
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.repository.MainRepository
@@ -14,10 +16,9 @@ import com.climus.climeet.presentation.ui.main.global.selectsector.model.Selecte
 import com.climus.climeet.presentation.ui.main.global.toGymLevelUiData
 import com.climus.climeet.presentation.ui.main.global.toRouteUiData
 import com.climus.climeet.presentation.ui.main.global.toSectorNameUiData
-import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateClimbingRecordEvent
 import com.climus.climeet.presentation.ui.main.record.model.CreateRecordData
-import com.climus.climeet.presentation.ui.main.upload.bottomsheet.UploadBottomSheetEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -68,7 +69,7 @@ class GymProfileRouteViewModel @Inject constructor(
 
     val initDate = CreateRecordData.selectedDate
     val datePickText =
-        MutableStateFlow("${initDate.year}년 ${initDate.monthValue}월 ${initDate.dayOfMonth}일 (${initDate.dayOfWeek})")
+        MutableStateFlow("${initDate.year}년 ${initDate.monthValue}월 ${initDate.dayOfMonth}일")
     val selectedDate = MutableLiveData(initDate)
 
     var cragId: Long = 0
@@ -81,7 +82,18 @@ class GymProfileRouteViewModel @Inject constructor(
     fun setCragInfo(id: Long, name: String) {
         cragId = id
         cragName = name
+        Log.d("gym_profile", "암장 루트탭에서 아이디 : $cragId, 이름 : $cragName")
         getCragInfo(cragId)
+    }
+
+    fun setDate() {
+        val date = selectedDate.value
+        viewModelScope.launch(Dispatchers.Main) {
+            val year = date?.year
+            val month = date?.month?.value
+            val day = date?.dayOfMonth
+            datePickText.value = "${year}년 ${month}월 ${day}일"
+        }
     }
 
     private fun getCragInfo(id: Long) {
@@ -265,12 +277,6 @@ class GymProfileRouteViewModel @Inject constructor(
                     selectedFilter
                 )
             )
-        }
-    }
-
-    fun applyFilter(selectedFilter: SelectedFilter) {
-        viewModelScope.launch {
-            _event.emit(GymProfileRouteEvent.ApplyFilter(selectedFilter))
         }
     }
 

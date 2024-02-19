@@ -12,7 +12,7 @@ import kotlin.math.min
 
 class HomeGymRVAdapter(
     private val homeGymList: List<UserHomeGymSimpleResponse>,
-    private val itemClickAction: (Long, String) -> Unit
+    private val itemClickAction: (Long) -> Unit
 ) : RecyclerView.Adapter<HomeGymRVAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItemHomeGymBinding =
@@ -24,7 +24,7 @@ class HomeGymRVAdapter(
         holder.bind(homeGymList[position])
 
         holder.binding.root.setOnClickListener {
-            itemClickAction(homeGymList[position].gymId, homeGymList[position].gymName)
+            itemClickAction(homeGymList[position].gymId)
         }
     }
 

@@ -47,3 +47,11 @@ fun bindCompleteStaet(iv: ImageView, state: Boolean){
 fun ImageView.setAnimatedParams(alpha: LiveData<Float>) {
     this.alpha = alpha.value ?: 1f
 }
+
+@BindingAdapter("imageUrlOrId")
+fun ImageView.bindImage(imageUrl: Any) {
+    when (imageUrl) {
+        is String -> Glide.with(context).load(imageUrl).into(this)
+        is Int -> setImageResource(imageUrl)
+    }
+}

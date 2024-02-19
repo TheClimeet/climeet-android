@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
 
         <variable
             name="vm"
@@ -27,17 +30,19 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
                 <!--    암장 배경사진     -->
                 <ImageView
                     android:id="@+id/iv_gym_background"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="190dp"
                     android:layout_marginTop="30dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/img_gym_background"
+                    app:imageUrlOrId="@{vm.uiState.gymBackGroundImageUrl}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/img_gym_background"/>
 
                 <!--    암장 프로필    -->
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,26 +59,34 @@
                         android:id="@+id/iv_gym_profile"
                         android:layout_width="73dp"
                         android:layout_height="73dp"
-                        android:src="@drawable/img_crag"
+                        app:imgUrl="@{vm.uiState.gymProfileImageUrl}"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@drawable/img_crag"/>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
                         app:layout_constraintStart_toEndOf="@id/iv_gym_profile"
-                        app:layout_constraintTop_toTopOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/layout_follow_btn">
 
                         <TextView
                             android:id="@+id/tv_gym_name"
                             style="@style/TextRegularBig"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="클라이머스 클라이밍"
+                            android:text="@{vm.uiState.gymName}"
                             android:textStyle="bold"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            layout_constrainedWidth="true"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/iv_gym_badge"
+                            tools:text="클라이머스 클라이밍"/>
 
                         <ImageView
                             android:id="@+id/iv_gym_badge"
@@ -81,9 +94,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:src="@drawable/ic_gym_badge"
+                            app:layout_constraintHorizontal_chainStyle="packed"
                             app:layout_constraintBottom_toBottomOf="@id/tv_gym_name"
                             app:layout_constraintStart_toEndOf="@id/tv_gym_name"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
 
                         <!--    팔로워 / 팔로잉    -->
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -110,9 +125,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
-                                android:text="12,300"
+                                app:textFromInt="@{vm.uiState.followerCount}"
                                 app:layout_constraintStart_toEndOf="@id/tv_follower"
-                                app:layout_constraintTop_toTopOf="@id/tv_follower" />
+                                app:layout_constraintTop_toTopOf="@id/tv_follower"
+                                tools:text="100"/>
 
                             <ImageView
                                 android:id="@+id/iv_bar"
@@ -141,9 +157,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
-                                android:text="11"
+                                app:textFromInt="@{vm.uiState.followingCount}"
                                 app:layout_constraintStart_toEndOf="@id/tv_following"
-                                app:layout_constraintTop_toTopOf="@id/tv_follower" />
+                                app:layout_constraintTop_toTopOf="@id/tv_follower"
+                                tools:text="20"/>
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -171,11 +188,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
-                                android:text="4.5"
+                                app:textFromFloat="@{vm.uiState.averageRating}"
                                 android:textSize="10sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/iv_star"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="4.5"/>
 
                             <ImageView
                                 android:id="@+id/iv_bar2"
@@ -206,11 +224,12 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
-                                android:text="10,522"
+                                app:textFromInt="@{vm.uiState.reviewCount}"
                                 android:textSize="10sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/tv_review"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:text="30dp"/>
 
                             <TextView
                                 style="@style/TextTiny"
@@ -226,29 +245,39 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btn_follow"
-                        style="@style/TextSmall"
-                        android:layout_width="72dp"
-                        android:layout_height="26dp"
-                        android:background="@drawable/btn_following"
-                        android:text="팔로우"
-                        android:textColor="@color/black"
-                        android:visibility="visible"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_follow_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btn_following"
-                        style="@style/TextSmall"
-                        android:layout_width="72dp"
-                        android:layout_height="26dp"
-                        android:background="@drawable/btn_follow"
-                        android:text="팔로잉"
-                        android:textColor="@color/white"
-                        android:visibility="invisible"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_follow"
+                            style="@style/TextSmall"
+                            android:layout_width="72dp"
+                            android:layout_height="26dp"
+                            android:background="@drawable/btn_following"
+                            android:text="팔로우"
+                            android:textColor="@color/black"
+                            android:visibility="@{vm.followState? View.VISIBLE : View.GONE}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_following"
+                            style="@style/TextSmall"
+                            android:layout_width="72dp"
+                            android:layout_height="26dp"
+                            android:background="@drawable/btn_follow"
+                            android:text="팔로잉"
+                            android:textColor="@color/white"
+                            android:visibility="@{vm.followState? View.VISIBLE : View.GONE}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

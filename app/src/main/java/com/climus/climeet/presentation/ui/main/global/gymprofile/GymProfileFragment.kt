@@ -26,7 +26,6 @@ class GymProfileFragment : BaseFragment<FragmentGymProfileBinding>(R.layout.frag
 
     private val args : GymProfileFragmentArgs by navArgs()
     private val gymId by lazy { args.gymId }
-    private val gymName by lazy { args.gymName }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,12 +35,11 @@ class GymProfileFragment : BaseFragment<FragmentGymProfileBinding>(R.layout.frag
         initCragInfo()
         initViewPager()
         initClickListener()
+        viewModel.getGymProfileInfo()
     }
 
     private fun initCragInfo() {
-        Log.d("gym_profile", "짐 프레그먼트에서 아이디 : $gymId, 이름 : $gymName")
         viewModel.gymId.value = gymId
-        viewModel.gymName.value = gymName
     }
 
     private fun initViewPager() {
@@ -55,6 +53,15 @@ class GymProfileFragment : BaseFragment<FragmentGymProfileBinding>(R.layout.frag
     }
 
     private fun initClickListener() {
+
+        binding.btnFollow.setOnClickListener {
+            viewModel.followState.value = true
+        }
+
+        binding.btnFollowing.setOnClickListener{
+            viewModel.followState.value = false
+        }
+
         // 탭 indicator 색 바꾸기
         binding.tbMenu.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {

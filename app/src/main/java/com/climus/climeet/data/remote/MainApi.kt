@@ -15,6 +15,7 @@ import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
 import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
@@ -185,4 +186,9 @@ interface MainApi {
         @Query("isLike") isLike: Boolean,
         @Query("isDislike") isDislike: Boolean
     ): Response<String>
+
+    @GET("/api/gyms/{gymId}")
+    suspend fun getGymProfileTopInfo(
+        @Path("gymId") gymId: Long,
+    ): Response<GymProfileTopInfoResponse>
 }

@@ -1,7 +1,9 @@
 package com.climus.climeet.presentation.ui.main.global.gymprofile.info
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.data.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,8 +26,9 @@ class GymReviewBottomSheetFragmentViewModel @Inject constructor(
 
     var gymId = 0L
 
-    fun setGymId(id: Long) {
-        gymId = id
+    fun getGymId() {
+        gymId = sharedPreferences.getLong("gymId", 0L)
+        Log.d("gym_profile", "암장 리뷰 아이디 : $gymId")
     }
 
     fun navigateToBack() {
