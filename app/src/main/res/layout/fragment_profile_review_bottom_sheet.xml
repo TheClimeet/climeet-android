@@ -13,7 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rect_grey9fill_nostroke_24radius"
+        android:background="@drawable/rect_grey9fill_nostroke_top24radius"
         android:paddingBottom="40dp">
 
         <TextView
@@ -185,7 +185,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="20dp"
-            android:onClick="@{() -> vm.navigateToBack()}"
+            android:onClick="@{() -> vm.navigateToProfile()}"
             android:background="@drawable/rect_mainfill_nostroke_12radius"
             android:text="리뷰 남기기"
             android:textColor="@color/black"

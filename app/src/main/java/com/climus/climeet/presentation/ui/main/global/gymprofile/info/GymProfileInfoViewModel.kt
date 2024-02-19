@@ -7,6 +7,7 @@ import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.global.gymprofile.model.GymBusinessHour
 import com.climus.climeet.presentation.ui.main.global.gymprofile.model.GymPrice
+import com.climus.climeet.presentation.ui.main.global.gymprofile.model.GymReview
 import com.climus.climeet.presentation.ui.main.global.gymprofile.model.GymService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -26,11 +27,13 @@ data class GymProfileTabInfoUiState(
     val tel: String? = "암장 정보가 비어있어요",
     val gymBusinessHours: List<GymBusinessHour>? = emptyList(),
     val gymServiceList: List<GymService>? = emptyList(),
-    val gymPriceList: List<GymPrice>? = emptyList()
+    val gymPriceList: List<GymPrice>? = emptyList(),
+    val myGymReview: GymReview? = null,
+    val gymReviewList: List<GymReview>? = emptyList()
 )
 
 sealed class GymProfileInfoEvent {
-    data class NavigateToGymReviewBottomSheetFragment(val id: Long) : GymProfileInfoEvent()
+    data object NavigateToGymReviewBottomSheetFragment : GymProfileInfoEvent()
 }
 
 @HiltViewModel
@@ -83,7 +86,7 @@ class GymProfileInfoViewModel @Inject constructor(
     fun navigateToGymReviewBottomSheetFragment() {
         viewModelScope.launch {
             _event.emit(
-                GymProfileInfoEvent.NavigateToGymReviewBottomSheetFragment(gymId)
+                GymProfileInfoEvent.NavigateToGymReviewBottomSheetFragment
             )
         }
     }

@@ -504,7 +504,7 @@
                             style="@style/customRatingBar"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:isIndicator="false"
+                            android:isIndicator="true"
                             android:numStars="5"
                             android:rating="@{parentVM.uiState.averageRating}"
                             android:scaleX="0.6"
@@ -522,6 +522,7 @@
                             android:layout_marginTop="10dp"
                             android:background="@drawable/rect_nofill_mainstroke_8radius"
                             android:drawableLeft="@drawable/ic_plus_mainfill"
+                            android:onClick="@{() -> vm.navigateToGymReviewBottomSheetFragment()}"
                             android:paddingStart="15dp"
                             android:paddingEnd="10dp"
                             android:text="리뷰 남기기"
@@ -536,7 +537,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="20dp"
                             android:clipToPadding="false"
-                            android:onClick="@{() -> vm.navigateToGymReviewBottomSheetFragment()"
                             android:orientation="vertical"
                             android:visibility="gone"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -569,8 +569,8 @@
                                 app:layout_constraintTop_toTopOf="parent" />
 
                             <TextView
-                                style="@style/TextRegular"
                                 android:id="@+id/tv_no_review"
+                                style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="30dp"

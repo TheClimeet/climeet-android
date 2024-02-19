@@ -156,7 +156,6 @@
         android:name="com.climus.climeet.presentation.ui.main.record.bottomsheet.selecttime.SelectTimeBottomSheetFragment"
         android:label="SelectTimeBottomFragment" />
 
-
     <dialog
         android:id="@+id/shortsBottomSheetFragment"
         android:name="com.climus.climeet.presentation.ui.main.shorts.bottomsheet.ShortsBottomSheetFragment"
@@ -295,6 +294,9 @@
         <argument
             android:name="gymId"
             app:argType="long"/>
+        <action
+            android:id="@+id/action_gymProfileFragment_to_gymReviewBottomSheetFragment2"
+            app:destination="@id/gymReviewBottomSheetFragment" />
     </fragment>
     <fragment
         android:id="@+id/climerProfileFragment"
@@ -320,22 +322,14 @@
         android:label="GymProfileInfoFragment">
 
         <action
-            android:id="@+id/action_gymProfileInfoFragment_to_gymReviewBottomSheetFragment"
-            app:destination="@id/gymReviewBottomSheetFragment" />
-        <action
             android:id="@+id/action_gymProfileInfoFragment_to_gymProfileFragment"
             app:destination="@id/gymProfileFragment" />
 
     </fragment>
 
-    <fragment
+    <dialog
         android:id="@+id/gymReviewBottomSheetFragment"
         android:name="com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymReviewBottomSheetFragment"
-        android:label="GymReviewBottomSheetFragment">
-
-        <action
-            android:id="@+id/action_gymReviewBottomSheetFragment_to_gymProfileInfoFragment"
-            app:destination="@id/gymProfileInfoFragment" />
-    </fragment>
+        android:label="GymReviewBottomSheetFragment"/>
 
 </navigation>

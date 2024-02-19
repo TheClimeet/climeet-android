@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 sealed class GymReviewBottomSheetEvent {
-    data object NavigateToBack : GymReviewBottomSheetEvent()
+    data object CreateReview : GymReviewBottomSheetEvent()
 }
 
 @HiltViewModel
@@ -31,9 +31,9 @@ class GymReviewBottomSheetFragmentViewModel @Inject constructor(
         Log.d("gym_profile", "암장 리뷰 아이디 : $gymId")
     }
 
-    fun navigateToBack() {
+    fun navigateToProfile() {
         viewModelScope.launch {
-            _event.emit(GymReviewBottomSheetEvent.NavigateToBack)
+            _event.emit(GymReviewBottomSheetEvent.CreateReview)
         }
     }
 }
