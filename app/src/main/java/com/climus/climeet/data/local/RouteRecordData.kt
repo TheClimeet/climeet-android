@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData
+package com.climus.climeet.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

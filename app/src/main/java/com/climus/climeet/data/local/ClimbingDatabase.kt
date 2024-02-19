@@ -1,13 +1,9 @@
-package com.climus.climeet.presentation.ui.main.record.timer.roomDB
+package com.climus.climeet.data.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordDao
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData.ClimbingRecordData
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordDao
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordData
 
 @Database(entities = [ClimbingRecordData::class, RouteRecordData::class], version = 2, exportSchema = false)
 abstract class ClimbingDatabase : RoomDatabase() {

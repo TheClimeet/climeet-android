@@ -8,13 +8,10 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.app.App
+import com.climus.climeet.app.di.NetworkModule
 import com.climus.climeet.databinding.FragmentMypageBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroActivity
-import com.climus.climeet.presentation.util.Constants
-import com.climus.climeet.presentation.util.Constants.X_ACCESS_TOKEN
-import com.climus.climeet.presentation.util.Constants.X_MODE
-import com.climus.climeet.presentation.util.Constants.X_REFRESH_TOKEN
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,6 +24,7 @@ class MyPageFragment: BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypa
 
         binding.vm = viewModel
         initEventObserve()
+        modeSwitchListener()
     }
 
     private fun initEventObserve(){
@@ -53,6 +51,29 @@ class MyPageFragment: BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypa
                     is MyPageEvent.NavigateToReview -> findNavController().toReview()
                 }
             }
+        }
+    }
+
+    private fun modeSwitchListener(){
+
+        if(NetworkModule.isProd){
+            binding.switchmode.isChecked = true
+            binding.tvMode.text = "PROD MODE"
+        } else {
+            binding.switchmode.isChecked = false
+            binding.tvMode.text = "DEV MODE"
+        }
+
+        binding.switchmode.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            if(isChecked){
+                binding.tvMode.text = "PROD MODE"
+                NetworkModule.changeVersion(true)
+            } else {
+                binding.tvMode.text = "DEV MODE"
+                NetworkModule.changeVersion(false)
+            }
+
         }
     }
 

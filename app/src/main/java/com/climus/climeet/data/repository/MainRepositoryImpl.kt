@@ -1,5 +1,9 @@
 package com.climus.climeet.data.repository
 
+import com.climus.climeet.data.local.ClimbingRecordDao
+import com.climus.climeet.data.local.ClimbingRecordData
+import com.climus.climeet.data.local.RouteRecordDao
+import com.climus.climeet.data.local.RouteRecordData
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.AddShortsCommentRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
@@ -17,6 +21,7 @@ import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
@@ -37,7 +42,9 @@ import retrofit2.http.Query
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
-    private val api: MainApi
+    private val api: MainApi,
+    private val climbingRecordDao: ClimbingRecordDao,
+    private val routeRecordDao: RouteRecordDao
 ) : MainRepository {
 
     override suspend fun uploadFile(
@@ -201,4 +208,83 @@ class MainRepositoryImpl @Inject constructor(
         isDislike: Boolean
     ): BaseState<String> =
         runRemote { api.patchShortsCommentInteraction(shortsCommentId, isLike, isDislike) }
+
+    // -------- RoomDB ClimbingRecordDa0 암장 정보 -----------
+    override fun insert(climbingRecordData: ClimbingRecordData) {
+        climbingRecordDao.insert(climbingRecordData)
+    }
+
+    override fun update(climbingRecordData: ClimbingRecordData) {
+        climbingRecordDao.update(climbingRecordData)
+    }
+
+    override fun delete(climbingRecordData: ClimbingRecordData) {
+        climbingRecordDao.delete(climbingRecordData)
+    }
+
+    override fun deleteAllRecord() {
+        climbingRecordDao.deleteAllRecord()
+    }
+
+    override fun getAllRecord(): List<ClimbingRecordData> {
+        return climbingRecordDao.getAllRecord()
+    }
+
+    override fun getRecord(id: Int): ClimbingRecordData {
+        return climbingRecordDao.getRecord(id)
+    }
+
+    // --------- RoomDB RouteRecordDao 루트 기록 --------------
+    override fun insert(routeRecord: RouteRecordData) {
+        routeRecordDao.insert(routeRecord)
+    }
+
+    override fun update(routeRecord: RouteRecordData) {
+        routeRecordDao.update(routeRecord)
+    }
+
+    override fun delete(routeRecord: RouteRecordData) {
+        routeRecordDao.delete(routeRecord)
+    }
+
+    override fun deleteAllRoute() {
+        routeRecordDao.deleteAllRoute()
+    }
+
+    override fun deleteById(id: Int) {
+        routeRecordDao.deleteById(id)
+    }
+
+    override fun getAllRoute(): List<RouteRecordData> {
+        return routeRecordDao.getAllRoute()
+    }
+
+    override fun getRouteById(id: Int): RouteRecordData {
+        return routeRecordDao.getRouteById(id)
+    }
+
+    override fun findExistRoute(sectorId: Long, routeId: Long): RouteRecordData? {
+        return routeRecordDao.findExistRoute(sectorId, routeId)
+    }
+
+    override fun getAverageDifficultyOfCompleted(): Double {
+        return routeRecordDao.getAverageDifficultyOfCompleted()
+    }
+
+    override fun getAllLevelRecord(): List<RouteRecordData> {
+        return routeRecordDao.getAllLevelRecord()
+    }
+
+    override fun getSuccessCount(level: String): Int{
+        return routeRecordDao.getSuccessCount(level)
+    }
+
+    override fun getAttemptCount(level: String): Int{
+        return routeRecordDao.getAttemptCount(level)
+    }
+
+    override suspend fun getMyStatsMonth(
+        year: Int,
+        month: Int
+    ): BaseState<MyStatsMonthResponse> = runRemote { api.getMyStatsMonth(year, month) }
 }

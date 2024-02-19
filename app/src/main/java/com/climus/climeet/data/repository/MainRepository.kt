@@ -1,5 +1,7 @@
 package com.climus.climeet.data.repository
 
+import com.climus.climeet.data.local.ClimbingRecordData
+import com.climus.climeet.data.local.RouteRecordData
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.AddShortsCommentRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
@@ -17,6 +19,7 @@ import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
@@ -30,10 +33,10 @@ import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Path
 import retrofit2.http.Query
-import okhttp3.ResponseBody
 
 interface MainRepository {
 
@@ -164,4 +167,42 @@ interface MainRepository {
         isLike: Boolean,
         isDislike: Boolean
     ): BaseState<String>
+
+    // -------- RoomDB ClimbingRecordDao 암장 정보 ----------
+    fun insert(climbingRecordData: ClimbingRecordData)
+    fun update(climbingRecordData: ClimbingRecordData)
+    fun delete(climbingRecordData: ClimbingRecordData)
+    fun deleteAllRecord()
+    fun getAllRecord(): List<ClimbingRecordData>
+    fun getRecord(id: Int): ClimbingRecordData
+
+    // ------ RoomDB RouteRecordDao 루트 기록 정보 ---------
+    fun insert(routeRecord: RouteRecordData)
+
+    fun update(routeRecord: RouteRecordData)
+
+    fun delete(routeRecord: RouteRecordData)
+
+    fun deleteAllRoute()
+
+    fun deleteById(id: Int)
+
+    fun getAllRoute(): List<RouteRecordData>
+
+    fun getRouteById(id: Int): RouteRecordData
+
+    fun findExistRoute(sectorId: Long, routeId: Long): RouteRecordData?
+
+    fun getAverageDifficultyOfCompleted(): Double
+
+    fun getAllLevelRecord(): List<RouteRecordData>
+
+    fun getSuccessCount(level: String): Int
+
+    fun getAttemptCount(level: String): Int
+
+    suspend fun getMyStatsMonth(
+        year: Int,
+        month: Int
+    ): BaseState<MyStatsMonthResponse>
 }

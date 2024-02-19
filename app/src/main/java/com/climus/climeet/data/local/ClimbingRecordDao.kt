@@ -1,7 +1,6 @@
-package com.climus.climeet.presentation.ui.main.record.timer.roomDB.climbingData
+package com.climus.climeet.data.local
 
 import androidx.room.*
-import com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData.RouteRecordData
 
 @Dao
 interface ClimbingRecordDao {
@@ -16,11 +15,11 @@ interface ClimbingRecordDao {
     fun delete(climbingRecord: ClimbingRecordData)
 
     @Query("DELETE FROM climbing_record")
-    fun deleteAll()
+    fun deleteAllRecord()
 
     @Query("SELECT * FROM climbing_record")
-    fun getAll(): List<ClimbingRecordData>
+    fun getAllRecord(): List<ClimbingRecordData>
 
     @Query("SELECT * FROM climbing_record WHERE id = :id")
-    fun getRoute(id: Int): ClimbingRecordData
+    fun getRecord(id: Int): ClimbingRecordData
 }
