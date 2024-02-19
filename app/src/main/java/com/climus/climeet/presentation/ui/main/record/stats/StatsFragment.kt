@@ -17,6 +17,7 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // todo StickChartAdapter 초기화만 여기서 시켜주기
         binding.rvStickChart.adapter = StickChartAdapter()
         binding.vm = viewModel
         initEventObserve()

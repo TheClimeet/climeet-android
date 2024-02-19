@@ -87,8 +87,10 @@ class StatsViewModel @Inject constructor(
                             )
                         }
 
+                        // todo 여기부터가 차트그릴 데이터 파싱하는 부분
                         val list = mutableListOf<StickChartUiData>()
 
+                        // todo 받은 차트값중에서 max값을 고르는 for문
                         var maxPercent = -1f
                         body.difficulty.forEach{
                             if( maxPercent < it.value.toFloat()){
@@ -96,13 +98,19 @@ class StatsViewModel @Inject constructor(
                             }
                         }
 
+                        // todo max값 차트값을 기준으로 퍼센테이지를 계산하는 로직
+
                         body.difficulty.forEach {
                             val percent = ((it.value.toFloat() / body.totalCompletedCount.toFloat()) * 100).roundToInt()
                             list.add(
                                 StickChartUiData(
+                                    // todo 차트 꼭대기 퍼센트 스트링
                                     percentString = "$percent%",
+                                    // todo 차트 막대 길이비율 정하는 float값
                                     percent = (it.value.toFloat() / maxPercent) * 0.8f,
+                                    // todo 차트 하단에 레벨이름
                                     levelName = it.key,
+                                    // todo 레벨에 대응되는 색상 hex 값
                                     levelHex = Constants.climeetColor[it.key]
                                 )
                             )
@@ -113,6 +121,8 @@ class StatsViewModel @Inject constructor(
                                 chartUiList = list
                             )
                         }
+
+                        // todo 여기까지
 
                         setProgress()
                     }

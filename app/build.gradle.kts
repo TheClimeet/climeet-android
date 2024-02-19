@@ -23,8 +23,8 @@ android {
         applicationId = "com.climus.climeet"
         minSdk = 26
         targetSdk = 34
-        versionCode = 7
-        versionName = "0.1.6"
+        versionCode = 8
+        versionName = "0.1.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "BASE_DEV_URL", getProperty("baseDevUrl"))
