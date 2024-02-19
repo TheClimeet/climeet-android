@@ -38,7 +38,7 @@
                     android:layout_height="190dp"
                     android:layout_marginTop="30dp"
                     android:scaleType="fitXY"
-                    app:imageUrlOrId="@{vm.uiState.gymBackGroundImageUrl}"
+                    app:imgUrl="@{vm.uiState.gymBackGroundImageUrl}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -229,7 +229,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/tv_review"
                                 app:layout_constraintTop_toTopOf="parent"
-                                tools:text="30dp"/>
+                                tools:text="30"/>
 
                             <TextView
                                 style="@style/TextTiny"

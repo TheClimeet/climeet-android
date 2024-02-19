@@ -11,11 +11,12 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/tv_time"
             style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="010-0000-2222"
+            android:text="10:30에 영업시작"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

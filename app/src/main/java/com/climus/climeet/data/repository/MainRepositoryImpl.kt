@@ -21,6 +21,7 @@ import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
@@ -36,7 +37,6 @@ import com.climus.climeet.data.model.runRemote
 import com.climus.climeet.data.remote.MainApi
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
-import retrofit2.http.Query
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
@@ -204,6 +204,10 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun getGymProfileTopInfo(
         gymId: Long
     ): BaseState<GymProfileTopInfoResponse> = runRemote { api.getGymProfileTopInfo(gymId) }
+
+    override suspend fun getGymProfileTabInfo(
+        gymId: Long
+    ): BaseState<GymProfileTabInfoResponse> = runRemote { api.getGymProfileTabInfo(gymId) }
 
     // -------- RoomDB ClimbingRecordDa0 암장 정보 -----------
     override fun insert(climbingRecordData: ClimbingRecordData) {

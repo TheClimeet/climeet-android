@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.climus.climeet.R
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +17,7 @@ import javax.inject.Inject
 data class GymProfileInfoUiState(
     val gymId: Long = 0L,
     val gymProfileImageUrl: String = "",
-    val gymBackGroundImageUrl: Any = R.drawable.img_gym_background,
+    val gymBackGroundImageUrl: String = "",
     val gymName: String = "",
     val followerCount: Int = 0,
     val followingCount: Int = 0,
@@ -50,7 +49,7 @@ class GymProfileViewModel @Inject constructor(
                                 state.copy(
                                     gymId = gymId.value!!,
                                     gymProfileImageUrl = it.body.gymProfileImageUrl,
-                                    gymBackGroundImageUrl = if (it.body.gymBackGroundImageUrl == "레이아웃이미지유알엘") R.drawable.img_gym_background else it.body.gymBackGroundImageUrl,
+                                    gymBackGroundImageUrl = it.body.gymBackGroundImageUrl,
                                     gymName = it.body.gymName,
                                     followerCount = it.body.followerCount,
                                     followingCount = it.body.followingCount,

@@ -19,6 +19,7 @@ import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
@@ -31,10 +32,9 @@ import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import okhttp3.MultipartBody
-import retrofit2.Response
+import okhttp3.ResponseBody
 import retrofit2.http.Path
 import retrofit2.http.Query
-import okhttp3.ResponseBody
 
 interface MainRepository {
 
@@ -163,6 +163,10 @@ interface MainRepository {
     suspend fun getGymProfileTopInfo(
         gymId: Long
     ): BaseState<GymProfileTopInfoResponse>
+
+    suspend fun getGymProfileTabInfo(
+        gymId: Long
+    ): BaseState<GymProfileTabInfoResponse>
 
     // -------- RoomDB ClimbingRecordDao 암장 정보 ----------
     fun insert(climbingRecordData: ClimbingRecordData)
