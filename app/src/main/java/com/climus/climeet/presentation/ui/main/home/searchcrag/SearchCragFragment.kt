@@ -20,6 +20,7 @@ import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.adapter
 import com.climus.climeet.presentation.ui.main.home.recycler.following.FollowingRVAdapter
 import com.climus.climeet.presentation.ui.main.home.recycler.following.FollowingSearchRVAdapter
 import com.climus.climeet.presentation.ui.main.home.recycler.popularroute.PopularRouteRVAdapter
+import com.climus.climeet.presentation.ui.main.home.searchcrag.model.FollowClimber
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,7 +29,9 @@ class SearchCragFragment : BaseFragment<FragmentSearchCragBinding>(R.layout.frag
     private val viewModel: SearchCragViewModel by viewModels()
     private var recyclerRoute: List<BestRouteDetailInfoResponse> = emptyList()
     private var recyclerFollowing: List<UserFollowSimpleResponse> = emptyList()
-    private var adapter: FollowCragRVAdapter? = null
+    private var recyclerClimber: List<FollowClimber> = emptyList()
+    private var cragAdapter: FollowCragRVAdapter? = null
+    private var followingAdapter: FollowingSearchRVAdapter? = null
     private var isCrag: Boolean = true
     lateinit var editText: EditText
 
@@ -36,8 +39,10 @@ class SearchCragFragment : BaseFragment<FragmentSearchCragBinding>(R.layout.frag
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
-        adapter = FollowCragRVAdapter()
-        binding.rvFollowSearchCrags.adapter = adapter
+        cragAdapter = FollowCragRVAdapter()
+        followingAdapter = FollowingSearchRVAdapter()
+        binding.rvFollowSearchCrags.adapter = cragAdapter
+        binding.rvSearchFollowing.adapter = followingAdapter
         viewModel.getRouteRankingOrderSelectionCount()
         viewModel.getClimberFollowing()
 
@@ -60,11 +65,13 @@ class SearchCragFragment : BaseFragment<FragmentSearchCragBinding>(R.layout.frag
                         recyclerFollowing = followingList
                         setupFollowingList()
                     }
-                }
-            }
 
-            viewModel.uiState.collect {
-                adapter?.setList(it.searchList, viewModel.keyword.value)
+                    recyclerClimber = uiState.searchClimberList
+                    Log.d("Follow", recyclerClimber.toString())
+                    cragAdapter?.setList(uiState.searchList, viewModel.keyword.value)
+                    followingAdapter?.setList(uiState.searchClimberList, viewModel.keyword.value)
+
+                }
             }
 
         }
@@ -74,16 +81,20 @@ class SearchCragFragment : BaseFragment<FragmentSearchCragBinding>(R.layout.frag
     private fun setupSearchCragTask() {
         isCrag = true
         editText = binding.etSearchCrag
+        editText.text.clear()
         editText.hint = "암장 검색하기"
+
         binding.clSerachCrags.visibility = View.VISIBLE
         binding.clSerachCrags2.visibility = View.INVISIBLE
+        binding.rvSearchFollowing.visibility = View.INVISIBLE
+        binding.linearCrag.visibility = View.VISIBLE
 
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clSerachCrags.visibility = if (charSequence.isNullOrEmpty() && isCrag) View.VISIBLE else View.INVISIBLE
-                binding.rvFollowSearchCrags.visibility = if (charSequence.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
+                binding.rvFollowSearchCrags.visibility = if (charSequence.isNullOrEmpty() && isCrag) View.INVISIBLE else View.VISIBLE
                 binding.rvFollowCrags.visibility = if (charSequence.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
             }
 
@@ -94,16 +105,17 @@ class SearchCragFragment : BaseFragment<FragmentSearchCragBinding>(R.layout.frag
             binding.icEmptySearch.visibility = View.INVISIBLE
             binding.tvEmptySearch.visibility = View.INVISIBLE
             binding.tvSearchCragFollowing.visibility = View.INVISIBLE
-            binding.rvSearchFollowing.visibility = View.INVISIBLE
         }
     }
 
     private fun setupSearchClimberTask() {
         isCrag = false
         editText = binding.etSearchCrag
+        editText.text.clear()
         editText.hint = "클라이머 검색하기"
         binding.clSerachCrags2.visibility = View.VISIBLE
         binding.clSerachCrags.visibility = View.INVISIBLE
+        binding.rvFollowSearchCrags.visibility = View.INVISIBLE
 
         binding.icEmptySearch.visibility = View.VISIBLE
         binding.tvEmptySearch.visibility = View.VISIBLE
@@ -115,7 +127,8 @@ class SearchCragFragment : BaseFragment<FragmentSearchCragBinding>(R.layout.frag
 
             override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.clSerachCrags2.visibility = if (charSequence.isNullOrEmpty() && !isCrag) View.VISIBLE else View.INVISIBLE
-                binding.rvSearchFollowing.visibility = if (charSequence.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
+                binding.rvSearchFollowing.visibility = if (charSequence.isNullOrEmpty()&& !isCrag) View.INVISIBLE else View.VISIBLE
+                binding.rvFollowSearchCrags.visibility = View.INVISIBLE
             }
 
             override fun afterTextChanged(editable: Editable?) {}
@@ -124,6 +137,7 @@ class SearchCragFragment : BaseFragment<FragmentSearchCragBinding>(R.layout.frag
         if (binding.clSerachCrags2.visibility == View.VISIBLE) {
             binding.icEmptySearch.visibility = View.INVISIBLE
             binding.tvEmptySearch.visibility = View.INVISIBLE
+            binding.rvSearchFollowing.visibility = View.VISIBLE
         }
 
     }

@@ -11,6 +11,7 @@ import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
 import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
+import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
@@ -31,6 +32,7 @@ import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
@@ -60,7 +62,7 @@ interface MainApi {
         @Query("size") size: Int
     ): Response<SearchAvailableGymResponse>
 
-    @GET("/climber-following")
+    @GET("/api/climber-following")
     suspend fun getClimberFollowing(
     ): Response<List<UserFollowSimpleResponse>>
 
@@ -75,6 +77,23 @@ interface MainApi {
         @Query("size") size: Int,
         @QueryMap filter: Map<String, Long>,
     ): Response<ShortsListResponse>
+
+    @POST("/follow-relationship/{userId}")
+    suspend fun followUser(
+        @Path("userId") userId: Long
+    ): Response<String>
+
+    @DELETE("/follow-relationship/{userId}")
+    suspend fun unfollowUser(
+        @Path("userId") userId: Long
+    ): Response<String>
+
+    @GET("/api/climber/search")
+    suspend fun getClimberSearchingList(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("climberName") climberName: String
+    ): Response<ClimberDetailInfoResponse>
 
     @GET("api/shorts/popular")
     suspend fun getPopularShorts(

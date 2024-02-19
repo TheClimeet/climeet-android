@@ -40,7 +40,7 @@ class ClimbingRecordViewHolder(
 
         binding.btnIncrease.setOnClickListener {
             viewModel.selectRoute(item)
-            viewModel.itemIncrease(item.routeId)
+            viewModel.itemIncrease(item.routeId, 1)
         }
 
         binding.btnDecrease.setOnClickListener {

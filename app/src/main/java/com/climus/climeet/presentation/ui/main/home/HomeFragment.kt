@@ -3,6 +3,8 @@ package com.climus.climeet.presentation.ui.main.home
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.compose.ui.graphics.Color
+import androidx.core.content.ContextCompat
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -121,6 +123,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         binding.icHomeSerach.setOnClickListener {
             navigateToSearchCrag()
+        }
+
+        binding.homeFollowOrder.setOnClickListener {
+            binding.homeFollowOrder.setBackgroundResource(R.drawable.rect_mainfill_nostroke_5radius)
+            binding.homeFollowOrder.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
+            binding.homeRecordOrder.setBackgroundResource(R.drawable.rect_grey6fill_nostroke_5radius)
+            binding.homeRecordOrder.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
+        }
+
+        binding.homeRecordOrder.setOnClickListener {
+            binding.homeRecordOrder.setBackgroundResource(R.drawable.rect_mainfill_nostroke_5radius)
+            binding.homeRecordOrder.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
+            binding.homeFollowOrder.setBackgroundResource(R.drawable.rect_grey6fill_nostroke_5radius)
+            binding.homeFollowOrder.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
         }
 
     }

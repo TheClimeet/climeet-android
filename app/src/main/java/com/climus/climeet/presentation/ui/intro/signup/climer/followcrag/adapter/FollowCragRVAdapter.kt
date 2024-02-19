@@ -81,7 +81,7 @@ class FollowCragRVAdapter() : RecyclerView.Adapter<FollowCragRVAdapter.ViewHolde
 
             binding.tvCragsFollow.text = followCrag.followers.toString()
 
-            if (followCrag.imgUrl.isBlank()) {
+            if (followCrag.imgUrl != null) {
                 Glide.with(binding.root.context)
                     .load(followCrag.imgUrl)
                     .into(binding.cragsProfileArea)

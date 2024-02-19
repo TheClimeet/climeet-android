@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.record.timer.roomDB.routeRecordData
+package com.climus.climeet.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -19,19 +19,19 @@ interface RouteRecordDao {
     fun delete(routeRecord: RouteRecordData)
 
     @Query("DELETE FROM route_record")
-    fun deleteAll()
+    fun deleteAllRoute()
 
     @Query("DELETE FROM route_record WHERE id = :id")
-    fun deleteRecord(id: Int)
+    fun deleteById(id: Int)
 
     @Query("SELECT * FROM route_record")
-    fun getAllRecord(): List<RouteRecordData>
+    fun getAllRoute(): List<RouteRecordData>
 
     @Query("SELECT * FROM route_record WHERE id = :id")
-    fun getRecord(id: Int): RouteRecordData
+    fun getRouteById(id: Int): RouteRecordData
 
     @Query("SELECT * FROM route_record WHERE sectorId = :sectorId AND routeId = :routeId LIMIT 1")
-    fun findExistRecord(sectorId: Long, routeId: Long): RouteRecordData?
+    fun findExistRoute(sectorId: Long, routeId: Long): RouteRecordData?
 
     @Query("SELECT AVG(difficulty) FROM route_record WHERE isCompleted = 1")
     fun getAverageDifficultyOfCompleted(): Double
