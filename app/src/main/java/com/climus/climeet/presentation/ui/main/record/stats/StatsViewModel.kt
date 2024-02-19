@@ -1,11 +1,14 @@
 package com.climus.climeet.presentation.ui.main.record.stats
 
 import android.util.Log
+import androidx.compose.ui.unit.Constraints
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.customview.stickchart.StickChartUiData
+import com.climus.climeet.presentation.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,13 +20,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 data class StatusUiState(
     val totalTime: String = "00:00:00",
     val totalCompletedCount: Int = 0,
     val totalAttemptCount: Int = 0,
     val completedCountString: String = "0문제 완등",
-    val attemptCountString: String = "100문제 도전!"
+    val attemptCountString: String = "100문제 도전!",
+    val chartUiList: List<StickChartUiData> = emptyList()
 )
 
 sealed class StatsEvent {
@@ -81,6 +86,44 @@ class StatsViewModel @Inject constructor(
                                 totalAttemptCount = body.attemptRouteCount
                             )
                         }
+
+                        // todo 여기부터가 차트그릴 데이터 파싱하는 부분
+                        val list = mutableListOf<StickChartUiData>()
+
+                        // todo 받은 차트값중에서 max값을 고르는 for문
+                        var maxPercent = -1f
+                        body.difficulty.forEach{
+                            if( maxPercent < it.value.toFloat()){
+                                maxPercent = it.value.toFloat()
+                            }
+                        }
+
+                        // todo max값 차트값을 기준으로 퍼센테이지를 계산하는 로직
+
+                        body.difficulty.forEach {
+                            val percent = ((it.value.toFloat() / body.totalCompletedCount.toFloat()) * 100).roundToInt()
+                            list.add(
+                                StickChartUiData(
+                                    // todo 차트 꼭대기 퍼센트 스트링
+                                    percentString = "$percent%",
+                                    // todo 차트 막대 길이비율 정하는 float값
+                                    percent = (it.value.toFloat() / maxPercent) * 0.8f,
+                                    // todo 차트 하단에 레벨이름
+                                    levelName = it.key,
+                                    // todo 레벨에 대응되는 색상 hex 값
+                                    levelHex = Constants.climeetColor[it.key]
+                                )
+                            )
+                        }
+
+                        _uiState.update { state ->
+                            state.copy(
+                                chartUiList = list
+                            )
+                        }
+
+                        // todo 여기까지
+
                         setProgress()
                     }
 
