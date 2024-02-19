@@ -271,7 +271,11 @@
     <fragment
         android:id="@+id/myPageAnnounceFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.announce.MyPageAnnounceFragment"
-        android:label="MyPageAnnounceFragment" />
+        android:label="MyPageAnnounceFragment" >
+        <action
+            android:id="@+id/action_myPageAnnounceFragment_to_announceDetailFragment"
+            app:destination="@id/announceDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myPageCheerUpFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.cheerup.MyPageCheerUpFragment"
@@ -333,5 +337,9 @@
     <action
         android:id="@+id/globalActionToGymProfileFragment"
         app:destination="@id/gymProfileFragment" />
+    <fragment
+        android:id="@+id/announceDetailFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.announce.AnnounceDetailFragment"
+        android:label="AnnounceDetailFragment" />
 
 </navigation>

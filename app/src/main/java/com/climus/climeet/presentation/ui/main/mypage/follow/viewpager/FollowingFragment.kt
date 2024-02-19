@@ -12,9 +12,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
+import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.databinding.FragmentCompleteClimbingBinding
 import com.climus.climeet.databinding.FragmentFollowingBinding
+import com.climus.climeet.presentation.ui.main.home.recycler.following.FollowingRVAdapter
 import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +28,8 @@ import kotlinx.coroutines.launch
 class FollowingFragment : Fragment() {
 
     private lateinit var binding : FragmentFollowingBinding
-    private val viewModel: CompleteClimbingViewModel by viewModels()
+    private var recyclerClimber: List<UserFollowSimpleResponse> = emptyList()
+    private val viewModel: FollowingViewModel by viewModels()
 
     fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -43,8 +48,37 @@ class FollowingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // api
         super.onViewCreated(view, savedInstanceState)
 
+        binding.vm = viewModel
+        viewModel.getClimberFollowing()
+
+        initStateObserve()
         setupOnClickListener()
 
+    }
+
+    private fun initStateObserve() {
+        repeatOnStarted {
+            viewModel?.let { vm ->
+                vm.uiState.collect { uiState ->
+                    uiState.followingList.let { followingList ->
+
+                        recyclerClimber = followingList
+                        setupFollowingList()
+
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupFollowingList() {
+        val followingRVAdapter = FollowingRVAdapter(recyclerClimber)
+        setupRecyclerView(binding.rvSearchFollowing, followingRVAdapter, LinearLayoutManager.VERTICAL)
+    }
+
+    private fun setupRecyclerView(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>, orientation: Int) {
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireActivity(), orientation, false)
     }
 
     fun setupOnClickListener() {
