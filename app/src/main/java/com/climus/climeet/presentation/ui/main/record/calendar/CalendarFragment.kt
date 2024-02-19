@@ -16,6 +16,7 @@ import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheet
 import com.climus.climeet.presentation.ui.intro.signup.climer.setlevel.AdapterDecoration
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheetViewModel
+import com.climus.climeet.presentation.ui.main.record.RecordFragmentDirections
 import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateClimbingRecordViewModel
 import com.climus.climeet.presentation.ui.main.record.model.CreateRecordData
 import com.kizitonwose.calendar.core.CalendarDay
@@ -92,7 +93,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
 
     private fun NavController.toCreateClimbingRecord() {
         val action =
-            CalendarFragmentDirections.actionCalendarFragmentToCreateClimbingRecordFragment()
+            RecordFragmentDirections.actionRecordFragmentToCreateClimbingRecordFragment()
         navigate(action)
     }
 
@@ -182,7 +183,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
     }
 
     private fun NavController.toTimerMain() {
-        val action = CalendarFragmentDirections.actionCalendarFragmentToTimerMainFragment()
+        val action = RecordFragmentDirections.actionRecordFragmentToTimerMainFragment()
         navigate(action)
     }
 

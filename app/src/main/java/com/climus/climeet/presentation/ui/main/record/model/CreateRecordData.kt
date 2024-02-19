@@ -30,16 +30,6 @@ object CreateRecordData {
         selectedEndTime = end
     }
 
-    fun getTimeDiff(): LocalTime{
-        val totalSeconds = ChronoUnit.SECONDS.between(selectedStartTime, selectedEndTime)
-
-        val hours = totalSeconds / 3600
-        val minutes = (totalSeconds % 3600) / 60
-        val seconds = totalSeconds % 60
-
-        return LocalTime.of(hours.toInt(), minutes.toInt(), seconds.toInt())
-    }
-
     fun setSelecetedCrag(crag: FollowCrag) {
         selectedCrag = crag
     }

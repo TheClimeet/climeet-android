@@ -19,7 +19,7 @@
         android:title="업로드" />
 
     <item
-        android:id="@+id/calendar_fragment"
+        android:id="@+id/record_fragment"
         android:icon="@drawable/selector_menu_record"
         android:enabled="true"
         android:title="운동기록" />

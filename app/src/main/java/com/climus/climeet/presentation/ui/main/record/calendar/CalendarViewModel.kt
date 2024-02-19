@@ -10,6 +10,7 @@ import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragEvent
 import com.climus.climeet.presentation.ui.main.record.model.ClimbingRecordData
+import com.climus.climeet.presentation.ui.main.record.model.CreateRecordData
 import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -77,6 +78,9 @@ class CalendarViewModel @Inject constructor(
 
     fun setSelectedDate(date: LocalDate) {
         selectedDate.value = date
+        setIsToday(date == LocalDate.now())
+        CreateRecordData.setSelectedDate(date)
+        setRecord(date)
     }
 
     private suspend fun setGymProfile(gymId : Long): Pair<String, String> {

@@ -38,7 +38,7 @@ class ClimbingRecordCompleteFragment :
 
     private fun NavController.toCalendarFragment() {
         val action =
-            ClimbingRecordCompleteFragmentDirections.actionFragmentClimbingRecordCompleteToCalendarFragment()
+            ClimbingRecordCompleteFragmentDirections.actionFragmentClimbingRecordCompleteToRecordFragment()
         navigate(action)
     }
 }

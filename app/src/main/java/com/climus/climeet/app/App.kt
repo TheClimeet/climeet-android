@@ -43,11 +43,11 @@ class App : Application(){
         Log.d(TAG, "keyhash : ${Utility.getKeyHash(this)}")
 
         KakaoSdk.init(this, BuildConfig.KAKAO_API_KEY)
-        NaverIdLoginSDK.initialize(this,
-            BuildConfig.NAVER_CLIENT_ID,
-            BuildConfig.NAVER_CLIENT_SECRET,
-            BuildConfig.NAVER_CLIENT_NAME
-        )
+//        NaverIdLoginSDK.initialize(this,
+//            BuildConfig.NAVER_CLIENT_ID,
+//            BuildConfig.NAVER_CLIENT_SECRET,
+//            BuildConfig.NAVER_CLIENT_NAME
+//        )
     }
 
     private fun getFCMToken() {

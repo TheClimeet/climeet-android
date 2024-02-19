@@ -3,6 +3,7 @@ package com.climus.climeet.presentation.ui.main.record.calendar.createclimbingre
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +18,7 @@ import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLe
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.SectorNameAdapter
 import com.climus.climeet.presentation.ui.main.record.adapter.RouteRecordAdapter
+import com.climus.climeet.presentation.ui.main.record.calendar.CalendarViewModel
 import com.climus.climeet.presentation.ui.main.record.model.CreateRecordData
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,6 +27,7 @@ class CreateClimbingRecordFragment :
     BaseFragment<FragmentCreateClimbingRecordBinding>(R.layout.fragment_create_climbing_record) {
 
     private val dateViewModel: SelectDateBottomSheetViewModel by viewModels()
+    private val calendarViewModel: CalendarViewModel by activityViewModels()
     private lateinit var viewModel: CreateClimbingRecordViewModel
     private var isTimeSet = false
     private lateinit var itemAdapter: RouteRecordAdapter
@@ -91,6 +94,7 @@ class CreateClimbingRecordFragment :
                             CreateRecordData.selectedDate
                         ) { date ->
                             viewModel.setSelectedDate(date)
+                            calendarViewModel.setSelectedDate(date)
                         }.show()
                     }
                     CreateClimbingRecordEvent.ShowTimePicker -> {
