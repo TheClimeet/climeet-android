@@ -113,13 +113,24 @@ class ShortsMainCommentViewHolder(private val binding: ItemMainCommentBinding) :
                     "DISLIKE" -> item.changeLikeStatus(
                         item.commentId,
                         absoluteAdapterPosition,
+                        LikeStatus.DISLIKE_MINUS,
                         false,
                         false
                     )
 
+                    "LIKE" -> item.changeLikeStatus(
+                        item.commentId,
+                        absoluteAdapterPosition,
+                        LikeStatus.DISLIKE_PLUS_AND_LIKE_MINUS,
+                        false,
+                        false
+                    )
+
+
                     else -> item.changeLikeStatus(
                         item.commentId,
                         absoluteAdapterPosition,
+                        LikeStatus.DISLIKE_PLUS,
                         false,
                         true
                     )
@@ -131,6 +142,15 @@ class ShortsMainCommentViewHolder(private val binding: ItemMainCommentBinding) :
                     "LIKE" -> item.changeLikeStatus(
                         item.commentId,
                         absoluteAdapterPosition,
+                        LikeStatus.LIKE_MINUS,
+                        false,
+                        false
+                    )
+
+                    "DISLIKE" -> item.changeLikeStatus(
+                        item.commentId,
+                        absoluteAdapterPosition,
+                        LikeStatus.LIKE_PLUS_AND_DISLIKE_MINUS,
                         false,
                         false
                     )
@@ -138,6 +158,7 @@ class ShortsMainCommentViewHolder(private val binding: ItemMainCommentBinding) :
                     else -> item.changeLikeStatus(
                         item.commentId,
                         absoluteAdapterPosition,
+                        LikeStatus.LIKE_PLUS,
                         true,
                         false
                     )
@@ -190,6 +211,15 @@ class ShortsSubCommentViewHolder(private val binding: ItemSubCommentBinding) :
                     "DISLIKE" -> item.changeLikeStatus(
                         item.commentId,
                         absoluteAdapterPosition,
+                        LikeStatus.DISLIKE_MINUS,
+                        false,
+                        false
+                    )
+
+                    "LIKE" -> item.changeLikeStatus(
+                        item.commentId,
+                        absoluteAdapterPosition,
+                        LikeStatus.DISLIKE_PLUS_AND_LIKE_MINUS,
                         false,
                         false
                     )
@@ -197,6 +227,7 @@ class ShortsSubCommentViewHolder(private val binding: ItemSubCommentBinding) :
                     else -> item.changeLikeStatus(
                         item.commentId,
                         absoluteAdapterPosition,
+                        LikeStatus.DISLIKE_PLUS,
                         false,
                         true
                     )
@@ -208,6 +239,15 @@ class ShortsSubCommentViewHolder(private val binding: ItemSubCommentBinding) :
                     "LIKE" -> item.changeLikeStatus(
                         item.commentId,
                         absoluteAdapterPosition,
+                        LikeStatus.LIKE_MINUS,
+                        false,
+                        false
+                    )
+
+                    "DISLIKE" -> item.changeLikeStatus(
+                        item.commentId,
+                        absoluteAdapterPosition,
+                        LikeStatus.LIKE_PLUS_AND_DISLIKE_MINUS,
                         false,
                         false
                     )
@@ -215,6 +255,7 @@ class ShortsSubCommentViewHolder(private val binding: ItemSubCommentBinding) :
                     else -> item.changeLikeStatus(
                         item.commentId,
                         absoluteAdapterPosition,
+                        LikeStatus.LIKE_PLUS,
                         true,
                         false
                     )
@@ -231,4 +272,13 @@ class ShortsSubCommentViewHolder(private val binding: ItemSubCommentBinding) :
             }
         }
     }
+}
+
+enum class LikeStatus(){
+    DISLIKE_MINUS,
+    DISLIKE_PLUS,
+    DISLIKE_PLUS_AND_LIKE_MINUS,
+    LIKE_PLUS,
+    LIKE_PLUS_AND_DISLIKE_MINUS,
+    LIKE_MINUS
 }

@@ -131,7 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:textColor="@color/cm_grey_dark1"
-            android:visibility="@{item.likeCount == 0? View.GONE : View.VISIBLE}"
+            android:visibility="@{item.dislikeCount == 0? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/btn_thumbs_down"
             app:layout_constraintStart_toEndOf="@id/tv_thumbs_down_label"
             app:layout_constraintTop_toTopOf="@id/btn_thumbs_down"

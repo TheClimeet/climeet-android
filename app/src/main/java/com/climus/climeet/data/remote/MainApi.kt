@@ -18,6 +18,7 @@ import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
+import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
@@ -216,4 +217,11 @@ interface MainApi {
     suspend fun getGymProfileTabInfo(
         @Path("gymId") gymId: Long
     ): Response<GymProfileTabInfoResponse>
+
+    @GET("/api/climbing-records/users/statistics/months")
+    suspend fun getMyStatsMonth(
+        @Query("year") year: Int,
+        @Query("month") month: Int
+    ): Response<MyStatsMonthResponse>
+
 }

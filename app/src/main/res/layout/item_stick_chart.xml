@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.customview.stickchart.StickChartUiData" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="12dp">
+
+        <TextView
+            android:id="@+id/tv_percent"
+            style="@style/TextTiny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:text="@{item.percentString}"
+            app:layout_constraintBottom_toTopOf="@id/v_stick"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:textHexColor="@{item.levelHex}"
+            tools:text="100%" />
+
+        <View
+            android:id="@+id/v_stick"
+            android:layout_width="20dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/rect_nofill_nostroke_top5radius"
+            app:layout_constraintBottom_toTopOf="@id/tv_level_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:viewHexColor="@{item.levelHex}" />
+
+        <TextView
+            android:id="@+id/tv_level_name"
+            style="@style/TextTiny"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{item.levelName}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:textHexColor="@{item.levelHex}"
+            tools:text="V0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

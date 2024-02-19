@@ -1,9 +1,11 @@
 package com.climus.climeet.presentation.ui.main.shorts.player
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.OptIn
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
@@ -35,17 +37,17 @@ class ShortsDetailFragment @Inject constructor(
     private var player: ExoPlayer? = null
     private val dataSourceFactory: DataSource.Factory = DefaultHttpDataSource.Factory()
     private val viewModel: ShortsDetailViewModel by viewModels()
+    private val parentViewModel: ShortsPlayerViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setInitData(data.shortsId, data.isBookMarked, data.isLiked, data.description)
+        viewModel.setInitData(data.shortsId, data.isBookMarked, data.bookMarkCount, data.isLiked, data.likeCount, data.description)
         binding.vm = viewModel
         binding.item = data
         initEventObserve()
         setImage()
         setPlayer()
-
     }
 
     private fun initEventObserve() {
@@ -65,10 +67,15 @@ class ShortsDetailFragment @Inject constructor(
                     }
 
                     is ShortsDetailEvent.ShowShareDialog -> {
-                        // todo 어떤정보로 Share 할지 결정된뒤 수정
-                        listener?.showShareDialog()
+                        val intent = Intent(Intent.ACTION_SEND_MULTIPLE)
+                        intent.type = "text/plain"
+                        intent.putExtra(Intent.EXTRA_TEXT, "클밋 에서 숏츠를 공유했어요!\n${data.videoUrl}\n\n클밋 다운로드 하기\nplaystore:://climeet.com")
+                        startActivity(Intent.createChooser(intent,"공유"))
                     }
                     is ShortsDetailEvent.ShowCommentDialog -> listener?.showCommentDialog(data.shortsId, data.profileImgUrl)
+
+                    is ShortsDetailEvent.PatchFavorite -> parentViewModel.patchFavorite(data.shortsId, it.state)
+                    is ShortsDetailEvent.PatchBookMark -> parentViewModel.patchBookMark(data.shortsId, it.state)
                 }
             }
         }

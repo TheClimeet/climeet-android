@@ -29,7 +29,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
+class ShortsCommentBottomSheetFragment : BottomSheetDialogFragment() {
 
     private var _binding: FragmentShortsCommentBottomSheetBinding? = null
     private val binding get() = _binding!!
@@ -38,10 +38,10 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
     private val shortsId by lazy { args.shortsId }
     private val profileImgUrl by lazy { args.profileImg }
 
-    private val viewModel : ShortsCommentBottomSheetViewModel by viewModels()
+    private val viewModel: ShortsCommentBottomSheetViewModel by viewModels()
 
     private var adapter: ShortsCommentAdapter? = null
-    private var inputMethodManager : InputMethodManager? = null
+    private var inputMethodManager: InputMethodManager? = null
 
     fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -72,15 +72,17 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
         return dialog
     }
 
-    private fun setupRatio(bottomSheetDialog: BottomSheetDialog){
-        val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as View
+    private fun setupRatio(bottomSheetDialog: BottomSheetDialog) {
+        val bottomSheet =
+            bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as View
         BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+        inputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
         binding.vm = viewModel
         adapter = ShortsCommentAdapter()
         binding.rvComment.adapter = adapter
@@ -91,16 +93,16 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
         editTextListener()
     }
 
-    private fun initStateObserver(){
+    private fun initStateObserver() {
         repeatOnStarted {
-            viewModel.uiState.collect{
+            viewModel.uiState.collect {
                 adapter?.submitList(it.shortsCommentList)
             }
         }
 
         repeatOnStarted {
-            viewModel.comment.collect{
-                if(it.isNotBlank()){
+            viewModel.comment.collect {
+                if (it.isNotBlank()) {
                     binding.btnAddComment.isEnabled = true
                     binding.btnAddComment.alpha = 1F
                 } else {
@@ -111,10 +113,10 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
         }
     }
 
-    private fun initEventObserver(){
+    private fun initEventObserver() {
         repeatOnStarted {
-            viewModel.event.collect{
-                when(it){
+            viewModel.event.collect {
+                when (it) {
                     is ShortsCommentBottomSheetEvent.AddCommentComplete -> {
                         binding.etComment.setText("")
                     }
@@ -124,19 +126,21 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
                         smoothScroller.targetPosition = it.position
                         binding.rvComment.layoutManager?.startSmoothScroll(smoothScroller)
                     }
+
                     is ShortsCommentBottomSheetEvent.StartAddSubComment -> focusEditText(it.nick)
                 }
             }
         }
     }
 
-    private fun recyclerViewListener(){
-        binding.rvComment.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+    private fun recyclerViewListener() {
+        binding.rvComment.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                val lastVisibleItemPosition = (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                val lastVisibleItemPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
                 val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
 
                 if (lastVisibleItemPosition == itemTotalCount) {
@@ -146,17 +150,13 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
         })
     }
 
-    private fun editTextListener(){
-        binding.etComment.setOnFocusChangeListener { view, hasFocus ->
-            if (!hasFocus) {
-                viewModel.changeAddCommentType(AddCommentType.MAIN)
-                binding.tvAddingSubComment.visibility = View.GONE
-                inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
-            }
-        }
+    private fun editTextListener() {
 
-        binding.layoutRoot.setOnClickListener {
-            binding.etComment.clearFocus()
+        binding.btnCancelAdding.setOnClickListener {
+            viewModel.changeAddCommentType(AddCommentType.MAIN)
+            binding.tvAddingSubComment.visibility = View.GONE
+            binding.btnCancelAdding.visibility = View.GONE
+            inputMethodManager?.hideSoftInputFromWindow(view?.windowToken, 0)
         }
     }
 
@@ -166,11 +166,12 @@ class ShortsCommentBottomSheetFragment  : BottomSheetDialogFragment() {
         }
     }
 
-    private fun focusEditText(nick : String){
+    private fun focusEditText(nick: String) {
         binding.tvAddingSubComment.text = "$nick 님에게 답글 남기는중..."
         binding.tvAddingSubComment.visibility = View.VISIBLE
+        binding.btnCancelAdding.visibility = View.VISIBLE
         binding.etComment.requestFocus()
-        inputMethodManager?.showSoftInput(binding.etComment,0)
+        inputMethodManager?.showSoftInput(binding.etComment, 0)
     }
 
 }

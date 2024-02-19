@@ -1,5 +1,7 @@
 package com.climus.climeet.presentation.ui.main.shorts.model
 
+import com.climus.climeet.presentation.ui.main.shorts.adapter.LikeStatus
+
 data class ShortsCommentUiData(
     val commentId: Long = -1L,
     val nickName: String = "",
@@ -12,7 +14,7 @@ data class ShortsCommentUiData(
     val parentCommentId: Long = -1,
     val childCommentCount: Int = 0,
     val createDate: String = "",
-    val changeLikeStatus: (Long, Int, Boolean, Boolean) -> Unit,
+    val changeLikeStatus: (Long, Int, LikeStatus,Boolean, Boolean) -> Unit,
     val showMoreComment: (Long, Int, Int, Int) -> Unit,
     val addSubComment: (Long, Int, String) -> Unit,
     val remainSubCommentCount: Int = -1,
