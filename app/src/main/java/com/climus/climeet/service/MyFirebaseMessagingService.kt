@@ -34,7 +34,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         PushUtils.acquireWakeLock(App.getContext())
         //수신한 메시지를 처리
 
-        showNotification(message.data["title"], message.data["message"])
+        showNotification(message.data["title"], message.data["body"])
     }
 
     private fun showNotification(title: String? = "", message: String? = "") {
