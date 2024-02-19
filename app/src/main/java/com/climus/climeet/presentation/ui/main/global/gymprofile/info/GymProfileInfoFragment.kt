@@ -60,9 +60,32 @@ class GymProfileInfoFragment :
     private fun initStateObserve() {
         repeatOnStarted {
             viewModel.uiState.collect {
-                serviceAdapter?.setList(it.gymServiceList)
-                timeAdapter?.setList(it.gymBusinessHours)
-                priceAdapter?.setList(it.gymPriceList)
+                if(it.gymServiceList?.isEmpty() == true) {
+                    binding.rvService.visibility = View.GONE
+                    binding.tvServiceError.visibility = View.VISIBLE
+                } else {
+                    binding.rvService.visibility = View.VISIBLE
+                    binding.tvServiceError.visibility = View.GONE
+                    serviceAdapter?.setList(it.gymServiceList!!)
+                }
+
+                if(it.gymBusinessHours?.isEmpty() == true) {
+                    binding.rvTime.visibility = View.GONE
+                    binding.tvTimeError.visibility = View.VISIBLE
+                } else {
+                    binding.rvTime.visibility = View.VISIBLE
+                    binding.tvTimeError.visibility = View.GONE
+                    timeAdapter?.setList(it.gymBusinessHours!!)
+                }
+
+                if(it.gymPriceList?.isEmpty() == true) {
+                    binding.rvPrice.visibility = View.GONE
+                    binding.tvPriceError.visibility = View.VISIBLE
+                } else {
+                    binding.rvPrice.visibility = View.VISIBLE
+                    binding.tvPriceError.visibility = View.GONE
+                    priceAdapter?.setList(it.gymPriceList!!)
+                }
             }
         }
     }

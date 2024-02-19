@@ -21,12 +21,12 @@ import javax.inject.Inject
 
 data class GymProfileTabInfoUiState(
     val gymId: Long = 0L,
-    val address: String = "",
-    val location: String = "",
-    val tel: String = "",
-    val gymBusinessHours: List<GymBusinessHour> = emptyList(),
-    val gymServiceList: List<GymService> = emptyList(),
-    val gymPriceList: List<GymPrice> = emptyList()
+    val address: String? = "암장 정보가 비어있어요",
+    val location: String? = "암장 정보가 비어있어요",
+    val tel: String? = "암장 정보가 비어있어요",
+    val gymBusinessHours: List<GymBusinessHour>? = emptyList(),
+    val gymServiceList: List<GymService>? = emptyList(),
+    val gymPriceList: List<GymPrice>? = emptyList()
 )
 
 sealed class GymProfileInfoEvent {
@@ -60,12 +60,12 @@ class GymProfileInfoViewModel @Inject constructor(
                         _uiState.update { state ->
                             state.copy(
                                 gymId = gymId,
-                                address = it.body.address,
-                                location = it.body.location,
-                                tel = it.body.tel,
-                                gymBusinessHours = it.body.businessHours.map { GymBusinessHour(it.key, it.value) },
-                                gymServiceList = it.body.serviceList.map { GymService(it) },
-                                gymPriceList = it.body.priceList.map { GymPrice(it.key, it.value) }
+                                address = it.body.address ?: state.address,
+                                location = it.body.location ?: state.location,
+                                tel = it.body.tel ?: state.tel,
+                                gymBusinessHours = it.body.businessHours?.map { GymBusinessHour(it.key, it.value) } ?: state.gymBusinessHours,
+                                gymServiceList = it.body.serviceList?.map { GymService(it) } ?: state.gymServiceList,
+                                gymPriceList = it.body.priceList?.map { GymPrice(it.key, it.value) } ?: state.gymPriceList
                             )
                         }
                         Log.d("gym_profile", "정보 탭 불러오기 성공")
