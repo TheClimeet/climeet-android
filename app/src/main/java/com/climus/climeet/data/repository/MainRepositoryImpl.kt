@@ -6,6 +6,7 @@ import com.climus.climeet.data.local.RouteRecordDao
 import com.climus.climeet.data.local.RouteRecordData
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.AddShortsCommentRequest
+import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
@@ -19,8 +20,14 @@ import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
+import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
+import com.climus.climeet.data.model.response.GymLevelBestClimberResponse
+import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
+import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
+import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
@@ -168,6 +175,11 @@ class MainRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun getGymFilteringKeyTime(
+        gymId: Long,
+        timePoint: String
+    ): BaseState<GetGymFilteringKeyResponse> = runRemote { api.getGymFilteringKeyTime(gymId, timePoint) }
+
     override suspend fun getGymRouteInfoList(
         gymId: Long,
         body: GetGymRouteInfoRequest
@@ -223,6 +235,46 @@ class MainRepositoryImpl @Inject constructor(
         isDislike: Boolean
     ): BaseState<String> =
         runRemote { api.patchShortsCommentInteraction(shortsCommentId, isLike, isDislike) }
+
+    override suspend fun getGymProfileTopInfo(
+        gymId: Long
+    ): BaseState<GymProfileTopInfoResponse> = runRemote { api.getGymProfileTopInfo(gymId) }
+
+    override suspend fun getGymProfileTabInfo(
+        gymId: Long
+    ): BaseState<GymProfileTabInfoResponse> = runRemote { api.getGymProfileTabInfo(gymId) }
+
+    override suspend fun getMyStatsMonth(
+        year: Int,
+        month: Int
+    ): BaseState<MyStatsMonthResponse> = runRemote { api.getMyStatsMonth(year, month) }
+
+    override suspend fun getGymReview(
+        gymId: Long,
+        page: Int,
+        size: Int
+    ): BaseState<GetGymProfileReviewResponse> = runRemote { api.getGymReview(gymId, page, size) }
+
+    override suspend fun createGymReview(
+        gymId: Long,
+        body: CreateGymProfileReviewRequest
+    ): BaseState<ResponseBody> = runRemote { api.createGymReview(gymId, body) }
+
+    override suspend fun getGymClimberRankingOrderClearCount(
+        gymId: Long
+    ): BaseState<List<GymCompleteBestClimberResponse>> =
+        runRemote { api.getGymClimberRankingOrderClearCount(gymId) }
+
+    override suspend fun getGymClimberRankingOrderLevel(
+        gymId: Long
+    ): BaseState<List<GymLevelBestClimberResponse>> =
+        runRemote { api.getGymClimberRankingOrderLevel(gymId) }
+
+    override suspend fun getGymClimberRankingOrderTime(
+        gymId: Long
+    ): BaseState<List<GymTimeBestClimberResponse>> =
+        runRemote { api.getGymClimberRankingOrderTime(gymId) }
+
 
     // -------- RoomDB ClimbingRecordDa0 암장 정보 -----------
     override fun insert(climbingRecordData: ClimbingRecordData) {
@@ -290,16 +342,11 @@ class MainRepositoryImpl @Inject constructor(
         return routeRecordDao.getAllLevelRecord()
     }
 
-    override fun getSuccessCount(level: String): Int{
+    override fun getSuccessCount(level: String): Int {
         return routeRecordDao.getSuccessCount(level)
     }
 
-    override fun getAttemptCount(level: String): Int{
+    override fun getAttemptCount(level: String): Int {
         return routeRecordDao.getAttemptCount(level)
     }
-
-    override suspend fun getMyStatsMonth(
-        year: Int,
-        month: Int
-    ): BaseState<MyStatsMonthResponse> = runRemote { api.getMyStatsMonth(year, month) }
 }

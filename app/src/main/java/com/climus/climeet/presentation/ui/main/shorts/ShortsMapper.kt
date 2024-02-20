@@ -39,6 +39,7 @@ fun ShortsItem.toShortsThumbnailUiData(
         gymName = gymName,
         originLevelColor = shortsDetailInfo.gymDifficultyColor,
         climeetLevelColor = climeetLevelColor,
+        climeetDifficultyName = climeetDifficultyName,
         onClickListener = onClickListener
     )
 }

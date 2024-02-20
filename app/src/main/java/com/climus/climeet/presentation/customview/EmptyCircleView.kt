@@ -18,8 +18,8 @@ class EmptyCircleView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     var ecColor: Int = Color.WHITE
-    private var ecText: String = ""
-    private var ecTextSize: Float = 0F
+    var ecText: String = ""
+    var ecTextSize: Float = 0F
 
     init {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.EmptyCircleView)

@@ -236,6 +236,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
+                                app:holdImage="@{vm.uiState.selectedRoute.holdImg}"
                                 app:routeImgUrl="@{vm.uiState.selectedRoute.routeImg}"
                                 app:routeLevelColor="@{vm.uiState.selectedRoute.gymLevelColor}"
                                 app:routeLevelName="@{vm.uiState.selectedRoute.gymLevelName}" />

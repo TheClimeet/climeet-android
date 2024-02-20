@@ -30,8 +30,6 @@ import javax.inject.Inject
 data class HomeUiState(
     val bannerList : List<BannerDetailInfoResponse> = emptyList(),
     val homegymList: List<UserHomeGymSimpleResponse> = emptyList(),
-    val shortsList: List<ShortsUiData> = emptyList(),
-    val shortsThumbnailList: List<ShortsThumbnailUiData> = emptyList(),
     val followOrderCragList: List<BestFollowGymSimpleResponse> = emptyList(),
     val recordOrderCragList: List<BestRecordGymDetailInfoResponse> = emptyList(),
     val routeList: List<BestRouteDetailInfoResponse> = emptyList(),
@@ -92,71 +90,6 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
                     }
                 }
             }
-        }
-    }
-
-    fun getShorts() {
-
-        // todo API 업데이트 되면, 필터 적용해서 API CALL
-
-        val filterMap = hashMapOf<String, Long>()
-
-        uiState.value.curFilter.let {
-            if (it.cragId != -1L) {
-                filterMap["gymId"] = it.cragId
-            }
-
-            if (it.sectorId != -1L) {
-                filterMap["sectorId"] = it.sectorId
-            }
-
-            if (it.routeId != -1L) {
-                filterMap["routeId"] = it.routeId
-            }
-        }
-
-
-        viewModelScope.launch {
-            if (uiState.value.hasNext) {
-                val result = repository.getPopularShorts(uiState.value.page, 10, filterMap)
-
-                result.let {
-                    when (it) {
-                        is BaseState.Success -> {
-
-                            val shortsThumbnailUiData = it.body.result.map { data ->
-                                data.toShortsThumbnailUiData(
-                                    ::navigateToShortsPlayer
-                                )
-                            }
-
-                            val shortsUiData = it.body.result.map { data ->
-                                data.toShortsUiData()
-                            }
-
-                            _uiState.update { state ->
-                                state.copy(
-                                    page = uiState.value.page + 1,
-                                    hasNext = it.body.hasNext,
-                                    shortsThumbnailList = shortsThumbnailUiData,
-                                    shortsList = shortsUiData
-                                )
-                            }
-                        }
-
-                        is BaseState.Error -> {
-                            it.msg // 서버 에러 메시지
-                            Log.d("API", it.msg)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun navigateToShortsPlayer(id: Long, position: Int) {
-        viewModelScope.launch {
-            _event.emit(HomeEvent.NavigateToShortsPlayer(id, position))
         }
     }
 

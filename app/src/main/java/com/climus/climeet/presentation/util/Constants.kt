@@ -1,5 +1,7 @@
 package com.climus.climeet.presentation.util
 
+import com.climus.climeet.R
+
 object Constants {
 
     const val TAG = "debugging"
@@ -31,5 +33,21 @@ object Constants {
         "V8" to "#6E4C41",
         "V9+" to "#8B8B8B",
         "C" to "#000000"
+    )
+
+    val holdColor = hashMapOf<String,Int>(
+        "하양" to R.drawable.ic_white_hold,
+        "빨강" to R.drawable.ic_red_hold,
+        "주황" to R.drawable.ic_orange_hold,
+        "노랑" to R.drawable.ic_yellow_hold,
+        "초록" to R.drawable.ic_green_hold,
+        "하늘" to R.drawable.ic_skyblue_hold,
+        "파랑" to R.drawable.ic_blue_hold,
+        "남색" to R.drawable.ic_indigo_hold,
+        "보라" to R.drawable.ic_purple_hold,
+        "갈색" to R.drawable.ic_brown_hold,
+        "회색" to R.drawable.ic_grey_hold,
+        "핑크" to R.drawable.ic_pink_hold,
+        "검정" to R.drawable.ic_black_hold
     )
 }

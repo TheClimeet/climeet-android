@@ -71,26 +71,6 @@ class PopularRoutesFragment : BaseFragment<FragmentPopularRoutesBinding>(R.layou
     }
 
     private fun setupPopularRoutesList() {
-//        val routeList = arrayListOf(
-//            PopularRoute(null, "V1", "#63B75D", "더클라임 연남", "툇마루"),
-//            PopularRoute(null, "V3", "#555522", "볼더프렌즈", "섹터 A"),
-//            PopularRoute(null, "V10", "#FFFFFF", "웨이브락 서면", "Sector V"),
-//            PopularRoute(null, "V7", "#4C3E2F", "V10 천호점", "락랜드"),
-//            PopularRoute(null, "V2", "#333333", "더클라임 부펀", "툇마루"),
-//            PopularRoute(null, "V6", "#765665", "웨이브락 구로", "툇마루"),
-//            PopularRoute(null, "V1", "#63B75D", "더클라임 연남", "툇마루"),
-//            PopularRoute(null, "V3", "#555522", "볼더프렌즈", "섹터 A"),
-//            PopularRoute(null, "V10", "#FFFFFF", "웨이브락 서면", "Sector V"),
-//            PopularRoute(null, "V7", "#4C3E2F", "V10 천호점", "락랜드"),
-//            PopularRoute(null, "V2", "#333333", "더클라임 부펀", "툇마루"),
-//            PopularRoute(null, "V6", "#765665", "웨이브락 구로", "툇마루"),
-//            PopularRoute(null, "V1", "#63B75D", "더클라임 연남", "툇마루"),
-//            PopularRoute(null, "V3", "#555522", "볼더프렌즈", "섹터 A"),
-//            PopularRoute(null, "V10", "#FFFFFF", "웨이브락 서면", "Sector V"),
-//            PopularRoute(null, "V7", "#4C3E2F", "V10 천호점", "락랜드"),
-//            PopularRoute(null, "V2", "#333333", "더클라임 부펀", "툇마루"),
-//            PopularRoute(null, "V6", "#765665", "웨이브락 구로", "툇마루")
-//        )
 
         val popularRoutesAllRVAdapter = PopularRoutesAllRVadapter(recyclerRoute)
         setupRecyclerView(binding.rvPopularRoutes, popularRoutesAllRVAdapter)

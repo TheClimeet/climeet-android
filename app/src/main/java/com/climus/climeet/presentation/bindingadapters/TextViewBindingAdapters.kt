@@ -85,3 +85,13 @@ fun bindSocialCount(tv: TextView, count: Int){
         tv.text = round((count / 1000000).toDouble()).toString() + "M"
     }
 }
+
+@BindingAdapter("textFromInt")
+fun TextView.bindTextFromInt(value: Int) {
+    text = value.toString()
+}
+
+@BindingAdapter("textFromFloat")
+fun TextView.bindTextFromFloat(value: Float) {
+    text = value.toString()
+}

@@ -43,8 +43,6 @@
             app:destination="@id/uploadCompleteFragment" />
     </fragment>
 
-    <!--  TimerMainFragment에 연결해둠  -->
-
     <fragment
         android:id="@+id/myPage_fragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.MyPageFragment"
@@ -112,23 +110,18 @@
         android:label="SearchCragFragment" />
 
     <fragment
-        android:id="@+id/record_complete_fragment"
-        android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.ClimbingCompleteFragment"
-        android:label="ClimbingCompleteFragment" />
-
-    <fragment
         android:id="@+id/timer_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.TimerFragment"
-        android:label="TimerFragment" />
+        android:label="TimerFragment" >
+        <action
+            android:id="@+id/action_timer_fragment_to_timerCragSelectBottomSheetFragment"
+            app:destination="@id/timerCragSelectBottomSheetFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/timerCragSelectBottomSheetFragment"
         android:name="com.climus.climeet.presentation.ui.main.record.timer.stopwatch.selectcrag.TimerCragSelectBottomSheetFragment"
         android:label="TimerCragSelectBottomSheetFragment">
-
-        <action
-            android:id="@+id/action_timerCragSelectBottomSheetFragment_to_timer_fragment"
-            app:destination="@id/timer_fragment" />
     </fragment>
 
     <fragment
@@ -167,7 +160,6 @@
         android:id="@+id/select_time_bottom_fragment"
         android:name="com.climus.climeet.presentation.ui.main.record.bottomsheet.selecttime.SelectTimeBottomSheetFragment"
         android:label="SelectTimeBottomFragment" />
-
 
     <dialog
         android:id="@+id/shortsBottomSheetFragment"
@@ -315,6 +307,9 @@
         <argument
             android:name="gymId"
             app:argType="long"/>
+        <action
+            android:id="@+id/action_gymProfileFragment_to_gymReviewBottomSheetFragment2"
+            app:destination="@id/gymReviewBottomSheetFragment" />
     </fragment>
     <fragment
         android:id="@+id/climerProfileFragment"
@@ -341,5 +336,21 @@
         android:id="@+id/announceDetailFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.announce.AnnounceDetailFragment"
         android:label="AnnounceDetailFragment" />
+
+    <fragment
+        android:id="@+id/gymProfileInfoFragment"
+        android:name="com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymProfileInfoFragment"
+        android:label="GymProfileInfoFragment">
+
+        <action
+            android:id="@+id/action_gymProfileInfoFragment_to_gymProfileFragment"
+            app:destination="@id/gymProfileFragment" />
+
+    </fragment>
+
+    <dialog
+        android:id="@+id/gymReviewBottomSheetFragment"
+        android:name="com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymReviewBottomSheetFragment"
+        android:label="GymReviewBottomSheetFragment"/>
 
 </navigation>

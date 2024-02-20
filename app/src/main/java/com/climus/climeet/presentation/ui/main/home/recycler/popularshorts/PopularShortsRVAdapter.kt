@@ -12,10 +12,11 @@ import com.climus.climeet.databinding.ItemPopularShortsBinding
 import com.climus.climeet.presentation.ui.main.home.model.PopularShorts
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
+import com.climus.climeet.presentation.util.Constants
 import kotlin.math.min
 
 
-class PopularShortsRVAdapter (private val shortsList: List<ShortsUiData>) : RecyclerView.Adapter<PopularShortsRVAdapter.ViewHolder>() {
+class PopularShortsRVAdapter (private val shortsList: List<ShortsThumbnailUiData>) : RecyclerView.Adapter<PopularShortsRVAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularShortsRVAdapter.ViewHolder {
         val binding: ItemPopularShortsBinding = ItemPopularShortsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
@@ -31,7 +32,11 @@ class PopularShortsRVAdapter (private val shortsList: List<ShortsUiData>) : Recy
     }
 
     inner class ViewHolder(val binding: ItemPopularShortsBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(shorts: ShortsUiData){
+        fun bind(shorts: ShortsThumbnailUiData){
+
+            binding.root.setOnClickListener {
+                shorts.onClickListener(shorts.shortsId, absoluteAdapterPosition)
+            }
             if(shorts.thumbnailImg != null) {
                 Glide.with(binding.root.context)
                     .load(shorts.thumbnailImg)
@@ -39,20 +44,15 @@ class PopularShortsRVAdapter (private val shortsList: List<ShortsUiData>) : Recy
             }
             binding.tvShortsCragName.text = shorts.gymName
 
-            if (shorts.gymLevelColor != null) {
-                val circleColor: Int = Color.parseColor(shorts.gymLevelColor)
+            if (shorts.originLevelColor != null) {
+                val circleColor: Int = Color.parseColor(shorts.originLevelColor)
                 binding.ivPopularShortsCircle.setColorFilter(circleColor)
 
-                binding.tvPopularShortsLevel.text = shorts.gymLevelName
-
-                val levelColor: Int = Color.parseColor(shorts.gymLevelColor)
+                val levelColor: Int = Color.parseColor(shorts.climeetLevelColor)
                 val gradientDrawable = GradientDrawable()
                 gradientDrawable.shape = GradientDrawable.OVAL
                 gradientDrawable.setColor(Color.TRANSPARENT)
                 gradientDrawable.setStroke(6, levelColor) // 테두리의 너비와 색상
-
-                binding.tvPopularShortsLevel.background = gradientDrawable
-                binding.tvPopularShortsLevel.setTextColor(levelColor)
             }
 
         }

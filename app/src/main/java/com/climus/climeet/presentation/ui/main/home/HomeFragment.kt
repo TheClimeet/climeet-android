@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
@@ -13,12 +15,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.MainNavDirections
+import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.app.App
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
+import com.climus.climeet.data.repository.IntroRepository
+import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.ui.intro.login.admin.AdminLoginEvent
+import com.climus.climeet.presentation.ui.intro.signup.climer.noticesetting.NoticeSettingEvent
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.presentation.ui.main.home.recycler.homegym.HomeGymRVAdapter
 import com.climus.climeet.presentation.ui.main.home.recycler.popularcrag.FollowOrderPopularCragRVAdapter
@@ -28,8 +35,17 @@ import com.climus.climeet.presentation.ui.main.home.recycler.popularshorts.Popul
 import com.climus.climeet.presentation.ui.main.home.viewpager.best.RankingVPAdapter
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerFragment
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerVPAdapter
+import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
+import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingViewModel
+import com.climus.climeet.presentation.util.Constants
+import com.climus.climeet.presentation.util.Constants.X_MODE
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import com.climus.climeet.presentation.util.Constants
+import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
+import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
+import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
+import com.climus.climeet.presentation.ui.toGymProfile
+import com.climus.climeet.presentation.ui.toShortsPlayer
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,10 +55,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val viewModel: HomeViewModel by viewModels()
     private var vpBanner: List<BannerDetailInfoResponse> = emptyList()
     private var recyclerHomeGym: List<UserHomeGymSimpleResponse> = emptyList()
-    private var recyclerShorts: List<ShortsUiData> = emptyList()
+    private var recyclerShorts: List<ShortsThumbnailUiData> = emptyList()
     private var followOrderRecyclerCrag: List<BestFollowGymSimpleResponse> = emptyList()
     private var recordOrderRecyclerCrag: List<BestRecordGymDetailInfoResponse> = emptyList()
     private var recyclerRoute: List<BestRouteDetailInfoResponse> = emptyList()
+    private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
     private var userProfile: UserProfileInfoResponse? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,10 +70,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         viewModel.getGymRankingListOrderSelectionCount()
         viewModel.getRouteRankingOrderSelectionCount()
         viewModel.getHomeGyms()
+        initShortsObserve()
         viewModel.getUserProfile()
         initEventObserve()
         setupOnClickListener()
         setupBestRanking()
+
+        sharedViewModel.initViewModel()
+        sharedViewModel.getShorts(ShortsOption.NEW_SORT)
+    }
+
+    private fun initShortsObserve(){
+        repeatOnStarted {
+            sharedViewModel.uiState.collect{
+                if(it.shortsThumbnailList.isNotEmpty()){
+                    recyclerShorts = it.shortsThumbnailList
+                    setupPopularShorts()
+                }
+            }
+        }
     }
 
     private fun initEventObserve(){
@@ -103,6 +135,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                         }
 
                     }
+                }
+            }
+        }
+
+        repeatOnStarted {
+            sharedViewModel.event.collect {
+                when (it) {
+                    is ShortsPlayerEvent.ShowToastMessage -> showToastMessage(it.msg)
+                    is ShortsPlayerEvent.NavigateToShortsPlayer -> findNavController().toShortsPlayer(
+                        it.shortsId,
+                        it.position
+                    )
+
                 }
             }
         }
@@ -234,8 +279,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private fun setupHomeGymList() {
-        val homeGymRVAdapter = HomeGymRVAdapter(recyclerHomeGym)
+        val homeGymRVAdapter = HomeGymRVAdapter(recyclerHomeGym, ::navToGymProfile)
         setupRecyclerView(binding.rvHomeHomegym, homeGymRVAdapter, LinearLayoutManager.HORIZONTAL)
+    }
+
+    // 선택한 암장 프로필로 이동
+    private fun navToGymProfile(gymId: Long) {
+
+        sharedPreferences.edit().putLong("gymId", gymId)
+            .apply()
+        Log.d("gym_profile", "홈에서 암장 아이디 : $gymId")
+
+        val access = sharedPreferences.getString(X_MODE, null)
+
+        //todo 여기는 일단 구분 안해줘도 될듯!
+        // - 암장관리자일때 선택한 프로필이 내 프로필일 경우만 암장관리자의 암장 프로필 접근 해야함
+
+        findNavController().toGymProfile(gymId)
+//        if (access == "CLIMER") {
+//            findNavController().toGymProfile(gymId)
+//        } else if (access == "ADMIN") {
+//            Toast.makeText(requireContext(), "암장 관리자의 암장 프로필 접근", Toast.LENGTH_SHORT).show()
+//        } else {
+//            Toast.makeText(requireContext(), "유효하지 않은 접근입니다.", Toast.LENGTH_SHORT).show()
+//        }
     }
 
     private fun setupBestRanking() {
@@ -254,12 +321,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private fun setupFollowOrderPopularCrags() {
-        val followOrderPopularCragRVAdapter = FollowOrderPopularCragRVAdapter(followOrderRecyclerCrag)
+        val followOrderPopularCragRVAdapter = FollowOrderPopularCragRVAdapter(followOrderRecyclerCrag, ::navToGymProfile)
         setupRecyclerView(binding.rvHomeFollowOrderPopularCrags, followOrderPopularCragRVAdapter, LinearLayoutManager.HORIZONTAL)
     }
 
     private fun setupRecordOrderPopularCrags() {
-        val recordOrderPopularCragRVAdapter = RecordOrderPopularCragRVAdapter(recordOrderRecyclerCrag)
+        val recordOrderPopularCragRVAdapter = RecordOrderPopularCragRVAdapter(recordOrderRecyclerCrag, ::navToGymProfile)
         setupRecyclerView(binding.rvHomeRecordOrderPopularCrags, recordOrderPopularCragRVAdapter, LinearLayoutManager.HORIZONTAL)
     }
 

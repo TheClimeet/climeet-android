@@ -48,6 +48,7 @@ class RouteImageViewHolder(private val binding: ItemRouteImageBinding) :
 
     fun bind(item: RouteUiData) {
         binding.item = item
+        binding.route.setHoldImage(item.holdImg)
         binding.root.setOnClickListener {
             item.onClickListener(item)
         }

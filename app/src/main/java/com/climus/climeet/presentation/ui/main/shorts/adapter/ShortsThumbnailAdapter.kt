@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.shorts.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.databinding.ItemShortsThumbnailBinding
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
+import com.climus.climeet.presentation.util.Constants.TAG
 import com.climus.climeet.presentation.util.DefaultDiffUtil
 
 class ShortsThumbnailAdapter :
@@ -43,6 +45,9 @@ class ShortsThumbnailViewHolder(private val binding: ItemShortsThumbnailBinding)
             } ?: run {
                 layoutLabel.visibility = View.INVISIBLE
             }
+
+            ivClimeetLevel.ecText = item.climeetDifficultyName.toString()
+
 
             if (item.climeetLevelColor.isNotBlank()) {
                 ivClimeetLevel.ecColor = item.climeetLevelColor.toColorInt()

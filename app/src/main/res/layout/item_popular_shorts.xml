@@ -61,20 +61,5 @@
             app:layout_constraintEnd_toEndOf="@+id/tv_shorts_crag_name"
             app:layout_constraintTop_toTopOf="@+id/tv_shorts_crag_name" />
 
-        <TextView
-            android:id="@+id/tv_popular_shorts_level"
-            style="@style/TextTiny"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
-            android:layout_marginEnd="6dp"
-            android:layout_marginBottom="9dp"
-            android:background="@drawable/circle_nofill_redstroke_noradius"
-            android:gravity="center"
-            android:text="V1"
-            android:textColor="@color/cm_red"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/cardview_layout" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
