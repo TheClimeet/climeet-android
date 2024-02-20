@@ -83,7 +83,7 @@
                             android:id="@+id/tv_gym_name"
                             style="@style/TextRegularBig"
                             layout_constrainedWidth="true"
-                            android:paddingEnd="10dp"
+                            android:paddingEnd="14dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
@@ -273,7 +273,7 @@
                             android:background="@drawable/btn_following"
                             android:text="팔로우"
                             android:textColor="@color/black"
-                            android:visibility="@{vm.followState? View.VISIBLE : View.GONE}"
+                            android:visibility="@{vm.followState? View.GONE : View.VISIBLE}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 

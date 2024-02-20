@@ -29,6 +29,7 @@ data class GymProfileTabInfoUiState(
     val gymBusinessHours: List<GymBusinessHour>? = emptyList(),
     val gymServiceList: List<GymService>? = emptyList(),
     val gymPriceList: List<GymPrice>? = emptyList(),
+    val averageRating : Float = 0f,
     val reviewNum: Int = 0,
     val myGymReview: Review? = null,
     val gymReviewList: List<Review>? = emptyList()
@@ -102,6 +103,7 @@ class GymProfileInfoViewModel @Inject constructor(
                         _uiState.update { state ->
                             state.copy(
                                 reviewNum = it.body.result.summary.reviewCount,
+                                averageRating = it.body.result.summary.averageRating,
                                 myGymReview = it.body.result.summary.myReview ?: null,
                                 gymReviewList = it.body.result.reviewList ?: state.gymReviewList
                             )
