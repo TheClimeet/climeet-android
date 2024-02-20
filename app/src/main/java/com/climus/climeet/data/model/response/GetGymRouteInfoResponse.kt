@@ -14,5 +14,6 @@ data class RouteItem(
     val difficulty: Int,
     val gymDifficultyName: String,
     val gymDifficultyColor: String,
-    val routeImageUrl: String
+    val routeImageUrl: String,
+    val holdColor: String
 )

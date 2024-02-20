@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColorInt
+import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.climus.climeet.R
 
@@ -21,6 +22,7 @@ class RouteView @JvmOverloads constructor(
     private var routeImageView: ImageView
     private var routeLevelName: TextView
     private var routeBorderView: ConstraintLayout
+    private var routeHoldView: ImageView
 
     init {
         LayoutInflater.from(context).inflate(R.layout.custom_route_view, this, true)
@@ -28,6 +30,7 @@ class RouteView @JvmOverloads constructor(
         routeImageView = findViewById(R.id.route_view_iv_image)
         routeLevelName= findViewById(R.id.route_view_tv_level)
         routeBorderView = findViewById(R.id.route_view_root)
+        routeHoldView = findViewById(R.id.iv_hold)
 
 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.RouteView)
@@ -68,4 +71,13 @@ class RouteView @JvmOverloads constructor(
         }
     }
 
+    fun setHoldImage(img: Int){
+        routeHoldView.setImageResource(img)
+    }
+
+}
+
+@BindingAdapter("holdImage")
+fun bindHoldImage(rv: RouteView, img: Int){
+    rv.setHoldImage(img)
 }

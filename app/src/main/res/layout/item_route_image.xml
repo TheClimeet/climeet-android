@@ -12,6 +12,7 @@
     </data>
 
     <com.climus.climeet.presentation.customview.RouteView
+        android:id="@+id/route"
         android:layout_width="63dp"
         android:layout_height="78dp"
         android:layout_marginEnd="8dp"

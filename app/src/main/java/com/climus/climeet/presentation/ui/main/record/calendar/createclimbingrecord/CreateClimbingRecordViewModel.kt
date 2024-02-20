@@ -434,15 +434,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
 
     private fun addItem(item: RouteUiData) {
         if (_items.value.none { it.routeId == item.routeId && it.sectorId == item.sectorId }) {
-            val newItem = RouteUiData(
-                routeId = item.routeId,
-                sectorId = item.sectorId,
-                sectorName = item.sectorName,
-                gymLevelName = item.gymLevelName,
-                gymLevelColor = item.gymLevelColor,
-                routeImg = item.routeImg,
-                onClickListener = { it -> itemClicked(it) }
-            )
+            val newItem = item.copy()
             _items.value = _items.value + newItem
         } else {
 
