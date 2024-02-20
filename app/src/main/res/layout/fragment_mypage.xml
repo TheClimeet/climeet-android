@@ -180,11 +180,12 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_login_account"
+            style="@style/TextRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:paddingStart="20dp"
-            android:drawableLeft="@drawable/ic_plus_mainfill"
+            android:drawableLeft="@drawable/ic_profile"
             android:gravity="start|center"
             android:onClick="@{() -> vm.navigateToAccount()}"
             android:text="   로그인 계정"
@@ -193,10 +194,11 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_follow"
+            style="@style/TextRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
-            android:drawableLeft="@drawable/ic_plus_mainfill"
+            android:drawableLeft="@drawable/ic_plus"
             android:gravity="start|center"
             android:onClick="@{() -> vm.navigateToFollow()}"
             android:text="   팔로우"
@@ -205,10 +207,11 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_my_shorts"
+            style="@style/TextRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
-            android:drawableLeft="@drawable/ic_plus_mainfill"
+            android:drawableLeft="@drawable/ic_play"
             android:gravity="start|center"
             android:onClick="@{() -> vm.navigateToMyShorts()}"
             android:text="   나의 숏츠"
@@ -217,10 +220,11 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_announce"
+            style="@style/TextRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
-            android:drawableLeft="@drawable/ic_plus_mainfill"
+            android:drawableLeft="@drawable/ic_question_mark_mypage"
             android:gravity="start|center"
             android:onClick="@{() -> vm.navigateToAnnounce()}"
             android:text="   공지사항"
@@ -229,10 +233,11 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_alarm"
+            style="@style/TextRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
-            android:drawableLeft="@drawable/ic_plus_mainfill"
+            android:drawableLeft="@drawable/ic_bell"
             android:gravity="start|center"
             android:onClick="@{() -> vm.navigateToAlarm()}"
             android:text="   알림"
@@ -241,10 +246,11 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_policy"
+            style="@style/TextRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
-            android:drawableLeft="@drawable/ic_plus_mainfill"
+            android:drawableLeft="@drawable/ic_policy"
             android:gravity="start|center"
             android:onClick="@{() -> vm.navigateToPolicy()}"
             android:text="   운영정책"
@@ -253,10 +259,11 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_send_opinion"
+            style="@style/TextRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
-            android:drawableLeft="@drawable/ic_plus_mainfill"
+            android:drawableLeft="@drawable/ic_mail"
             android:gravity="start|center"
             android:onClick="@{() -> vm.navigateToSendOpinion()}"
             android:text="   의견 보내기"
@@ -265,10 +272,11 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_cheer_up"
+            style="@style/TextRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="20dp"
-            android:drawableLeft="@drawable/ic_plus_mainfill"
+            android:drawableLeft="@drawable/ic_thumbs_up"
             android:gravity="start|center"
             android:onClick="@{() -> vm.navigateToCheerUp()}"
             android:text="   클밋팀 응원하기"
