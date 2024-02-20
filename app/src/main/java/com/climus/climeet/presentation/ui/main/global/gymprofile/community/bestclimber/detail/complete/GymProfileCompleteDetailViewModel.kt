@@ -29,7 +29,6 @@ class GymProfileCompleteDetailViewModel @Inject constructor(private val reposito
 
     fun getClimberRankingOrderClearCount() {
         viewModelScope.launch {
-            Log.d("gym_profile", "complete gymId : $gymId")
             repository.getGymClimberRankingOrderClearCount(gymId).let {
                 when(it) {
                     is BaseState.Success -> {

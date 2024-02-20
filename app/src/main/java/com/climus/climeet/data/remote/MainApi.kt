@@ -17,6 +17,7 @@ import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
+import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
 import com.climus.climeet.data.model.response.GymLevelBestClimberResponse
@@ -273,5 +274,13 @@ interface MainApi {
         @Path("gymId") gymID: Long,
     ): Response<List<GymTimeBestClimberResponse>>
 
+    @GET("/api/gyms/{gymId}/skill-distribution")
+    suspend fun getGymSkillDistribution(
+        @Path("gymId") gymID: Long,
+    ): Response<List<GetGymSkillDistributionResponse>>
 
+    @GET("/api/gyms/{gymId}/my-skill")
+    suspend fun getMyGymSkill(
+        @Path("gymId") gymID: Long,
+    ): Response<String>
 }
