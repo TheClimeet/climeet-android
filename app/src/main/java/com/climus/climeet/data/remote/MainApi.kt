@@ -315,7 +315,7 @@ interface MainApi {
     @GET("/api/gyms/{gymId}/my-skill")
     suspend fun getMyGymSkill(
         @Path("gymId") gymID: Long,
-    ): Response<String>
+    ): Response<ResponseBody>
 
     @GET("api/climbing-records/gyms/{gymId}/statistics/weeks")
     suspend fun getGymStatsWeek(

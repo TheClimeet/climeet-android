@@ -284,7 +284,7 @@ class MainRepositoryImpl @Inject constructor(
     ): BaseState<List<GetGymSkillDistributionResponse>> =
         runRemote { api.getGymSkillDistribution(gymId) }
 
-    override suspend fun getMyGymSkill(gymId: Long): BaseState<String> =
+    override suspend fun getMyGymSkill(gymId: Long): BaseState<ResponseBody> =
         runRemote { api.getMyGymSkill(gymId) }
 
     override suspend fun getGymStatsWeek(gymId: Long): BaseState<GymWeekStatsResponse> =
