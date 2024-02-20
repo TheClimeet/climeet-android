@@ -26,7 +26,8 @@ data class ShortsCommentBottomSheetUiState(
     val page: Int = 0,
     val hasNext: Boolean = true,
     val shortsCommentList: List<ShortsCommentUiData> = emptyList(),
-    val profileImgUrl: String? = ""
+    val profileImgUrl: String? = "",
+    val myProfile: String? = ""
 )
 
 sealed class ShortsCommentBottomSheetEvent {
@@ -61,7 +62,28 @@ class ShortsCommentBottomSheetViewModel @Inject constructor(
                 profileImgUrl = profileImgUrl
             )
         }
+        getUserInfo()
         getCommentList()
+    }
+
+    private fun getUserInfo(){
+        viewModelScope.launch {
+            repository.getMyPageProfile().let{
+                when(it){
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                myProfile = it.body.profileImgUrl
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> {
+
+                    }
+                }
+            }
+        }
     }
 
     fun getCommentList() {
