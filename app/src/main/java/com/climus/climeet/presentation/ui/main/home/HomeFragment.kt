@@ -37,10 +37,8 @@ import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerFr
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerVPAdapter
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
 import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingViewModel
-import com.climus.climeet.presentation.util.Constants
 import com.climus.climeet.presentation.util.Constants.X_MODE
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
-import com.climus.climeet.presentation.util.Constants
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
@@ -65,7 +63,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getBannerListBetweenDates()
-        viewModel.getShorts()
         viewModel.getGymRankingOrderFollowCount()
         viewModel.getGymRankingListOrderSelectionCount()
         viewModel.getRouteRankingOrderSelectionCount()
@@ -103,11 +100,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     uiState.homegymList?.let { homegymList ->
                         recyclerHomeGym = homegymList
                         setupHomeGymList()
-                    }
-
-                    uiState.shortsList?.let { shortsList ->
-                        recyclerShorts = shortsList
-                        setupPopularShorts()
                     }
 
                     uiState.followOrderCragList?.let { cragList ->
