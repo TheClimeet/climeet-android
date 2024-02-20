@@ -52,6 +52,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         handleIntent(intent)
         setBnv()
         initEventObserve()
+        viewModel.patchFcmToken()
     }
 
     override fun onNewIntent(intent: Intent) {

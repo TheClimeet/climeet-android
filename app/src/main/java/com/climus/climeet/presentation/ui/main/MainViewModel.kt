@@ -3,7 +3,10 @@ package com.climus.climeet.presentation.ui.main
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.app.App
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.request.FcmTokenRequest
+import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.data.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,6 +25,7 @@ sealed class MainEvent{
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
+    private val introRepository: IntroRepository,
     private val repository: MainRepository
 ): ViewModel() {
 
@@ -73,6 +77,24 @@ class MainViewModel @Inject constructor(
     fun changeStatusBarBackground(){
         viewModelScope.launch {
             _event.emit(MainEvent.ChangeStatusBarBackground)
+        }
+    }
+
+    fun patchFcmToken(){
+        viewModelScope.launch {
+            introRepository.patchFcmToken(FcmTokenRequest(
+                App.fcmToken
+            )).let{
+                when(it){
+                    is BaseState.Success -> {
+
+                    }
+
+                    is BaseState.Error -> {
+
+                    }
+                }
+            }
         }
     }
 }

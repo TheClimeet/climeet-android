@@ -2,6 +2,7 @@ package com.climus.climeet.data.repository
 
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.ClimerSignupRequest
+import com.climus.climeet.data.model.request.FcmTokenRequest
 import com.climus.climeet.data.model.request.ManagerLoginRequest
 import com.climus.climeet.data.model.request.ManagerSignUpRequest
 import com.climus.climeet.data.model.response.ClimerSignupResponse
@@ -41,5 +42,5 @@ interface IntroRepository {
         nickName: String
     ): BaseState<Boolean>
 
-    suspend fun patchFcmToken(body: String): BaseState<Unit>
+    suspend fun patchFcmToken(body: FcmTokenRequest): BaseState<Unit>
 }
