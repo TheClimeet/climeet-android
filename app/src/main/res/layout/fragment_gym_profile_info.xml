@@ -181,7 +181,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/iv_turn_right" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_address_info" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -458,7 +458,7 @@
                             app:layout_constraintHorizontal_chainStyle="packed"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:textFromFloat="@{parentVM.uiState.averageRating}"
+                            app:textFromFloat="@{vm.uiState.averageRating}"
                             tools:text="4.5" />
 
                         <TextView
@@ -484,7 +484,7 @@
                             app:layout_constraintBottom_toBottomOf="@id/tv_review_rate"
                             app:layout_constraintEnd_toStartOf="@id/tv_2"
                             app:layout_constraintStart_toEndOf="@id/tv_1"
-                            app:textFromInt="@{parentVM.uiState.reviewCount}"
+                            app:textFromInt="@{vm.uiState.reviewNum}"
                             tools:text="123" />
 
                         <TextView
