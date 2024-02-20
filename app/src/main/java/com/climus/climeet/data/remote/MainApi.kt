@@ -13,13 +13,17 @@ import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
+import com.climus.climeet.data.model.response.GetClimberProfileStatisticsResponse
+import com.climus.climeet.data.model.response.GetClimberProfileTargetGymStatisticsResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymListToFollowResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
+import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
 import com.climus.climeet.data.model.response.GymLevelBestClimberResponse
 import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
@@ -273,6 +277,13 @@ interface MainApi {
         @Query("month") month: Int
     ): Response<MyStatsMonthResponse>
 
+    @GET("/api/climbing-records/users/gyms/{gymId}/statistics/months")
+    suspend fun getMyStatsTargetGymMonth(
+        @Path("gymId") gymId: Long,
+        @Query("year") year: Int,
+        @Query("month") month: Int
+    ): Response<GetMyStatsTargetGymMonthResponse>
+
     @GET("/api/gyms/{gymId}/review")
     suspend fun getGymReview(
         @Path("gymId") gymID: Long,
@@ -326,4 +337,39 @@ interface MainApi {
     @GET("api/profile")
     suspend fun getMyPageProfile(
     ): Response<MyPageProfileResponse>
+
+    @GET("/api/climbing-records/users/{userId}/statistics")
+    suspend fun getClimberProfileStatistics(
+        @Path("userId") userId: Long
+    ): Response<GetClimberProfileStatisticsResponse>
+
+    @GET("/api/climbing-records/users/{userId}/gyms/{gymId}/statistics")
+    suspend fun getClimberProfileTargetGymStatistics(
+        @Path("userId") userId: Long,
+        @Path("gymId") gymId: Long
+    ): Response<GetClimberProfileTargetGymStatisticsResponse>
+
+    @GET("/api/shorts/{uploaderId}")
+    suspend fun getUserShorts(
+        @Path("uploaderId") uploaderId: Long,
+        @Query("page") page: Int,
+        @Query("size") size : Int
+    ): Response<ShortsListResponse>
+
+    @GET("/api/shorts/my-shorts")
+    suspend fun getMyShorts(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<ShortsListResponse>
+
+    @GET("/api/home/homegyms/{userId}")
+    suspend fun getUserHomeGyms(
+        @Path("userId") userId: Long
+    ): Response<List<UserHomeGymSimpleResponse>>
+
+    @GET("/api/profile/{userId}")
+    suspend fun getUserInfo(
+        @Path("userId") userId: Long
+    ): Response<GetUserInfoResponse>
+
 }
