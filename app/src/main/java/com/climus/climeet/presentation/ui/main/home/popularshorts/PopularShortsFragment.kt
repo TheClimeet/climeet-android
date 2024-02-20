@@ -24,13 +24,14 @@ import com.climus.climeet.presentation.ui.main.home.model.PopularShorts
 import com.climus.climeet.presentation.ui.main.home.popularshorts.adapter.PopularShortsAllRVAdapter
 import com.climus.climeet.presentation.ui.main.home.recycler.homegym.HomeGymRVAdapter
 import com.climus.climeet.presentation.ui.main.home.recycler.popularshorts.PopularShortsRVAdapter
+import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PopularShortsFragment : BaseFragment<FragmentPopularShortsBinding>(R.layout.fragment_popular_shorts) {
 
     private val viewModel: PopularShortsViewModel by viewModels()
-    private var recyclerShorts: List<ShortsItem> = emptyList()
+    private var recyclerShorts: List<ShortsUiData> = emptyList()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,7 +48,7 @@ class PopularShortsFragment : BaseFragment<FragmentPopularShortsBinding>(R.layou
                 vm.uiState.collect { uiState ->
 
                     uiState.shortsList?.let { shortsList ->
-                        recyclerShorts = shortsList.result
+                        recyclerShorts = shortsList
                         setupPopularShortsList()
                     }
 

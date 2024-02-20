@@ -198,7 +198,7 @@
             android:id="@+id/iv_complete_ranking4"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="40dp"
             android:visibility="invisible"
             android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
@@ -240,10 +240,10 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="40dp"
-            android:layout_marginStart="10dp"
-            android:visibility="invisible"
+            android:layout_marginEnd="10dp"
             android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
-            app:layout_constraintStart_toEndOf="@+id/tv_complete_ranking4_problems"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toStartOf="@+id/tv_complete_ranking5_nickname"
             app:layout_constraintTop_toBottomOf="@+id/tv_complete_ranking3_problems" />
 
         <TextView
@@ -251,17 +251,17 @@
             style="@style/TextRegular"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:text="켈리"
-            android:visibility="invisible"
+            android:layout_marginEnd="30dp"
+            android:ellipsize="end"
             android:maxWidth="80dp"
             android:maxHeight="15dp"
-            android:ellipsize="end"
             android:singleLine="true"
-            android:layout_marginStart="10dp"
+            android:text="켈리"
             android:textColor="@color/white"
             android:textSize="12sp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/iv_complete_ranking5"
-            app:layout_constraintStart_toEndOf="@+id/iv_complete_ranking5"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/iv_complete_ranking5" />
 
         <TextView
@@ -284,7 +284,7 @@
             android:id="@+id/iv_complete_ranking6"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:visibility="invisible"
             android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
@@ -330,11 +330,11 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="15dp"
-            android:layout_marginEnd="145dp"
+            android:layout_marginEnd="10dp"
             android:visibility="invisible"
             android:layout_marginStart="10dp"
             android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
-            app:layout_constraintStart_toEndOf="@+id/tv_complete_ranking6_nickname"
+            app:layout_constraintEnd_toStartOf="@+id/tv_complete_ranking7_nickname"
             app:layout_constraintTop_toBottomOf="@+id/iv_complete_ranking5" />
 
         <TextView
@@ -342,17 +342,17 @@
             style="@style/TextRegular"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:text="켈리"
+            android:ellipsize="end"
             android:maxWidth="80dp"
             android:maxHeight="15dp"
-            android:ellipsize="end"
             android:singleLine="true"
-            android:visibility="invisible"
-            android:layout_marginStart="10dp"
+            android:text="켈리"
             android:textColor="@color/white"
+            android:layout_marginEnd="30dp"
             android:textSize="12sp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/iv_complete_ranking7"
-            app:layout_constraintStart_toEndOf="@+id/iv_complete_ranking7"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/iv_complete_ranking7" />
 
         <TextView
@@ -375,7 +375,7 @@
             android:id="@+id/iv_complete_ranking8"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:visibility="invisible"
             android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
@@ -420,11 +420,11 @@
             android:id="@+id/iv_complete_ranking9"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginTop="15dp"
-            android:layout_marginStart="10dp"
-            android:visibility="invisible"
             android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
-            app:layout_constraintStart_toEndOf="@+id/tv_complete_ranking8_nickname"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toStartOf="@+id/tv_complete_ranking9_nickname"
             app:layout_constraintTop_toBottomOf="@+id/iv_complete_ranking7" />
 
         <TextView

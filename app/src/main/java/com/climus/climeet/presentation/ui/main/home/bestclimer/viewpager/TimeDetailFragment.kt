@@ -154,7 +154,7 @@ class TimeDetailFragment : Fragment() {
                                 rankList[i].visibility = View.VISIBLE
                             }
                             nicknameList[i].text = bestTimeClimberResponse.profileName
-                            recordList[i].text = bestTimeClimberResponse.thisWeekTotalClimbingTime.toString()
+                            recordList[i].text = bestTimeClimberResponse.thisWeekTotalClimbingTime
 
                             profileImgList[i].visibility = View.VISIBLE
                             nicknameList[i].visibility = View.VISIBLE

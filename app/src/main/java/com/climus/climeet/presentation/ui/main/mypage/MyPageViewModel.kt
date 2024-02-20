@@ -23,6 +23,7 @@ sealed class MyPageEvent {
     data object NavigateToMyShorts : MyPageEvent()
     data object NavigateToPolicy : MyPageEvent()
     data object NavigateToSendOpinion : MyPageEvent()
+    data object NavigateToReview : MyPageEvent()
     data object Logout : MyPageEvent()
 }
 
@@ -95,6 +96,12 @@ class MyPageViewModel @Inject constructor() : ViewModel() {
     fun navigateToSendOpinion() {
         viewModelScope.launch {
             _event.emit(MyPageEvent.NavigateToSendOpinion)
+        }
+    }
+
+    fun navigateToReview() {
+        viewModelScope.launch {
+            _event.emit(MyPageEvent.NavigateToReview)
         }
     }
 

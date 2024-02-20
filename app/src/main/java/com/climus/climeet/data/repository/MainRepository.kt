@@ -29,7 +29,9 @@ import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
+import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
+import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -54,6 +56,9 @@ interface MainRepository {
         size: Int
     ): BaseState<SearchAvailableGymResponse>
 
+    suspend fun getUserProfile(
+    ): BaseState<UserProfileInfoResponse>
+
     suspend fun getRecentShorts(
         page: Int,
         size: Int,
@@ -65,6 +70,9 @@ interface MainRepository {
         size: Int,
         filter: Map<String, Long>
     ): BaseState<ShortsListResponse>
+
+    suspend fun getGymsFollowing(
+    ): BaseState<List<UserHomeGymDetailResponse>>
 
     suspend fun getShortsUpdatedFollow(): BaseState<List<ShortsUpdatedFollowResponse>>
 
