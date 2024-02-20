@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.upload
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
@@ -7,6 +8,7 @@ import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.customview.PublicType
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedFilter
+import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
