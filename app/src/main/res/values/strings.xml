@@ -32,6 +32,10 @@
     <string name="timer_crag_set_inform">"암장을 선택해주세요"</string>
     <string name="timer_complete_inform">"오늘도 클밋과 행클 완료!"</string>
 
+    <!--  홈 화면  -->
     <string name="viewpager2_banner">%1$d / %2$d</string>
+
+    <!--  암장 프로필  -->
+    <string name="gym_profile_null">"암장 정보가 비어있어요"</string>
 
 </resources>

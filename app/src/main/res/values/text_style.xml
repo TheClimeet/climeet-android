@@ -97,4 +97,23 @@
         <item name="android:textColor">@color/cm_main</item>
     </style>
 
+    <style name="TextRegularBig" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/pretendard_regular</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextTinyBig" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/pretendard_regular</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TabText" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/pretendard_regular</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/cm_grey5</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

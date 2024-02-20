@@ -1,6 +1,7 @@
 package com.climus.climeet.data.remote
 
 import com.climus.climeet.data.model.request.AddShortsCommentRequest
+import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
@@ -14,8 +15,14 @@ import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
+import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
+import com.climus.climeet.data.model.response.GymLevelBestClimberResponse
+import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
+import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
+import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
@@ -154,6 +161,12 @@ interface MainApi {
         @Path("gymId") gymId: Long,
     ): Response<GetGymFilteringKeyResponse>
 
+    @GET("/api/gyms/{gymId}/version/key")
+    suspend fun getGymFilteringKeyTime(
+        @Path("gymId") gymId: Long,
+        @Query("timePoint") timePoint: String
+    ): Response<GetGymFilteringKeyResponse>
+
     @POST("/api/gyms/{gymId}/version/route")
     suspend fun getGymRouteInfoList(
         @Path("gymId") gymId: Long,
@@ -216,10 +229,49 @@ interface MainApi {
         @Query("isDislike") isDislike: Boolean
     ): Response<String>
 
+    @GET("/api/gyms/{gymId}")
+    suspend fun getGymProfileTopInfo(
+        @Path("gymId") gymId: Long
+    ): Response<GymProfileTopInfoResponse>
+
+    @GET("/api/gyms/{gymId}/tab")
+    suspend fun getGymProfileTabInfo(
+        @Path("gymId") gymId: Long
+    ): Response<GymProfileTabInfoResponse>
+
     @GET("/api/climbing-records/users/statistics/months")
     suspend fun getMyStatsMonth(
         @Query("year") year: Int,
         @Query("month") month: Int
     ): Response<MyStatsMonthResponse>
+
+    @GET("/api/gyms/{gymId}/review")
+    suspend fun getGymReview(
+        @Path("gymId") gymID: Long,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<GetGymProfileReviewResponse>
+
+    @POST("/api/gyms/{gymId}/review")
+    suspend fun createGymReview(
+        @Path("gymId") gymID: Long,
+        @Body params: CreateGymProfileReviewRequest
+    ): Response<ResponseBody>
+
+    @GET("/api/climbing-records/gyms/{gymId}/rank/weeks/climbers/clear")
+    suspend fun getGymClimberRankingOrderClearCount(
+        @Path("gymId") gymID: Long,
+    ): Response<List<GymCompleteBestClimberResponse>>
+
+    @GET("/api/climbing-records/gyms/{gymId}/rank/weeks/climbers/level")
+    suspend fun getGymClimberRankingOrderLevel(
+        @Path("gymId") gymID: Long,
+    ): Response<List<GymLevelBestClimberResponse>>
+
+    @GET("/api/climbing-records/gyms/{gymId}/rank/weeks/climbers/time")
+    suspend fun getGymClimberRankingOrderTime(
+        @Path("gymId") gymID: Long,
+    ): Response<List<GymTimeBestClimberResponse>>
+
 
 }

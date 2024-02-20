@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="70dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextRegularSemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:text="BEST 클라이머"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/textView16"
+            android:layout_width="match_parent"
+            android:layout_height="394dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/rect_lightblackfill_nostroke_17radius"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tb_best_climer_detail"
+            style="@style/TextSmallSemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="33dp"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/cm_lightblack"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/textView16"
+            app:layout_constraintTop_toTopOf="@+id/textView16"
+            app:tabBackground="@drawable/tab_background"
+            app:tabIndicatorColor="@android:color/transparent"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorHeight="0dp"
+            app:tabRippleColor="@color/transparent"
+            app:tabSelectedTextColor="@color/black"
+            app:tabTextColor="@color/cm_stargrey" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_best_climer_detail"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView16"
+            app:layout_constraintEnd_toEndOf="@+id/textView16"
+            app:layout_constraintStart_toStartOf="@+id/textView16"
+            app:layout_constraintTop_toBottomOf="@+id/tb_best_climer_detail" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

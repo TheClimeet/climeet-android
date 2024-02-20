@@ -1,13 +1,323 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!--    암장 배경사진     -->
+                <ImageView
+                    android:id="@+id/iv_gym_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:layout_marginTop="30dp"
+                    android:scaleType="fitXY"
+                    app:imgUrl="@{vm.uiState.gymBackGroundImageUrl}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/img_gym_background" />
+
+                <!--    암장 프로필    -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginVertical="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_gym_background">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_gym_profile"
+                        android:layout_width="73dp"
+                        android:layout_height="73dp"
+                        app:imgUrl="@{vm.uiState.gymProfileImageUrl}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@drawable/img_crag" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        app:layout_constraintEnd_toStartOf="@id/layout_follow_btn"
+                        app:layout_constraintStart_toEndOf="@id/iv_gym_profile"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/tv_gym_name"
+                            style="@style/TextRegularBig"
+                            layout_constrainedWidth="true"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@{vm.uiState.gymName}"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@id/iv_gym_badge"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="클라이머스 클라이밍" />
+
+                        <ImageView
+                            android:id="@+id/iv_gym_badge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:src="@drawable/ic_gym_badge"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_gym_name"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintStart_toEndOf="@id/tv_gym_name"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <!--    팔로워 / 팔로잉    -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_follow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            app:layout_constraintBottom_toTopOf="@+id/layout_rate_review"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_gym_name">
+
+                            <TextView
+                                android:id="@+id/tv_follower"
+                                style="@style/TextTinyBig"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="팔로워"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_follower_num"
+                                style="@style/TextTinyBig"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                app:layout_constraintStart_toEndOf="@id/tv_follower"
+                                app:layout_constraintTop_toTopOf="@id/tv_follower"
+                                app:textFromInt="@{vm.uiState.followerCount}"
+                                tools:text="100" />
+
+                            <ImageView
+                                android:id="@+id/iv_bar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="10dp"
+                                android:src="@drawable/ic_white_line"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/tv_following"
+                                app:layout_constraintStart_toEndOf="@id/tv_follower_num"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_following"
+                                style="@style/TextTinyBig"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="팔로잉"
+                                app:layout_constraintEnd_toStartOf="@id/tv_following_num"
+                                app:layout_constraintStart_toEndOf="@id/iv_bar"
+                                app:layout_constraintTop_toTopOf="@id/tv_follower" />
+
+                            <TextView
+                                android:id="@+id/tv_following_num"
+                                style="@style/TextTinyBig"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                app:layout_constraintStart_toEndOf="@id/tv_following"
+                                app:layout_constraintTop_toTopOf="@id/tv_follower"
+                                app:textFromInt="@{vm.uiState.followingCount}"
+                                tools:text="20" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <!--    별점 / 리뷰    -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_rate_review"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layout_follow">
+
+                            <ImageView
+                                android:id="@+id/iv_star"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_tiny_star"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_rate"
+                                style="@style/TextTiny"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:textSize="10sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/iv_star"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:textFromFloat="@{vm.uiState.averageRating}"
+                                tools:text="4.5" />
+
+                            <ImageView
+                                android:id="@+id/iv_bar2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="5dp"
+                                android:src="@drawable/ic_white_line"
+                                app:layout_constraintBottom_toBottomOf="@id/iv_star"
+                                app:layout_constraintEnd_toStartOf="@id/tv_review"
+                                app:layout_constraintStart_toEndOf="@id/tv_rate"
+                                app:layout_constraintTop_toTopOf="@id/iv_star" />
+
+                            <TextView
+                                android:id="@+id/tv_review"
+                                style="@style/TextTiny"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="리뷰"
+                                android:textSize="10sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/tv_review_num"
+                                app:layout_constraintStart_toEndOf="@id/iv_bar2"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_review_num"
+                                style="@style/TextTiny"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:textSize="10sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/tv_review"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:textFromInt="@{vm.uiState.reviewCount}"
+                                tools:text="30" />
+
+                            <TextView
+                                style="@style/TextTiny"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="건"
+                                android:textSize="10sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/tv_review_num"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_follow_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_follow"
+                            style="@style/TextSmall"
+                            android:layout_width="72dp"
+                            android:layout_height="26dp"
+                            android:background="@drawable/btn_following"
+                            android:text="팔로우"
+                            android:textColor="@color/black"
+                            android:visibility="@{vm.followState? View.VISIBLE : View.GONE}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_following"
+                            style="@style/TextSmall"
+                            android:layout_width="72dp"
+                            android:layout_height="26dp"
+                            android:background="@drawable/btn_follow"
+                            android:text="팔로잉"
+                            android:textColor="@color/white"
+                            android:visibility="@{vm.followState? View.VISIBLE : View.GONE}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tb_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/cm_grey9"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_profile"
+                    app:tabIndicatorColor="@color/cm_main"
+                    app:tabIndicatorFullWidth="true"
+                    app:tabIndicatorHeight="1dp"
+                    app:tabRippleColor="@color/transparent"
+                    app:tabSelectedTextColor="@color/cm_main"
+                    app:tabTextAppearance="@style/TabText"
+                    app:tabTextColor="@color/cm_grey5"></com.google.android.material.tabs.TabLayout>
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vp_tab_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="15dp"
+                    android:nestedScrollingEnabled="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tb_menu" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tb_menu" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
