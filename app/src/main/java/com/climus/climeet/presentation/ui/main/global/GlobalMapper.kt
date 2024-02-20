@@ -7,6 +7,8 @@ import com.climus.climeet.data.model.response.GymListToFollowItem
 import com.climus.climeet.data.model.response.RouteItem
 import com.climus.climeet.data.model.response.SearchAvailableGymItem
 import com.climus.climeet.data.model.response.SectorItem
+import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
+import com.climus.climeet.presentation.ui.main.global.climerprofile.model.ProfileHomeGymUiData
 import com.climus.climeet.presentation.ui.main.global.searchprofile.model.SearchProfileUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.RouteUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.GymLevelUiData
@@ -85,4 +87,14 @@ fun ClimberDetailInfoItem.toSearchProfileUiData(
     follow = follow,
     unFollow = unFollow,
     isFollowing = isFollower
+)
+
+fun UserHomeGymSimpleResponse.toProfileHomeGymUiData(
+    onClickListener: (Long) -> Unit
+) = ProfileHomeGymUiData(
+    gymId = gymId,
+    profileImg = gymProfileUrl,
+    name = gymName,
+    followerString = "팔로워 $followerCount",
+    onClickListener = onClickListener
 )

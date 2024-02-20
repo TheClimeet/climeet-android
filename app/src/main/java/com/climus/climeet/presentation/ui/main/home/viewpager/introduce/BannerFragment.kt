@@ -40,6 +40,7 @@ class BannerFragment(val bannerDetailInfo : BannerDetailInfoResponse) : Fragment
             .into(binding.bannerImageIv)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // api
         super.onViewCreated(view, savedInstanceState)
 

@@ -16,19 +16,24 @@ import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
+import com.climus.climeet.data.model.response.GetClimberProfileStatisticsResponse
+import com.climus.climeet.data.model.response.GetClimberProfileTargetGymStatisticsResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
 import com.climus.climeet.data.model.response.GetGymListToFollowResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
+import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
 import com.climus.climeet.data.model.response.GymLevelBestClimberResponse
 import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
 import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.GymWeekStatsResponse
+import com.climus.climeet.data.model.response.MyPageProfileResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
@@ -256,6 +261,8 @@ interface MainRepository {
         gymId: Long
     ): BaseState<GymWeekStatsResponse>
 
+    suspend fun getMyPageProfile(): BaseState<MyPageProfileResponse>
+
     // -------- RoomDB ClimbingRecordDao 암장 정보 ----------
     fun insert(climbingRecordData: ClimbingRecordData)
     fun update(climbingRecordData: ClimbingRecordData)
@@ -294,4 +301,38 @@ interface MainRepository {
         page: Int,
         size: Int
     ): BaseState<GetGymListToFollowResponse>
+
+    suspend fun getClimberProfileStatistics(
+        userId: Long
+    ): BaseState<GetClimberProfileStatisticsResponse>
+
+    suspend fun getClimberProfileTargetGymStatistics(
+        userId: Long,
+        gymId: Long
+    ): BaseState<GetClimberProfileTargetGymStatisticsResponse>
+
+    suspend fun getMyStatsTargetGymMonth(
+        gymId: Long,
+        year: Int,
+        month: Int
+    ): BaseState<GetMyStatsTargetGymMonthResponse>
+
+    suspend fun getUserShorts(
+        uploaderId: Long,
+        page: Int,
+        size: Int
+    ): BaseState<ShortsListResponse>
+
+    suspend fun getMyShorts(
+        page: Int,
+        size: Int
+    ): BaseState<ShortsListResponse>
+
+    suspend fun getUserHomeGyms(
+        userId: Long
+    ): BaseState<List<UserHomeGymSimpleResponse>>
+
+    suspend fun getUserInfo(
+        userId: Long
+    ): BaseState<GetUserInfoResponse>
 }
