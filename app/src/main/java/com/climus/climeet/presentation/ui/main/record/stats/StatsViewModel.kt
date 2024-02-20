@@ -1,7 +1,5 @@
 package com.climus.climeet.presentation.ui.main.record.stats
 
-import android.util.Log
-import androidx.compose.ui.unit.Constraints
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +7,6 @@ import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.customview.stickchart.StickChartUiData
 import com.climus.climeet.presentation.util.Constants
-import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -137,7 +134,8 @@ class StatsViewModel @Inject constructor(
                             state.copy(
                                 totalTime = "00:00:00",
                                 totalCompletedCount = 0,
-                                totalAttemptCount = 0
+                                totalAttemptCount = 0,
+                                chartUiList = emptyList()
                             )
                         }
                         setProgress()
