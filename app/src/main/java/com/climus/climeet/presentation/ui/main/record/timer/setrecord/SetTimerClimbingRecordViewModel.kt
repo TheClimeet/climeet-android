@@ -486,17 +486,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     // 루트 기록에 추가
     private fun addItem(item: RouteUiData) {
         if (_items.value.none { it.routeId == item.routeId && it.sectorId == item.sectorId }) {
-            val newItem = RouteUiData(
-                routeId = item.routeId,
-                sectorId = item.sectorId,
-                sectorName = item.sectorName,
-                difficulty = item.difficulty,
-                gymLevelName = item.gymLevelName,
-                gymLevelColor = item.gymLevelColor,
-                routeImg = item.routeImg,
-                isSelected = true,
-                onClickListener = { it -> itemClicked(it) }
-            )
+            val newItem = item.copy(isSelected = true)
             _items.value = _items.value + newItem
 
             // roomDB에 루트 기록 저장
