@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentOnboardBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -20,26 +19,26 @@ class OnBoardFragment : BaseFragment<FragmentOnboardBinding>(R.layout.fragment_o
 
     private fun setViewpager() {
         binding.vpOnboard.adapter =
-            OnBoardAdapter(listOf("흩어져 있는 클라이밍 루트 정보", "어려웠던 클라이밍 운동 기록", "혼클할 때 서러웠던 루트 파인딩"))
+            OnBoardAdapter(
+                listOf(
+                    OnBoardItem(
+                        "클밋에서 만나다.",
+                        "흩어져 있는 클라임이 루트정보",
+                        R.drawable.ic_onboard_1
+                    ),
+                    OnBoardItem(
+                        "루트별로 만나다.",
+                        "매일 성장하는 나의 기록",
+                        R.drawable.ic_onboard_2
+                    ),
+                    OnBoardItem(
+                        "나를 성장시키는 통계까지.",
+                        "함께 성장하는 클라이밍 커뮤니티",
+                        R.drawable.ic_onboard_3
+                    )
+                )
+            )
         binding.idcOnboard.setViewPager(binding.vpOnboard)
-
-        binding.vpOnboard.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-                if (binding.vpOnboard.currentItem == binding.vpOnboard.adapter?.itemCount?.minus(1)) {
-                    binding.btnStart.visibility = View.VISIBLE
-                } else {
-                    binding.btnStart.visibility = View.INVISIBLE
-                }
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {}
-            override fun onPageSelected(position: Int) {}
-        })
     }
 
     private fun setBtnListener() {
