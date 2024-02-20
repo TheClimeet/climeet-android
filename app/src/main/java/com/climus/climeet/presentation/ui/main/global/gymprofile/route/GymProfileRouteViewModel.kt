@@ -72,6 +72,9 @@ class GymProfileRouteViewModel @Inject constructor(
         MutableStateFlow("${initDate.year}년 ${initDate.monthValue}월 ${initDate.dayOfMonth}일")
     val selectedDate = MutableLiveData(initDate)
 
+    private val timePoint =
+        MutableStateFlow("${initDate.year}-${String.format("%02d", initDate.monthValue)}-${String.format("%02d", initDate.dayOfMonth)}")
+
     var cragId: Long = 0
     var cragName: String = ""
 
@@ -88,18 +91,26 @@ class GymProfileRouteViewModel @Inject constructor(
 
     fun setDate() {
         val date = selectedDate.value
+        val year = date?.year
+        val month = date?.month?.value
+        val day = date?.dayOfMonth
+        datePickText.value = "${year}년 ${month}월 ${day}일"
+
+        val formattedMonth = month?.let { String.format("%02d", it) }
+        val formattedDay = day?.let { String.format("%02d", it) }
+        timePoint.value = "${year}-${formattedMonth}-${formattedDay}"
+
         viewModelScope.launch(Dispatchers.Main) {
-            val year = date?.year
-            val month = date?.month?.value
-            val day = date?.dayOfMonth
-            datePickText.value = "${year}년 ${month}월 ${day}일"
+            // 선택된 날짜로 루트 정보 다시 불러오기
+            getCragInfo(cragId)
+            Log.d("gym_profile", "날짜 변경 -> 암장 루트 정보 다시 불러옴")
         }
     }
 
     private fun getCragInfo(id: Long) {
 
         viewModelScope.launch {
-            repository.getGymFilteringKey(id).let {
+            repository.getGymFilteringKeyTime(id, timePoint.value).let {
                 when (it) {
                     is BaseState.Success -> {
                         sectorNameList = it.body.sectorList.map { data ->

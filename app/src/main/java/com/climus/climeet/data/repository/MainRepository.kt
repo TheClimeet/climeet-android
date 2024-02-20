@@ -124,6 +124,11 @@ interface MainRepository {
         gymId: Long,
     ): BaseState<GetGymFilteringKeyResponse>
 
+    suspend fun getGymFilteringKeyTime(
+        gymId: Long,
+        timePoint: String
+    ): BaseState<GetGymFilteringKeyResponse>
+
     suspend fun getGymRouteInfoList(
         gymId: Long,
         body: GetGymRouteInfoRequest

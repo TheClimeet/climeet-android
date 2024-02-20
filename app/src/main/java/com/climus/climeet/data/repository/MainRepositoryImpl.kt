@@ -160,6 +160,11 @@ class MainRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun getGymFilteringKeyTime(
+        gymId: Long,
+        timePoint: String
+    ): BaseState<GetGymFilteringKeyResponse> = runRemote { api.getGymFilteringKeyTime(gymId, timePoint) }
+
     override suspend fun getGymRouteInfoList(
         gymId: Long,
         body: GetGymRouteInfoRequest

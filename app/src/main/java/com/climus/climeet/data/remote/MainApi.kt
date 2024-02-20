@@ -161,6 +161,12 @@ interface MainApi {
         @Path("gymId") gymId: Long,
     ): Response<GetGymFilteringKeyResponse>
 
+    @GET("/api/gyms/{gymId}/version/key")
+    suspend fun getGymFilteringKeyTime(
+        @Path("gymId") gymId: Long,
+        @Query("timePoint") timePoint: String
+    ): Response<GetGymFilteringKeyResponse>
+
     @POST("/api/gyms/{gymId}/version/route")
     suspend fun getGymRouteInfoList(
         @Path("gymId") gymId: Long,
@@ -266,4 +272,6 @@ interface MainApi {
     suspend fun getGymClimberRankingOrderTime(
         @Path("gymId") gymID: Long,
     ): Response<List<GymTimeBestClimberResponse>>
+
+
 }
