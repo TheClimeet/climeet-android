@@ -30,6 +30,7 @@ import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
 import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.GymWeekStatsResponse
+import com.climus.climeet.data.model.response.MyPageProfileResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
@@ -332,6 +333,10 @@ interface MainApi {
     suspend fun getGymStatsWeek(
         @Path("gymId") gymID: Long,
     ): Response<GymWeekStatsResponse>
+
+    @GET("api/profile")
+    suspend fun getMyPageProfile(
+    ): Response<MyPageProfileResponse>
 
     @GET("/api/climbing-records/users/{userId}/statistics")
     suspend fun getClimberProfileStatistics(

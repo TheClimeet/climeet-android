@@ -35,6 +35,7 @@ import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
 import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.GymWeekStatsResponse
+import com.climus.climeet.data.model.response.MyPageProfileResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
@@ -293,6 +294,9 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun getGymStatsWeek(gymId: Long): BaseState<GymWeekStatsResponse> =
         runRemote { api.getGymStatsWeek(gymId) }
+
+    override suspend fun getMyPageProfile(): BaseState<MyPageProfileResponse> =
+        runRemote { api.getMyPageProfile() }
 
 
     // -------- RoomDB ClimbingRecordDa0 암장 정보 -----------
