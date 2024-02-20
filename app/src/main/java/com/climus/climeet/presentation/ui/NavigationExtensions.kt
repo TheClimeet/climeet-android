@@ -9,7 +9,7 @@ fun NavController.toShortsPlayer(shortsId: Long, position: Int) {
     navigate(action)
 }
 
-fun NavController.toGymProfile(gymId: Long, gymName: String){
+fun NavController.toGymProfile(gymId: Long){
     val action = MainNavDirections.globalActionToGymProfileFragment(gymId)
     navigate(action)
 }

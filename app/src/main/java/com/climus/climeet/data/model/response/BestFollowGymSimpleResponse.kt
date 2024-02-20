@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 
 data class BestFollowGymSimpleResponse(
+    val gymId: Long,
 
     @SerializedName("ranking")
     val ranking : Int,

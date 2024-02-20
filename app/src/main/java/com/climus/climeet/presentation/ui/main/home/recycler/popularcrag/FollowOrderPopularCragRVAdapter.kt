@@ -8,7 +8,8 @@ import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.databinding.ItemPopularCragsBinding
 import kotlin.math.min
 
-class FollowOrderPopularCragRVAdapter (private val cragList: List<BestFollowGymSimpleResponse>) : RecyclerView.Adapter<FollowOrderPopularCragRVAdapter.ViewHolder>(){
+class FollowOrderPopularCragRVAdapter (private val cragList: List<BestFollowGymSimpleResponse>,
+    private val onClickListener: (Long) -> Unit) : RecyclerView.Adapter<FollowOrderPopularCragRVAdapter.ViewHolder>(){
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -28,6 +29,9 @@ class FollowOrderPopularCragRVAdapter (private val cragList: List<BestFollowGymS
 
     inner class ViewHolder(val binding: ItemPopularCragsBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(crag: BestFollowGymSimpleResponse) {
+            binding.root.setOnClickListener {
+                onClickListener(crag.gymId)
+            }
             if(crag.profileImageUrl != null) {
                 Glide.with(binding.root.context)
                     .load(crag.profileImageUrl)

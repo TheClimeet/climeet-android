@@ -41,6 +41,7 @@ import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
+import com.climus.climeet.presentation.ui.toGymProfile
 import com.climus.climeet.presentation.ui.toShortsPlayer
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -269,14 +270,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         val access = sharedPreferences.getString(X_MODE, null)
 
-        if (access == "CLIMER") {
-            val action = HomeFragmentDirections.globalActionToGymProfileFragment(gymId)
-            findNavController().navigate(action)
-        } else if (access == "ADMIN") {
-            Toast.makeText(requireContext(), "암장 관리자의 암장 프로필 접근", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(requireContext(), "유효하지 않은 접근입니다.", Toast.LENGTH_SHORT).show()
-        }
+        //todo 여기는 일단 구분 안해줘도 될듯!
+        // - 암장관리자일때 선택한 프로필이 내 프로필일 경우만 암장관리자의 암장 프로필 접근 해야함
+
+        findNavController().toGymProfile(gymId)
+//        if (access == "CLIMER") {
+//            findNavController().toGymProfile(gymId)
+//        } else if (access == "ADMIN") {
+//            Toast.makeText(requireContext(), "암장 관리자의 암장 프로필 접근", Toast.LENGTH_SHORT).show()
+//        } else {
+//            Toast.makeText(requireContext(), "유효하지 않은 접근입니다.", Toast.LENGTH_SHORT).show()
+//        }
     }
 
     private fun setupBestRanking() {
@@ -295,12 +299,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private fun setupFollowOrderPopularCrags() {
-        val followOrderPopularCragRVAdapter = FollowOrderPopularCragRVAdapter(followOrderRecyclerCrag)
+        val followOrderPopularCragRVAdapter = FollowOrderPopularCragRVAdapter(followOrderRecyclerCrag, ::navToGymProfile)
         setupRecyclerView(binding.rvHomeFollowOrderPopularCrags, followOrderPopularCragRVAdapter, LinearLayoutManager.HORIZONTAL)
     }
 
     private fun setupRecordOrderPopularCrags() {
-        val recordOrderPopularCragRVAdapter = RecordOrderPopularCragRVAdapter(recordOrderRecyclerCrag)
+        val recordOrderPopularCragRVAdapter = RecordOrderPopularCragRVAdapter(recordOrderRecyclerCrag, ::navToGymProfile)
         setupRecyclerView(binding.rvHomeRecordOrderPopularCrags, recordOrderPopularCragRVAdapter, LinearLayoutManager.HORIZONTAL)
     }
 
