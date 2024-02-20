@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.main.mypage.MyPageViewModel" />
@@ -20,17 +22,17 @@
             style="@style/TextMediumSemiBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             android:text="마이페이지"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:paddingHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,11 +58,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                app:layout_constraintEnd_toEndOf="@id/guide1"
-                app:layout_constraintStart_toEndOf="@id/iv_gym_profile"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/guide1">
+                app:layout_constraintEnd_toEndOf="@id/guide1"
+                app:layout_constraintEnd_toStartOf="@id/guide1"
+                app:layout_constraintStart_toEndOf="@id/iv_gym_profile"
+                app:layout_constraintTop_toTopOf="parent">
 
 
                 <TextView
@@ -69,33 +71,34 @@
                     layout_constrainedWidth="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingEnd="20dp"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:paddingEnd="20dp"
                     android:text="@{vm.uiState.userName}"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="클라이밍dddddddddddddd" />
+                    tools:text="클라이밍ㅐㅐㅐㅐㅐㅐㅐ" />
 
                 <ImageView
                     android:id="@+id/iv_gym_badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_gym_badge"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    android:visibility="@{vm.uiState.isManager ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="@id/tv_gym_name"
+                    app:layout_constraintEnd_toStartOf="@id/tv_blank"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
                     app:layout_constraintStart_toEndOf="@id/tv_gym_name"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/tv_blank"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_blank"
                     android:layout_width="23dp"
                     android:layout_height="0dp"
-                    app:layout_constraintStart_toEndOf="@id/iv_gym_badge"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintStart_toEndOf="@id/iv_gym_badge"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <!--    팔로워 / 팔로잉    -->
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -170,11 +173,11 @@
                 android:layout_width="80dp"
                 android:layout_height="26dp"
                 android:layout_marginTop="10dp"
-                android:onClick="@{() -> vm.navigateToMyProfile()}"
                 android:background="@drawable/rect_grey7fill_nostroke_8radius"
+                android:onClick="@{() -> vm.navigateToMyProfile()}"
                 android:text="프로필 보기"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -182,12 +185,13 @@
             android:id="@+id/btn_login_account"
             style="@style/TextRegular"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:layout_marginTop="30dp"
-            android:paddingStart="20dp"
+            android:background="@color/cm_grey8"
             android:drawableLeft="@drawable/ic_profile"
             android:gravity="start|center"
             android:onClick="@{() -> vm.navigateToAccount()}"
+            android:paddingStart="30dp"
             android:text="   로그인 계정"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_profile" />
@@ -196,11 +200,13 @@
             android:id="@+id/btn_follow"
             style="@style/TextRegular"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="20dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/cm_grey8"
             android:drawableLeft="@drawable/ic_plus"
             android:gravity="start|center"
             android:onClick="@{() -> vm.navigateToFollow()}"
+            android:paddingStart="30dp"
             android:text="   팔로우"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_login_account" />
@@ -209,11 +215,13 @@
             android:id="@+id/btn_my_shorts"
             style="@style/TextRegular"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="20dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/cm_grey8"
             android:drawableLeft="@drawable/ic_play"
             android:gravity="start|center"
             android:onClick="@{() -> vm.navigateToMyShorts()}"
+            android:paddingStart="30dp"
             android:text="   나의 숏츠"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_follow" />
@@ -222,11 +230,13 @@
             android:id="@+id/btn_announce"
             style="@style/TextRegular"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="20dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/cm_grey8"
             android:drawableLeft="@drawable/ic_question_mark_mypage"
             android:gravity="start|center"
             android:onClick="@{() -> vm.navigateToAnnounce()}"
+            android:paddingStart="30dp"
             android:text="   공지사항"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_my_shorts" />
@@ -235,11 +245,13 @@
             android:id="@+id/btn_alarm"
             style="@style/TextRegular"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="20dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/cm_grey8"
             android:drawableLeft="@drawable/ic_bell"
             android:gravity="start|center"
             android:onClick="@{() -> vm.navigateToAlarm()}"
+            android:paddingStart="30dp"
             android:text="   알림"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_announce" />
@@ -248,11 +260,13 @@
             android:id="@+id/btn_policy"
             style="@style/TextRegular"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="20dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/cm_grey8"
             android:drawableLeft="@drawable/ic_policy"
             android:gravity="start|center"
             android:onClick="@{() -> vm.navigateToPolicy()}"
+            android:paddingStart="30dp"
             android:text="   운영정책"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_alarm" />
@@ -261,11 +275,13 @@
             android:id="@+id/btn_send_opinion"
             style="@style/TextRegular"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="20dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/cm_grey8"
             android:drawableLeft="@drawable/ic_mail"
             android:gravity="start|center"
             android:onClick="@{() -> vm.navigateToSendOpinion()}"
+            android:paddingStart="30dp"
             android:text="   의견 보내기"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_policy" />
@@ -274,51 +290,16 @@
             android:id="@+id/btn_cheer_up"
             style="@style/TextRegular"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="20dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/cm_grey8"
             android:drawableLeft="@drawable/ic_thumbs_up"
             android:gravity="start|center"
-            android:onClick="@{() -> vm.navigateToCheerUp()}"
+            android:onClick="@{() -> vm.navigateToReview()}"
+            android:paddingStart="30dp"
             android:text="   클밋팀 응원하기"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_send_opinion" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_logout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:onClick="@{() -> vm.logout()}"
-            android:text="로그아웃"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_cheer_up" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_review"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> vm.navigateToReview()}"
-            android:text="리뷰 작성"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_logout" />
-
-        <TextView
-            android:id="@+id/tv_mode"
-            style="@style/TextSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="PROD MODE"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/switchmode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_mode" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
