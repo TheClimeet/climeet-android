@@ -23,8 +23,11 @@ import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
+import com.climus.climeet.data.model.response.GymLevelBestClimberResponse
 import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
+import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
@@ -229,6 +232,21 @@ class MainRepositoryImpl @Inject constructor(
         body: CreateGymProfileReviewRequest
     ): BaseState<ResponseBody> = runRemote { api.createGymReview(gymId, body) }
 
+    override suspend fun getGymClimberRankingOrderClearCount(
+        gymId: Long
+    ): BaseState<List<GymCompleteBestClimberResponse>> =
+        runRemote { api.getGymClimberRankingOrderClearCount(gymId) }
+
+    override suspend fun getGymClimberRankingOrderLevel(
+        gymId: Long
+    ): BaseState<List<GymLevelBestClimberResponse>> =
+        runRemote { api.getGymClimberRankingOrderLevel(gymId) }
+
+    override suspend fun getGymClimberRankingOrderTime(
+        gymId: Long
+    ): BaseState<List<GymTimeBestClimberResponse>> =
+        runRemote { api.getGymClimberRankingOrderTime(gymId) }
+
 
     // -------- RoomDB ClimbingRecordDa0 암장 정보 -----------
     override fun insert(climbingRecordData: ClimbingRecordData) {
@@ -296,11 +314,11 @@ class MainRepositoryImpl @Inject constructor(
         return routeRecordDao.getAllLevelRecord()
     }
 
-    override fun getSuccessCount(level: String): Int{
+    override fun getSuccessCount(level: String): Int {
         return routeRecordDao.getSuccessCount(level)
     }
 
-    override fun getAttemptCount(level: String): Int{
+    override fun getAttemptCount(level: String): Int {
         return routeRecordDao.getAttemptCount(level)
     }
 }

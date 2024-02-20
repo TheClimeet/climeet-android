@@ -25,6 +25,8 @@ class GymProfileCommunityFragment :
 
         binding.vm = viewModel
 
+        replaceFragment(GymProfileSkillFragment())
+
         initTabMenu()
     }
 
@@ -48,9 +50,8 @@ class GymProfileCommunityFragment :
     }
 
     fun replaceFragment(fragment: Fragment) {
-        val fragmentTransaction: FragmentTransaction? =
-            activity?.supportFragmentManager?.beginTransaction()
-        fragmentTransaction?.replace(R.id.frame_menu, fragment)
-        fragmentTransaction?.commit()
+        val fragmentTransaction: FragmentTransaction = childFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.frame_menu, fragment)
+        fragmentTransaction.commit()
     }
 }

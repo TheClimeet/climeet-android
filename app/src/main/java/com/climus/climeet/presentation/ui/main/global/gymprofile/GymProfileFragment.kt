@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
+import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.databinding.FragmentGymProfileBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.global.gymprofile.adapter.GymTabAdapter
@@ -39,6 +40,7 @@ class GymProfileFragment : BaseFragment<FragmentGymProfileBinding>(R.layout.frag
     }
 
     private fun initCragInfo() {
+        sharedPreferences.edit().putLong("gymId", gymId).apply()
         viewModel.gymId.value = gymId
     }
 

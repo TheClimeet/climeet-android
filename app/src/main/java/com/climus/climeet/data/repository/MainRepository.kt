@@ -21,8 +21,11 @@ import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
+import com.climus.climeet.data.model.response.GymLevelBestClimberResponse
 import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
+import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
@@ -187,6 +190,19 @@ interface MainRepository {
         gymId: Long,
         body: CreateGymProfileReviewRequest
     ): BaseState<ResponseBody>
+
+    suspend fun getGymClimberRankingOrderClearCount(
+        gymId: Long
+    ): BaseState<List<GymCompleteBestClimberResponse>>
+
+    suspend fun getGymClimberRankingOrderLevel(
+        gymId: Long
+    ): BaseState<List<GymLevelBestClimberResponse>>
+
+    suspend fun getGymClimberRankingOrderTime(
+        gymId: Long
+    ): BaseState<List<GymTimeBestClimberResponse>>
+
 
     // -------- RoomDB ClimbingRecordDao 암장 정보 ----------
     fun insert(climbingRecordData: ClimbingRecordData)

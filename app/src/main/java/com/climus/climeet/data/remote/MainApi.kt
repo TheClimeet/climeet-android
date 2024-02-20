@@ -18,8 +18,11 @@ import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
+import com.climus.climeet.data.model.response.GymLevelBestClimberResponse
 import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
+import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
@@ -238,4 +241,19 @@ interface MainApi {
         @Path("gymId") gymID: Long,
         @Body params: CreateGymProfileReviewRequest
     ): Response<ResponseBody>
+
+    @GET("/api/climbing-records/gyms/{gymId}/rank/weeks/climbers/clear")
+    suspend fun getGymClimberRankingOrderClearCount(
+        @Path("gymId") gymID: Long,
+    ): Response<List<GymCompleteBestClimberResponse>>
+
+    @GET("/api/climbing-records/gyms/{gymId}/rank/weeks/climbers/level")
+    suspend fun getGymClimberRankingOrderLevel(
+        @Path("gymId") gymID: Long,
+    ): Response<List<GymLevelBestClimberResponse>>
+
+    @GET("/api/climbing-records/gyms/{gymId}/rank/weeks/climbers/time")
+    suspend fun getGymClimberRankingOrderTime(
+        @Path("gymId") gymID: Long,
+    ): Response<List<GymTimeBestClimberResponse>>
 }
