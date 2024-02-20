@@ -80,7 +80,7 @@ class NavigateToAddFollowViewHolder(private val binding: ItemAddFollowBinding) :
     fun bind(item: UpdatedFollowUiData) {
 
         binding.root.setOnClickListener {
-            item.navigateToAddFollow
+            item.navigateToAddFollow()
         }
     }
 }

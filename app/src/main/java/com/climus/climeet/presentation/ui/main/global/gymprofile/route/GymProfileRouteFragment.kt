@@ -119,7 +119,7 @@ class GymProfileRouteFragment :
                         it.shortsId,
                         it.position
                     )
-
+                    else -> {}
                 }
             }
         }

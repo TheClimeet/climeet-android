@@ -1,9 +1,12 @@
 package com.climus.climeet.presentation.ui.main.global
 
 import com.climus.climeet.R
+import com.climus.climeet.data.model.response.ClimberDetailInfoItem
 import com.climus.climeet.data.model.response.DifficultyItem
 import com.climus.climeet.data.model.response.RouteItem
+import com.climus.climeet.data.model.response.SearchAvailableGymItem
 import com.climus.climeet.data.model.response.SectorItem
+import com.climus.climeet.presentation.ui.main.global.searchprofile.model.SearchProfileUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.RouteUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.GymLevelUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SectorNameUiData
@@ -29,12 +32,12 @@ fun DifficultyItem.toGymLevelUiData(
 
 fun RouteItem.toRouteUiData(
     onClickListener: (RouteUiData) -> Unit
-) : RouteUiData{
+): RouteUiData {
 
     val holdColor = Constants.holdColor[holdColor] ?: run {
         R.drawable.ic_white_hold
     }
-    
+
     return RouteUiData(
         routeId = routeId,
         sectorId = sectorId,
@@ -48,3 +51,35 @@ fun RouteItem.toRouteUiData(
         onClickListener = onClickListener
     )
 }
+
+fun SearchAvailableGymItem.toSearchProfileUiData(
+    keyword: String,
+    navigateToProfile: (Long) -> Unit,
+    follow: (Long) -> Unit,
+    unFollow: (Long) -> Unit
+) = SearchProfileUiData(
+    id = id,
+    imgUrl = profileImageUrl,
+    followers = follower,
+    name = name,
+    keyword = keyword,
+    navigateToProfile = navigateToProfile,
+    follow = follow,
+    unFollow = unFollow
+)
+
+fun ClimberDetailInfoItem.toSearchProfileUiData(
+    keyword: String,
+    navigateToProfile: (Long) -> Unit,
+    follow: (Long) -> Unit,
+    unFollow: (Long) -> Unit
+) = SearchProfileUiData(
+    id = userId,
+    imgUrl = profileImgUrl,
+    followers = followerCount.toInt(),
+    name = climberName,
+    keyword = keyword,
+    navigateToProfile = navigateToProfile,
+    follow = follow,
+    unFollow = unFollow
+)

@@ -113,11 +113,19 @@ interface MainRepository {
     ): BaseState<List<GetSelectDateRecordResponse>>
 
     suspend fun followUser(
-        @Path("followingUserId") followingUserId: Long
+        followingUserId: Long
     ): BaseState<String>
 
     suspend fun unfollowUser(
-        @Path("followingUserId") followingUserId: Long
+        followingUserId: Long
+    ): BaseState<String>
+
+    suspend fun followGym(
+        gymId: Long
+    ): BaseState<String>
+
+    suspend fun unFollowGym(
+        gymId: Long
     ): BaseState<String>
 
     suspend fun getGymFilteringKey(

@@ -2,11 +2,11 @@ package com.climus.climeet.presentation.ui.main.mypage.follow.viewpager
 
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -16,10 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
-import com.climus.climeet.databinding.FragmentCompleteClimbingBinding
 import com.climus.climeet.databinding.FragmentFollowingBinding
-import com.climus.climeet.presentation.ui.main.home.recycler.following.FollowingRVAdapter
-import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingViewModel
+import com.climus.climeet.presentation.ui.main.mypage.follow.FollowingRVAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

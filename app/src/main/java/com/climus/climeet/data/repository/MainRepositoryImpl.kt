@@ -163,7 +163,8 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun getGymFilteringKeyTime(
         gymId: Long,
         timePoint: String
-    ): BaseState<GetGymFilteringKeyResponse> = runRemote { api.getGymFilteringKeyTime(gymId, timePoint) }
+    ): BaseState<GetGymFilteringKeyResponse> =
+        runRemote { api.getGymFilteringKeyTime(gymId, timePoint) }
 
     override suspend fun getGymRouteInfoList(
         gymId: Long,
@@ -334,4 +335,10 @@ class MainRepositoryImpl @Inject constructor(
     override fun getAttemptCount(level: String): Int {
         return routeRecordDao.getAttemptCount(level)
     }
+
+    override suspend fun followGym(gymId: Long): BaseState<String> =
+        runRemote { api.followGym(gymId) }
+
+    override suspend fun unFollowGym(gymId: Long): BaseState<String> =
+        runRemote { api.unfollowGym(gymId) }
 }

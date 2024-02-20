@@ -55,7 +55,7 @@ class PopularShortsFragment :
                         it.shortsId,
                         it.position
                     )
-
+                    else -> {}
                 }
             }
         }

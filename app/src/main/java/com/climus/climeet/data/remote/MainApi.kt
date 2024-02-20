@@ -87,14 +87,24 @@ interface MainApi {
         @QueryMap filter: Map<String, Long>,
     ): Response<ShortsListResponse>
 
-    @POST("/follow-relationship/{userId}")
+    @POST("/follow-relationship")
     suspend fun followUser(
-        @Path("userId") userId: Long
+        @Query("followingUserId") userId: Long
     ): Response<String>
 
-    @DELETE("/follow-relationship/{userId}")
+    @DELETE("/follow-relationship")
     suspend fun unfollowUser(
-        @Path("userId") userId: Long
+        @Query("followingUserId") userId: Long
+    ): Response<String>
+
+    @POST("/follow-relationship/gym")
+    suspend fun followGym(
+        @Query("gymId") gymId: Long
+    ): Response<String>
+
+    @DELETE("/follow-relationship/gym")
+    suspend fun unfollowGym(
+        @Query("gymId") gymId: Long
     ): Response<String>
 
     @GET("/api/climber/search")

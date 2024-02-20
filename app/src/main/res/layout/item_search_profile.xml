@@ -9,8 +9,8 @@
             name="keyword"
             type="String" />
         <variable
-            name="following"
-            type="com.climus.climeet.presentation.ui.main.global.searchprofile.model.FollowClimber"/>
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.global.searchprofile.model.SearchProfileUiData" />
 
     </data>
 
@@ -25,7 +25,7 @@
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/following_profile_area"
+                android:id="@+id/iv_profile"
                 android:layout_width="41dp"
                 android:layout_height="41dp"
                 android:layout_marginHorizontal="20dp"
@@ -69,23 +69,27 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@+id/following_profile_area"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_profile"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/following_profile_area"
-                app:layout_constraintTop_toTopOf="@+id/following_profile_area"
+                app:layout_constraintStart_toEndOf="@+id/iv_profile"
+                app:layout_constraintTop_toTopOf="@+id/iv_profile"
                 tools:ignore="MissingConstraints">
 
                 <TextView
-                    android:id="@+id/tv_following_name"
+                    android:id="@+id/tv_crag_name"
                     style="@style/TextLargeBold"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:text="@{following.climberName}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:maxWidth="180dp"
+                    android:maxHeight="20dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:layout_marginLeft="15dp"
+                    android:text="@{item.name}"
                     app:keyword="@{keyword}"
                     android:textSize="16sp"
                     tools:text="더클라임 클라이밍 강남점"
-                    app:searchResult="@{following.climberName}"/>
+                    app:searchResult="@{item.name}"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -96,13 +100,13 @@
                         style="@style/TextLargeBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="15dp"
                         android:text="팔로워"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/tv_following"
+                        android:id="@+id/tv_crags_follow"
                         style="@style/TextLargeBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

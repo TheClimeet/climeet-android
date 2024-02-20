@@ -127,7 +127,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                         it.shortsId,
                         it.position
                     )
-
+                    else -> {}
                 }
             }
         }

@@ -4,13 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
-import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
-import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragEvent
-import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
-import com.climus.climeet.presentation.ui.intro.signup.climer.toFollowCrag
-import com.climus.climeet.presentation.ui.main.global.searchprofile.model.FollowClimber
+import com.climus.climeet.presentation.ui.main.global.searchprofile.model.SearchProfileUiData
+import com.climus.climeet.presentation.ui.main.global.toSearchProfileUiData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -27,26 +24,27 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class SearchProfileUiState(
-    val routeList: List<BestRouteDetailInfoResponse> = emptyList(),
-    val followingList: List<UserFollowSimpleResponse> = emptyList(),
-    val searchList: List<FollowCrag> = emptyList(),
-    val searchClimberList: List<FollowClimber> = emptyList(),
+    val isGym: Boolean = true,
+    val profileList: List<SearchProfileUiData> = emptyList(),
     val progressState: Boolean = false,
     val emptyResultState: Boolean = false,
 )
 
-sealed class SearchProfileEvent{
-    data class ShowToastMessage(val msg: String): SearchProfileEvent()
+sealed class SearchProfileEvent {
+    data class ShowToastMessage(val msg: String) : SearchProfileEvent()
+    data class NavigateToGymProfile(val id: Long) : SearchProfileEvent()
+    data class NavigateToClimerProfile(val id: Long) : SearchProfileEvent()
 }
 
 @HiltViewModel
-class SearchProfileViewModel @Inject constructor(private val repository: MainRepository): ViewModel() {
+class SearchProfileViewModel @Inject constructor(private val repository: MainRepository) :
+    ViewModel() {
 
     private val _uiState = MutableStateFlow(SearchProfileUiState())
     val uiState: StateFlow<SearchProfileUiState> = _uiState.asStateFlow()
 
-    private val _event = MutableSharedFlow<FollowCragEvent>()
-    val event: SharedFlow<FollowCragEvent> = _event.asSharedFlow()
+    private val _event = MutableSharedFlow<SearchProfileEvent>()
+    val event: SharedFlow<SearchProfileEvent> = _event.asSharedFlow()
 
     private var curJob: Job? = null
 
@@ -56,85 +54,13 @@ class SearchProfileViewModel @Inject constructor(private val repository: MainRep
         observeKeyword()
     }
 
-    fun getRouteRankingOrderSelectionCount() {
-        viewModelScope.launch {
-            repository.findRouteRankingOrderSelectionCount().let {
-                when(it) {
-                    is BaseState.Success -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                routeList = it.body
-                            )
-                        }
-                    }
-                    is BaseState.Error -> {
-                        it.msg // 서버 에러 메시지
-                        Log.d("API", it.msg)
-                    }
-                }
-            }
-        }
-    }
-
-    fun getClimberFollowing() {
-        viewModelScope.launch {
-            repository.getClimberFollowing().let {
-                when(it) {
-                    is BaseState.Success -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                followingList = it.body
-                            )
-                        }
-                    }
-                    is BaseState.Error -> {
-                        it.msg // 서버 에러 메시지
-                        Log.d("API", it.msg)
-                    }
-                }
-            }
-        }
-    }
-
-    fun followUser(userId: Long) {
-        viewModelScope.launch {
-            repository.followUser(userId).let {
-                when(it) {
-                    is BaseState.Success -> {
-
-                    }
-                    is BaseState.Error -> {
-                        it.msg // 서버 에러 메시지
-                        Log.d("API", it.msg)
-                    }
-                }
-            }
-        }
-    }
-
-    fun unfollowUser(userId: Long) {
-        viewModelScope.launch {
-            repository.unfollowUser(userId).let {
-                when(it) {
-                    is BaseState.Success -> {
-
-                    }
-                    is BaseState.Error -> {
-                        it.msg // 서버 에러 메시지
-                        Log.d("API", it.msg)
-                    }
-                }
-            }
-        }
-    }
 
     private fun observeKeyword() {
         keyword.onEach {
             if (it.isBlank()) {
                 _uiState.update { state ->
                     state.copy(
-                        searchList = emptyList(),
-                        searchClimberList = emptyList(),
+                        profileList = emptyList(),
                         emptyResultState = false
                     )
                 }
@@ -150,85 +76,183 @@ class SearchProfileViewModel @Inject constructor(private val repository: MainRep
 
                 curJob = viewModelScope.launch {
                     delay(500)
-                    repository.searchAvailableGym(it, 0, 15).let { result ->
-                        when (result) {
-                            is BaseState.Success -> {
-                                if (result.body.result.isNotEmpty()) {
+
+                    if (uiState.value.isGym) {
+                        repository.searchAvailableGym(it, 0, 15).let { result ->
+                            when (result) {
+                                is BaseState.Success -> {
+                                    if (result.body.result.isNotEmpty()) {
+                                        _uiState.update { state ->
+                                            state.copy(
+                                                profileList = result.body.result.map { item ->
+                                                    item.toSearchProfileUiData(
+                                                        it,
+                                                        follow = ::follow,
+                                                        unFollow = ::unfollow,
+                                                        navigateToProfile = ::navigateToProfile
+
+                                                    )
+                                                },
+                                                progressState = false
+                                            )
+                                        }
+                                    } else {
+                                        _uiState.update { state ->
+                                            state.copy(
+                                                profileList = emptyList(),
+                                                progressState = false,
+                                                emptyResultState = true
+                                            )
+                                        }
+                                    }
+                                }
+
+                                is BaseState.Error -> {
                                     _uiState.update { state ->
                                         state.copy(
-                                            searchList = result.body.result.map { item ->
-                                                item.toFollowCrag(it)
-                                            },
-                                            progressState = false
+                                            progressState = false,
+                                            emptyResultState = true
                                         )
                                     }
-                                } else {
+
+                                }
+                            }
+                        }
+                    } else {
+                        repository.getClimberSearchingList(0, 15, it).let { result ->
+                            when (result) {
+                                is BaseState.Success -> {
+                                    if (result.body.result.isNotEmpty()) {
+                                        _uiState.update { state ->
+                                            state.copy(
+                                                profileList = result.body.result.map { item ->
+                                                    item.toSearchProfileUiData(
+                                                        it,
+                                                        follow = ::follow,
+                                                        unFollow = ::unfollow,
+                                                        navigateToProfile = ::navigateToProfile
+                                                    )
+                                                },
+                                                progressState = false
+                                            )
+                                        }
+                                    } else {
+                                        _uiState.update { state ->
+                                            state.copy(
+                                                profileList = emptyList(),
+                                                progressState = false,
+                                                emptyResultState = true
+                                            )
+                                        }
+                                    }
+                                }
+
+                                is BaseState.Error -> {
                                     _uiState.update { state ->
                                         state.copy(
-                                            searchList = emptyList(),
                                             progressState = false,
                                             emptyResultState = true
                                         )
                                     }
                                 }
-                            }
-
-                            is BaseState.Error -> {
-                                _uiState.update { state ->
-                                    state.copy(
-                                        progressState = false,
-                                        emptyResultState = true
-                                    )
-                                }
-
                             }
                         }
                     }
 
-                    repository.getClimberSearchingList(0, 15, it).let { result ->
-                        when (result) {
-                            is BaseState.Success -> {
-                                if (result.body.result.isNotEmpty()) {
-                                    _uiState.update { state ->
-                                        state.copy(
-                                            searchClimberList = result.body.result.map { item ->
-                                                item.toFollowClimber(it)
-                                            },
-                                            progressState = false
-                                        )
-                                    }
-                                } else {
-                                    _uiState.update { state ->
-                                        state.copy(
-                                            searchClimberList = emptyList(),
-                                            progressState = false,
-                                            emptyResultState = true
-                                        )
-                                    }
-                                }
-                            }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
 
-                            is BaseState.Error -> {
-                                _uiState.update { state ->
-                                    state.copy(
-                                        progressState = false,
-                                        emptyResultState = true
-                                    )
-                                }
-                            }
+
+    fun follow(id: Long) {
+        viewModelScope.launch {
+            if (uiState.value.isGym) {
+                repository.followGym(id).let{
+                    when(it) {
+                       is BaseState.Success -> {
+
+                       }
+                        is BaseState.Error -> {
+
+                        }
+                    }
+                }
+            } else {
+                repository.followUser(id).let {
+                    when (it) {
+                        is BaseState.Success -> {
+
+                        }
+
+                        is BaseState.Error -> {
+                            it.msg // 서버 에러 메시지
+                            Log.d("API", it.msg)
                         }
                     }
                 }
             }
-        }.launchIn(viewModelScope)
+
+        }
+    }
+
+    private fun unfollow(id: Long) {
+        viewModelScope.launch {
+
+            if (uiState.value.isGym) {
+                repository.unFollowGym(id).let{
+                    when(it){
+                        is BaseState.Success -> {
+
+                        }
+                        is BaseState.Error -> {
+
+                        }
+                    }
+                }
+            } else {
+                repository.unfollowUser(id).let {
+                    when (it) {
+                        is BaseState.Success -> {
+
+                        }
+
+                        is BaseState.Error -> {
+                            it.msg // 서버 에러 메시지
+                            Log.d("API", it.msg)
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    fun changeMode(isGym: Boolean){
+        keyword.value = ""
+        _uiState.update { state ->
+            state.copy(
+                profileList = emptyList(),
+                isGym = isGym
+            )
+        }
+    }
+
+    private fun navigateToProfile(id: Long) {
+        viewModelScope.launch {
+            if(uiState.value.isGym){
+                _event.emit(SearchProfileEvent.NavigateToGymProfile(id))
+            } else {
+                _event.emit(SearchProfileEvent.NavigateToClimerProfile(id))
+            }
+        }
     }
 
     fun deleteKeyword() {
         keyword.value = ""
         _uiState.update { state ->
             state.copy(
-                searchList = emptyList(),
-                searchClimberList = emptyList()
+                profileList = emptyList(),
             )
         }
     }

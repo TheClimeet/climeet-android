@@ -15,6 +15,7 @@ import com.climus.climeet.presentation.ui.main.shorts.adapter.UpdatedFollowAdapt
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
+import com.climus.climeet.presentation.ui.toSearchProfile
 import com.climus.climeet.presentation.ui.toShortsPlayer
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -68,7 +69,7 @@ class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_sho
                         it.shortsId,
                         it.position
                     )
-
+                    is ShortsPlayerEvent.NavigateToAddFollow -> findNavController().toSearchProfile()
                 }
             }
         }

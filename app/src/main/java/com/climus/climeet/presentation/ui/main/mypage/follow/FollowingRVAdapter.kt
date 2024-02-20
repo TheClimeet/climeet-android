@@ -1,4 +1,5 @@
-package com.climus.climeet.presentation.ui.main.home.recycler.following
+package com.climus.climeet.presentation.ui.main.mypage.follow
+
 
 import android.annotation.SuppressLint
 import android.util.SparseBooleanArray
@@ -7,10 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.climus.climeet.databinding.ItemSearchFollowingBinding
-import com.climus.climeet.presentation.ui.main.global.searchprofile.model.FollowClimber
+import com.climus.climeet.data.model.response.UserFollowSimpleResponse
+import com.climus.climeet.databinding.ItemFollowingBinding
 
-class FollowingSearchRVAdapter() : RecyclerView.Adapter<FollowingSearchRVAdapter.ViewHolder>(){
+class FollowingRVAdapter(private val followingList: List<UserFollowSimpleResponse>) : RecyclerView.Adapter<FollowingRVAdapter.ViewHolder>(){
 
     private val followStatus = SparseBooleanArray()
     private var searchList: List<FollowClimber> = emptyList()
@@ -20,12 +21,13 @@ class FollowingSearchRVAdapter() : RecyclerView.Adapter<FollowingSearchRVAdapter
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val binding: ItemSearchFollowingBinding = ItemSearchFollowingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding: ItemFollowingBinding = ItemFollowingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(searchList[position], keyword)
+
+        holder.bind(followingList[position])
 
         val btnFollowing = holder.binding.btnFollowing
         val btnFollow = holder.binding.btnFollow
@@ -45,8 +47,7 @@ class FollowingSearchRVAdapter() : RecyclerView.Adapter<FollowingSearchRVAdapter
             btnFollowing.visibility = View.INVISIBLE
             btnFollow.visibility = View.VISIBLE
             notifyItemChanged(position)
-            val followingItem = searchList[position]
-            followingItem.followerCount += 1
+            followingList[position].followerCount += 1
         }
 
         // 팔로우 -1
@@ -55,12 +56,9 @@ class FollowingSearchRVAdapter() : RecyclerView.Adapter<FollowingSearchRVAdapter
             btnFollowing.visibility = View.VISIBLE
             btnFollow.visibility = View.INVISIBLE
             notifyItemChanged(position)
-            val followingItem = searchList[position]
-            followingItem.followerCount -= 1
+            followingList[position].followerCount -= 1
         }
     }
-
-    override fun getItemCount(): Int = searchList.size
 
     @SuppressLint("NotifyDataSetChanged")
     fun setList(list: List<FollowClimber>, keyword: String) {
@@ -69,24 +67,19 @@ class FollowingSearchRVAdapter() : RecyclerView.Adapter<FollowingSearchRVAdapter
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(val binding: ItemSearchFollowingBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(following: FollowClimber, keyword: String) {
-            binding.keyword = keyword
-            binding.following = following
+    override fun getItemCount(): Int = followingList.size
+
+    inner class ViewHolder(val binding: ItemFollowingBinding): RecyclerView.ViewHolder(binding.root){
+        fun bind(following: UserFollowSimpleResponse) {
 
             binding.tvFollowing.text = following.followerCount.toString()
 
-            if (following.profileImageUrl != null) {
+            if (following.userProfileUrl != null) {
                 Glide.with(binding.root.context)
-                    .load(following.profileImageUrl)
+                    .load(following.userProfileUrl)
                     .into(binding.followingProfileArea)
             }
-            binding.tvFollowingName.text = following.climberName
-
-            if(following.isFollowing) {
-                binding.btnFollowing.visibility = View.INVISIBLE
-                binding.btnFollow.visibility = View.VISIBLE
-            }
+            binding.tvFollowingName.text = following.userName
 
         }
     }
