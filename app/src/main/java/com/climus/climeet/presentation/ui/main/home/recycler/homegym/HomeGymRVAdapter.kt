@@ -1,13 +1,12 @@
 package com.climus.climeet.presentation.ui.main.home.recycler.homegym
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.databinding.ItemHomeGymBinding
-import com.climus.climeet.presentation.ui.main.home.model.HomeGym
+import com.climus.climeet.presentation.ui.main.global.toProfileHomeGymUiData
 import kotlin.math.min
 
 class HomeGymRVAdapter(
@@ -36,13 +35,12 @@ class HomeGymRVAdapter(
     inner class ViewHolder(val binding: ItemHomeGymBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(homeGym: UserHomeGymSimpleResponse) {
+            binding.item = homeGym.toProfileHomeGymUiData(itemClickAction)
             if (homeGym.gymProfileUrl != null) {
                 Glide.with(binding.root.context)
                     .load(homeGym.gymProfileUrl)
                     .into(binding.cragProfileArea)
             }
-            binding.tvItemCragName.text = homeGym.gymName
-            binding.tvItemFollowers.text = "팔로워 " + homeGym.followerCount.toString()
         }
     }
 }

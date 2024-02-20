@@ -96,7 +96,7 @@ class ShortsPlayerViewModel @Inject constructor(
         }
     }
 
-    fun setCurFilter(gymId: Long){
+    fun setCurFilter(gymId: Long) {
         _uiState.update { state ->
             state.copy(
                 curFilter = SelectedFilter(
@@ -138,6 +138,83 @@ class ShortsPlayerViewModel @Inject constructor(
                 }
 
                 result.let {
+                    when (it) {
+                        is BaseState.Success -> {
+
+                            val shortsThumbnailUiData = it.body.result.map { data ->
+                                data.toShortsThumbnailUiData(
+                                    ::navigateToShortsPlayer
+                                )
+                            }
+
+                            val shortsUiData = it.body.result.map { data ->
+                                data.toShortsUiData()
+                            }
+
+                            _uiState.update { state ->
+                                state.copy(
+                                    page = uiState.value.page + 1,
+                                    hasNext = it.body.hasNext,
+                                    shortsThumbnailList = if (option == ShortsOption.NEXT_PAGE) uiState.value.shortsThumbnailList + shortsThumbnailUiData else shortsThumbnailUiData,
+                                    shortsList = if (option == ShortsOption.NEXT_PAGE) uiState.value.shortsList + shortsUiData else shortsUiData
+                                )
+                            }
+                        }
+
+                        is BaseState.Error -> {
+                            _event.emit(ShortsPlayerEvent.ShowToastMessage(it.msg))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun getMyShorts(option: ShortsOption) {
+
+        viewModelScope.launch {
+            if (uiState.value.hasNext) {
+
+
+                repository.getMyShorts(uiState.value.page, 10).let {
+                    when (it) {
+                        is BaseState.Success -> {
+
+                            val shortsThumbnailUiData = it.body.result.map { data ->
+                                data.toShortsThumbnailUiData(
+                                    ::navigateToShortsPlayer
+                                )
+                            }
+
+                            val shortsUiData = it.body.result.map { data ->
+                                data.toShortsUiData()
+                            }
+
+                            _uiState.update { state ->
+                                state.copy(
+                                    page = uiState.value.page + 1,
+                                    hasNext = it.body.hasNext,
+                                    shortsThumbnailList = if (option == ShortsOption.NEXT_PAGE) uiState.value.shortsThumbnailList + shortsThumbnailUiData else shortsThumbnailUiData,
+                                    shortsList = if (option == ShortsOption.NEXT_PAGE) uiState.value.shortsList + shortsUiData else shortsUiData
+                                )
+                            }
+                        }
+
+                        is BaseState.Error -> {
+                            _event.emit(ShortsPlayerEvent.ShowToastMessage(it.msg))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun getUserShorts(option: ShortsOption, userId: Long) {
+
+        viewModelScope.launch {
+            if (uiState.value.hasNext) {
+
+                repository.getUserShorts(userId, uiState.value.page, 10).let {
                     when (it) {
                         is BaseState.Success -> {
 

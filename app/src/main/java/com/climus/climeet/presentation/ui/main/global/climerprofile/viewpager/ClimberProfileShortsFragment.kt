@@ -18,9 +18,12 @@ import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewMod
 import com.climus.climeet.presentation.ui.toSearchProfile
 import com.climus.climeet.presentation.ui.toShortsPlayer
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class ClimberProfileShortsFragment :
+class ClimberProfileShortsFragment @Inject constructor(
+    private val userId: Long
+) :
     BaseFragment<FragmentClimberShortsBinding>(R.layout.fragment_climber_shorts) {
 
     private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
@@ -34,7 +37,7 @@ class ClimberProfileShortsFragment :
         binding.rvShorts.adapter = ShortsThumbnailAdapter()
 
         sharedViewModel.initViewModel()
-        sharedViewModel.getShorts(ShortsOption.NEW_SORT)
+        sharedViewModel.getUserShorts(ShortsOption.NEW_SORT, userId)
         addOnScrollListener()
         initEventObserve()
         initStateObserve()
@@ -48,7 +51,7 @@ class ClimberProfileShortsFragment :
 
                 if (bottomScrollState) {
                     bottomScrollState = false
-                    sharedViewModel.getShorts(ShortsOption.NEXT_PAGE)
+                    sharedViewModel.getUserShorts(ShortsOption.NEXT_PAGE, userId)
                 }
             } else {
                 bottomScrollState = true
