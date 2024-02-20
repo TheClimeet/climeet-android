@@ -24,7 +24,9 @@ class MyPageFragment: BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypa
 
         binding.vm = viewModel
         initEventObserve()
-        modeSwitchListener()
+        //modeSwitchListener()
+
+        viewModel.getProfileInfo()
     }
 
     private fun initEventObserve(){
@@ -54,28 +56,28 @@ class MyPageFragment: BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypa
         }
     }
 
-    private fun modeSwitchListener(){
-
-        if(NetworkModule.isProd){
-            binding.switchmode.isChecked = true
-            binding.tvMode.text = "PROD MODE"
-        } else {
-            binding.switchmode.isChecked = false
-            binding.tvMode.text = "DEV MODE"
-        }
-
-        binding.switchmode.setOnCheckedChangeListener { buttonView, isChecked ->
-
-            if(isChecked){
-                binding.tvMode.text = "PROD MODE"
-                NetworkModule.changeVersion(true)
-            } else {
-                binding.tvMode.text = "DEV MODE"
-                NetworkModule.changeVersion(false)
-            }
-
-        }
-    }
+//    private fun modeSwitchListener(){
+//
+//        if(NetworkModule.isProd){
+//            binding.switchmode.isChecked = true
+//            binding.tvMode.text = "PROD MODE"
+//        } else {
+//            binding.switchmode.isChecked = false
+//            binding.tvMode.text = "DEV MODE"
+//        }
+//
+//        binding.switchmode.setOnCheckedChangeListener { buttonView, isChecked ->
+//
+//            if(isChecked){
+//                binding.tvMode.text = "PROD MODE"
+//                NetworkModule.changeVersion(true)
+//            } else {
+//                binding.tvMode.text = "DEV MODE"
+//                NetworkModule.changeVersion(false)
+//            }
+//
+//        }
+//    }
 
 
     private fun NavController.toAccount(){
