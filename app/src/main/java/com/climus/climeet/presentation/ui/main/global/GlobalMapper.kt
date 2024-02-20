@@ -3,6 +3,7 @@ package com.climus.climeet.presentation.ui.main.global
 import com.climus.climeet.R
 import com.climus.climeet.data.model.response.ClimberDetailInfoItem
 import com.climus.climeet.data.model.response.DifficultyItem
+import com.climus.climeet.data.model.response.GymListToFollowItem
 import com.climus.climeet.data.model.response.RouteItem
 import com.climus.climeet.data.model.response.SearchAvailableGymItem
 import com.climus.climeet.data.model.response.SectorItem
@@ -52,20 +53,21 @@ fun RouteItem.toRouteUiData(
     )
 }
 
-fun SearchAvailableGymItem.toSearchProfileUiData(
+fun GymListToFollowItem.toSearchProfileUiData(
     keyword: String,
     navigateToProfile: (Long) -> Unit,
     follow: (Long) -> Unit,
     unFollow: (Long) -> Unit
 ) = SearchProfileUiData(
-    id = id,
+    id = gymId,
     imgUrl = profileImageUrl,
     followers = follower,
     name = name,
     keyword = keyword,
     navigateToProfile = navigateToProfile,
     follow = follow,
-    unFollow = unFollow
+    unFollow = unFollow,
+    isFollowing = isFollow
 )
 
 fun ClimberDetailInfoItem.toSearchProfileUiData(
@@ -81,5 +83,6 @@ fun ClimberDetailInfoItem.toSearchProfileUiData(
     keyword = keyword,
     navigateToProfile = navigateToProfile,
     follow = follow,
-    unFollow = unFollow
+    unFollow = unFollow,
+    isFollowing = isFollower
 )

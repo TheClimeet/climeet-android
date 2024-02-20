@@ -78,7 +78,7 @@ class SearchProfileViewModel @Inject constructor(private val repository: MainRep
                     delay(500)
 
                     if (uiState.value.isGym) {
-                        repository.searchAvailableGym(it, 0, 15).let { result ->
+                        repository.getGymListToFollow(it, 0, 15).let { result ->
                             when (result) {
                                 is BaseState.Success -> {
                                     if (result.body.result.isNotEmpty()) {
@@ -168,11 +168,27 @@ class SearchProfileViewModel @Inject constructor(private val repository: MainRep
     fun follow(id: Long) {
         viewModelScope.launch {
             if (uiState.value.isGym) {
-                repository.followGym(id).let{
-                    when(it) {
-                       is BaseState.Success -> {
+                repository.followGym(id).let {
+                    when (it) {
+                        is BaseState.Success -> {
 
-                       }
+                            val newList = uiState.value.profileList.map{ data ->
+                                if(data.id == id){
+                                    data.copy(
+                                        isFollowing = true
+                                    )
+                                } else {
+                                    data.copy()
+                                }
+                            }
+
+                            _uiState.update { state ->
+                                state.copy(
+                                    profileList = newList
+                                )
+                            }
+                        }
+
                         is BaseState.Error -> {
 
                         }
@@ -182,7 +198,21 @@ class SearchProfileViewModel @Inject constructor(private val repository: MainRep
                 repository.followUser(id).let {
                     when (it) {
                         is BaseState.Success -> {
+                            val newList = uiState.value.profileList.map{ data ->
+                                if(data.id == id){
+                                    data.copy(
+                                        isFollowing = true
+                                    )
+                                } else {
+                                    data.copy()
+                                }
+                            }
 
+                            _uiState.update { state ->
+                                state.copy(
+                                    profileList = newList
+                                )
+                            }
                         }
 
                         is BaseState.Error -> {
@@ -200,11 +230,26 @@ class SearchProfileViewModel @Inject constructor(private val repository: MainRep
         viewModelScope.launch {
 
             if (uiState.value.isGym) {
-                repository.unFollowGym(id).let{
-                    when(it){
+                repository.unFollowGym(id).let {
+                    when (it) {
                         is BaseState.Success -> {
+                            val newList = uiState.value.profileList.map{ data ->
+                                if(data.id == id){
+                                    data.copy(
+                                        isFollowing = false
+                                    )
+                                } else {
+                                    data.copy()
+                                }
+                            }
 
+                            _uiState.update { state ->
+                                state.copy(
+                                    profileList = newList
+                                )
+                            }
                         }
+
                         is BaseState.Error -> {
 
                         }
@@ -214,7 +259,21 @@ class SearchProfileViewModel @Inject constructor(private val repository: MainRep
                 repository.unfollowUser(id).let {
                     when (it) {
                         is BaseState.Success -> {
+                            val newList = uiState.value.profileList.map{ data ->
+                                if(data.id == id){
+                                    data.copy(
+                                        isFollowing = false
+                                    )
+                                } else {
+                                    data.copy()
+                                }
+                            }
 
+                            _uiState.update { state ->
+                                state.copy(
+                                    profileList = newList
+                                )
+                            }
                         }
 
                         is BaseState.Error -> {
@@ -228,7 +287,7 @@ class SearchProfileViewModel @Inject constructor(private val repository: MainRep
         }
     }
 
-    fun changeMode(isGym: Boolean){
+    fun changeMode(isGym: Boolean) {
         keyword.value = ""
         _uiState.update { state ->
             state.copy(
@@ -240,7 +299,7 @@ class SearchProfileViewModel @Inject constructor(private val repository: MainRep
 
     private fun navigateToProfile(id: Long) {
         viewModelScope.launch {
-            if(uiState.value.isGym){
+            if (uiState.value.isGym) {
                 _event.emit(SearchProfileEvent.NavigateToGymProfile(id))
             } else {
                 _event.emit(SearchProfileEvent.NavigateToClimerProfile(id))

@@ -15,7 +15,6 @@ import com.climus.climeet.presentation.ui.main.global.searchprofile.model.Search
 
 class SearchProfileAdapter() : RecyclerView.Adapter<SearchProfileViewHolder>() {
 
-    private val followStatus = SparseBooleanArray()
     private var searchList: List<SearchProfileUiData> = emptyList()
     private var keyword: String = ""
 
@@ -30,44 +29,6 @@ class SearchProfileAdapter() : RecyclerView.Adapter<SearchProfileViewHolder>() {
 
     override fun onBindViewHolder(holder: SearchProfileViewHolder, position: Int) {
         holder.bind(searchList[position], keyword)
-
-        val btnFollowing = holder.binding.btnFollowing
-        val btnFollow = holder.binding.btnFollow
-        val isFollow = followStatus[position]
-
-        if (isFollow) {
-            btnFollowing.visibility = View.INVISIBLE
-            btnFollow.visibility = View.VISIBLE
-        } else {
-            btnFollowing.visibility = View.VISIBLE
-            btnFollow.visibility = View.INVISIBLE
-        }
-
-        holder.binding.ivProfile.setOnClickListener{
-            searchList[position].navigateToProfile(searchList[position].id)
-        }
-
-        // 팔로우 +1
-        btnFollowing.setOnClickListener {
-            followStatus.put(position, !isFollow) // 토글
-            btnFollowing.visibility = View.INVISIBLE
-            btnFollow.visibility = View.VISIBLE
-            notifyItemChanged(position)
-            val cragItem = searchList[position]
-            cragItem.followers += 1
-            searchList[position].follow(searchList[position].id)
-        }
-
-        // 팔로우 -1
-        btnFollow.setOnClickListener {
-            followStatus.put(position, !isFollow) // 토글
-            btnFollowing.visibility = View.VISIBLE
-            btnFollow.visibility = View.INVISIBLE
-            notifyItemChanged(position)
-            val cragItem = searchList[position]
-            cragItem.followers -= 1
-            searchList[position].unFollow(searchList[position].id)
-        }
     }
 
     override fun getItemCount(): Int = searchList.size
@@ -87,6 +48,39 @@ class SearchProfileViewHolder(val binding: ItemSearchProfileBinding) :
         binding.item = item
 
         binding.tvCragsFollow.text = item.followers.toString()
+
+
+        val btnFollowing = binding.btnFollowing
+        val btnFollow = binding.btnFollow
+        val isFollow = item.isFollowing
+
+        if (isFollow) {
+            btnFollowing.visibility = View.INVISIBLE
+            btnFollow.visibility = View.VISIBLE
+        } else {
+            btnFollowing.visibility = View.VISIBLE
+            btnFollow.visibility = View.INVISIBLE
+        }
+
+        binding.ivProfile.setOnClickListener {
+            item.navigateToProfile(item.id)
+        }
+
+        // 팔로우 +1
+        btnFollowing.setOnClickListener {
+            item.follow(item.id)
+            binding.tvCragsFollow.text = (item.followers + 1).toString()
+            btnFollowing.visibility = View.INVISIBLE
+            btnFollow.visibility = View.VISIBLE
+        }
+
+        // 팔로우 -1
+        btnFollow.setOnClickListener {
+            item.unFollow(item.id)
+            binding.tvCragsFollow.text = (item.followers - 1).toString()
+            btnFollowing.visibility = View.VISIBLE
+            btnFollow.visibility = View.INVISIBLE
+        }
 
         if (item.imgUrl != null) {
             Glide.with(binding.root.context)

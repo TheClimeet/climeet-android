@@ -19,6 +19,7 @@ import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
+import com.climus.climeet.data.model.response.GetGymListToFollowResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
@@ -72,7 +73,7 @@ class MainRepositoryImpl @Inject constructor(
         userId: Long,
         userCategory: String
     ): BaseState<List<UserFollowingInfoResponse>> =
-       runRemote { api.getUserFollowing(userId, userCategory) }
+        runRemote { api.getUserFollowing(userId, userCategory) }
 
     override suspend fun getUserFollowers(
         userId: Long,
@@ -356,4 +357,12 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun unFollowGym(gymId: Long): BaseState<String> =
         runRemote { api.unfollowGym(gymId) }
+
+    override suspend fun getGymListToFollow(
+        gymname: String,
+        page: Int,
+        size: Int
+    ): BaseState<GetGymListToFollowResponse> = runRemote {
+        api.getGymListToFollow(gymname, page, size)
+    }
 }

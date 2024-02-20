@@ -14,6 +14,7 @@ import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
+import com.climus.climeet.data.model.response.GetGymListToFollowResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
@@ -297,5 +298,11 @@ interface MainApi {
         @Path("gymId") gymID: Long,
     ): Response<List<GymTimeBestClimberResponse>>
 
+    @GET("/api/gyms/search/follow")
+    suspend fun getGymListToFollow(
+        @Query("gymname") gymname: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<GetGymListToFollowResponse>
 
 }

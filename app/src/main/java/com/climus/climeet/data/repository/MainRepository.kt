@@ -17,6 +17,7 @@ import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
+import com.climus.climeet.data.model.response.GetGymListToFollowResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
@@ -269,4 +270,10 @@ interface MainRepository {
     fun getSuccessCount(level: String): Int
 
     fun getAttemptCount(level: String): Int
+
+    suspend fun getGymListToFollow(
+        gymname: String,
+        page: Int,
+        size: Int
+    ): BaseState<GetGymListToFollowResponse>
 }
