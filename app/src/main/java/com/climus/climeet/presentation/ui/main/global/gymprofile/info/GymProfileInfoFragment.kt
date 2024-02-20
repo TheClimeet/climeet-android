@@ -25,7 +25,7 @@ class GymProfileInfoFragment :
     BaseFragment<FragmentGymProfileInfoBinding>(R.layout.fragment_gym_profile_info) {
 
     val parentViewModel: GymProfileViewModel by activityViewModels()
-    val viewModel: GymProfileInfoViewModel by viewModels()
+    val viewModel: GymProfileInfoViewModel by activityViewModels()
 
     private var timeAdapter: GymTimeAdapter? = null
     private var serviceAdapter: GymServiceAdapter? = null
@@ -136,6 +136,12 @@ class GymProfileInfoFragment :
                     binding.rvReview.visibility = View.VISIBLE
                     binding.layoutEmptyReview.visibility = View.GONE
                     reviewAdapter?.setList(combinedReviewList)
+                }
+
+                if(it.myGymReview == null){
+                    binding.btnCreateReview.text = "리뷰 남기기"
+                } else {
+                    binding.btnCreateReview.text = "리뷰 수정하기"
                 }
             }
         }

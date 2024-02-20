@@ -285,6 +285,12 @@ interface MainApi {
         @Body params: CreateGymProfileReviewRequest
     ): Response<ResponseBody>
 
+    @PATCH("/api/gyms/{gymId}/review")
+    suspend fun editGymReview(
+        @Path("gymId") gymID: Long,
+        @Body params: CreateGymProfileReviewRequest
+    ): Response<ResponseBody>
+
     @GET("/api/climbing-records/gyms/{gymId}/rank/weeks/climbers/clear")
     suspend fun getGymClimberRankingOrderClearCount(
         @Path("gymId") gymID: Long,
