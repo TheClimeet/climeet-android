@@ -1,32 +1,29 @@
-package com.climus.climeet.presentation.ui.main.shorts
+package com.climus.climeet.presentation.ui.main.global.climerprofile.viewpager
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
-import com.climus.climeet.databinding.FragmentShortsBinding
+import com.climus.climeet.databinding.FragmentClimberShortsBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.global.selectsector.BottomSheetState
+import com.climus.climeet.presentation.ui.main.shorts.ShortsEvent
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsThumbnailAdapter
-import com.climus.climeet.presentation.ui.main.shorts.adapter.UpdatedFollowAdapter
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
-import com.climus.climeet.presentation.ui.toClimerProfile
-import com.climus.climeet.presentation.ui.toGymProfile
 import com.climus.climeet.presentation.ui.toSearchProfile
 import com.climus.climeet.presentation.ui.toShortsPlayer
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
-class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_shorts) {
+class ClimberProfileShortsFragment :
+    BaseFragment<FragmentClimberShortsBinding>(R.layout.fragment_climber_shorts) {
 
     private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
-    private val viewModel: ShortsViewModel by viewModels()
 
     private var bottomScrollState = true
 
@@ -34,25 +31,22 @@ class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_sho
         super.onViewCreated(view, savedInstanceState)
 
         binding.svm = sharedViewModel
-        binding.vm = viewModel
-
-        binding.rvShortsThumbnail.adapter = ShortsThumbnailAdapter()
-        binding.rvUpdatedFollow.adapter = UpdatedFollowAdapter()
+        binding.rvShorts.adapter = ShortsThumbnailAdapter()
 
         sharedViewModel.initViewModel()
-        sharedViewModel.getUpdatedFollow()
         sharedViewModel.getShorts(ShortsOption.NEW_SORT)
         addOnScrollListener()
         initEventObserve()
+        initStateObserve()
     }
 
     private fun addOnScrollListener() {
 
-        binding.layoutScrollview.setOnScrollChangeListener { v, _, scrollY, _, _ ->
+        binding.layoutScroll.setOnScrollChangeListener { v, _, scrollY, _, _ ->
 
-            if (scrollY > binding.layoutScrollview.getChildAt(0).measuredHeight - v.measuredHeight) {
+            if (scrollY > binding.layoutScroll.getChildAt(0).measuredHeight - v.measuredHeight) {
 
-                if(bottomScrollState){
+                if (bottomScrollState) {
                     bottomScrollState = false
                     sharedViewModel.getShorts(ShortsOption.NEXT_PAGE)
                 }
@@ -71,28 +65,23 @@ class ShortsFragment : BaseFragment<FragmentShortsBinding>(R.layout.fragment_sho
                         it.shortsId,
                         it.position
                     )
-                    is ShortsPlayerEvent.NavigateToAddFollow -> findNavController().toSearchProfile()
-                    is ShortsPlayerEvent.NavigateToUserProfile -> findNavController().toClimerProfile(it.userId)
-                    is ShortsPlayerEvent.NavigateToGymProfile -> findNavController().toGymProfile(it.gymId)
-                }
-            }
-        }
 
-        repeatOnStarted {
-            viewModel.event.collect {
-                when (it) {
-                    is ShortsEvent.NavigateToSearchCragBottomSheet -> {
-                        BottomSheetState.state = "SHORTS"
-                        findNavController().toShortsBottomSheet()
-                    }
+                    else -> {}
                 }
             }
         }
     }
 
-    private fun NavController.toShortsBottomSheet() {
-        val action = ShortsFragmentDirections.actionShortsFragmentToShortsBottomSheetFragment()
-        navigate(action)
+    private fun initStateObserve() {
+        repeatOnStarted {
+            sharedViewModel.uiState.collect {
+                if (it.shortsThumbnailList.isEmpty()) {
+                    binding.layoutNoItem.visibility = View.VISIBLE
+                } else {
+                    binding.layoutNoItem.visibility = View.INVISIBLE
+                }
+            }
+        }
     }
 
 }

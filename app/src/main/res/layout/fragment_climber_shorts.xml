@@ -5,51 +5,79 @@
 
     <data>
 
+        <variable
+            name="svm"
+            type="com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel" />
+
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/layout_scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".presentation.ui.main.global.climerprofile.viewpager.ClimberShortsFragment">
+        android:layout_height="wrap_content"
+        android:paddingBottom="100dp"
+        android:clipToPadding="false">
 
-        <TextView
-            style="@style/TextLargeBold"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="숏츠 보기"
-            android:textSize="18sp"
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
-
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/ic_no_shorts"/>
+            tools:context=".presentation.ui.main.global.climerprofile.viewpager.ClimberProfileShortsFragment">
 
             <TextView
+                android:id="@+id/tv_header"
+                style="@style/TextLargeBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                style="@style/TextRegular"
-                android:text="등록된 숏츠가 없습니다."/>
-"
-        </LinearLayout>
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:text="숏츠 보기"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <LinearLayout
+                android:id="@+id/layout_no_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_header">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/ic_no_shorts" />
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="등록된 숏츠가 없습니다."
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+                "
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_shorts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_header"
+                app:list="@{svm.uiState.shortsThumbnailList}"
+                app:spanCount="2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
 </layout>

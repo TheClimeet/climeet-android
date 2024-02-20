@@ -80,15 +80,17 @@ fun ShortsItem.toShortsUiData(): ShortsUiData {
 
 fun ShortsUpdatedFollowResponse.toUpdatedFollowUiData(
     viewType: Int,
-    onClickListener: (Long) -> Unit,
+    onClickListener: (Long,Long, Boolean) -> Unit,
     navigateToAddFollow: () -> Unit
 ) = UpdatedFollowUiData(
+    gymId = gymId,
     userId = followingUserId,
     viewType = viewType,
     profileImg = followingUserProfileUrl,
     name = followingUserName,
     onClickListener = onClickListener,
-    navigateToAddFollow = navigateToAddFollow
+    navigateToAddFollow = navigateToAddFollow,
+    isGym = isGym
 )
 
 fun ShortsMainCommentItem.toShortsCommentUiData(
