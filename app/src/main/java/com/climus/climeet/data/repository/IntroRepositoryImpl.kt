@@ -31,4 +31,6 @@ class IntroRepositoryImpl @Inject constructor(
     override suspend fun managerGymNameCheck(gymName: String): BaseState<Boolean> = runRemote { api.managerGymNameCheck(gymName) }
 
     override suspend fun climberNickNameCheck(nickName: String): BaseState<Boolean> = runRemote { api.climberNickNameCheck(nickName) }
+
+    override suspend fun patchFcmToken(body: String): BaseState<Unit> = runRemote { api.patchFcmToken(body) }
 }

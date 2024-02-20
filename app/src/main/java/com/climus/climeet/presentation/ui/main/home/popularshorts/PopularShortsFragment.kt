@@ -1,56 +1,59 @@
 package com.climus.climeet.presentation.ui.main.home.popularshorts
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.climus.climeet.MainNavDirections
 import com.climus.climeet.R
-import com.climus.climeet.data.model.response.ShortsItem
-import com.climus.climeet.databinding.FragmentBestClimerBinding
 import com.climus.climeet.databinding.FragmentPopularShortsBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.climus.climeet.presentation.ui.main.home.HomeViewModel
-import com.climus.climeet.presentation.ui.main.home.model.HomeGym
-import com.climus.climeet.presentation.ui.main.home.model.PopularShorts
 import com.climus.climeet.presentation.ui.main.home.popularshorts.adapter.PopularShortsAllRVAdapter
-import com.climus.climeet.presentation.ui.main.home.recycler.homegym.HomeGymRVAdapter
-import com.climus.climeet.presentation.ui.main.home.recycler.popularshorts.PopularShortsRVAdapter
-import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
+import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
+import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
+import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
+import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
+import com.climus.climeet.presentation.ui.toShortsPlayer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PopularShortsFragment : BaseFragment<FragmentPopularShortsBinding>(R.layout.fragment_popular_shorts) {
+class PopularShortsFragment :
+    BaseFragment<FragmentPopularShortsBinding>(R.layout.fragment_popular_shorts) {
 
-    private val viewModel: PopularShortsViewModel by viewModels()
-    private var recyclerShorts: List<ShortsUiData> = emptyList()
+    private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
+    private var recyclerShorts: List<ShortsThumbnailUiData> = emptyList()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getShorts()
+        sharedViewModel.initViewModel()
+        sharedViewModel.getShorts(ShortsOption.NEW_SORT)
         initEventObserve()
         setupOnClickListener()
 
     }
 
-    private fun initEventObserve(){
-        repeatOnStarted {
-            viewModel?.let { vm ->
-                vm.uiState.collect { uiState ->
+    private fun initEventObserve() {
 
-                    uiState.shortsList?.let { shortsList ->
-                        recyclerShorts = shortsList
-                        setupPopularShortsList()
-                    }
+        repeatOnStarted {
+            sharedViewModel.uiState.collect {
+                if (it.shortsThumbnailList.isNotEmpty()) {
+                    recyclerShorts = it.shortsThumbnailList
+                    setupPopularShortsList()
+                }
+            }
+        }
+
+        repeatOnStarted {
+            sharedViewModel.event.collect {
+                when (it) {
+                    is ShortsPlayerEvent.ShowToastMessage -> showToastMessage(it.msg)
+                    is ShortsPlayerEvent.NavigateToShortsPlayer -> findNavController().toShortsPlayer(
+                        it.shortsId,
+                        it.position
+                    )
 
                 }
             }

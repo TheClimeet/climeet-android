@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.databinding.ItemOnboardBinding
 
-class OnBoardAdapter(val data: List<String>) : RecyclerView.Adapter<OnBoardViewHolder>() {
+class OnBoardAdapter(val data: List<OnBoardItem>) : RecyclerView.Adapter<OnBoardViewHolder>() {
 
     override fun onBindViewHolder(holder: OnBoardViewHolder, position: Int) {
         holder.bind(data[position])
@@ -26,7 +26,15 @@ class OnBoardAdapter(val data: List<String>) : RecyclerView.Adapter<OnBoardViewH
 class OnBoardViewHolder(private val binding: ItemOnboardBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: String) {
-        binding.tvDescription.text = item
+    fun bind(item: OnBoardItem) {
+        binding.tvDescription.text = item.description
+        binding.tvHeader.text = item.title
+        binding.ivImg.setImageResource(item.img)
     }
 }
+
+data class OnBoardItem(
+    val title: String,
+    val description: String,
+    val img: Int
+)

@@ -40,4 +40,6 @@ interface IntroRepository {
     suspend fun climberNickNameCheck(
         nickName: String
     ): BaseState<Boolean>
+
+    suspend fun patchFcmToken(body: String): BaseState<Unit>
 }

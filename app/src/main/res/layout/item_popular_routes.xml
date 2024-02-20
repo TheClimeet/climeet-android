@@ -11,80 +11,32 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/item_popular_routes_cardView"
+        <com.climus.climeet.presentation.customview.RouteView
+            android:id="@+id/routeView"
             android:layout_width="90dp"
             android:layout_height="110dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:strokeColor="#63B75D"
-            app:strokeWidth="2dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/iv_popular_routes_img"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_weight="5"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/img_introduce_banner"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_weight="2"
-                    android:background="@color/black"
-                    android:gravity="center_vertical|start"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="100dp"
-                    android:textColor="#63B75D"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-         <TextView
-            android:id="@+id/tv_popular_routes_level"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TextRegular"
-            android:text="V4"
-            android:textSize="14sp"
-            android:textColor="#63B75D"
-            android:layout_marginStart="5dp"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintBottom_toBottomOf="@+id/item_popular_routes_cardView"
-            app:layout_constraintStart_toStartOf="@+id/item_popular_routes_cardView" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_popular_routes_location"
+            style="@style/TextRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rect_blackfill_nostroke_999radius"
+            android:ellipsize="end"
             android:maxWidth="80dp"
             android:maxHeight="15dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:background="@drawable/rect_grey8fill_nostroke_999radius"
+            android:paddingVertical="2dp"
             android:paddingStart="18dp"
             android:paddingEnd="8dp"
-            style="@style/TextRegular"
-            android:layout_marginTop="5dp"
-            android:paddingVertical="2dp"
+            android:singleLine="true"
             android:text="더클라임 연남"
             android:textColor="@color/white"
             android:textSize="8sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_popular_routes_cardView" />
+            app:layout_constraintTop_toBottomOf="@+id/routeView" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -98,17 +50,17 @@
 
         <TextView
             android:id="@+id/tv_popular_routes_sector"
+            style="@style/TextRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/rect_grey8fill_nostroke_999radius"
-            android:paddingVertical="2dp"
             android:layout_marginTop="2dp"
-            android:paddingStart="18dp"
-            android:paddingEnd="8dp"
-            style="@style/TextRegular"
+            android:background="@drawable/rect_blackfill_nostroke_999radius"
+            android:ellipsize="end"
             android:maxWidth="80dp"
             android:maxHeight="15dp"
-            android:ellipsize="end"
+            android:paddingVertical="2dp"
+            android:paddingStart="18dp"
+            android:paddingEnd="8dp"
             android:singleLine="true"
             android:text="툇마루"
             android:textColor="@color/white"

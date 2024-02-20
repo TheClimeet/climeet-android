@@ -25,5 +25,7 @@ data class BestRouteDetailInfoResponse(
     val gymDifficultyName : String,
 
     @SerializedName("gymDifficultyColor")
-    val gymDifficultyColor : String
+    val gymDifficultyColor : String,
+
+    val holdColor: String?="하양"
 )

@@ -23,5 +23,8 @@ data class RouteSimpleInfo(
     val routeImgUrl: String,
     val difficultyName: String,
     val sectorId: Long,
-    val sectorName: String
+    val sectorName: String,
+    val holdColor: String,
+    val gymDifficultyName : String,
+    val gymDifficultyColor : String,
 )

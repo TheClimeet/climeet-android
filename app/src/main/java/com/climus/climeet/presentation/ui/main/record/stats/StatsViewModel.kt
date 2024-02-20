@@ -92,8 +92,8 @@ class StatsViewModel @Inject constructor(
 
                         // todo 받은 차트값중에서 max값을 고르는 for문
                         var maxPercent = -1f
-                        body.difficulty.forEach{
-                            if( maxPercent < it.value.toFloat()){
+                        body.difficulty.forEach {
+                            if (maxPercent < it.value.toFloat()) {
                                 maxPercent = it.value.toFloat()
                             }
                         }
@@ -101,7 +101,11 @@ class StatsViewModel @Inject constructor(
                         // todo max값 차트값을 기준으로 퍼센테이지를 계산하는 로직
 
                         body.difficulty.forEach {
-                            val percent = ((it.value.toFloat() / body.totalCompletedCount.toFloat()) * 100).roundToInt()
+                            val percent = if (it.value == 0) {
+                                0
+                            } else {
+                                ((it.value.toFloat() / body.totalCompletedCount.toFloat()) * 100).roundToInt()
+                            }
                             list.add(
                                 StickChartUiData(
                                     // todo 차트 꼭대기 퍼센트 스트링
@@ -142,20 +146,20 @@ class StatsViewModel @Inject constructor(
         }
     }
 
-    fun setProgress(){
+    fun setProgress() {
         cc.value = "${uiState.value.totalCompletedCount}문제 완등"
         ac.value = "${uiState.value.totalAttemptCount}문제 도전!"
     }
 
-    fun btnMoveDate(isPlus: Boolean){
+    fun btnMoveDate(isPlus: Boolean) {
         var date = selectedDate.value?.let {
             it
         } ?: run {
             LocalDate.of(0, 0, 0)
         }
-        if(isPlus){
+        if (isPlus) {
             selectedDate.value = date.plusMonths(1)
-        }else{
+        } else {
             selectedDate.value = date.minusMonths(1)
         }
         date = selectedDate.value
