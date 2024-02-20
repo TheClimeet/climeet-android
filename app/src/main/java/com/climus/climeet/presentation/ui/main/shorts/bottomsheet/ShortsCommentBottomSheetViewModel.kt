@@ -27,7 +27,6 @@ data class ShortsCommentBottomSheetUiState(
     val hasNext: Boolean = true,
     val shortsCommentList: List<ShortsCommentUiData> = emptyList(),
     val profileImgUrl: String? = "",
-    val myProfile: String? = ""
 )
 
 sealed class ShortsCommentBottomSheetEvent {
@@ -35,6 +34,7 @@ sealed class ShortsCommentBottomSheetEvent {
     data object AddCommentComplete : ShortsCommentBottomSheetEvent()
     data class GoToPosition(val position: Int): ShortsCommentBottomSheetEvent()
     data class StartAddSubComment(val nick: String): ShortsCommentBottomSheetEvent()
+    data class SetMyProfile(val url: String): ShortsCommentBottomSheetEvent()
 }
 
 @HiltViewModel
@@ -71,11 +71,7 @@ class ShortsCommentBottomSheetViewModel @Inject constructor(
             repository.getMyPageProfile().let{
                 when(it){
                     is BaseState.Success -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                myProfile = it.body.profileImgUrl
-                            )
-                        }
+                        _event.emit(ShortsCommentBottomSheetEvent.SetMyProfile(it.body.profileImgUrl))
                     }
 
                     is BaseState.Error -> {

@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.main.shorts.model
 
 data class ShortsUiData(
     val shortsId: Long = 0,
+    val isManager: Boolean = false,
     val thumbnailImg: String = "",
     val gymId: Long? = -1,
     val gymName: String? = "",
