@@ -61,7 +61,7 @@ class GymProfileSkillViewModel @Inject constructor(
 
                         it.body.forEach {
                             val percent = if (it.percentage == 0) {
-                                0.01
+                                0
                             } else {
                                 it.percentage
                             }
@@ -70,7 +70,7 @@ class GymProfileSkillViewModel @Inject constructor(
                                     // todo 차트 꼭대기 퍼센트 스트링
                                     percentString = "${it.percentage}%",
                                     // todo 차트 막대 길이비율 정하는 float값
-                                    percent = (percent.toFloat() / 100),
+                                    percent = maxOf((percent.toFloat() / 100) * 0.8f, 0.001f),
                                     // todo 차트 하단에 레벨이름
                                     levelName = it.gymDifficultyName,
                                     // todo 색상 hex 값
