@@ -8,10 +8,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
+import com.climus.climeet.app.App
 import com.climus.climeet.databinding.FragmentAdminLoginBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroViewModel
 import com.climus.climeet.presentation.ui.main.MainActivity
+import com.climus.climeet.presentation.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,6 +28,21 @@ class AdminLoginFragment : BaseFragment<FragmentAdminLoginBinding>(R.layout.frag
         parentViewModel.signUpProgressStop()
         binding.vm = viewModel
         initEventObserve()
+
+        binding.btnTestLogin.setOnClickListener {
+            testLogin()
+        }
+    }
+
+    private fun testLogin() {
+        App.sharedPreferences.edit()
+            .putString(Constants.X_ACCESS_TOKEN, Constants.TEST_ADMIN_TOKEN)
+            .putString(Constants.X_MODE, "ADMIN")
+            .apply()
+
+        val intent = Intent(requireContext(), MainActivity::class.java)
+            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     private fun initEventObserve() {

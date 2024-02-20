@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.main.upload
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -20,6 +21,7 @@ import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.CheckPublicBottomSheet
 import com.climus.climeet.presentation.ui.main.MainViewModel
 import com.climus.climeet.presentation.ui.main.global.selectsector.BottomSheetState
+import com.climus.climeet.presentation.util.Constants.TAG
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -97,7 +99,7 @@ class UploadFragment : BaseFragment<FragmentUploadBinding>(R.layout.fragment_upl
                 configureWith = Configuration(
                     quality = VideoQuality.LOW,
                     videoNames = uris.map { uri -> uri.pathSegments.last() },
-                    isMinBitrateCheckEnabled = true,
+                    isMinBitrateCheckEnabled = false,
                 ),
                 listener = object : CompressionListener {
                     override fun onProgress(index: Int, percent: Float) {
@@ -124,11 +126,11 @@ class UploadFragment : BaseFragment<FragmentUploadBinding>(R.layout.fragment_upl
                     }
 
                     override fun onFailure(index: Int, failureMessage: String) {
-
+                        showToastMessage(failureMessage)
                     }
 
                     override fun onCancelled(index: Int) {
-
+                        showToastMessage("압축 취소됨")
                     }
                 }
             )
