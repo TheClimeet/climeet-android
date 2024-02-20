@@ -1,21 +1,16 @@
-package com.climus.climeet.presentation.ui.main.home.searchcrag
+package com.climus.climeet.presentation.ui.main.home.search
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
-import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
-import com.climus.climeet.data.model.response.BestRouteSimpleResponse
-import com.climus.climeet.data.model.response.ShortsSimpleResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragEvent
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
 import com.climus.climeet.presentation.ui.intro.signup.climer.toFollowCrag
-import com.climus.climeet.presentation.ui.main.home.HomeUiState
-import com.climus.climeet.presentation.ui.main.home.model.HomeGym
-import com.climus.climeet.presentation.ui.main.home.searchcrag.model.FollowClimber
+import com.climus.climeet.presentation.ui.main.home.search.model.FollowClimber
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

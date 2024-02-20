@@ -1,9 +1,7 @@
-package com.climus.climeet.presentation.ui.main.home.searchcrag
+package com.climus.climeet.presentation.ui.main.home.search
 
 import com.climus.climeet.data.model.response.ClimberDetailInfoItem
-import com.climus.climeet.data.model.response.SearchAvailableGymItem
-import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
-import com.climus.climeet.presentation.ui.main.home.searchcrag.model.FollowClimber
+import com.climus.climeet.presentation.ui.main.home.search.model.FollowClimber
 
 fun ClimberDetailInfoItem.toFollowClimber(
     keyword: String,

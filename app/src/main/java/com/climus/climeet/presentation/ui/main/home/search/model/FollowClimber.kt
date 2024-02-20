@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.home.searchcrag.model
+package com.climus.climeet.presentation.ui.main.home.search.model
 
 data class FollowClimber(
 

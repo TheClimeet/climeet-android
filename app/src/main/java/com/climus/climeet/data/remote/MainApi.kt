@@ -34,7 +34,9 @@ import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
+import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
+import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -141,9 +143,17 @@ interface MainApi {
     suspend fun findGymRankingListOrderSelectionCount(
     ): Response<List<BestRecordGymDetailInfoResponse>>
 
+    @GET("/api/gym-following")
+    suspend fun getGymsFollowing(
+    ): Response<List<UserHomeGymDetailResponse>>
+
     @GET("/api/home/rank/weeks/routes")
     suspend fun findRouteRankingOrderSelectionCount(
     ): Response<List<BestRouteDetailInfoResponse>>
+
+    @GET("/api/profile")
+    suspend fun getUserProfile(
+    ): Response<UserProfileInfoResponse>
 
 
     @GET("/api/gyms/{gymId}/version/key")

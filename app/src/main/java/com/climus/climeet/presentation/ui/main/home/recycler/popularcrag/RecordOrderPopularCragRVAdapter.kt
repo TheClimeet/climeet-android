@@ -1,34 +1,25 @@
 package com.climus.climeet.presentation.ui.main.home.recycler.popularcrag
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
+import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.databinding.ItemPopularCragsBinding
-import com.climus.climeet.presentation.ui.main.home.model.PopularCrag
 import kotlin.math.min
 
-class PopularCragRVAdapter (
-    private val cragList: List<BestFollowGymSimpleResponse>,
-    //private val itemClickAction: (Long) -> Unit
-) : RecyclerView.Adapter<PopularCragRVAdapter.ViewHolder>(){
+class RecordOrderPopularCragRVAdapter (private val cragList: List<BestRecordGymDetailInfoResponse>) : RecyclerView.Adapter<RecordOrderPopularCragRVAdapter.ViewHolder>(){
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): PopularCragRVAdapter.ViewHolder {
+    ): RecordOrderPopularCragRVAdapter.ViewHolder {
         val binding: ItemPopularCragsBinding = ItemPopularCragsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: PopularCragRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecordOrderPopularCragRVAdapter.ViewHolder, position: Int) {
         holder.bind(cragList[position])
-
-        // todo: 암장 id 넘겨 받기
-//        holder.binding.root.setOnClickListener {
-//            itemClickAction(1)
-//        }
     }
 
     override fun getItemCount(): Int {
@@ -37,7 +28,7 @@ class PopularCragRVAdapter (
     }
 
     inner class ViewHolder(val binding: ItemPopularCragsBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(crag: BestFollowGymSimpleResponse) {
+        fun bind(crag: BestRecordGymDetailInfoResponse) {
             if(crag.profileImageUrl != null) {
                 Glide.with(binding.root.context)
                     .load(crag.profileImageUrl)
@@ -45,7 +36,7 @@ class PopularCragRVAdapter (
             }
             binding.tvItemCragName.text = crag.gymName
             binding.popularCragRanking.text = crag.ranking.toString()
-            binding.tvItemFollowers.text = "팔로워 " + crag.thisWeekFollowerCount.toString()
+            binding.tvItemFollowers.text = "팔로워 " + crag.thisWeekSelectionCount.toString()
 //            if(crag.isSoaring) {
 //                binding.ivSoaring.visibility = View.VISIBLE
 //                binding.tvSoaring.visibility = View.VISIBLE

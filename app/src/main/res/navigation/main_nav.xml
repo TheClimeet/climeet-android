@@ -77,6 +77,11 @@
         <action
             android:id="@+id/action_myPage_fragment_to_myPageSendOpinionFragment"
             app:destination="@id/myPageSendOpinionFragment" />
+
+        <action
+            android:id="@+id/action_myPage_fragment_to_myPageReviewFragment"
+            app:destination="@id/myPageReviewFragment" />
+
     </fragment>
 
     <fragment
@@ -101,7 +106,7 @@
 
     <fragment
         android:id="@+id/searchCragFragment"
-        android:name="com.climus.climeet.presentation.ui.main.home.searchcrag.SearchCragFragment"
+        android:name="com.climus.climeet.presentation.ui.main.home.search.SearchFragment"
         android:label="SearchCragFragment" />
 
     <fragment
@@ -258,7 +263,11 @@
     <fragment
         android:id="@+id/myPageAnnounceFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.announce.MyPageAnnounceFragment"
-        android:label="MyPageAnnounceFragment" />
+        android:label="MyPageAnnounceFragment" >
+        <action
+            android:id="@+id/action_myPageAnnounceFragment_to_announceDetailFragment"
+            app:destination="@id/announceDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myPageCheerUpFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.cheerup.MyPageCheerUpFragment"
@@ -270,10 +279,14 @@
     <fragment
         android:id="@+id/myPageAdminMyProfileFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.MyPageAdminMyProfileFragment"
-        android:label="MyPageAdminMyProfileFragment" />
+        android:label="MyPageAdminMyProfileFragment" >
+        <action
+            android:id="@+id/action_myPageAdminMyProfileFragment_self"
+            app:destination="@id/myPageAdminMyProfileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myPageClimerMyProfileFragment"
-        android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.MyPageClimerMyProfileFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.MyPageMyProfileFragment"
         android:label="MyPageClimerMyProfileFragment" />
     <fragment
         android:id="@+id/myPageMyShortsFragment"
@@ -307,6 +320,11 @@
             app:argType="long"/>
     </fragment>
 
+    <fragment
+        android:id="@+id/myPageReviewFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.review.MyPageReviewFragment"
+        android:label="MyPageReviewFragment" />
+
     <action
         android:id="@+id/globalActionToClimerProfileFragment"
         app:destination="@id/climerProfileFragment" />
@@ -314,7 +332,10 @@
     <action
         android:id="@+id/globalActionToGymProfileFragment"
         app:destination="@id/gymProfileFragment" />
-
+    <fragment
+        android:id="@+id/announceDetailFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.announce.AnnounceDetailFragment"
+        android:label="AnnounceDetailFragment" />
 
     <fragment
         android:id="@+id/gymProfileInfoFragment"

@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         tools:context=".presentation.ui.main.home.popularcrags.viewpager.FollowerOrderFragment">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_followers_ranking1"
             android:layout_width="62dp"
             android:layout_height="62dp"
@@ -69,7 +69,7 @@
             app:layout_constraintStart_toStartOf="@+id/iv_followers_ranking1"
             app:layout_constraintTop_toBottomOf="@+id/tv_followers_ranking1_gym_name" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_followers_ranking2"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -125,7 +125,7 @@
             app:layout_constraintStart_toStartOf="@+id/iv_followers_ranking2"
             app:layout_constraintTop_toBottomOf="@+id/tv_followers_ranking2_gym_name" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_followers_ranking3"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -181,11 +181,11 @@
             app:layout_constraintStart_toStartOf="@+id/iv_followers_ranking3"
             app:layout_constraintTop_toBottomOf="@+id/tv_followers_ranking3_gym_name" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_followers_ranking4"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="40dp"
             android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
             app:layout_constraintStart_toStartOf="parent"
@@ -223,14 +223,14 @@
             app:layout_constraintStart_toStartOf="@+id/tv_followers_ranking4_gym_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_followers_ranking4_gym_name" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_followers_ranking5"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginTop="40dp"
-            android:layout_marginStart="10dp"
             android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
-            app:layout_constraintStart_toEndOf="@+id/tv_followers_ranking4_followers"
+            app:layout_constraintEnd_toStartOf="@+id/tv_followers_ranking5_gym_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_followers_ranking3_followers" />
 
         <TextView
@@ -238,16 +238,16 @@
             style="@style/TextRegular"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:text="켈리"
+            android:layout_marginEnd="30dp"
+            android:ellipsize="end"
             android:maxWidth="80dp"
             android:maxHeight="15dp"
-            android:ellipsize="end"
             android:singleLine="true"
-            android:layout_marginStart="10dp"
+            android:text="켈리"
             android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_followers_ranking5"
-            app:layout_constraintStart_toEndOf="@+id/iv_followers_ranking5"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/iv_followers_ranking5" />
 
         <TextView
@@ -265,11 +265,11 @@
             app:layout_constraintStart_toStartOf="@+id/tv_followers_ranking5_gym_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_followers_ranking5_gym_name" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_followers_ranking6"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
             app:layout_constraintStart_toStartOf="parent"
@@ -307,15 +307,14 @@
             app:layout_constraintStart_toStartOf="@+id/tv_followers_ranking6_gym_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_followers_ranking6_gym_name" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_followers_ranking7"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginTop="15dp"
-            android:layout_marginEnd="145dp"
-            android:layout_marginStart="10dp"
             android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
-            app:layout_constraintStart_toEndOf="@+id/tv_followers_ranking6_gym_name"
+            app:layout_constraintEnd_toStartOf="@+id/tv_followers_ranking7_gym_name"
             app:layout_constraintTop_toBottomOf="@+id/iv_followers_ranking5" />
 
         <TextView
@@ -323,16 +322,16 @@
             style="@style/TextRegular"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:text="켈리"
+            android:layout_marginEnd="30dp"
+            android:ellipsize="end"
             android:maxWidth="80dp"
             android:maxHeight="15dp"
-            android:ellipsize="end"
             android:singleLine="true"
-            android:layout_marginStart="10dp"
+            android:text="켈리"
             android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_followers_ranking7"
-            app:layout_constraintStart_toEndOf="@+id/iv_followers_ranking7"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/iv_followers_ranking7" />
 
         <TextView
@@ -350,11 +349,11 @@
             app:layout_constraintStart_toStartOf="@+id/tv_followers_ranking7_gym_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_followers_ranking7_gym_name" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_followers_ranking8"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="15dp"
             android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
             app:layout_constraintStart_toStartOf="parent"
@@ -392,14 +391,14 @@
             app:layout_constraintStart_toStartOf="@+id/tv_followers_ranking8_gym_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_followers_ranking8_gym_name" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_followers_ranking9"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="15dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
-            app:layout_constraintStart_toEndOf="@+id/tv_followers_ranking8_gym_name"
+            app:layout_constraintEnd_toStartOf="@+id/tv_followers_ranking9_gym_name"
             app:layout_constraintTop_toBottomOf="@+id/iv_followers_ranking7" />
 
         <TextView
@@ -407,16 +406,16 @@
             style="@style/TextRegular"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="켈리"
+            android:layout_marginEnd="30dp"
+            android:ellipsize="end"
             android:maxWidth="80dp"
             android:maxHeight="15dp"
-            android:ellipsize="end"
             android:singleLine="true"
+            android:text="켈리"
             android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/iv_followers_ranking9"
-            app:layout_constraintStart_toEndOf="@+id/iv_followers_ranking5"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/iv_followers_ranking9" />
 
         <TextView
