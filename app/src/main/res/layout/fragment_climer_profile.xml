@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -37,7 +38,7 @@
                 style="@style/TextLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="클라이머 켈리"
+                tools:text="클라이머 켈리"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
@@ -46,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="팔로워 25,883  |  팔로잉 11"
+                tools:text="팔로워 25,883  |  팔로잉 11"
                 android:textColor="@color/white"
                 android:textSize="13sp" />
 
@@ -102,7 +103,6 @@
             android:id="@+id/vp_climber_profile"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tb_climber_profile" />
 

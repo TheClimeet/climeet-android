@@ -65,6 +65,9 @@ class UpdatedFollowViewHolder(private val binding: ItemUpdatedFollowBinding) :
 
     fun bind(item: UpdatedFollowUiData) {
 
+        binding.root.setOnClickListener {
+            item.onClickListener(item.userId, item.gymId, item.isGym)
+        }
         if(item.name.length > 6){
             binding.tvNick.text = item.name.substring(0..6) + "\n" + item.name.substring(7)
         } else {

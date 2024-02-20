@@ -9,8 +9,8 @@ class ClimberProfileVPAdapter (fragment : Fragment) : FragmentStateAdapter(fragm
 
     override fun createFragment(position: Int): Fragment {
         return when(position) {
-            0 -> ClimberShortsFragment()
-            else -> ClimberInfoFragment()
+            0 -> ClimberProfileShortsFragment()
+            else -> ClimberProfileInfoFragment()
         }
     }
 

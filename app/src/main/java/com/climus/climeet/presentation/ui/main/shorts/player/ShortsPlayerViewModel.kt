@@ -38,7 +38,9 @@ data class ShortsPlayerUiState(
 sealed class ShortsPlayerEvent {
     data class ShowToastMessage(val msg: String) : ShortsPlayerEvent()
     data class NavigateToShortsPlayer(val shortsId: Long, val position: Int) : ShortsPlayerEvent()
-    data object NavigateToAddFollow: ShortsPlayerEvent()
+    data object NavigateToAddFollow : ShortsPlayerEvent()
+    data class NavigateToUserProfile(val userId: Long) : ShortsPlayerEvent()
+    data class NavigateToGymProfile(val gymId: Long) : ShortsPlayerEvent()
 }
 
 @HiltViewModel
@@ -57,7 +59,7 @@ class ShortsPlayerViewModel @Inject constructor(
         const val GOTO_FOLLOW = 1
     }
 
-    fun initViewModel(){
+    fun initViewModel() {
         _uiState.update { ShortsPlayerUiState() }
     }
 
@@ -91,6 +93,16 @@ class ShortsPlayerViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun setCurFilter(gymId: Long){
+        _uiState.update { state ->
+            state.copy(
+                curFilter = SelectedFilter(
+                    cragId = gymId
+                )
+            )
         }
     }
 
@@ -218,8 +230,14 @@ class ShortsPlayerViewModel @Inject constructor(
         }
     }
 
-    private fun navigateToFollowerPage(id: Long) {
-
+    private fun navigateToFollowerPage(userId: Long, gymId: Long, isGym: Boolean) {
+        viewModelScope.launch {
+            if (isGym) {
+                _event.emit(ShortsPlayerEvent.NavigateToGymProfile(gymId))
+            } else {
+                _event.emit(ShortsPlayerEvent.NavigateToUserProfile(userId))
+            }
+        }
     }
 
     private fun navigateToAddFollow() {
@@ -229,7 +247,7 @@ class ShortsPlayerViewModel @Inject constructor(
     }
 
     fun patchFavorite(shortsId: Long, likeState: Boolean) {
-        Log.d(TAG,"$shortsId   $likeState")
+        Log.d(TAG, "$shortsId   $likeState")
 
 //        _uiState.update { state ->
 //            state.copy(

@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.main.global.climerprofile
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentClimerProfileBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -10,6 +11,9 @@ import com.climus.climeet.presentation.ui.main.mypage.myshorts.viewpager.MyShort
 import com.google.android.material.tabs.TabLayoutMediator
 
 class ClimerProfileFragment : BaseFragment<FragmentClimerProfileBinding>(R.layout.fragment_climer_profile) {
+
+    private val args : ClimerProfileFragmentArgs by navArgs()
+    private val userId by lazy { args.userId }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

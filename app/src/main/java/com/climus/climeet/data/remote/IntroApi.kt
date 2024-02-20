@@ -1,6 +1,7 @@
 package com.climus.climeet.data.remote
 
 import com.climus.climeet.data.model.request.ClimerSignupRequest
+import com.climus.climeet.data.model.request.FcmTokenRequest
 import com.climus.climeet.data.model.request.ManagerLoginRequest
 import com.climus.climeet.data.model.request.ManagerSignUpRequest
 import com.climus.climeet.data.model.response.ClimerSignupResponse
@@ -55,7 +56,7 @@ interface IntroApi {
 
     @POST("/api/users/fcmToken")
     suspend fun patchFcmToken(
-        @Body params: String
+        @Body params: FcmTokenRequest
     ): Response<Unit>
 
 }

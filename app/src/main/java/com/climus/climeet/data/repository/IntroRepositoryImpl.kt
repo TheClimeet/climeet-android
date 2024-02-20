@@ -2,6 +2,7 @@ package com.climus.climeet.data.repository
 
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.ClimerSignupRequest
+import com.climus.climeet.data.model.request.FcmTokenRequest
 import com.climus.climeet.data.model.request.ManagerLoginRequest
 import com.climus.climeet.data.model.request.ManagerSignUpRequest
 import com.climus.climeet.data.model.response.ClimerSignupResponse
@@ -32,5 +33,5 @@ class IntroRepositoryImpl @Inject constructor(
 
     override suspend fun climberNickNameCheck(nickName: String): BaseState<Boolean> = runRemote { api.climberNickNameCheck(nickName) }
 
-    override suspend fun patchFcmToken(body: String): BaseState<Unit> = runRemote { api.patchFcmToken(body) }
+    override suspend fun patchFcmToken(body: FcmTokenRequest): BaseState<Unit> = runRemote { api.patchFcmToken(body) }
 }
