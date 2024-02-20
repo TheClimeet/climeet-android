@@ -37,6 +37,19 @@ class GymProfileViewModel @Inject constructor(
 
     val followState = MutableStateFlow(false)
 
+    init {
+        // 임의로 팔로워 수 증가
+        viewModelScope.launch {
+            followState.collect { isFollowing ->
+                _uiState.value = if (isFollowing) {
+                    _uiState.value.copy(followerCount = _uiState.value.followerCount + 1)
+                } else {
+                    _uiState.value.copy(followerCount = _uiState.value.followerCount - 1)
+                }
+            }
+        }
+    }
+
     fun getGymProfileInfo() {
         viewModelScope.launch {
             gymId.value?.let {

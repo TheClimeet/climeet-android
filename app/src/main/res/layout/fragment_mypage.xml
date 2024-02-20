@@ -17,289 +17,306 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_title"
-            style="@style/TextMediumSemiBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:text="마이페이지"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_profile"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:paddingHorizontal="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_title">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_gym_profile"
-                android:layout_width="73dp"
-                android:layout_height="73dp"
-                app:imgUrl="@{vm.uiState.profileImgUrl}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/img_crag" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guide1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.75" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/guide1"
-                app:layout_constraintEnd_toStartOf="@id/guide1"
-                app:layout_constraintStart_toEndOf="@id/iv_gym_profile"
-                app:layout_constraintTop_toTopOf="parent">
-
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="70dp">
 
                 <TextView
-                    android:id="@+id/tv_gym_name"
-                    style="@style/TextRegularBig"
-                    layout_constrainedWidth="true"
+                    android:id="@+id/tv_title"
+                    style="@style/TextMediumSemiBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:paddingEnd="20dp"
-                    android:text="@{vm.uiState.userName}"
-                    android:textStyle="bold"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="마이페이지"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="클라이밍ㅐㅐㅐㅐㅐㅐㅐ" />
-
-                <ImageView
-                    android:id="@+id/iv_gym_badge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_gym_badge"
-                    android:visibility="@{vm.uiState.isManager ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_gym_name"
-                    app:layout_constraintEnd_toStartOf="@id/tv_blank"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside"
-                    app:layout_constraintStart_toEndOf="@id/tv_gym_name"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/tv_blank"
-                    android:layout_width="23dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/iv_gym_badge"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <!--    팔로워 / 팔로잉    -->
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_follow"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/layout_profile"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="30dp"
+                    android:paddingHorizontal="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_gym_name">
+                    app:layout_constraintTop_toBottomOf="@id/tv_title">
 
-                    <TextView
-                        android:id="@+id/tv_follower"
-                        style="@style/TextTinyBig"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="팔로워"
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_gym_profile"
+                        android:layout_width="73dp"
+                        android:layout_height="73dp"
+                        app:imgUrl="@{vm.uiState.profileImgUrl}"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@drawable/img_crag" />
 
-                    <TextView
-                        android:id="@+id/tv_follower_num"
-                        style="@style/TextTinyBig"
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        app:layout_constraintStart_toEndOf="@id/tv_follower"
-                        app:layout_constraintTop_toTopOf="@id/tv_follower"
-                        app:textFromInt="@{vm.uiState.followerCount}"
-                        tools:text="100" />
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.75" />
 
-                    <ImageView
-                        android:id="@+id/iv_bar"
-                        android:layout_width="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
-                        android:src="@drawable/ic_white_line"
+                        android:layout_marginStart="15dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/tv_following"
-                        app:layout_constraintStart_toEndOf="@id/tv_follower_num"
+                        app:layout_constraintEnd_toEndOf="@id/guide1"
+                        app:layout_constraintEnd_toStartOf="@id/guide1"
+                        app:layout_constraintStart_toEndOf="@id/iv_gym_profile"
+                        app:layout_constraintTop_toTopOf="parent">
+
+
+                        <TextView
+                            android:id="@+id/tv_gym_name"
+                            style="@style/TextRegularBig"
+                            layout_constrainedWidth="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:paddingEnd="20dp"
+                            android:text="@{vm.uiState.userName}"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="클라이밍ㅐㅐㅐㅐㅐㅐㅐ" />
+
+                        <ImageView
+                            android:id="@+id/iv_gym_badge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_gym_badge"
+                            android:visibility="@{vm.uiState.isManager ? View.VISIBLE : View.GONE}"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_gym_name"
+                            app:layout_constraintEnd_toStartOf="@id/tv_blank"
+                            app:layout_constraintHorizontal_chainStyle="spread_inside"
+                            app:layout_constraintStart_toEndOf="@id/tv_gym_name"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_blank"
+                            android:layout_width="23dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/iv_gym_badge"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <!--    팔로워 / 팔로잉    -->
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_follow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="5dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_gym_name">
+
+                            <TextView
+                                android:id="@+id/tv_follower"
+                                style="@style/TextTinyBig"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="팔로워"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_follower_num"
+                                style="@style/TextTinyBig"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                app:layout_constraintStart_toEndOf="@id/tv_follower"
+                                app:layout_constraintTop_toTopOf="@id/tv_follower"
+                                app:textFromInt="@{vm.uiState.followerCount}"
+                                tools:text="100" />
+
+                            <ImageView
+                                android:id="@+id/iv_bar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="10dp"
+                                android:src="@drawable/ic_white_line"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/tv_following"
+                                app:layout_constraintStart_toEndOf="@id/tv_follower_num"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_following"
+                                style="@style/TextTinyBig"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="팔로잉"
+                                app:layout_constraintEnd_toStartOf="@id/tv_following_num"
+                                app:layout_constraintStart_toEndOf="@id/iv_bar"
+                                app:layout_constraintTop_toTopOf="@id/tv_follower" />
+
+                            <TextView
+                                android:id="@+id/tv_following_num"
+                                style="@style/TextTinyBig"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                app:layout_constraintStart_toEndOf="@id/tv_following"
+                                app:layout_constraintTop_toTopOf="@id/tv_follower"
+                                app:textFromInt="@{vm.uiState.followingCount}"
+                                tools:text="20" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--    프로필 보기    -->
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_show_profile"
+                        style="@style/TextSmall"
+                        android:layout_width="80dp"
+                        android:layout_height="26dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rect_grey7fill_nostroke_8radius"
+                        android:onClick="@{() -> vm.navigateToMyProfile()}"
+                        android:text="프로필 보기"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_following"
-                        style="@style/TextTinyBig"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="팔로잉"
-                        app:layout_constraintEnd_toStartOf="@id/tv_following_num"
-                        app:layout_constraintStart_toEndOf="@id/iv_bar"
-                        app:layout_constraintTop_toTopOf="@id/tv_follower" />
-
-                    <TextView
-                        android:id="@+id/tv_following_num"
-                        style="@style/TextTinyBig"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        app:layout_constraintStart_toEndOf="@id/tv_following"
-                        app:layout_constraintTop_toTopOf="@id/tv_follower"
-                        app:textFromInt="@{vm.uiState.followingCount}"
-                        tools:text="20" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_login_account"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/cm_grey8"
+                    android:drawableLeft="@drawable/ic_profile"
+                    android:gravity="start|center"
+                    android:onClick="@{() -> vm.navigateToAccount()}"
+                    android:paddingStart="30dp"
+                    android:text="   로그인 계정"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_profile" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_follow"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/cm_grey8"
+                    android:drawableLeft="@drawable/ic_plus"
+                    android:gravity="start|center"
+                    android:onClick="@{() -> vm.navigateToFollow()}"
+                    android:paddingStart="30dp"
+                    android:text="   팔로우"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_login_account" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_my_shorts"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/cm_grey8"
+                    android:drawableLeft="@drawable/ic_play"
+                    android:gravity="start|center"
+                    android:onClick="@{() -> vm.navigateToMyShorts()}"
+                    android:paddingStart="30dp"
+                    android:text="   나의 숏츠"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_follow" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_announce"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/cm_grey8"
+                    android:drawableLeft="@drawable/ic_question_mark_mypage"
+                    android:gravity="start|center"
+                    android:onClick="@{() -> vm.navigateToAnnounce()}"
+                    android:paddingStart="30dp"
+                    android:text="   공지사항"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_my_shorts" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_alarm"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/cm_grey8"
+                    android:drawableLeft="@drawable/ic_bell"
+                    android:gravity="start|center"
+                    android:onClick="@{() -> vm.navigateToAlarm()}"
+                    android:paddingStart="30dp"
+                    android:text="   알림"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_announce" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_policy"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/cm_grey8"
+                    android:drawableLeft="@drawable/ic_policy"
+                    android:gravity="start|center"
+                    android:onClick="@{() -> vm.navigateToPolicy()}"
+                    android:paddingStart="30dp"
+                    android:text="   운영정책"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_alarm" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_send_opinion"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/cm_grey8"
+                    android:drawableLeft="@drawable/ic_mail"
+                    android:gravity="start|center"
+                    android:onClick="@{() -> vm.navigateToSendOpinion()}"
+                    android:paddingStart="30dp"
+                    android:text="   의견 보내기"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_policy" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_cheer_up"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/cm_grey8"
+                    android:drawableLeft="@drawable/ic_thumbs_up"
+                    android:gravity="start|center"
+                    android:onClick="@{() -> vm.navigateToReview()}"
+                    android:paddingStart="30dp"
+                    android:text="   클밋팀 응원하기"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_send_opinion" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--    프로필 보기    -->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_show_profile"
-                style="@style/TextSmall"
-                android:layout_width="80dp"
-                android:layout_height="26dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/rect_grey7fill_nostroke_8radius"
-                android:onClick="@{() -> vm.navigateToMyProfile()}"
-                android:text="프로필 보기"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_login_account"
-            style="@style/TextRegular"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="30dp"
-            android:background="@color/cm_grey8"
-            android:drawableLeft="@drawable/ic_profile"
-            android:gravity="start|center"
-            android:onClick="@{() -> vm.navigateToAccount()}"
-            android:paddingStart="30dp"
-            android:text="   로그인 계정"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_profile" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_follow"
-            style="@style/TextRegular"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="2dp"
-            android:background="@color/cm_grey8"
-            android:drawableLeft="@drawable/ic_plus"
-            android:gravity="start|center"
-            android:onClick="@{() -> vm.navigateToFollow()}"
-            android:paddingStart="30dp"
-            android:text="   팔로우"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_login_account" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_my_shorts"
-            style="@style/TextRegular"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="2dp"
-            android:background="@color/cm_grey8"
-            android:drawableLeft="@drawable/ic_play"
-            android:gravity="start|center"
-            android:onClick="@{() -> vm.navigateToMyShorts()}"
-            android:paddingStart="30dp"
-            android:text="   나의 숏츠"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_follow" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_announce"
-            style="@style/TextRegular"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="2dp"
-            android:background="@color/cm_grey8"
-            android:drawableLeft="@drawable/ic_question_mark_mypage"
-            android:gravity="start|center"
-            android:onClick="@{() -> vm.navigateToAnnounce()}"
-            android:paddingStart="30dp"
-            android:text="   공지사항"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_my_shorts" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_alarm"
-            style="@style/TextRegular"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="2dp"
-            android:background="@color/cm_grey8"
-            android:drawableLeft="@drawable/ic_bell"
-            android:gravity="start|center"
-            android:onClick="@{() -> vm.navigateToAlarm()}"
-            android:paddingStart="30dp"
-            android:text="   알림"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_announce" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_policy"
-            style="@style/TextRegular"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="2dp"
-            android:background="@color/cm_grey8"
-            android:drawableLeft="@drawable/ic_policy"
-            android:gravity="start|center"
-            android:onClick="@{() -> vm.navigateToPolicy()}"
-            android:paddingStart="30dp"
-            android:text="   운영정책"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_alarm" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_send_opinion"
-            style="@style/TextRegular"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="2dp"
-            android:background="@color/cm_grey8"
-            android:drawableLeft="@drawable/ic_mail"
-            android:gravity="start|center"
-            android:onClick="@{() -> vm.navigateToSendOpinion()}"
-            android:paddingStart="30dp"
-            android:text="   의견 보내기"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_policy" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_cheer_up"
-            style="@style/TextRegular"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="2dp"
-            android:background="@color/cm_grey8"
-            android:drawableLeft="@drawable/ic_thumbs_up"
-            android:gravity="start|center"
-            android:onClick="@{() -> vm.navigateToReview()}"
-            android:paddingStart="30dp"
-            android:text="   클밋팀 응원하기"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_send_opinion" />
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

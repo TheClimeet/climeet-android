@@ -20,12 +20,16 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class GymReviewBottomSheetFragment : BottomSheetDialogFragment() {
 
     private val mainViewModel: GymProfileViewModel by activityViewModels()
+    private val infoViewModel: GymProfileInfoViewModel by activityViewModels()
     private val viewModel: GymReviewBottomSheetFragmentViewModel by viewModels()
     private var _binding: FragmentProfileReviewBottomSheetBinding? = null
     private val binding get() = _binding!!
@@ -54,6 +58,7 @@ class GymReviewBottomSheetFragment : BottomSheetDialogFragment() {
 
         viewModel.getGymId()
         initEventObserve()
+        initEditReview()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -82,14 +87,38 @@ class GymReviewBottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
+    private fun initEditReview() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            infoViewModel.uiState.collect {
+                if(it.myGymReview != null){
+                   setView(it.myGymReview.rating, (it.myGymReview.content))
+                }
+            }
+        }
+    }
+
+    private fun setView(rating: Float, content: String){
+        // 작성한 리뷰 보여줌
+        viewModel.reviewRating.value = rating
+        viewModel.reviewText.value = content
+    }
+
     fun showToastMessage(message: String) {
         val toast = Toast.makeText(App.getContext(), message, Toast.LENGTH_SHORT)
         toast.show()
     }
 
     private fun createReview(){
-        Log.d("gym_profile", "리뷰 작성 완료")
-        viewModel.createReview()
+        if (infoViewModel.uiState.value.myGymReview != null) {
+            viewModel.editReview()
+            infoViewModel.getReviewInfo()
+            Log.d("gym_profile", "리뷰 수정 완료")
+        } else {
+            viewModel.createReview()
+            infoViewModel.getGymTabInfo()
+            Log.d("gym_profile", "리뷰 작성 완료")
+        }
+
         dismiss()
     }
 }

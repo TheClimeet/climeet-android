@@ -29,6 +29,7 @@ data class GymProfileTabInfoUiState(
     val gymBusinessHours: List<GymBusinessHour>? = emptyList(),
     val gymServiceList: List<GymService>? = emptyList(),
     val gymPriceList: List<GymPrice>? = emptyList(),
+    val averageRating : Float = 0f,
     val reviewNum: Int = 0,
     val myGymReview: Review? = null,
     val gymReviewList: List<Review>? = emptyList()
@@ -88,6 +89,12 @@ class GymProfileInfoViewModel @Inject constructor(
                 }
             }
 
+            getReviewInfo()
+        }
+    }
+
+    fun getReviewInfo(){
+        viewModelScope.launch {
             delay(500)
             repository.getGymReview(gymId, 0, 15).let { it ->
                 when (it) {
@@ -96,7 +103,8 @@ class GymProfileInfoViewModel @Inject constructor(
                         _uiState.update { state ->
                             state.copy(
                                 reviewNum = it.body.result.summary.reviewCount,
-                                myGymReview = it.body.result.summary.myReview ?: state.myGymReview,
+                                averageRating = it.body.result.summary.averageRating,
+                                myGymReview = it.body.result.summary.myReview ?: null,
                                 gymReviewList = it.body.result.reviewList ?: state.gymReviewList
                             )
                         }
