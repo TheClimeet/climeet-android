@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
 import com.climus.climeet.app.App.Companion.sharedPreferences
@@ -19,7 +20,9 @@ import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.Secto
 import com.climus.climeet.presentation.ui.main.record.model.CreateRecordData
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsThumbnailAdapter
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
+import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
+import com.climus.climeet.presentation.ui.toShortsPlayer
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 
@@ -40,6 +43,7 @@ class GymProfileRouteFragment :
 
         setRecyclerView()
         initEventObserve()
+        initShortsEventObserve()
         addOnScrollListener()
         setGymInfo()
 
@@ -101,6 +105,21 @@ class GymProfileRouteFragment :
                     is GymProfileRouteEvent.ShowToastMessage -> {
                         showToastMessage(event.msg)
                     }
+                }
+            }
+        }
+    }
+
+    private fun initShortsEventObserve() {
+        repeatOnStarted {
+            sharedViewModel.event.collect {
+                when (it) {
+                    is ShortsPlayerEvent.ShowToastMessage -> showToastMessage(it.msg)
+                    is ShortsPlayerEvent.NavigateToShortsPlayer -> findNavController().toShortsPlayer(
+                        it.shortsId,
+                        it.position
+                    )
+
                 }
             }
         }
