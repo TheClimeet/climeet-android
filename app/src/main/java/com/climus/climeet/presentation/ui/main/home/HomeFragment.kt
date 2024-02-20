@@ -42,6 +42,7 @@ import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
 import com.climus.climeet.presentation.ui.toGymProfile
+import com.climus.climeet.presentation.ui.toSearchProfile
 import com.climus.climeet.presentation.ui.toShortsPlayer
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -135,7 +136,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private fun setupOnClickListener() {
 
         binding.icHomeSerach.setOnClickListener {
-            navigateToSearchCrag()
+            findNavController().toSearchProfile()
         }
 
         binding.tvHomeRankingViewAll.setOnClickListener {
@@ -194,10 +195,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         findNavController().navigate(action)
     }
 
-    private fun navigateToSearchCrag() {
-        val action = MainNavDirections.actionHomeFragmentToSearchCragFragment()
-        findNavController().navigate(action)
-    }
 
     private fun setupIntroduceBanner(vpBanner: List<BannerDetailInfoResponse>) {
         val bannerAdapter = BannerVPAdapter(this, binding.vpHomeIntroduceBanner)

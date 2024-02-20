@@ -1,7 +1,6 @@
-package com.climus.climeet.presentation.ui.main.home.search.viewpager
+package com.climus.climeet.presentation.ui.main.global.searchprofile.viewpager
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,21 +14,20 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
-import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
-import com.climus.climeet.databinding.FragmentSearchCragBinding
-import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.adapter.FollowCragRVAdapter
-import com.climus.climeet.presentation.ui.main.home.search.recycler.FollowGymRVAdapter
-import com.google.android.material.tabs.TabLayoutMediator
+import com.climus.climeet.data.model.response.UserFollowSimpleResponse
+import com.climus.climeet.databinding.FragmentSearchClimberBinding
+import com.climus.climeet.presentation.ui.main.home.recycler.following.FollowingRVAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SearchCragFragment : Fragment() {
+class SearchClimberFragment : Fragment() {
 
-    private lateinit var binding: FragmentSearchCragBinding
-    private val viewModel: SearchCragViewModel by viewModels()
-    private var recyclerGymFollowing: List<UserHomeGymDetailResponse> = emptyList()
+    private val viewModel: SearchClimberViewModel by viewModels()
+    private var recyclerClimber: List<UserFollowSimpleResponse> = emptyList()
+    private lateinit var binding : FragmentSearchClimberBinding
+
 
     fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -41,27 +39,28 @@ class SearchCragFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_crag, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_climber, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // api
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getGymFollowing()
+        binding.vm = viewModel
+        viewModel.getClimberFollowing()
 
         initStateObserve()
-    }
 
+    }
 
     private fun initStateObserve() {
         repeatOnStarted {
             viewModel?.let { vm ->
                 vm.uiState.collect { uiState ->
-                    uiState.followGymList.let { followGymList ->
+                    uiState.followingList.let { followingList ->
 
-                        recyclerGymFollowing = followGymList
-                        setupFollowingGymList()
+                        recyclerClimber = followingList
+                        setupFollowingList()
 
                     }
                 }
@@ -69,9 +68,9 @@ class SearchCragFragment : Fragment() {
         }
     }
 
-    private fun setupFollowingGymList() {
-        val homeGymRVAdapter = FollowGymRVAdapter(recyclerGymFollowing)
-        setupRecyclerView(binding.rvSearchCragRoutes1, homeGymRVAdapter, LinearLayoutManager.VERTICAL)
+    private fun setupFollowingList() {
+        val followingRVAdapter = FollowingRVAdapter(recyclerClimber)
+        setupRecyclerView(binding.rvSearchFollowing, followingRVAdapter, LinearLayoutManager.VERTICAL)
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>, orientation: Int) {
@@ -79,3 +78,4 @@ class SearchCragFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireActivity(), orientation, false)
     }
 }
+

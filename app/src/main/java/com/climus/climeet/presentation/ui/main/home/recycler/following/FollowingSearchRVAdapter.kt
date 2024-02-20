@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.climus.climeet.databinding.ItemSearchFollowingBinding
-import com.climus.climeet.presentation.ui.main.home.search.model.FollowClimber
+import com.climus.climeet.presentation.ui.main.global.searchprofile.model.FollowClimber
 
 class FollowingSearchRVAdapter() : RecyclerView.Adapter<FollowingSearchRVAdapter.ViewHolder>(){
 

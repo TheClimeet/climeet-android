@@ -105,8 +105,8 @@
         android:label="PopularRoutesFragment" />
 
     <fragment
-        android:id="@+id/searchCragFragment"
-        android:name="com.climus.climeet.presentation.ui.main.home.search.SearchFragment"
+        android:id="@+id/searchProfileFragment"
+        android:name="com.climus.climeet.presentation.ui.main.global.searchprofile.SearchProfileFragment"
         android:label="SearchCragFragment" />
 
     <fragment
@@ -226,8 +226,8 @@
         android:label="RouteShortsFragment" />
 
     <action
-        android:id="@+id/action_home_fragment_to_searchCragFragment"
-        app:destination="@id/searchCragFragment" />
+        android:id="@+id/global_action_to_searchProfileFragment"
+        app:destination="@id/searchProfileFragment" />
     <fragment
         android:id="@+id/fragment_climbing_record_complete"
         android:name="com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.ClimbingRecordCompleteFragment"

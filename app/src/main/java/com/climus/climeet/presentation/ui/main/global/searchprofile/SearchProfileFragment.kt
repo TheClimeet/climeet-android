@@ -1,30 +1,27 @@
-package com.climus.climeet.presentation.ui.main.home.search
+package com.climus.climeet.presentation.ui.main.global.searchprofile
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
-import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
-import com.climus.climeet.data.model.response.UserFollowSimpleResponse
-import com.climus.climeet.databinding.FragmentSearchBinding
+import com.climus.climeet.databinding.FragmentSearchProfileBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.adapter.FollowCragRVAdapter
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
+import com.climus.climeet.presentation.ui.main.global.searchprofile.model.FollowClimber
+import com.climus.climeet.presentation.ui.main.global.searchprofile.viewpager.SearchVPAdapter
 import com.climus.climeet.presentation.ui.main.home.recycler.following.FollowingSearchRVAdapter
-import com.climus.climeet.presentation.ui.main.home.search.model.FollowClimber
-import com.climus.climeet.presentation.ui.main.home.search.viewpager.SearchVPAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
+class SearchProfileFragment : BaseFragment<FragmentSearchProfileBinding>(R.layout.fragment_search_profile) {
 
-    private val viewModel: SearchCragViewModel by viewModels()
+    private val viewModel: SearchProfileViewModel by viewModels()
     private var recyclerClimber: List<FollowClimber> = emptyList()
     private var recyclerCrag: List<FollowCrag> = emptyList()
     private var cragAdapter: FollowCragRVAdapter? = null

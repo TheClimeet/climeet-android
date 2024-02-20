@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.home.search.viewpager
+package com.climus.climeet.presentation.ui.main.global.searchprofile.viewpager
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter

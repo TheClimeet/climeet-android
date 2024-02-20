@@ -8,7 +8,7 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.main.home.search.viewpager.SearchCragViewModel" />
+            type="com.climus.climeet.presentation.ui.main.global.searchprofile.viewpager.SearchCragViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

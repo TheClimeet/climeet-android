@@ -8,6 +8,7 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentBestClimerBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.home.bestclimer.viewpager.BestClimerVPAdpater
+import com.climus.climeet.presentation.ui.toSearchProfile
 import com.google.android.material.tabs.TabLayoutMediator
 
 class BestClimerFragment : BaseFragment<FragmentBestClimerBinding>(R.layout.fragment_best_climer) {
@@ -24,13 +25,8 @@ class BestClimerFragment : BaseFragment<FragmentBestClimerBinding>(R.layout.frag
 
     private fun setupOnClickListener() {
         binding.icBestClimerSearch.setOnClickListener {
-            navigateToSearchCrag()
+            findNavController().toSearchProfile()
         }
-    }
-
-    private fun navigateToSearchCrag() {
-        val action = MainNavDirections.actionHomeFragmentToSearchCragFragment()
-        findNavController().navigate(action)
     }
 
     private fun setupBestClimer() {

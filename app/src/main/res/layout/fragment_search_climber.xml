@@ -8,13 +8,13 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.main.home.search.viewpager.SearchClimberViewModel" />
+            type="com.climus.climeet.presentation.ui.main.global.searchprofile.viewpager.SearchClimberViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.ui.main.home.search.viewpager.SearchClimberFragment">
+        tools:context=".presentation.ui.main.global.searchprofile.viewpager.SearchClimberFragment">
 
         <TextView
             android:id="@+id/tv_search_crag_following"

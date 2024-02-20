@@ -33,10 +33,10 @@ class StickChartViewHolder(private val binding: ItemStickChartBinding): Recycler
     fun bind(item: StickChartUiData){
         binding.item = item
 
-        Log.d(TAG, item.percent.toString())
+        val percent = if(item.percent == 0f) 0.01f else item.percent
         val layoutParams: LayoutParams = binding.vStick.layoutParams as LayoutParams
         layoutParams.height = 0
-        layoutParams.matchConstraintPercentHeight = item.percent
+        layoutParams.matchConstraintPercentHeight = percent
         binding.vStick.layoutParams = layoutParams
     }
 }

@@ -1,6 +1,7 @@
 package com.climus.climeet.presentation.ui
 
 import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.climus.climeet.MainNavDirections
 
 
@@ -16,6 +17,11 @@ fun NavController.toGymProfile(gymId: Long){
 
 fun NavController.toClimerProfile(userId: Long){
     val action = MainNavDirections.globalActionToClimerProfileFragment(userId)
+    navigate(action)
+}
+
+fun NavController.toSearchProfile() {
+    val action = MainNavDirections.globalActionToSearchProfileFragment()
     navigate(action)
 }
 

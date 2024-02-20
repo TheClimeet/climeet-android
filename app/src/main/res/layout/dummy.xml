@@ -8,13 +8,13 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.main.home.search.SearchCragViewModel" />
+            type="com.climus.climeet.presentation.ui.main.global.searchprofile.SearchProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.ui.main.home.search.SearchFragment">
+        tools:context=".presentation.ui.main.global.searchprofile.SearchProfileFragment">
 
         <LinearLayout
             android:id="@+id/linear_crag"

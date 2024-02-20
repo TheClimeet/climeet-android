@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.repository.MainRepository
-import com.climus.climeet.presentation.ui.main.home.search.model.FollowClimber
-import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

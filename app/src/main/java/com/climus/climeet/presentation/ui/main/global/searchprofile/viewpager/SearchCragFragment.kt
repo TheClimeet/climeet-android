@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.home.search.viewpager
+package com.climus.climeet.presentation.ui.main.global.searchprofile.viewpager
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,25 +14,19 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
-import com.climus.climeet.data.model.response.UserFollowSimpleResponse
-import com.climus.climeet.databinding.FragmentSearchClimberBinding
+import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.databinding.FragmentSearchCragBinding
-import com.climus.climeet.presentation.ui.main.home.recycler.following.FollowingRVAdapter
-import com.climus.climeet.presentation.ui.main.home.recycler.following.FollowingSearchRVAdapter
-import com.climus.climeet.presentation.ui.main.home.search.SearchCragViewModel
-import com.climus.climeet.presentation.ui.main.home.search.model.FollowClimber
-import com.climus.climeet.presentation.ui.main.home.search.recycler.FollowGymRVAdapter
+import com.climus.climeet.presentation.ui.main.global.searchprofile.recycler.FollowGymRVAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SearchClimberFragment : Fragment() {
+class SearchCragFragment : Fragment() {
 
-    private val viewModel: SearchClimberViewModel by viewModels()
-    private var recyclerClimber: List<UserFollowSimpleResponse> = emptyList()
-    private lateinit var binding : FragmentSearchClimberBinding
-
+    private lateinit var binding: FragmentSearchCragBinding
+    private val viewModel: SearchCragViewModel by viewModels()
+    private var recyclerGymFollowing: List<UserHomeGymDetailResponse> = emptyList()
 
     fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -44,28 +38,27 @@ class SearchClimberFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_climber, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search_crag, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // api
         super.onViewCreated(view, savedInstanceState)
 
-        binding.vm = viewModel
-        viewModel.getClimberFollowing()
+        viewModel.getGymFollowing()
 
         initStateObserve()
-
     }
+
 
     private fun initStateObserve() {
         repeatOnStarted {
             viewModel?.let { vm ->
                 vm.uiState.collect { uiState ->
-                    uiState.followingList.let { followingList ->
+                    uiState.followGymList.let { followGymList ->
 
-                        recyclerClimber = followingList
-                        setupFollowingList()
+                        recyclerGymFollowing = followGymList
+                        setupFollowingGymList()
 
                     }
                 }
@@ -73,9 +66,9 @@ class SearchClimberFragment : Fragment() {
         }
     }
 
-    private fun setupFollowingList() {
-        val followingRVAdapter = FollowingRVAdapter(recyclerClimber)
-        setupRecyclerView(binding.rvSearchFollowing, followingRVAdapter, LinearLayoutManager.VERTICAL)
+    private fun setupFollowingGymList() {
+        val homeGymRVAdapter = FollowGymRVAdapter(recyclerGymFollowing)
+        setupRecyclerView(binding.rvSearchCragRoutes1, homeGymRVAdapter, LinearLayoutManager.VERTICAL)
     }
 
     private fun setupRecyclerView(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>, orientation: Int) {
@@ -83,4 +76,3 @@ class SearchClimberFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireActivity(), orientation, false)
     }
 }
-

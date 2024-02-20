@@ -9,6 +9,7 @@ import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.customview.stickchart.StickChartUiData
 import com.climus.climeet.presentation.util.Constants
+import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -78,7 +79,6 @@ class StatsViewModel @Inject constructor(
                 when (result) {
                     is BaseState.Success -> {
                         val body = result.body
-                        Log.d("stattest", body.toString())
                         _uiState.update { state ->
                             state.copy(
                                 totalTime = body.time,
@@ -106,12 +106,13 @@ class StatsViewModel @Inject constructor(
                             } else {
                                 ((it.value.toFloat() / body.totalCompletedCount.toFloat()) * 100).roundToInt()
                             }
+
                             list.add(
                                 StickChartUiData(
                                     // todo 차트 꼭대기 퍼센트 스트링
                                     percentString = "$percent%",
                                     // todo 차트 막대 길이비율 정하는 float값
-                                    percent = (it.value.toFloat() / maxPercent) * 0.8f,
+                                    percent = if(percent == 0) 0f else (it.value.toFloat() / maxPercent) * 0.8f,
                                     // todo 차트 하단에 레벨이름
                                     levelName = it.key,
                                     // todo 레벨에 대응되는 색상 hex 값

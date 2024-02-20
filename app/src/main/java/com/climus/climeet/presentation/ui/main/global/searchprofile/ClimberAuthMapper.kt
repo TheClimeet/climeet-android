@@ -1,7 +1,7 @@
-package com.climus.climeet.presentation.ui.main.home.search
+package com.climus.climeet.presentation.ui.main.global.searchprofile
 
 import com.climus.climeet.data.model.response.ClimberDetailInfoItem
-import com.climus.climeet.presentation.ui.main.home.search.model.FollowClimber
+import com.climus.climeet.presentation.ui.main.global.searchprofile.model.FollowClimber
 
 fun ClimberDetailInfoItem.toFollowClimber(
     keyword: String,

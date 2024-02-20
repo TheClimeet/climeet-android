@@ -10,7 +10,7 @@
             type="String" />
         <variable
             name="following"
-            type="com.climus.climeet.presentation.ui.main.home.search.model.FollowClimber"/>
+            type="com.climus.climeet.presentation.ui.main.global.searchprofile.model.FollowClimber"/>
 
     </data>
 
