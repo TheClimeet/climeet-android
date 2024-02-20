@@ -27,6 +27,8 @@ import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
+import com.climus.climeet.data.model.response.UserFollowerInfoResponse
+import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
@@ -201,6 +203,18 @@ interface MainApi {
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<ShortsMainCommentResponse>
+
+    @GET("/api/followees")
+    suspend fun getUserFollowing(
+        @Query("userId") userId: Long,
+        @Query("userCategory") userCategory: String
+    ): Response<List<UserFollowingInfoResponse>>
+
+    @GET("/api/followers")
+    suspend fun getUserFollowers(
+        @Query("userId") userId: Long,
+        @Query("userCategory") userCategory: String
+    ): Response<List<UserFollowerInfoResponse>>
 
     @POST("/api/shorts/{shortsId}/shortsComments")
     suspend fun addShortsComment(

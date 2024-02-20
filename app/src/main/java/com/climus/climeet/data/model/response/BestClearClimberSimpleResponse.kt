@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class BestClearClimberSimpleResponse(
 
+    @SerializedName("userId")
+    val userId : Long,
+
     @SerializedName("ranking")
     val ranking : Int,
 
@@ -15,4 +18,5 @@ data class BestClearClimberSimpleResponse(
 
     @SerializedName("thisWeekClearCount")
     val thisWeekClearCount : Int
+
 )

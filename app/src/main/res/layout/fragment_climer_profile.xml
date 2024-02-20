@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -8,6 +9,102 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_climber_profile"
+            android:layout_width="73dp"
+            android:layout_height="73dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="180dp"
+            android:layout_marginStart="15dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_climber_profile"
+            app:layout_constraintStart_toEndOf="@+id/iv_climber_profile"
+            app:layout_constraintTop_toTopOf="@+id/iv_climber_profile">
+
+            <TextView
+                style="@style/TextLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="클라이머 켈리"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="팔로워 25,883  |  팔로잉 11"
+                android:textColor="@color/white"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_following"
+            style="@style/TextLargeBold"
+            android:layout_width="72dp"
+            android:layout_height="35dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/btn_follow"
+            android:text="팔로잉"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_climber_profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_climber_profile" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_follow"
+            style="@style/TextLargeBold"
+            android:layout_width="72dp"
+            android:layout_height="35dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/btn_following"
+            android:text="팔로우"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_climber_profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_climber_profile" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tb_climber_profile"
+            style="@style/TextSmallSemiBold"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:background="@color/cm_background"
+            android:textSize="18sp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintTop_toBottomOf="@+id/iv_climber_profile"
+            app:tabBackground="@drawable/mypage_tab_background"
+            app:tabIndicatorColor="@color/cm_main"
+            app:tabIndicatorFullWidth="true"
+            app:tabIndicatorHeight="1dp"
+            app:tabRippleColor="@color/transparent"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextColor="#A5A5A5" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_climber_profile"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tb_climber_profile" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

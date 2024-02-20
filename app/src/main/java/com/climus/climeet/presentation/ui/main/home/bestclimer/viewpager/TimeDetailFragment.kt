@@ -14,7 +14,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.climus.climeet.MainNavDirections
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentCompleteDetailBinding
 import com.climus.climeet.databinding.FragmentTimeBinding
@@ -148,6 +150,9 @@ class TimeDetailFragment : Fragment() {
                                 Glide.with(binding.root)
                                     .load(bestTimeClimberResponse.profileImageUrl)
                                     .into(profileImgList[i])
+                                profileImgList[i].setOnClickListener {
+                                    navigateToClimberProfile(bestTimeClimberResponse.userId)
+                                }
                             }
                             if(i < 3) {
                                 rankList[i].text = bestTimeClimberResponse.ranking.toString()
@@ -166,4 +171,10 @@ class TimeDetailFragment : Fragment() {
             }
         }
     }
+
+    private fun navigateToClimberProfile(userId : Long) {
+        val action = MainNavDirections.globalActionToClimerProfileFragment(userId)
+        findNavController().navigate(action)
+    }
+
 }

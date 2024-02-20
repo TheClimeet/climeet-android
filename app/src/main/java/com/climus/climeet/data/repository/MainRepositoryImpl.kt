@@ -31,6 +31,8 @@ import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
+import com.climus.climeet.data.model.response.UserFollowerInfoResponse
+import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
@@ -38,6 +40,7 @@ import com.climus.climeet.data.model.runRemote
 import com.climus.climeet.data.remote.MainApi
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.Query
 import javax.inject.Inject
 
@@ -57,6 +60,18 @@ class MainRepositoryImpl @Inject constructor(
         size: Int
     ): BaseState<SearchGymResponse> =
         runRemote { api.searchGym(gymName, page, size) }
+
+    override suspend fun getUserFollowing(
+        userId: Long,
+        userCategory: String
+    ): BaseState<List<UserFollowingInfoResponse>> =
+       runRemote { api.getUserFollowing(userId, userCategory) }
+
+    override suspend fun getUserFollowers(
+        userId: Long,
+        userCategory: String
+    ): BaseState<List<UserFollowerInfoResponse>> =
+        runRemote { api.getUserFollowers(userId, userCategory) }
 
     override suspend fun getRecentShorts(
         page: Int,

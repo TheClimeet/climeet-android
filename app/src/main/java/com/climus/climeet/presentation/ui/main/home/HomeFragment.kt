@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.MainNavDirections
+import com.climus.climeet.app.App
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
+import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.presentation.ui.main.home.recycler.homegym.HomeGymRVAdapter
 import com.climus.climeet.presentation.ui.main.home.recycler.popularcrag.FollowOrderPopularCragRVAdapter
 import com.climus.climeet.presentation.ui.main.home.recycler.popularcrag.RecordOrderPopularCragRVAdapter
@@ -27,6 +29,7 @@ import com.climus.climeet.presentation.ui.main.home.viewpager.best.RankingVPAdap
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerFragment
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerVPAdapter
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
+import com.climus.climeet.presentation.util.Constants
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,6 +43,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private var followOrderRecyclerCrag: List<BestFollowGymSimpleResponse> = emptyList()
     private var recordOrderRecyclerCrag: List<BestRecordGymDetailInfoResponse> = emptyList()
     private var recyclerRoute: List<BestRouteDetailInfoResponse> = emptyList()
+    private var userProfile: UserProfileInfoResponse? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,6 +53,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         viewModel.getGymRankingListOrderSelectionCount()
         viewModel.getRouteRankingOrderSelectionCount()
         viewModel.getHomeGyms()
+        viewModel.getUserProfile()
         initEventObserve()
         setupOnClickListener()
         setupBestRanking()
@@ -87,6 +92,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     uiState.routeList?.let { routeList ->
                         recyclerRoute = routeList
                         setupPopularRoutes()
+                    }
+
+                    uiState.myProfile.let { myProfile ->
+                        userProfile = uiState.myProfile
+                        if(userProfile != null) {
+                            App.sharedPreferences.edit()
+                                .putString("USER_ID", userProfile!!.userId.toString())
+                                .apply()
+                        }
+
                     }
                 }
             }

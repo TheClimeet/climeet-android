@@ -29,6 +29,8 @@ import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
+import com.climus.climeet.data.model.response.UserFollowerInfoResponse
+import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
@@ -49,6 +51,16 @@ interface MainRepository {
         page: Int,
         size: Int
     ): BaseState<SearchGymResponse>
+
+    suspend fun getUserFollowing(
+        @Query("userId") userId: Long,
+        @Query("userCategory") userCategory: String
+    ): BaseState<List<UserFollowingInfoResponse>>
+
+    suspend fun getUserFollowers(
+        @Query("userId") userId: Long,
+        @Query("userCategory") userCategory: String
+    ): BaseState<List<UserFollowerInfoResponse>>
 
     suspend fun searchAvailableGym(
         gymName: String,

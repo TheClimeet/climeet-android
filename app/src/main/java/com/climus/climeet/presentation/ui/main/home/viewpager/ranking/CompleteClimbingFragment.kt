@@ -108,6 +108,9 @@ class CompleteClimbingFragment: Fragment() {
                                 Glide.with(binding.root)
                                     .load(bestClearClimberResponse.profileImageUrl)
                                     .into(profileImgList[i])
+                                profileImgList[i].setOnClickListener {
+                                    navigateToClimberProfile(bestClearClimberResponse.userId)
+                                }
                             }
                             rankList[i].text = bestClearClimberResponse.ranking.toString()
                             nicknameList[i].text = bestClearClimberResponse.profileName
@@ -117,6 +120,11 @@ class CompleteClimbingFragment: Fragment() {
                 }
             }
         }
+    }
+
+    private fun navigateToClimberProfile(userId : Long) {
+        val action = MainNavDirections.globalActionToClimerProfileFragment(userId)
+        findNavController().navigate(action)
     }
 
 }
