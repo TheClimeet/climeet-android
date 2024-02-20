@@ -12,10 +12,6 @@ import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedFilter
-import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
-import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
-import com.climus.climeet.presentation.ui.main.shorts.toShortsThumbnailUiData
-import com.climus.climeet.presentation.ui.main.shorts.toShortsUiData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +24,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class HomeUiState(
-    val bannerList : List<BannerDetailInfoResponse> = emptyList(),
+    val bannerList: List<BannerDetailInfoResponse> = emptyList(),
     val homegymList: List<UserHomeGymSimpleResponse> = emptyList(),
     val followOrderCragList: List<BestFollowGymSimpleResponse> = emptyList(),
     val recordOrderCragList: List<BestRecordGymDetailInfoResponse> = emptyList(),
@@ -44,7 +40,7 @@ sealed class HomeEvent {
 }
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val repository: MainRepository): ViewModel() {
+class HomeViewModel @Inject constructor(private val repository: MainRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
@@ -55,7 +51,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
     fun getBannerListBetweenDates() {
         viewModelScope.launch {
             repository.findBannerListBetweenDates().let {
-                when(it) {
+                when (it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
@@ -63,6 +59,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
                             )
                         }
                     }
+
                     is BaseState.Error -> {
                         it.msg // 서버 에러 메시지
                         Log.d("Banner List API", it.msg)
@@ -75,7 +72,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
     fun getHomeGyms() {
         viewModelScope.launch {
             repository.getHomeGyms().let {
-                when(it) {
+                when (it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
@@ -96,7 +93,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
     fun getGymRankingOrderFollowCount() {
         viewModelScope.launch {
             repository.findGymRankingOrderFollowCount().let {
-                when(it) {
+                when (it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
@@ -104,6 +101,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
                             )
                         }
                     }
+
                     is BaseState.Error -> {
                         it.msg // 서버 에러 메시지
                         Log.d("API", it.msg)
@@ -116,14 +114,15 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
     fun getGymRankingListOrderSelectionCount() {
         viewModelScope.launch {
             repository.findGymRankingListOrderSelectionCount().let {
-                when(it) {
+                when (it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
-                               recordOrderCragList = it.body
+                                recordOrderCragList = it.body
                             )
                         }
                     }
+
                     is BaseState.Error -> {
                         it.msg // 서버 에러 메시지
                         Log.d("API", it.msg)
@@ -136,7 +135,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
     fun getRouteRankingOrderSelectionCount() {
         viewModelScope.launch {
             repository.findRouteRankingOrderSelectionCount().let {
-                when(it) {
+                when (it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
                             state.copy(
@@ -144,6 +143,7 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
                             )
                         }
                     }
+
                     is BaseState.Error -> {
                         it.msg // 서버 에러 메시지
                         Log.d("API", it.msg)

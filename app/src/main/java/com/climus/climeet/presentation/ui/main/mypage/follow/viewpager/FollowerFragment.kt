@@ -18,7 +18,6 @@ import com.climus.climeet.R
 import com.climus.climeet.app.App
 import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.databinding.FragmentFollowerBinding
-import com.climus.climeet.presentation.ui.main.home.recycler.following.FollowingRVAdapter
 import com.climus.climeet.presentation.ui.main.mypage.follow.viewpager.adapter.FollowerUserRVAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope

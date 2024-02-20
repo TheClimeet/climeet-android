@@ -8,11 +8,16 @@ import com.bumptech.glide.Glide
 import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.databinding.ItemSearchFollowingBinding
 
-class FollowerUserRVAdapter (private val followGymList: List<UserFollowingInfoResponse>) : RecyclerView.Adapter<FollowerUserRVAdapter.ViewHolder>() {
+class FollowerUserRVAdapter(private val followGymList: List<UserFollowingInfoResponse>) :
+    RecyclerView.Adapter<FollowerUserRVAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowerUserRVAdapter.ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): FollowerUserRVAdapter.ViewHolder {
         val binding: ItemSearchFollowingBinding = ItemSearchFollowingBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false)
+            LayoutInflater.from(parent.context), parent, false
+        )
         return ViewHolder(binding)
     }
 
@@ -22,20 +27,22 @@ class FollowerUserRVAdapter (private val followGymList: List<UserFollowingInfoRe
 
     override fun getItemCount(): Int = followGymList.size
 
-    inner class ViewHolder(val binding: ItemSearchFollowingBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(followGym: UserFollowingInfoResponse, position: Int){
-            if(followGym.profileImgUrl != null) {
+    inner class ViewHolder(val binding: ItemSearchFollowingBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(followGym: UserFollowingInfoResponse, position: Int) {
+            if (followGym.profileImgUrl != null) {
                 Glide.with(binding.root.context)
                     .load(followGym.profileImgUrl)
                     .into(binding.followingProfileArea)
             }
-            if(followGym.isFollower) {
+            if (followGym.isFollower) {
                 binding.btnFollow.visibility = View.VISIBLE
                 binding.btnFollowing.visibility = View.INVISIBLE
             }
 
             binding.tvFollowingName.text = followGym.userName
-            binding.tvFollowing.text = followGym.followerCount.toString() + " | 팔로잉 " + followGym.followingCount.toString()
+            binding.tvFollowing.text =
+                followGym.followerCount.toString() + " | 팔로잉 " + followGym.followingCount.toString()
 
         }
     }
