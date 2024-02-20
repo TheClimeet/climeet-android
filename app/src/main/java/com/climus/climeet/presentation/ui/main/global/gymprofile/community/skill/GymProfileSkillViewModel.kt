@@ -42,7 +42,7 @@ class GymProfileSkillViewModel @Inject constructor(
                         Log.d("gym_profile", "내 실력 : ${it.body}")
                         _uiState.update { state ->
                             state.copy(
-                                mySkill = it.body
+                                mySkill = it.body.string()
                             )
                         }
                     }
@@ -65,6 +65,12 @@ class GymProfileSkillViewModel @Inject constructor(
                             } else {
                                 it.percentage
                             }
+
+                            val color = if(it.gymDifficultyName == uiState.value.mySkill){
+                                "#BEDF22"
+                            } else {
+                                "#FFFFFF"
+                            }
                             list.add(
                                 StickChartUiData(
                                     // todo 차트 꼭대기 퍼센트 스트링
@@ -74,7 +80,8 @@ class GymProfileSkillViewModel @Inject constructor(
                                     // todo 차트 하단에 레벨이름
                                     levelName = it.gymDifficultyName,
                                     // todo 색상 hex 값
-                                    levelHex = it.gymDifficultyColor
+                                    levelHex = it.gymDifficultyColor,
+                                    levelStringColor = color
                                 )
                             )
                         }

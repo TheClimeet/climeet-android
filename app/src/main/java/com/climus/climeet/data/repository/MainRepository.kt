@@ -245,7 +245,7 @@ interface MainRepository {
 
     suspend fun getMyGymSkill(
         gymId: Long
-    ): BaseState<String>
+    ): BaseState<ResponseBody>
 
     suspend fun getGymStatsWeek(
         gymId: Long

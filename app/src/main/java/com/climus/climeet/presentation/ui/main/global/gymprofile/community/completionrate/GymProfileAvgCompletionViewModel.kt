@@ -39,6 +39,24 @@ class GymProfileAvgCompletionViewModel @Inject constructor(
     private fun getMyStatus() {
 
         viewModelScope.launch {
+            repository.getMyGymSkill(gymId).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        Log.d("gym_profile", "내 실력 : ${it.body}")
+                        _uiState.update { state ->
+                            state.copy(
+                                mySkill = it.body.string()
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> {
+                        it.msg // 서버 에러 메시지
+                        Log.d("API", it.msg)
+                    }
+                }
+            }
+
             repository.getGymStatsWeek(gymId).let { result ->
                 when (result) {
                     is BaseState.Success -> {
@@ -63,12 +81,20 @@ class GymProfileAvgCompletionViewModel @Inject constructor(
                             } else {
                                 ((it.count.toFloat() / totalCount.toFloat()) * 100).roundToInt()
                             }
+
+                            val color = if(it.gymDifficultyName == uiState.value.mySkill){
+                                "#BEDF22"
+                            } else {
+                                "#FFFFFF"
+                            }
+
                             list.add(
                                 StickChartUiData(
                                     percentString = "$percent%",
-                                    percent = maxOf((it.count.toFloat() / maxPercent) * 0.8f, 0.001f),
+                                    percent = if(percent == 0) 0f else (it.count.toFloat() / maxPercent) * 0.8f,
                                     levelName = it.gymDifficultyName,
-                                    levelHex = it.gymDifficultyColor
+                                    levelHex = it.gymDifficultyColor,
+                                    levelStringColor = color
                                 )
                             )
                         }
