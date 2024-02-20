@@ -25,6 +25,8 @@ class MyPageFragment: BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypa
         binding.vm = viewModel
         initEventObserve()
         modeSwitchListener()
+
+        viewModel.getProfileInfo()
     }
 
     private fun initEventObserve(){
