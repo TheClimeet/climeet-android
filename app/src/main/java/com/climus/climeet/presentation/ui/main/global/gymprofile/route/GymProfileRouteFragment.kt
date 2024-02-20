@@ -1,14 +1,13 @@
 package com.climus.climeet.presentation.ui.main.global.gymprofile.route
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
-import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.databinding.FragmentGymProfileRouteBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheet
@@ -24,7 +23,6 @@ import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
 import com.climus.climeet.presentation.ui.toShortsPlayer
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.LocalDate
 
 @AndroidEntryPoint
 class GymProfileRouteFragment :
@@ -41,22 +39,25 @@ class GymProfileRouteFragment :
         binding.svm = sharedViewModel
         binding.vm = viewModel
 
+        setRouteTab()
         setRecyclerView()
         initEventObserve()
         initShortsEventObserve()
         addOnScrollListener()
-        setGymInfo()
-
-        sharedViewModel.getShorts(ShortsOption.NEW_SORT)
 
         viewModel.selectedDate.observe(viewLifecycleOwner, Observer { date ->
             viewModel.setDate()
         })
     }
 
-    private fun setGymInfo() {
+    private fun setRouteTab() {
         // 암장 id, 이름 설정
         parentViewModel.gymId.observe(viewLifecycleOwner, Observer { id ->
+
+            Log.d("gym_profile", "숏츠 호출 : $id")
+            sharedViewModel.setCurFilter(id)
+            sharedViewModel.getShorts(ShortsOption.NEW_SORT)
+
             viewModel.setCragInfo(id, parentViewModel.uiState.value.gymName)
         })
     }
