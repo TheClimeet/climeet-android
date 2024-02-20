@@ -1,6 +1,7 @@
 package com.climus.climeet.presentation.ui.main.global.climerprofile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -9,6 +10,7 @@ import com.climus.climeet.databinding.FragmentClimerProfileBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.global.climerprofile.viewpager.ClimberProfileVPAdapter
 import com.climus.climeet.presentation.ui.main.mypage.myshorts.viewpager.MyShortsVPAdapter
+import com.climus.climeet.presentation.util.Constants.TAG
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,7 +28,7 @@ class ClimerProfileFragment : BaseFragment<FragmentClimerProfileBinding>(R.layou
         binding.vm = viewModel
         viewModel.setUserId(userId)
         setupTabLayout()
-        initStateObserve()
+        initEventObserve()
 
     }
 
@@ -41,15 +43,19 @@ class ClimerProfileFragment : BaseFragment<FragmentClimerProfileBinding>(R.layou
 
     }
 
-    private fun initStateObserve(){
+    private fun initEventObserve(){
         repeatOnStarted {
-            viewModel.uiState.collect{
-                if(it.isFollower){
-                    binding.btnFollow.visibility = View.INVISIBLE
-                    binding.btnFollowing.visibility = View.VISIBLE
-                } else {
-                    binding.btnFollow.visibility = View.VISIBLE
-                    binding.btnFollowing.visibility = View.INVISIBLE
+            viewModel.event.collect{
+                when(it){
+                    is ClimberProfileEvent.ChangeFollowing -> {
+                        if(it.state){
+                            binding.btnFollow.visibility = View.INVISIBLE
+                            binding.btnFollowing.visibility = View.VISIBLE
+                        } else {
+                            binding.btnFollow.visibility = View.VISIBLE
+                            binding.btnFollowing.visibility = View.INVISIBLE
+                        }
+                    }
                 }
             }
         }

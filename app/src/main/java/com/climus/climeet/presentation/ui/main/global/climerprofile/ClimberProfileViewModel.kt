@@ -5,8 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -20,6 +23,9 @@ data class ClimberProfileUiState(
     val isFollower: Boolean = false
 )
 
+sealed class ClimberProfileEvent{
+    data class ChangeFollowing(val state: Boolean): ClimberProfileEvent()
+}
 
 @HiltViewModel
 class ClimberProfileViewModel @Inject constructor(
@@ -28,6 +34,9 @@ class ClimberProfileViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(ClimberProfileUiState())
     val uiState: StateFlow<ClimberProfileUiState> = _uiState.asStateFlow()
+
+    private val _event = MutableSharedFlow<ClimberProfileEvent>()
+    val event: SharedFlow<ClimberProfileEvent> = _event.asSharedFlow()
 
     private var userId: Long = 0
 
@@ -67,6 +76,7 @@ class ClimberProfileViewModel @Inject constructor(
                         _uiState.update { state ->
                             state.copy(isFollower = true)
                         }
+                        _event.emit(ClimberProfileEvent.ChangeFollowing(true))
                     }
 
                     is BaseState.Error -> {
@@ -85,6 +95,7 @@ class ClimberProfileViewModel @Inject constructor(
                         _uiState.update { state ->
                             state.copy(isFollower = false)
                         }
+                        _event.emit(ClimberProfileEvent.ChangeFollowing(false))
                     }
 
                     is BaseState.Error -> {
