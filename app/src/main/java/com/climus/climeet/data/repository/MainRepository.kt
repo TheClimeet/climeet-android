@@ -232,6 +232,11 @@ interface MainRepository {
         body: CreateGymProfileReviewRequest
     ): BaseState<ResponseBody>
 
+    suspend fun editGymReview(
+        gymId: Long,
+        body: CreateGymProfileReviewRequest
+    ): BaseState<ResponseBody>
+
     suspend fun getGymClimberRankingOrderClearCount(
         gymId: Long
     ): BaseState<List<GymCompleteBestClimberResponse>>

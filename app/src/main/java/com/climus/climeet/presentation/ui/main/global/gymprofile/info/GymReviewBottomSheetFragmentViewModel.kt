@@ -1,25 +1,17 @@
 package com.climus.climeet.presentation.ui.main.global.gymprofile.info
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.climus.climeet.app.App.Companion.getContext
 import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.repository.MainRepository
-import com.climus.climeet.presentation.ui.main.global.gymprofile.model.GymBusinessHour
-import com.climus.climeet.presentation.ui.main.global.gymprofile.model.GymPrice
-import com.climus.climeet.presentation.ui.main.global.gymprofile.model.GymService
-import com.climus.climeet.presentation.ui.main.global.selectsector.SelectSectorBottomSheetEvent
-import com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord.CreateClimbingRecordEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -67,7 +59,40 @@ class GymReviewBottomSheetFragmentViewModel @Inject constructor(
 
                     is BaseState.Error -> {
                         it.msg // 서버 에러 메시지
-                        Log.d("gym_profile", "정보 탭 불러오기 실패")
+                        Log.d("gym_profile", "리뷰 업로드 실패 ${it.msg}")
+                    }
+                }
+            }
+        }
+    }
+
+    fun editReview() {
+        viewModelScope.launch {
+
+            if (reviewText.value.isNullOrBlank()) {
+                _event.emit(GymReviewBottomSheetEvent.ShowToastMessage("리뷰를 입력해주세요."))
+                return@launch
+            }
+
+            val request = CreateGymProfileReviewRequest(
+                content = reviewText?.value!!,
+                rating = reviewRating.value!!
+            )
+
+            Log.d("gym_profile", "수정된 리뷰 : $request")
+
+            repository.editGymReview(gymId, request).let { it ->
+                when (it) {
+                    is BaseState.Success -> {
+                        // 다음 리뷰를 위해 값 초기화
+                        reviewRating.value = 5F
+                        reviewText.value = ""
+                        navigateToProfile()
+                    }
+
+                    is BaseState.Error -> {
+                        it.msg // 서버 에러 메시지
+                        Log.d("gym_profile", "리뷰 수정 실패 ${it.msg}")
                     }
                 }
             }

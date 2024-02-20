@@ -269,6 +269,11 @@ class MainRepositoryImpl @Inject constructor(
         body: CreateGymProfileReviewRequest
     ): BaseState<ResponseBody> = runRemote { api.createGymReview(gymId, body) }
 
+    override suspend fun editGymReview(
+        gymId: Long,
+        body: CreateGymProfileReviewRequest
+    ): BaseState<ResponseBody> = runRemote { api.editGymReview(gymId, body) }
+
     override suspend fun getGymClimberRankingOrderClearCount(
         gymId: Long
     ): BaseState<List<GymCompleteBestClimberResponse>> =
