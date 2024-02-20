@@ -46,4 +46,14 @@
         <item name="colorControlNormal">@android:color/transparent</item>
     </style>
 
+    <style name="customRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingbar_custom</item>
+    </style>
+
+    <style name="customSmallRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/small_ratingbar_custom</item>
+        <item name="android:minHeight">35dp</item>
+        <item name="android:maxHeight">33dp</item>
+    </style>
+
 </resources>

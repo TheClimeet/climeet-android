@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
@@ -13,11 +14,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.MainNavDirections
+import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
+import com.climus.climeet.data.repository.IntroRepository
+import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.ui.intro.login.admin.AdminLoginEvent
+import com.climus.climeet.presentation.ui.intro.signup.climer.noticesetting.NoticeSettingEvent
 import com.climus.climeet.presentation.ui.main.home.recycler.homegym.HomeGymRVAdapter
 import com.climus.climeet.presentation.ui.main.home.recycler.popularcrag.FollowOrderPopularCragRVAdapter
 import com.climus.climeet.presentation.ui.main.home.recycler.popularcrag.RecordOrderPopularCragRVAdapter
@@ -26,6 +32,9 @@ import com.climus.climeet.presentation.ui.main.home.recycler.popularshorts.Popul
 import com.climus.climeet.presentation.ui.main.home.viewpager.best.RankingVPAdapter
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerFragment
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerVPAdapter
+import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingViewModel
+import com.climus.climeet.presentation.util.Constants
+import com.climus.climeet.presentation.util.Constants.X_MODE
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,7 +63,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         setupBestRanking()
     }
 
-    private fun initEventObserve(){
+    private fun initEventObserve() {
         repeatOnStarted {
             viewModel?.let { vm ->
                 vm.uiState.collect { uiState ->
@@ -160,7 +169,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         findNavController().navigate(action)
     }
 
-    private fun setupIntroduceBanner(vpBanner : List<BannerDetailInfoResponse>) {
+    private fun setupIntroduceBanner(vpBanner: List<BannerDetailInfoResponse>) {
         val bannerAdapter = BannerVPAdapter(this, binding.vpHomeIntroduceBanner)
 
         for (bannerInfo in vpBanner) {
@@ -219,8 +228,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     private fun setupHomeGymList() {
-        val homeGymRVAdapter = HomeGymRVAdapter(recyclerHomeGym)
+        val homeGymRVAdapter = HomeGymRVAdapter(recyclerHomeGym, ::navToGymProfile)
         setupRecyclerView(binding.rvHomeHomegym, homeGymRVAdapter, LinearLayoutManager.HORIZONTAL)
+    }
+
+    // 선택한 암장 프로필로 이동
+    private fun navToGymProfile(gymId: Long) {
+
+        sharedPreferences.edit().putLong("gymId", gymId)
+        //Log.d("gym_profile", "홈에서 암장 아이디 : $gymId)
+
+        val access = sharedPreferences.getString(X_MODE, null)
+
+        if (access == "CLIMER") {
+            val action = HomeFragmentDirections.globalActionToGymProfileFragment(gymId)
+            findNavController().navigate(action)
+        } else if (access == "ADMIN") {
+            Toast.makeText(requireContext(), "암장 관리자의 암장 프로필 접근", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), "유효하지 않은 접근입니다.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setupBestRanking() {
