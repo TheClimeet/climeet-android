@@ -27,12 +27,10 @@ class GymProfileTimeDetailViewModel @Inject constructor(private val repository: 
     private val _uiState = MutableStateFlow(GymProfileTimeDetailUiState())
     val uiState: StateFlow<GymProfileTimeDetailUiState> = _uiState.asStateFlow()
 
-    var gymId = 0L
+    var gymId = sharedPreferences.getLong("gymId", 0L)
 
     fun getClimberRankingOrderTime() {
         viewModelScope.launch {
-            gymId = sharedPreferences.getLong("gymId", 0L)
-            Log.d("gym_profile", "time gymId : $gymId")
             repository.getGymClimberRankingOrderTime(gymId).let {
                 when (it) {
                     is BaseState.Success -> {
