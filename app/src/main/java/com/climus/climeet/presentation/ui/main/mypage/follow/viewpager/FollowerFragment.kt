@@ -12,11 +12,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
-import com.climus.climeet.databinding.FragmentCompleteClimbingBinding
+import com.climus.climeet.app.App
+import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.databinding.FragmentFollowerBinding
-import com.climus.climeet.databinding.FragmentFollowingBinding
-import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingViewModel
+import com.climus.climeet.presentation.ui.main.mypage.follow.viewpager.adapter.FollowerUserRVAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -26,6 +28,8 @@ class FollowerFragment : Fragment() {
 
     private lateinit var binding : FragmentFollowerBinding
     private val viewModel: FollowerViewModel by viewModels()
+    var userCategory: String = "Climber"
+    private var recyclerUserFollower: List<UserFollowingInfoResponse> = emptyList()
 
     fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -44,21 +48,68 @@ class FollowerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // api
         super.onViewCreated(view, savedInstanceState)
 
+        binding.vm = viewModel
+        val userId = App.sharedPreferences.getString("USER_ID", "")
+
+
+        setupInitialSetting()
+        viewModel.getUserFollowing(userId!!.toLong(), userCategory)
+
+        initStateObserve()
         setupOnClickListener()
 
     }
 
+    private fun setupInitialSetting() {
+        if(checkUserType())
+            userCategory = "Manager"
+    }
+
+    private fun checkUserType(): Boolean {
+        val userType = App.sharedPreferences.getString("X_MODE", "")
+        return userType == "ADMIN"
+    }
+
+    private fun initStateObserve() {
+        repeatOnStarted {
+            viewModel?.let { vm ->
+                vm.uiState.collect { uiState ->
+                    uiState.followerList.let { followerList ->
+
+                        recyclerUserFollower = followerList
+                        setupUserFollowerList()
+
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupUserFollowerList() {
+        val followingRVAdapter = FollowerUserRVAdapter(recyclerUserFollower)
+        setupRecyclerView(binding.rvSearchFollowing, followingRVAdapter, LinearLayoutManager.VERTICAL)
+    }
+
+    private fun setupRecyclerView(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>, orientation: Int) {
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireActivity(), orientation, false)
+    }
+
     fun setupOnClickListener() {
 
-        binding.tvSearchMenuCrag.setOnClickListener {
-            binding.tvSearchMenuCrag.setBackgroundResource(R.drawable.rect_backgroundfill_nostroke_999radius)
-            binding.tvSearchMenuClimber.setBackgroundColor(Color.TRANSPARENT);
-        }
-
-        binding.tvSearchMenuClimber.setOnClickListener {
-            binding.tvSearchMenuClimber.setBackgroundResource(R.drawable.rect_backgroundfill_nostroke_999radius)
-            binding.tvSearchMenuCrag.setBackgroundColor(Color.TRANSPARENT);
-        }
+//        binding.tvSearchMenuCrag.setOnClickListener {
+//            binding.tvSearchMenuCrag.setBackgroundResource(R.drawable.rect_backgroundfill_nostroke_999radius)
+//            binding.tvSearchMenuClimber.setBackgroundColor(Color.TRANSPARENT)
+//            binding.rvFollowSearchCrags.visibility = View.VISIBLE
+//            binding.rvSearchFollowing.visibility = View.INVISIBLE
+//        }
+//
+//        binding.tvSearchMenuClimber.setOnClickListener {
+//            binding.tvSearchMenuClimber.setBackgroundResource(R.drawable.rect_backgroundfill_nostroke_999radius)
+//            binding.tvSearchMenuCrag.setBackgroundColor(Color.TRANSPARENT)
+//            binding.rvSearchFollowing.visibility = View.INVISIBLE
+//
+//        }
     }
 
 }

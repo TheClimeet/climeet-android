@@ -5,4 +5,5 @@ data class StickChartUiData(
     val percent: Float,
     val levelName: String,
     val levelHex: String?,
+    val levelStringColor: String=""
 )

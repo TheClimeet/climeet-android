@@ -23,6 +23,7 @@ import com.climus.climeet.presentation.ui.main.home.model.PopularShorts
 import com.climus.climeet.presentation.ui.main.home.popularroutes.adapter.PopularRoutesAllRVadapter
 import com.climus.climeet.presentation.ui.main.home.popularshorts.adapter.PopularShortsAllRVAdapter
 import com.climus.climeet.presentation.ui.main.home.recycler.popularroute.PopularRouteRVAdapter
+import com.climus.climeet.presentation.ui.toSearchProfile
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -61,13 +62,8 @@ class PopularRoutesFragment : BaseFragment<FragmentPopularRoutesBinding>(R.layou
         }
 
         binding.icPopularRoutesSearch.setOnClickListener {
-            navigateToSearchCrag()
+            findNavController().toSearchProfile()
         }
-    }
-
-    private fun navigateToSearchCrag() {
-        val action = MainNavDirections.actionHomeFragmentToSearchCragFragment()
-        findNavController().navigate(action)
     }
 
     private fun setupPopularRoutesList() {

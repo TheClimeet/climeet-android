@@ -1,4 +1,5 @@
-package com.climus.climeet.presentation.ui.main.home.recycler.following
+package com.climus.climeet.presentation.ui.main.mypage.follow
+
 
 import android.annotation.SuppressLint
 import android.util.SparseBooleanArray
@@ -9,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.databinding.ItemFollowingBinding
-import com.climus.climeet.presentation.ui.main.home.search.model.FollowClimber
 
 class FollowingRVAdapter(private val followingList: List<UserFollowSimpleResponse>) : RecyclerView.Adapter<FollowingRVAdapter.ViewHolder>(){
 

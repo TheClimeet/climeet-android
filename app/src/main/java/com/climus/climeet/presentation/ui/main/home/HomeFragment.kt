@@ -5,26 +5,22 @@ import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.climus.climeet.R
-import com.climus.climeet.databinding.FragmentHomeBinding
-import com.climus.climeet.presentation.base.BaseFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.climus.climeet.MainNavDirections
+import com.climus.climeet.R
+import com.climus.climeet.app.App
 import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
-import com.climus.climeet.data.repository.IntroRepository
-import com.climus.climeet.data.repository.MainRepository
-import com.climus.climeet.presentation.ui.intro.login.admin.AdminLoginEvent
-import com.climus.climeet.presentation.ui.intro.signup.climer.noticesetting.NoticeSettingEvent
+import com.climus.climeet.data.model.response.UserProfileInfoResponse
+import com.climus.climeet.databinding.FragmentHomeBinding
+import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.home.recycler.homegym.HomeGymRVAdapter
 import com.climus.climeet.presentation.ui.main.home.recycler.popularcrag.FollowOrderPopularCragRVAdapter
 import com.climus.climeet.presentation.ui.main.home.recycler.popularcrag.RecordOrderPopularCragRVAdapter
@@ -34,15 +30,13 @@ import com.climus.climeet.presentation.ui.main.home.viewpager.best.RankingVPAdap
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerFragment
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerVPAdapter
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
-import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingViewModel
-import com.climus.climeet.presentation.util.Constants
-import com.climus.climeet.presentation.util.Constants.X_MODE
-import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
 import com.climus.climeet.presentation.ui.toGymProfile
+import com.climus.climeet.presentation.ui.toSearchProfile
 import com.climus.climeet.presentation.ui.toShortsPlayer
+import com.climus.climeet.presentation.util.Constants.X_MODE
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -57,6 +51,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private var recordOrderRecyclerCrag: List<BestRecordGymDetailInfoResponse> = emptyList()
     private var recyclerRoute: List<BestRouteDetailInfoResponse> = emptyList()
     private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
+    private var userProfile: UserProfileInfoResponse? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -66,6 +61,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         viewModel.getRouteRankingOrderSelectionCount()
         viewModel.getHomeGyms()
         initShortsObserve()
+        viewModel.getUserProfile()
         initEventObserve()
         setupOnClickListener()
         setupBestRanking()
@@ -74,10 +70,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         sharedViewModel.getShorts(ShortsOption.NEW_SORT)
     }
 
-    private fun initShortsObserve(){
+    private fun initShortsObserve() {
         repeatOnStarted {
-            sharedViewModel.uiState.collect{
-                if(it.shortsThumbnailList.isNotEmpty()){
+            sharedViewModel.uiState.collect {
+                if (it.shortsThumbnailList.isNotEmpty()) {
                     recyclerShorts = it.shortsThumbnailList
                     setupPopularShorts()
                 }
@@ -85,7 +81,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         }
     }
 
-    private fun initEventObserve(){
+    private fun initEventObserve() {
         repeatOnStarted {
             viewModel?.let { vm ->
                 vm.uiState.collect { uiState ->
@@ -114,6 +110,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                         recyclerRoute = routeList
                         setupPopularRoutes()
                     }
+
+                    uiState.myProfile.let { myProfile ->
+                        userProfile = uiState.myProfile
+                        if (userProfile != null) {
+                            App.sharedPreferences.edit()
+                                .putString("USER_ID", userProfile!!.userId.toString())
+                                .apply()
+                        }
+
+                    }
                 }
             }
         }
@@ -127,6 +133,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                         it.position
                     )
 
+                    else -> {}
                 }
             }
         }
@@ -135,7 +142,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private fun setupOnClickListener() {
 
         binding.icHomeSerach.setOnClickListener {
-            navigateToSearchCrag()
+            findNavController().toSearchProfile()
         }
 
         binding.tvHomeRankingViewAll.setOnClickListener {
@@ -156,18 +163,38 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         binding.homeFollowOrder.setOnClickListener {
             binding.homeFollowOrder.setBackgroundResource(R.drawable.rect_mainfill_nostroke_5radius)
-            binding.homeFollowOrder.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
+            binding.homeFollowOrder.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.black
+                )
+            )
             binding.homeRecordOrder.setBackgroundResource(R.drawable.rect_grey6fill_nostroke_5radius)
-            binding.homeRecordOrder.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
+            binding.homeRecordOrder.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.white
+                )
+            )
             binding.rvHomeFollowOrderPopularCrags.visibility = View.VISIBLE
             binding.rvHomeRecordOrderPopularCrags.visibility = View.INVISIBLE
         }
 
         binding.homeRecordOrder.setOnClickListener {
             binding.homeRecordOrder.setBackgroundResource(R.drawable.rect_mainfill_nostroke_5radius)
-            binding.homeRecordOrder.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
+            binding.homeRecordOrder.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.black
+                )
+            )
             binding.homeFollowOrder.setBackgroundResource(R.drawable.rect_grey6fill_nostroke_5radius)
-            binding.homeFollowOrder.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
+            binding.homeFollowOrder.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.white
+                )
+            )
             binding.rvHomeFollowOrderPopularCrags.visibility = View.INVISIBLE
             binding.rvHomeRecordOrderPopularCrags.visibility = View.VISIBLE
         }
@@ -194,10 +221,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         findNavController().navigate(action)
     }
 
-    private fun navigateToSearchCrag() {
-        val action = MainNavDirections.actionHomeFragmentToSearchCragFragment()
-        findNavController().navigate(action)
-    }
 
     private fun setupIntroduceBanner(vpBanner: List<BannerDetailInfoResponse>) {
         val bannerAdapter = BannerVPAdapter(this, binding.vpHomeIntroduceBanner)
@@ -223,7 +246,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 currentPos = position
                 val currentPageNumber = position + 1
                 val totalPages = viewPager.adapter?.itemCount ?: 0
-                indicator.text = getString(R.string.viewpager2_banner, currentPageNumber, totalPages)
+                indicator.text =
+                    getString(R.string.viewpager2_banner, currentPageNumber, totalPages)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -252,7 +276,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     }
 
-    private fun setupRecyclerView(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>, orientation: Int) {
+    private fun setupRecyclerView(
+        recyclerView: RecyclerView,
+        adapter: RecyclerView.Adapter<*>,
+        orientation: Int
+    ) {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity(), orientation, false)
     }
@@ -296,22 +324,40 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private fun setupPopularShorts() {
         val popularShortsRVAdapter = PopularShortsRVAdapter(recyclerShorts)
-        setupRecyclerView(binding.rvHomeShorts, popularShortsRVAdapter, LinearLayoutManager.HORIZONTAL)
+        setupRecyclerView(
+            binding.rvHomeShorts,
+            popularShortsRVAdapter,
+            LinearLayoutManager.HORIZONTAL
+        )
     }
 
     private fun setupFollowOrderPopularCrags() {
-        val followOrderPopularCragRVAdapter = FollowOrderPopularCragRVAdapter(followOrderRecyclerCrag, ::navToGymProfile)
-        setupRecyclerView(binding.rvHomeFollowOrderPopularCrags, followOrderPopularCragRVAdapter, LinearLayoutManager.HORIZONTAL)
+        val followOrderPopularCragRVAdapter =
+            FollowOrderPopularCragRVAdapter(followOrderRecyclerCrag, ::navToGymProfile)
+        setupRecyclerView(
+            binding.rvHomeFollowOrderPopularCrags,
+            followOrderPopularCragRVAdapter,
+            LinearLayoutManager.HORIZONTAL
+        )
     }
 
     private fun setupRecordOrderPopularCrags() {
-        val recordOrderPopularCragRVAdapter = RecordOrderPopularCragRVAdapter(recordOrderRecyclerCrag, ::navToGymProfile)
-        setupRecyclerView(binding.rvHomeRecordOrderPopularCrags, recordOrderPopularCragRVAdapter, LinearLayoutManager.HORIZONTAL)
+        val recordOrderPopularCragRVAdapter =
+            RecordOrderPopularCragRVAdapter(recordOrderRecyclerCrag, ::navToGymProfile)
+        setupRecyclerView(
+            binding.rvHomeRecordOrderPopularCrags,
+            recordOrderPopularCragRVAdapter,
+            LinearLayoutManager.HORIZONTAL
+        )
     }
 
     private fun setupPopularRoutes() {
         val popularRouteRVAdapter = PopularRouteRVAdapter(recyclerRoute)
-        setupRecyclerView(binding.rvHomePopularRoutes, popularRouteRVAdapter, LinearLayoutManager.HORIZONTAL)
+        setupRecyclerView(
+            binding.rvHomePopularRoutes,
+            popularRouteRVAdapter,
+            LinearLayoutManager.HORIZONTAL
+        )
     }
 
 }

@@ -15,6 +15,7 @@ import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiDat
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
+import com.climus.climeet.presentation.ui.toSearchProfile
 import com.climus.climeet.presentation.ui.toShortsPlayer
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -54,7 +55,7 @@ class PopularShortsFragment :
                         it.shortsId,
                         it.position
                     )
-
+                    else -> {}
                 }
             }
         }
@@ -66,13 +67,8 @@ class PopularShortsFragment :
         }
 
         binding.icPopularShortsSearch.setOnClickListener {
-            navigateToSearchCrag()
+            findNavController().toSearchProfile()
         }
-    }
-
-    private fun navigateToSearchCrag() {
-        val action = MainNavDirections.actionHomeFragmentToSearchCragFragment()
-        findNavController().navigate(action)
     }
 
     private fun setupPopularShortsList() {

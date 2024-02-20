@@ -14,6 +14,7 @@ import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
+import com.climus.climeet.data.model.response.GetGymListToFollowResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
@@ -36,6 +37,8 @@ import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
+import com.climus.climeet.data.model.response.UserFollowerInfoResponse
+import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
@@ -89,14 +92,24 @@ interface MainApi {
         @QueryMap filter: Map<String, Long>,
     ): Response<ShortsListResponse>
 
-    @POST("/follow-relationship/{userId}")
+    @POST("/follow-relationship")
     suspend fun followUser(
-        @Path("userId") userId: Long
+        @Query("followingUserId") userId: Long
     ): Response<String>
 
-    @DELETE("/follow-relationship/{userId}")
+    @DELETE("/follow-relationship")
     suspend fun unfollowUser(
-        @Path("userId") userId: Long
+        @Query("followingUserId") userId: Long
+    ): Response<String>
+
+    @POST("/follow-relationship/gym")
+    suspend fun followGym(
+        @Query("gymId") gymId: Long
+    ): Response<String>
+
+    @DELETE("/follow-relationship/gym")
+    suspend fun unfollowGym(
+        @Query("gymId") gymId: Long
     ): Response<String>
 
     @GET("/api/climber/search")
@@ -217,6 +230,18 @@ interface MainApi {
         @Query("size") size: Int
     ): Response<ShortsMainCommentResponse>
 
+    @GET("/api/followees")
+    suspend fun getUserFollowing(
+        @Query("userId") userId: Long,
+        @Query("userCategory") userCategory: String
+    ): Response<List<UserFollowingInfoResponse>>
+
+    @GET("/api/followers")
+    suspend fun getUserFollowers(
+        @Query("userId") userId: Long,
+        @Query("userCategory") userCategory: String
+    ): Response<List<UserFollowerInfoResponse>>
+
     @POST("/api/shorts/{shortsId}/shortsComments")
     suspend fun addShortsComment(
         @Path("shortsId") shortsId: Long,
@@ -274,6 +299,13 @@ interface MainApi {
     suspend fun getGymClimberRankingOrderTime(
         @Path("gymId") gymID: Long,
     ): Response<List<GymTimeBestClimberResponse>>
+
+    @GET("/api/gyms/search/follow")
+    suspend fun getGymListToFollow(
+        @Query("gymname") gymname: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<GetGymListToFollowResponse>
 
     @GET("/api/gyms/{gymId}/skill-distribution")
     suspend fun getGymSkillDistribution(

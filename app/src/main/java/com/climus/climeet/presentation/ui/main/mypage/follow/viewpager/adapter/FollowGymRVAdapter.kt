@@ -1,14 +1,11 @@
-package com.climus.climeet.presentation.ui.main.home.search.recycler
+package com.climus.climeet.presentation.ui.main.mypage.follow.viewpager.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.climus.climeet.R
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.databinding.ItemFollowGymBinding
-import com.climus.climeet.presentation.ui.main.home.popularroutes.adapter.PopularRoutesAllRVadapter
 
 class FollowGymRVAdapter (private val followGymList: List<UserHomeGymDetailResponse>) : RecyclerView.Adapter<FollowGymRVAdapter.ViewHolder>() {
 

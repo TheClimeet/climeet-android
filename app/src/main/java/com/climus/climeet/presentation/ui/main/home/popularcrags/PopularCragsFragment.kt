@@ -15,6 +15,7 @@ import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.home.bestclimer.viewpager.BestClimerVPAdpater
 import com.climus.climeet.presentation.ui.main.home.popularcrags.viewpager.PopularCragsVPAdpater
 import com.climus.climeet.presentation.ui.toGymProfile
+import com.climus.climeet.presentation.ui.toSearchProfile
 import com.climus.climeet.presentation.util.Constants
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -34,16 +35,9 @@ class PopularCragsFragment : BaseFragment<FragmentPopularCragsBinding>(R.layout.
         }
 
         binding.icPopularCragsSearch.setOnClickListener {
-            navigateToSearchCrag()
+            findNavController().toSearchProfile()
         }
 
-    }
-
-
-
-    private fun navigateToSearchCrag() {
-        val action = MainNavDirections.actionHomeFragmentToSearchCragFragment()
-        findNavController().navigate(action)
     }
 
     private fun setupPopularCrags() {

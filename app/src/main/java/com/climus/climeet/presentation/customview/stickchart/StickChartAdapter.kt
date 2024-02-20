@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams
+import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.databinding.ItemStickChartBinding
@@ -33,10 +34,21 @@ class StickChartViewHolder(private val binding: ItemStickChartBinding): Recycler
     fun bind(item: StickChartUiData){
         binding.item = item
 
-        Log.d(TAG, item.percent.toString())
+        if(item.levelStringColor.isNotBlank()){
+            binding.tvLevelName.setTextColor(item.levelStringColor.toColorInt())
+        } else {
+            item.levelHex?.let{
+                if (it.isNotBlank()) {
+                    binding.tvLevelName.setTextColor(it.toColorInt())
+                }
+            }
+        }
+
+
+        val percent = if(item.percent == 0f) 0.01f else item.percent
         val layoutParams: LayoutParams = binding.vStick.layoutParams as LayoutParams
         layoutParams.height = 0
-        layoutParams.matchConstraintPercentHeight = item.percent
+        layoutParams.matchConstraintPercentHeight = percent
         binding.vStick.layoutParams = layoutParams
     }
 }

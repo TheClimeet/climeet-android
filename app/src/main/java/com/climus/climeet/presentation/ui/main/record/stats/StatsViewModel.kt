@@ -1,7 +1,5 @@
 package com.climus.climeet.presentation.ui.main.record.stats
 
-import android.util.Log
-import androidx.compose.ui.unit.Constraints
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -78,7 +76,6 @@ class StatsViewModel @Inject constructor(
                 when (result) {
                     is BaseState.Success -> {
                         val body = result.body
-                        Log.d("stattest", body.toString())
                         _uiState.update { state ->
                             state.copy(
                                 totalTime = body.time,
@@ -106,12 +103,13 @@ class StatsViewModel @Inject constructor(
                             } else {
                                 ((it.value.toFloat() / body.totalCompletedCount.toFloat()) * 100).roundToInt()
                             }
+
                             list.add(
                                 StickChartUiData(
                                     // todo 차트 꼭대기 퍼센트 스트링
                                     percentString = "$percent%",
                                     // todo 차트 막대 길이비율 정하는 float값
-                                    percent = (it.value.toFloat() / maxPercent) * 0.8f,
+                                    percent = if(percent == 0) 0f else (it.value.toFloat() / maxPercent) * 0.8f,
                                     // todo 차트 하단에 레벨이름
                                     levelName = it.key,
                                     // todo 레벨에 대응되는 색상 hex 값
@@ -136,7 +134,8 @@ class StatsViewModel @Inject constructor(
                             state.copy(
                                 totalTime = "00:00:00",
                                 totalCompletedCount = 0,
-                                totalAttemptCount = 0
+                                totalAttemptCount = 0,
+                                chartUiList = emptyList()
                             )
                         }
                         setProgress()

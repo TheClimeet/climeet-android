@@ -3,6 +3,10 @@ package com.climus.climeet.data.model.response
 import com.google.gson.annotations.SerializedName
 
 data class BestLevelCimberSimpleResponse(
+
+    @SerializedName("userId")
+    val userId : Long,
+
     @SerializedName("ranking")
     val ranking : Int,
 

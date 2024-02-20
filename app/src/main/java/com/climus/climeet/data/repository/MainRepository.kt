@@ -17,6 +17,7 @@ import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
+import com.climus.climeet.data.model.response.GetGymListToFollowResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
@@ -38,6 +39,8 @@ import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
+import com.climus.climeet.data.model.response.UserFollowerInfoResponse
+import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
@@ -58,6 +61,16 @@ interface MainRepository {
         page: Int,
         size: Int
     ): BaseState<SearchGymResponse>
+
+    suspend fun getUserFollowing(
+        @Query("userId") userId: Long,
+        @Query("userCategory") userCategory: String
+    ): BaseState<List<UserFollowingInfoResponse>>
+
+    suspend fun getUserFollowers(
+        @Query("userId") userId: Long,
+        @Query("userCategory") userCategory: String
+    ): BaseState<List<UserFollowerInfoResponse>>
 
     suspend fun searchAvailableGym(
         gymName: String,
@@ -115,11 +128,19 @@ interface MainRepository {
     ): BaseState<List<GetSelectDateRecordResponse>>
 
     suspend fun followUser(
-        @Path("followingUserId") followingUserId: Long
+        followingUserId: Long
     ): BaseState<String>
 
     suspend fun unfollowUser(
-        @Path("followingUserId") followingUserId: Long
+        followingUserId: Long
+    ): BaseState<String>
+
+    suspend fun followGym(
+        gymId: Long
+    ): BaseState<String>
+
+    suspend fun unFollowGym(
+        gymId: Long
     ): BaseState<String>
 
     suspend fun getGymFilteringKey(
@@ -262,4 +283,10 @@ interface MainRepository {
     fun getSuccessCount(level: String): Int
 
     fun getAttemptCount(level: String): Int
+
+    suspend fun getGymListToFollow(
+        gymname: String,
+        page: Int,
+        size: Int
+    ): BaseState<GetGymListToFollowResponse>
 }

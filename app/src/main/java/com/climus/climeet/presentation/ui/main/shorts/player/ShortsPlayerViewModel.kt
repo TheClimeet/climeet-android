@@ -38,6 +38,7 @@ data class ShortsPlayerUiState(
 sealed class ShortsPlayerEvent {
     data class ShowToastMessage(val msg: String) : ShortsPlayerEvent()
     data class NavigateToShortsPlayer(val shortsId: Long, val position: Int) : ShortsPlayerEvent()
+    data object NavigateToAddFollow: ShortsPlayerEvent()
 }
 
 @HiltViewModel
@@ -222,7 +223,9 @@ class ShortsPlayerViewModel @Inject constructor(
     }
 
     private fun navigateToAddFollow() {
-
+        viewModelScope.launch {
+            _event.emit(ShortsPlayerEvent.NavigateToAddFollow)
+        }
     }
 
     fun patchFavorite(shortsId: Long, likeState: Boolean) {

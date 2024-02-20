@@ -1,6 +1,5 @@
 package com.climus.climeet.presentation.bindingadapters
 
-import android.annotation.SuppressLint
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -14,23 +13,28 @@ import com.climus.climeet.presentation.ui.InputState
 import java.lang.Math.round
 
 @BindingAdapter("keyword", "searchResult")
-fun bindSearchResult(tv: TextView, keyword: String, searchResult: String) {
+fun bindSearchResult(tv: TextView, keyword: String?, searchResult: String?) {
 
-    if (keyword.isNotBlank()) {
-        val sIndex = searchResult.indexOf(keyword)
-        if (sIndex != -1) {
-            val spannable = SpannableString(searchResult)
-                .apply {
-                    setSpan(
-                        ForegroundColorSpan(tv.context.getColor(R.color.cm_main)),
-                        sIndex,
-                        sIndex + keyword.length,
-                        Spannable.SPAN_EXCLUSIVE_INCLUSIVE
-                    )
+    keyword?.let {
+        searchResult?.let {
+            if (keyword.isNotBlank()) {
+                val sIndex = searchResult.indexOf(keyword)
+                if (sIndex != -1) {
+                    val spannable = SpannableString(searchResult)
+                        .apply {
+                            setSpan(
+                                ForegroundColorSpan(tv.context.getColor(R.color.cm_main)),
+                                sIndex,
+                                sIndex + keyword.length,
+                                Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+                            )
+                        }
+                    tv.text = spannable
                 }
-            tv.text = spannable
+            }
         }
     }
+
 
 }
 
@@ -56,16 +60,16 @@ fun bindHelperMessage(tv: TextView, state: InputState) {
 
 @BindingAdapter("textHexColor")
 fun bindTextHexColor(tv: TextView, hexColor: String) {
-    if(hexColor.isNotBlank()){
+    if (hexColor.isNotBlank()) {
         tv.setTextColor(hexColor.toColorInt())
     }
 }
 
 @BindingAdapter("selectedColor")
 fun bindSelectedColor(tv: TextView, state: Boolean) {
-    if(state){
+    if (state) {
         tv.setTextColor(ContextCompat.getColor(tv.context, R.color.cm_main))
-    }else{
+    } else {
         tv.setTextColor(ContextCompat.getColor(tv.context, R.color.white))
     }
 }
@@ -76,11 +80,11 @@ fun bindCompressProgress(tv: TextView, progress: Int) {
 }
 
 @BindingAdapter("socialCount")
-fun bindSocialCount(tv: TextView, count: Int){
-    if(count < 1000){
+fun bindSocialCount(tv: TextView, count: Int) {
+    if (count < 1000) {
         tv.text = count.toString()
-    } else if( count < 1000000){
-        tv.text = round((count / 1000).toDouble()).toString()  + "K"
+    } else if (count < 1000000) {
+        tv.text = round((count / 1000).toDouble()).toString() + "K"
     } else {
         tv.text = round((count / 1000000).toDouble()).toString() + "M"
     }
