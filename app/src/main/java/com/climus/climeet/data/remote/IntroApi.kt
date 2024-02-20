@@ -53,4 +53,9 @@ interface IntroApi {
         @Path("nickName") nickName: String
     ): Response<Boolean>
 
+    @POST("/api/users/fcmToken")
+    suspend fun patchFcmToken(
+        @Body params: String
+    ): Response<Unit>
+
 }
