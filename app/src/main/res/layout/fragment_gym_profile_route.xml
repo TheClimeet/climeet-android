@@ -239,7 +239,7 @@
                         android:layout_marginEnd="20dp"
                         android:layout_marginStart="25dp"
                         android:background="@drawable/rect_silver2fill_nostroke_8radius"
-                        android:onClick="@{() -> vm.dismissDialog()}"
+                        android:onClick="@{() -> vm.clearSelectedRoute()}"
                         android:text="취소"
                         android:textColor="@color/white"
                         app:layout_constraintEnd_toStartOf="@id/btn_accept"

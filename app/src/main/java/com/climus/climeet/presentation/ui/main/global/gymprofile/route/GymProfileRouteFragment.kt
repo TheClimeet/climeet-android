@@ -94,12 +94,12 @@ class GymProfileRouteFragment :
                         }.show()
                     }
 
-                    is GymProfileRouteEvent.ApplyFilter -> {
-                        sharedViewModel.applyFilter(event.filter)
+                    is GymProfileRouteEvent.deleteFilter -> {
+                        sharedViewModel.deleteFilter()
                     }
 
-                    is GymProfileRouteEvent.DismissDialog -> {
-                        viewModel.dismissDialog()
+                    is GymProfileRouteEvent.ApplyFilter -> {
+                        sharedViewModel.applyFilter(event.filter)
                     }
 
                     is GymProfileRouteEvent.ShowToastMessage -> {

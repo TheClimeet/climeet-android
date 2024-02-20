@@ -48,7 +48,7 @@ data class GymProfileSelectSectorUiState(
 
 sealed class GymProfileRouteEvent {
     data object ShowDatePicker : GymProfileRouteEvent()
-    data object DismissDialog : GymProfileRouteEvent()
+    data object deleteFilter: GymProfileRouteEvent()
     data class ApplyFilter(val filter: SelectedFilter) : GymProfileRouteEvent()
     data class ShowToastMessage(val msg: String) : GymProfileRouteEvent()
 }
@@ -280,9 +280,15 @@ class GymProfileRouteViewModel @Inject constructor(
         }
     }
 
-    fun dismissDialog() {
+    fun clearSelectedRoute() {
+        _uiState.update { state ->
+            state.copy(
+                selectedRoute = RouteUiData {}
+            )
+        }
+
         viewModelScope.launch {
-            _event.emit(GymProfileRouteEvent.DismissDialog)
+            _event.emit(GymProfileRouteEvent.deleteFilter)
         }
     }
 
