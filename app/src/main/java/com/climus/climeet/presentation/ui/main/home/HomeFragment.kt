@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
@@ -26,7 +27,12 @@ import com.climus.climeet.presentation.ui.main.home.recycler.popularshorts.Popul
 import com.climus.climeet.presentation.ui.main.home.viewpager.best.RankingVPAdapter
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerFragment
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerVPAdapter
+import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
+import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
+import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
+import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
+import com.climus.climeet.presentation.ui.toShortsPlayer
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,22 +42,37 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val viewModel: HomeViewModel by viewModels()
     private var vpBanner: List<BannerDetailInfoResponse> = emptyList()
     private var recyclerHomeGym: List<UserHomeGymSimpleResponse> = emptyList()
-    private var recyclerShorts: List<ShortsUiData> = emptyList()
+    private var recyclerShorts: List<ShortsThumbnailUiData> = emptyList()
     private var followOrderRecyclerCrag: List<BestFollowGymSimpleResponse> = emptyList()
     private var recordOrderRecyclerCrag: List<BestRecordGymDetailInfoResponse> = emptyList()
     private var recyclerRoute: List<BestRouteDetailInfoResponse> = emptyList()
+    private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getBannerListBetweenDates()
-        viewModel.getShorts()
         viewModel.getGymRankingOrderFollowCount()
         viewModel.getGymRankingListOrderSelectionCount()
         viewModel.getRouteRankingOrderSelectionCount()
         viewModel.getHomeGyms()
+        initShortsObserve()
         initEventObserve()
         setupOnClickListener()
         setupBestRanking()
+
+        sharedViewModel.initViewModel()
+        sharedViewModel.getShorts(ShortsOption.NEW_SORT)
+    }
+
+    private fun initShortsObserve(){
+        repeatOnStarted {
+            sharedViewModel.uiState.collect{
+                if(it.shortsThumbnailList.isNotEmpty()){
+                    recyclerShorts = it.shortsThumbnailList
+                    setupPopularShorts()
+                }
+            }
+        }
     }
 
     private fun initEventObserve(){
@@ -66,11 +87,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     uiState.homegymList?.let { homegymList ->
                         recyclerHomeGym = homegymList
                         setupHomeGymList()
-                    }
-
-                    uiState.shortsList?.let { shortsList ->
-                        recyclerShorts = shortsList
-                        setupPopularShorts()
                     }
 
                     uiState.followOrderCragList?.let { cragList ->
@@ -88,6 +104,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                         recyclerRoute = routeList
                         setupPopularRoutes()
                     }
+                }
+            }
+        }
+
+        repeatOnStarted {
+            sharedViewModel.event.collect {
+                when (it) {
+                    is ShortsPlayerEvent.ShowToastMessage -> showToastMessage(it.msg)
+                    is ShortsPlayerEvent.NavigateToShortsPlayer -> findNavController().toShortsPlayer(
+                        it.shortsId,
+                        it.position
+                    )
+
                 }
             }
         }
