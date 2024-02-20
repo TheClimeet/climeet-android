@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.climus.climeet.MainNavDirections
 import com.climus.climeet.app.App.Companion.sharedPreferences
+import com.climus.climeet.app.App
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
@@ -25,6 +26,7 @@ import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.intro.login.admin.AdminLoginEvent
 import com.climus.climeet.presentation.ui.intro.signup.climer.noticesetting.NoticeSettingEvent
+import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.presentation.ui.main.home.recycler.homegym.HomeGymRVAdapter
 import com.climus.climeet.presentation.ui.main.home.recycler.popularcrag.FollowOrderPopularCragRVAdapter
 import com.climus.climeet.presentation.ui.main.home.recycler.popularcrag.RecordOrderPopularCragRVAdapter
@@ -35,7 +37,6 @@ import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerFr
 import com.climus.climeet.presentation.ui.main.home.viewpager.introduce.BannerVPAdapter
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
 import com.climus.climeet.presentation.ui.main.home.viewpager.ranking.CompleteClimbingViewModel
-import com.climus.climeet.presentation.util.Constants
 import com.climus.climeet.presentation.util.Constants.X_MODE
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
@@ -58,6 +59,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private var recordOrderRecyclerCrag: List<BestRecordGymDetailInfoResponse> = emptyList()
     private var recyclerRoute: List<BestRouteDetailInfoResponse> = emptyList()
     private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
+    private var userProfile: UserProfileInfoResponse? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -67,6 +69,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         viewModel.getRouteRankingOrderSelectionCount()
         viewModel.getHomeGyms()
         initShortsObserve()
+        viewModel.getUserProfile()
         initEventObserve()
         setupOnClickListener()
         setupBestRanking()
@@ -114,6 +117,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     uiState.routeList?.let { routeList ->
                         recyclerRoute = routeList
                         setupPopularRoutes()
+                    }
+
+                    uiState.myProfile.let { myProfile ->
+                        userProfile = uiState.myProfile
+                        if(userProfile != null) {
+                            App.sharedPreferences.edit()
+                                .putString("USER_ID", userProfile!!.userId.toString())
+                                .apply()
+                        }
+
                     }
                 }
             }
@@ -196,7 +209,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
 
-    private fun setupIntroduceBanner(vpBanner: List<BannerDetailInfoResponse>) {
+    private fun setupIntroduceBanner(vpBanner : List<BannerDetailInfoResponse>) {
         val bannerAdapter = BannerVPAdapter(this, binding.vpHomeIntroduceBanner)
 
         for (bannerInfo in vpBanner) {

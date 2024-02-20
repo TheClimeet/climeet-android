@@ -9,6 +9,7 @@ import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
 import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
+import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedFilter
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
@@ -34,7 +35,8 @@ data class HomeUiState(
     val routeList: List<BestRouteDetailInfoResponse> = emptyList(),
     val curFilter: SelectedFilter = SelectedFilter(),
     val page: Int = 0,
-    val hasNext: Boolean = true
+    val hasNext: Boolean = true,
+    val myProfile: UserProfileInfoResponse? = null
 )
 
 sealed class HomeEvent {
@@ -151,5 +153,25 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
         }
     }
 
+    fun getUserProfile() {
+        viewModelScope.launch {
+            repository.getUserProfile().let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                myProfile = it.body
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> {
+                        it.msg // 서버 에러 메시지
+                        Log.d("API", it.msg)
+                    }
+                }
+            }
+        }
+    }
 
 }
