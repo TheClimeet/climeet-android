@@ -23,12 +23,14 @@ import com.climus.climeet.data.model.response.GetGymListToFollowResponse
 import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
+import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
 import com.climus.climeet.data.model.response.GymLevelBestClimberResponse
 import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
 import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
+import com.climus.climeet.data.model.response.GymWeekStatsResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
@@ -276,6 +278,17 @@ class MainRepositoryImpl @Inject constructor(
         gymId: Long
     ): BaseState<List<GymTimeBestClimberResponse>> =
         runRemote { api.getGymClimberRankingOrderTime(gymId) }
+
+    override suspend fun getGymSkillDistribution(
+        gymId: Long
+    ): BaseState<List<GetGymSkillDistributionResponse>> =
+        runRemote { api.getGymSkillDistribution(gymId) }
+
+    override suspend fun getMyGymSkill(gymId: Long): BaseState<String> =
+        runRemote { api.getMyGymSkill(gymId) }
+
+    override suspend fun getGymStatsWeek(gymId: Long): BaseState<GymWeekStatsResponse> =
+        runRemote { api.getGymStatsWeek(gymId) }
 
 
     // -------- RoomDB ClimbingRecordDa0 암장 정보 -----------
