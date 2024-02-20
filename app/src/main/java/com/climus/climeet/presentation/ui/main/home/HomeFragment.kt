@@ -266,7 +266,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private fun navToGymProfile(gymId: Long) {
 
         sharedPreferences.edit().putLong("gymId", gymId)
-        //Log.d("gym_profile", "홈에서 암장 아이디 : $gymId)
+            .apply()
+        Log.d("gym_profile", "홈에서 암장 아이디 : $gymId")
 
         val access = sharedPreferences.getString(X_MODE, null)
 
