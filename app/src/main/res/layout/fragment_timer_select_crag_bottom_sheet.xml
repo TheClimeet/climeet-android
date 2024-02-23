@@ -17,8 +17,6 @@
         android:id="@+id/layout_bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:minHeight="550dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,13 +26,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minHeight="550dp">
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guide"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.6" />
 
             <TextView
                 android:id="@+id/tv_title"
