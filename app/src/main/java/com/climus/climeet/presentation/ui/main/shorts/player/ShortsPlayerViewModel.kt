@@ -3,6 +3,7 @@ package com.climus.climeet.presentation.ui.main.shorts.player
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedFilter
@@ -53,6 +54,8 @@ class ShortsPlayerViewModel @Inject constructor(
 
     private val _event = MutableSharedFlow<ShortsPlayerEvent>()
     val event: SharedFlow<ShortsPlayerEvent> = _event.asSharedFlow()
+
+    val gymProfileDelete = MutableStateFlow(false)
 
     companion object {
         const val ITEM = 0
@@ -295,6 +298,12 @@ class ShortsPlayerViewModel @Inject constructor(
                 hasNext = true,
                 curFilter = SelectedFilter()
             )
+        }
+
+        if(gymProfileDelete.value){
+            val gymId = sharedPreferences.getLong("gymId", 0L)
+            setCurFilter(gymId)
+            gymProfileDelete.value = false
         }
 
         getShorts(ShortsOption.NEW_SORT)

@@ -354,7 +354,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="12dp"
                             android:background="@android:color/transparent"
-                            android:onClick="@{() -> svm.deleteFilter()}"
+                            android:onClick="@{() -> vm.clearSelectedRoute()}"
                             android:src="@drawable/ic_main_exit"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@id/tv_level_filter"

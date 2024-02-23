@@ -1,7 +1,6 @@
 package com.climus.climeet.presentation.ui.main.global.gymprofile.route
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -54,7 +53,6 @@ class GymProfileRouteFragment :
         // 암장 id, 이름 설정
         parentViewModel.gymId.observe(viewLifecycleOwner, Observer { id ->
 
-            Log.d("gym_profile", "숏츠 호출 : $id")
             sharedViewModel.setCurFilter(id)
             sharedViewModel.getShorts(ShortsOption.NEW_SORT)
 
@@ -96,6 +94,7 @@ class GymProfileRouteFragment :
                     }
 
                     is GymProfileRouteEvent.deleteFilter -> {
+                        sharedViewModel.gymProfileDelete.value = true
                         sharedViewModel.deleteFilter()
                     }
 
