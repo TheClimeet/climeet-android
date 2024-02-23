@@ -110,9 +110,11 @@ class GymProfileInfoFragment :
                 if(it.gymBusinessHours?.isEmpty() == true) {
                     binding.rvTime.visibility = View.GONE
                     binding.tvTimeError.visibility = View.VISIBLE
+                    binding.ivToggleOff.visibility = View.GONE
                 } else {
                     binding.rvTime.visibility = View.VISIBLE
                     binding.tvTimeError.visibility = View.GONE
+                    binding.ivToggleOff.visibility = View.VISIBLE
                     timeAdapter?.setList(it.gymBusinessHours!!)
                 }
 
