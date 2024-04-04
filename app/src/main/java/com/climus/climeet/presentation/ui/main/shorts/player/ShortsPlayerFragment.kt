@@ -13,6 +13,8 @@ import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.MainViewModel
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsDetailAdapter
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsDetailListener
+import com.climus.climeet.presentation.ui.toClimerProfile
+import com.climus.climeet.presentation.ui.toGymProfile
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -58,8 +60,12 @@ class ShortsPlayerFragment: BaseFragment<FragmentShortsPlayerBinding>(R.layout.f
         parentViewModel.changeStatusBarBackground()
     }
 
-    override fun navigateToProfileDetail(userId: Long) {
-        showToastMessage("프로필 상세로 이동")
+    override fun navigateToClimberProfile(userId: Long) {
+        findNavController().toClimerProfile(userId)
+    }
+
+    override fun navigateToGymProfile(gymId: Long) {
+        findNavController().toGymProfile(gymId)
     }
 
     override fun navigateToRouteShorts(routeId: Long) {

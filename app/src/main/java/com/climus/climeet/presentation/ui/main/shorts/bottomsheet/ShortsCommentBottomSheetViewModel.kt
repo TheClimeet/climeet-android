@@ -26,7 +26,7 @@ data class ShortsCommentBottomSheetUiState(
     val page: Int = 0,
     val hasNext: Boolean = true,
     val shortsCommentList: List<ShortsCommentUiData> = emptyList(),
-    val profileImgUrl: String? = ""
+    val profileImgUrl: String? = "",
 )
 
 sealed class ShortsCommentBottomSheetEvent {
@@ -34,6 +34,7 @@ sealed class ShortsCommentBottomSheetEvent {
     data object AddCommentComplete : ShortsCommentBottomSheetEvent()
     data class GoToPosition(val position: Int): ShortsCommentBottomSheetEvent()
     data class StartAddSubComment(val nick: String): ShortsCommentBottomSheetEvent()
+    data class SetMyProfile(val url: String): ShortsCommentBottomSheetEvent()
 }
 
 @HiltViewModel
@@ -61,7 +62,24 @@ class ShortsCommentBottomSheetViewModel @Inject constructor(
                 profileImgUrl = profileImgUrl
             )
         }
+        getUserInfo()
         getCommentList()
+    }
+
+    private fun getUserInfo(){
+        viewModelScope.launch {
+            repository.getMyPageProfile().let{
+                when(it){
+                    is BaseState.Success -> {
+                        _event.emit(ShortsCommentBottomSheetEvent.SetMyProfile(it.body.profileImgUrl))
+                    }
+
+                    is BaseState.Error -> {
+
+                    }
+                }
+            }
+        }
     }
 
     fun getCommentList() {

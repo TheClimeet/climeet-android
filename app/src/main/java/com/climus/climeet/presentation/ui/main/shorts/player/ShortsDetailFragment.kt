@@ -55,9 +55,18 @@ class ShortsDetailFragment @Inject constructor(
             viewModel.event.collect {
                 when (it) {
                     is ShortsDetailEvent.ShowToastMessage -> showToastMessage(it.msg)
-                    is ShortsDetailEvent.NavigateToProfileDetail -> listener?.navigateToProfileDetail(
-                        data.userId
-                    )
+                    is ShortsDetailEvent.NavigateToProfileDetail -> {
+                        if(data.isManager){
+                            listener?.navigateToGymProfile(
+                                data.userId
+                            )
+                        } else {
+                            listener?.navigateToClimberProfile(
+                                data.userId
+                            )
+                        }
+
+                    }
 
                     is ShortsDetailEvent.NavigateToRouteShorts -> {
                         // todo 이거 routeId로 변경. 서버 API 수정되어야함
@@ -69,7 +78,7 @@ class ShortsDetailFragment @Inject constructor(
                     is ShortsDetailEvent.ShowShareDialog -> {
                         val intent = Intent(Intent.ACTION_SEND_MULTIPLE)
                         intent.type = "text/plain"
-                        intent.putExtra(Intent.EXTRA_TEXT, "클밋 에서 숏츠를 공유했어요!\n${data.videoUrl}\n\n클밋 다운로드 하기\nplaystore:://climeet.com")
+                        intent.putExtra(Intent.EXTRA_TEXT, "클밋 에서 숏츠를 공유했어요!\n${data.videoUrl}\n\n클밋 다운로드 하기\nhttps://appdistribution.firebase.dev/i/d100bc33ece1874a")
                         startActivity(Intent.createChooser(intent,"공유"))
                     }
                     is ShortsDetailEvent.ShowCommentDialog -> listener?.showCommentDialog(data.shortsId, data.profileImgUrl)

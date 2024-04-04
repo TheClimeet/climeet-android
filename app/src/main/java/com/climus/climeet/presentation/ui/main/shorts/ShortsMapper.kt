@@ -52,6 +52,7 @@ fun ShortsItem.toShortsUiData(): ShortsUiData {
     }
 
     return ShortsUiData(
+        isManager = isManager,
         shortsId = shortsId,
         thumbnailImg = thumbnailImageUrl,
         gymId = shortsDetailInfo.gymId,
