@@ -355,7 +355,7 @@ interface MainApi {
         @Path("gymId") gymId: Long
     ): Response<GetClimberProfileTargetGymStatisticsResponse>
 
-    @GET("/api/shorts/{uploaderId}")
+    @GET("/api/shorts/uploader/{uploaderId}")
     suspend fun getUserShorts(
         @Path("uploaderId") uploaderId: Long,
         @Query("page") page: Int,
