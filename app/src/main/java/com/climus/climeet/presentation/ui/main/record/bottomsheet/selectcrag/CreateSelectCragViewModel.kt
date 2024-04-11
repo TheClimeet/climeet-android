@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.record.bottomsheet.selectcrag
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowC
 import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragUiState
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
 import com.climus.climeet.presentation.ui.intro.signup.climer.toFollowCrag
+import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -60,13 +62,45 @@ class CreateSelectCragViewModel @Inject constructor(
     private fun observeKeyword() {
         keyword.onEach {
             if (it.isBlank()) {
-                _uiState.update { state ->
-                    state.copy(
-                        searchList = emptyList(),
-                        emptyResultState = false,
-                        emptyTextState = false
-                    )
+                repository.getHomeGyms().let { result ->
+                    when(result){
+                        is BaseState.Success -> {
+                            if(result.body.isNotEmpty()){
+                                _uiState.update { state ->
+                                    state.copy(
+                                        searchList = result.body.map{ item ->
+                                            item.toFollowCrag(it)
+                                        },
+                                        emptyResultState = false,
+                                        emptyTextState = false
+                                    )
+                                }
+                            } else {
+                                _uiState.update { state ->
+                                    state.copy(
+                                        searchList = emptyList(),
+                                        emptyResultState = false,
+                                        emptyTextState = false
+                                    )
+                                }
+                            }
+
+                        }
+                        is BaseState.Error -> {
+                            _event.emit(CreateSelectCragEvent.ShowToastMessage("홈짐을 가져오지 못했습니다!"))
+                            Log.d(TAG, result.msg + result.code)
+                            _uiState.update { state ->
+                                state.copy(
+                                    searchList = emptyList(),
+                                    emptyResultState = false,
+                                    emptyTextState = false
+                                )
+                            }
+                        }
+                    }
                 }
+
+
             } else {
                 curJob?.cancel()
 
