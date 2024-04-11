@@ -42,18 +42,15 @@ class CreateClimbingRecordFragment :
 
         viewModel.selectedDate.observe(viewLifecycleOwner, Observer { date ->
             viewModel.setDate()
-            binding.tvChoiceDate.setTextColor(Color.WHITE)
         })
         viewModel.selectedStartTime.observe(viewLifecycleOwner, Observer { date ->
             if (isTimeSet) {
                 viewModel.setTime()
-                binding.tvChoiceTime.setTextColor(Color.WHITE)
             }
         })
         viewModel.selectedEndTime.observe(viewLifecycleOwner, Observer { date ->
             if (isTimeSet) {
                 viewModel.setTime()
-                binding.tvChoiceTime.setTextColor(Color.WHITE)
             }
         })
         viewModel.selectedCragEvent.observe(viewLifecycleOwner, Observer { event ->

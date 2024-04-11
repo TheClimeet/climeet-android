@@ -99,3 +99,12 @@ fun TextView.bindTextFromInt(value: Int) {
 fun TextView.bindTextFromFloat(value: Float) {
     text = value.toString()
 }
+
+@BindingAdapter("selectTimeColor")
+fun selectTimeColor(tv: TextView, state: Boolean) {
+    if (state) {
+        tv.setTextColor(ContextCompat.getColor(tv.context, R.color.cm_lightgrey2))
+    } else {
+        tv.setTextColor(ContextCompat.getColor(tv.context, R.color.white))
+    }
+}

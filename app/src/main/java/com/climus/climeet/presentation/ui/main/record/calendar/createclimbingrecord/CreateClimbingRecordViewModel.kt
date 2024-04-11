@@ -101,7 +101,8 @@ class CreateClimbingRecordViewModel @Inject constructor(
         MutableStateFlow("${initDate.year}년 ${initDate.monthValue}월 ${initDate.dayOfMonth}일 (${initDate.dayOfWeek})")
     val selectedDate = MutableLiveData(initDate)
 
-    val timePickText = MutableStateFlow("시간을 입력해주세요 (선택)")
+    val defaultTimeText = "시간을 입력해주세요 (선택)"
+    val timePickText = MutableStateFlow(defaultTimeText)
     val selectedStartTime = MutableLiveData(CreateRecordData.selectedStartTime)
     val selectedEndTime = MutableLiveData(CreateRecordData.selectedEndTime)
 
@@ -498,8 +499,11 @@ class CreateClimbingRecordViewModel @Inject constructor(
         }
     }
 
-    private fun itemClicked(item: RouteUiData) {
-
+    fun isChoicedTime() : Boolean{
+        if(timePickText.value == defaultTimeText){
+            return true
+        }
+        return false
     }
 
     fun getTimeDiff(): LocalTime{
