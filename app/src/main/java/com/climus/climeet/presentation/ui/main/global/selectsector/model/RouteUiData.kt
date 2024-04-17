@@ -12,7 +12,7 @@ data class RouteUiData(
     val climeetLevelName: String = "",
     val routeImg: String = "",
     var isSelected: Boolean = false,
-    var challengeNum: Int = 0,
+    var challengeNum: Int = 1,
     var clearBtnState: Boolean = false,
     val holdImg: Int = R.drawable.ic_white_hold,
     val onClickListener: (RouteUiData) -> Unit

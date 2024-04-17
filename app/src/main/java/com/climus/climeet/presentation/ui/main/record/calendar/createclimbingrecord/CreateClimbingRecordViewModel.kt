@@ -1,39 +1,28 @@
 package com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
-import android.util.Log
-import android.view.View
-import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.climus.climeet.R
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.ClimbingRecord
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.customview.DeleteDialog
-import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm.cragName
 import com.climus.climeet.presentation.ui.main.global.selectsector.FloorBtnState
-import com.climus.climeet.presentation.ui.main.global.selectsector.SelectSectorBottomSheetEvent
-import com.climus.climeet.presentation.ui.main.record.model.RouteRecordUiData
-import com.climus.climeet.presentation.ui.main.global.selectsector.model.RouteUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.GymLevelUiData
+import com.climus.climeet.presentation.ui.main.global.selectsector.model.RouteUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SectorNameUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedFilter
 import com.climus.climeet.presentation.ui.main.global.toGymLevelUiData
 import com.climus.climeet.presentation.ui.main.global.toRouteUiData
 import com.climus.climeet.presentation.ui.main.global.toSectorNameUiData
 import com.climus.climeet.presentation.ui.main.record.model.CreateRecordData
-import com.climus.climeet.presentation.util.Constants.TEST_IMG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -42,9 +31,9 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit
@@ -94,6 +83,9 @@ class CreateClimbingRecordViewModel @Inject constructor(
 
     private val _items = MutableStateFlow<List<RouteUiData>>(emptyList())
     val items: StateFlow<List<RouteUiData>> = _items.asStateFlow()
+    val isAcceptBtnEnabled: LiveData<Boolean> = _items.map { itemList ->
+        itemList.isNotEmpty() && itemList.any { it.clearBtnState }
+    }.asLiveData()
 
     val initDate = CreateRecordData.selectedDate
     val datePickText =
@@ -379,19 +371,19 @@ class CreateClimbingRecordViewModel @Inject constructor(
     }
 
     fun addChallengeNum() {
-        challengeNumber.value = (challengeNumber.value ?: 0) + 1
+        challengeNumber.value = challengeNumber.value + 1
         _items.value = _items.value.map {
             if (it.routeId == uiState.value.selectedRoute.routeId) it.copy(challengeNum = it.challengeNum + 1) else it
         }
     }
 
     fun subChallengeNum() {
-        val currentValue = challengeNumber.value ?: 0
-        if (currentValue > 0) {
+        val currentValue = challengeNumber.value
+        if (currentValue > 1) {
             challengeNumber.value = currentValue - 1
         }
         _items.value = _items.value.map {
-            if (it.routeId == uiState.value.selectedRoute.routeId && it.challengeNum > 0) it.copy(
+            if (it.routeId == uiState.value.selectedRoute.routeId && it.challengeNum > 1) it.copy(
                 challengeNum = it.challengeNum - 1
             ) else it
         }
@@ -444,28 +436,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
         }
     }
 
-    fun itemIncrease(id: Long) {
-        _items.value = _items.value.map {
-            if (it.routeId == id) {
-                if (uiState.value.selectedRoute.routeId == it.routeId) {
-                    challengeNumber.value = (challengeNumber.value ?: 0) + 1
-                }
-                it.copy(challengeNum = it.challengeNum + 1)
-            } else it
-        }
-    }
-
-    fun itemDecrease(id: Long) {
-        _items.value = _items.value.map {
-            if (it.routeId == id && it.challengeNum > 0) {
-                if (uiState.value.selectedRoute.routeId == it.routeId) {
-                    challengeNumber.value = (challengeNumber.value ?: 0) - 1
-                }
-                it.copy(challengeNum = it.challengeNum - 1)
-            } else it
-        }
-    }
-
     fun showDeleteDialog(context: Context, id: Long) {
         val dialog = DeleteDialog(context) { isDelete ->
             if (isDelete) {
@@ -484,9 +454,11 @@ class CreateClimbingRecordViewModel @Inject constructor(
         }
     }
 
-    fun getTimeDiff(): LocalTime {
+    private fun getTimeDiff(): LocalTime {
         val start = selectedStartTime.value
         val end = selectedEndTime.value
+        if (start.equals(end)) return LocalTime.of(0, 0, 0)
+
         if (start.isBefore(end)) {
             val totalSeconds = ChronoUnit.SECONDS.between(start, end)
 
