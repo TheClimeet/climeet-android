@@ -538,7 +538,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
                         _event.emit(
                             CreateClimbingRecordEvent.ClimbingComplete
                         )
-                        resetState()
                     }
 
                     is BaseState.Error -> {
@@ -561,7 +560,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
         viewModelScope.launch {
             _event.emit(CreateClimbingRecordEvent.NavigateToBack)
         }
-        resetState()
     }
 
     fun resetState() {

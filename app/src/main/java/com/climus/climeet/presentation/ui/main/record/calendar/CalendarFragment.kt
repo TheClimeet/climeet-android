@@ -55,6 +55,11 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        recordViewModel.resetState()
+    }
+
     private fun setRecycler() {
         calendarAdapter = CalendarAdapter()
         binding.rvRecord.adapter = calendarAdapter
