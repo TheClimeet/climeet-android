@@ -53,8 +53,6 @@ class CreateSelectCragViewModel @Inject constructor(
 
     val keyword = MutableStateFlow("")
 
-    val exitSignal = MutableLiveData<Boolean>()
-
     init {
         observeKeyword()
     }

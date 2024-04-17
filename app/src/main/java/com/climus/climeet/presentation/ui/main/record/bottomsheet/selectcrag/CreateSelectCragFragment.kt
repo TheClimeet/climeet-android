@@ -28,12 +28,6 @@ class CreateSelectCragFragment :
         adapter = CreateSelectCragRVAdapter(viewModel, ClimbingRecordViewModel)
         binding.rvSearchCrag.adapter = adapter
 
-        viewModel.exitSignal.observe(viewLifecycleOwner, Observer { shouldExit ->
-            if (shouldExit) {
-                findNavController().navigateUp()
-            }
-        })
-
         initStateObserve()
         initEventObserve()
     }
