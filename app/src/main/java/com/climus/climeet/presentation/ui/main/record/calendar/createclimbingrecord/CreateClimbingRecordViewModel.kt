@@ -517,17 +517,13 @@ class CreateClimbingRecordViewModel @Inject constructor(
             )
         }
 
-        val gymId = selectedCragEvent.value?.let {
-            it.first
-        } ?: run {
-            1
-        }
+        val gymId = selectedCragEvent.value.first
 
         val requestBody = CreateTimerClimbingRecordRequest(
             gymId = gymId,
             date = CreateRecordData.selectedDate.toString(),
             time = getTimeDiff().toString(),
-            avgDifficulty = 3,
+            avgDifficulty = _items.value.map { it.difficulty }.average().toInt(),
             routeRecordRequestDtoList = climbingRecords
         )
 
