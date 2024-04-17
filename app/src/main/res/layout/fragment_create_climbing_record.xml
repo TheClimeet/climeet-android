@@ -23,8 +23,10 @@
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -113,10 +115,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@{vm.timePickText}"
-                            app:selectTimeColor="@{vm.choicedTime}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:selectTimeColor="@{vm.timePickText == vm.defaultTimeText}" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -168,10 +170,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@{vm.selectedCragEvent.second}"
-                            android:textColor="@color/cm_lightgrey2"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:selectTimeColor="@{vm.selectedCragEvent.second == vm.defaultCrag.second}" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -387,11 +389,11 @@
                                 android:layout_width="100dp"
                                 android:layout_height="124dp"
                                 android:layout_marginBottom="20dp"
+                                app:holdImage="@{vm.uiState.selectedRoute.holdImg}"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintVertical_bias="1.0"
-                                app:holdImage="@{vm.uiState.selectedRoute.holdImg}"
                                 app:routeImgUrl="@{vm.uiState.selectedRoute.routeImg}"
                                 app:routeLevelColor="@{vm.uiState.selectedRoute.gymLevelColor}"
                                 app:routeLevelName="@{vm.uiState.selectedRoute.gymLevelName}" />
@@ -465,9 +467,9 @@
                                 android:visibility="@{vm.uiState.clearBtnState ? View.VISIBLE : View.GONE}"
                                 app:animatedAlpha="@{vm.alpha}"
                                 app:layout_constraintBottom_toBottomOf="@id/btn_clear"
-                                app:layout_constraintTop_toTopOf="@id/btn_clear"
                                 app:layout_constraintEnd_toEndOf="@id/btn_clear"
-                                app:layout_constraintStart_toStartOf="@id/btn_clear" />
+                                app:layout_constraintStart_toStartOf="@id/btn_clear"
+                                app:layout_constraintTop_toTopOf="@id/btn_clear" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -534,7 +536,7 @@
                                 android:layout_height="83dp"
                                 android:layout_marginTop="15dp"
                                 android:background="@drawable/rect_grey8fill_nostroke_10radius"
-                                android:visibility="@{vm.itemsLiveData.isEmpty() ? View.VISIBLE : View.GONE}"
+                                android:visibility="@{vm.items.isEmpty() ? View.VISIBLE : View.GONE}"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
@@ -573,10 +575,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:background="@drawable/selector_submit_btn"
-                        android:enabled="@{vm.itemsLiveData.isEmpty() ? false : true}"
+                        android:enabled="@{vm.items.isEmpty() ? false : true}"
                         android:onClick="@{()->vm.climbingComplete()}"
                         android:text="운동완료"
-                        android:textColor="@{vm.itemsLiveData.isEmpty() ? @color/white : @color/black}"
+                        android:textColor="@{vm.items.isEmpty() ? @color/white : @color/black}"
                         android:visibility="@{vm.isSelectedCrag()? View.VISIBLE : View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

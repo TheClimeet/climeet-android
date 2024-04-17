@@ -94,17 +94,17 @@ class CreateClimbingRecordViewModel @Inject constructor(
 
     private val _items = MutableStateFlow<List<RouteUiData>>(emptyList())
     val items: StateFlow<List<RouteUiData>> = _items.asStateFlow()
-    val itemsLiveData: LiveData<List<RouteUiData>> = _items.asLiveData()
 
     val initDate = CreateRecordData.selectedDate
     val datePickText =
         MutableStateFlow("${initDate.year}년 ${initDate.monthValue}월 ${initDate.dayOfMonth}일 (${initDate.dayOfWeek})")
-    val selectedDate = MutableLiveData(initDate)
+    val selectedDate = MutableStateFlow(initDate)
 
     val defaultTimeText = "시간을 입력해주세요 (선택)"
+    val defaultTime = LocalTime.of(11, 0, 0)
     val timePickText = MutableStateFlow(defaultTimeText)
-    val selectedStartTime = MutableLiveData(CreateRecordData.selectedStartTime)
-    val selectedEndTime = MutableLiveData(CreateRecordData.selectedEndTime)
+    val selectedStartTime = MutableStateFlow(defaultTime)
+    val selectedEndTime = MutableStateFlow(defaultTime)
 
     private var sectorNameList = listOf<SectorNameUiData>()
     private var gymLevelList = listOf<GymLevelUiData>()
@@ -112,13 +112,13 @@ class CreateClimbingRecordViewModel @Inject constructor(
     var cragId: Long = 0
     var cragName: String = ""
 
+    val defaultCrag = Pair<Long, String>(0, "클라이밍 암장을 선택해주세요")
     val isSelectedCrag = MutableStateFlow(false)
-    val selectedCragEvent = MutableLiveData<Pair<Long, String>>()
+    val selectedCragEvent = MutableStateFlow(defaultCrag)
 
-    private val _challengeNumber = MutableLiveData(0)
-    val challengeNumber: LiveData<Int> = _challengeNumber
+    val challengeNumber = MutableStateFlow(0)
 
-    val isToggleOn = MutableLiveData(true)
+    val isToggleOn = MutableStateFlow(true)
 
     val alpha = MutableLiveData(1f)
 
@@ -129,11 +129,13 @@ class CreateClimbingRecordViewModel @Inject constructor(
     fun setSelectedDate(date: LocalDate) {
         selectedDate.value = date
         CreateRecordData.setSelectedDate(date)
+        setDate()
     }
 
     fun setSelectedTime(start: LocalTime, end: LocalTime) {
         selectedStartTime.value = start
         selectedEndTime.value = end
+        setTime()
     }
 
     fun showDatePicker() {
@@ -371,22 +373,22 @@ class CreateClimbingRecordViewModel @Inject constructor(
                 clearBtnState = item.clearBtnState
             )
         }
-        _challengeNumber.value = item.challengeNum
+        challengeNumber.value = item.challengeNum
 
         addItem(item)
     }
 
     fun addChallengeNum() {
-        _challengeNumber.value = (_challengeNumber.value ?: 0) + 1
+        challengeNumber.value = (challengeNumber.value ?: 0) + 1
         _items.value = _items.value.map {
             if (it.routeId == uiState.value.selectedRoute.routeId) it.copy(challengeNum = it.challengeNum + 1) else it
         }
     }
 
     fun subChallengeNum() {
-        val currentValue = _challengeNumber.value ?: 0
+        val currentValue = challengeNumber.value ?: 0
         if (currentValue > 0) {
-            _challengeNumber.value = currentValue - 1
+            challengeNumber.value = currentValue - 1
         }
         _items.value = _items.value.map {
             if (it.routeId == uiState.value.selectedRoute.routeId && it.challengeNum > 0) it.copy(
@@ -446,7 +448,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
         _items.value = _items.value.map {
             if (it.routeId == id) {
                 if (uiState.value.selectedRoute.routeId == it.routeId) {
-                    _challengeNumber.value = (_challengeNumber.value ?: 0) + 1
+                    challengeNumber.value = (challengeNumber.value ?: 0) + 1
                 }
                 it.copy(challengeNum = it.challengeNum + 1)
             } else it
@@ -457,7 +459,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
         _items.value = _items.value.map {
             if (it.routeId == id && it.challengeNum > 0) {
                 if (uiState.value.selectedRoute.routeId == it.routeId) {
-                    _challengeNumber.value = (_challengeNumber.value ?: 0) - 1
+                    challengeNumber.value = (challengeNumber.value ?: 0) - 1
                 }
                 it.copy(challengeNum = it.challengeNum - 1)
             } else it
@@ -482,31 +484,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
         }
     }
 
-    fun setBtnState(id: Long) {
-        _items.value = _items.value.map {
-            if (it.routeId == id) {
-                if (uiState.value.selectedRoute.routeId == it.routeId) {
-                    _uiState.update { state ->
-                        state.copy(
-                            clearBtnState = !state.clearBtnState
-                        )
-                    }
-                }
-                it.copy(
-                    clearBtnState = !it.clearBtnState
-                )
-            } else it
-        }
-    }
-
-    fun isChoicedTime() : Boolean{
-        if(timePickText.value == defaultTimeText){
-            return true
-        }
-        return false
-    }
-
-    fun getTimeDiff(): LocalTime{
+    fun getTimeDiff(): LocalTime {
         val totalSeconds = ChronoUnit.SECONDS.between(
             selectedStartTime.value,
             selectedEndTime.value
@@ -563,10 +541,10 @@ class CreateClimbingRecordViewModel @Inject constructor(
     }
 
     fun navigateToSelectCrag() {
+        resetCrag()
         viewModelScope.launch {
             _event.emit(CreateClimbingRecordEvent.NavigateToSelectCrag)
         }
-        resetState()
     }
 
     fun navigateToBack() {
@@ -577,17 +555,20 @@ class CreateClimbingRecordViewModel @Inject constructor(
     }
 
     fun resetState() {
+        timePickText.value = defaultTimeText
+        CreateRecordData.setSelectedTime(defaultTime, defaultTime)
+        resetCrag()
+    }
+
+    fun resetCrag() {
         _uiState.value = CreateClimbingRecordUiState()
         _items.value = emptyList()
-        timePickText.value = "시간을 입력해주세요 (선택)"
-        CreateRecordData.setSelectedTime(LocalTime.of(11,0, 0), LocalTime.of(11,0, 0))
         sectorNameList = emptyList()
         gymLevelList = emptyList()
         isSelectedCrag.value = false
-        selectedCragEvent.value = Pair(0, "클라이밍 암장을 선택해주세요")
-        _challengeNumber.value = 0
+        selectedCragEvent.value = defaultCrag
+        challengeNumber.value = 0
         isToggleOn.value = true
-
     }
 
 }

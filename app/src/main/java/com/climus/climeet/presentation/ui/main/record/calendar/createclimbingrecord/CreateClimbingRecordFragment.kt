@@ -1,12 +1,9 @@
 package com.climus.climeet.presentation.ui.main.record.calendar.createclimbingrecord
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
@@ -28,38 +25,14 @@ class CreateClimbingRecordFragment :
 
     private val dateViewModel: SelectDateBottomSheetViewModel by viewModels()
     private val calendarViewModel: CalendarViewModel by activityViewModels()
-    private lateinit var viewModel: CreateClimbingRecordViewModel
-    private var isTimeSet = false
+    private val viewModel: CreateClimbingRecordViewModel by activityViewModels()
     private lateinit var itemAdapter: RouteRecordAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel =
-            ViewModelProvider(requireActivity()).get(CreateClimbingRecordViewModel::class.java)
         itemAdapter = RouteRecordAdapter(viewModel)
         binding.vm = viewModel
-
-        viewModel.selectedDate.observe(viewLifecycleOwner, Observer { date ->
-            viewModel.setDate()
-        })
-        viewModel.selectedStartTime.observe(viewLifecycleOwner, Observer { date ->
-            if (isTimeSet) {
-                viewModel.setTime()
-            }
-        })
-        viewModel.selectedEndTime.observe(viewLifecycleOwner, Observer { date ->
-            if (isTimeSet) {
-                viewModel.setTime()
-            }
-        })
-        viewModel.selectedCragEvent.observe(viewLifecycleOwner, Observer { event ->
-            event?.let { (id, name) ->
-                if (viewModel.isSelectedCrag.value) {
-                    binding.tvGym.setTextColor(Color.WHITE)
-                }
-            }
-        })
 
         binding.ivCelebrate.bringToFront()
 
@@ -95,7 +68,6 @@ class CreateClimbingRecordFragment :
                         }.show()
                     }
                     CreateClimbingRecordEvent.ShowTimePicker -> {
-                        isTimeSet = true
                         findNavController().toSelectTimeBottomSheetFragment()
                     }
                     CreateClimbingRecordEvent.NavigateToSelectCrag -> findNavController().toSelectCrag()

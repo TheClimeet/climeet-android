@@ -56,7 +56,7 @@ class RouteRecordViewHolder(
 
         binding.ivClear.setOnClickListener {
             viewModel.selectRoute(item)
-            viewModel.setBtnState(item.routeId)
+            viewModel.setClear()
         }
     }
 }
