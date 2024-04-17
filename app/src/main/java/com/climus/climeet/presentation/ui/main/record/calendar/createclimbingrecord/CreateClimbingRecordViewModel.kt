@@ -485,14 +485,24 @@ class CreateClimbingRecordViewModel @Inject constructor(
     }
 
     fun getTimeDiff(): LocalTime {
-        val totalSeconds = ChronoUnit.SECONDS.between(
-            selectedStartTime.value,
-            selectedEndTime.value
-        )
+        val start = selectedStartTime.value
+        val end = selectedEndTime.value
+        if (start.isBefore(end)) {
+            val totalSeconds = ChronoUnit.SECONDS.between(start, end)
 
-        val hours = totalSeconds / 3600
-        val minutes = (totalSeconds % 3600) / 60
-        val seconds = totalSeconds % 60
+            return timeCalc(totalSeconds)
+        } else {
+            val totalSeconds = ChronoUnit.SECONDS.between(end, start)
+            val diff = 86400 - totalSeconds
+
+            return timeCalc(diff)
+        }
+    }
+
+    private fun timeCalc(time: Long): LocalTime {
+        val hours = time / 3600
+        val minutes = (time % 3600) / 60
+        val seconds = time % 60
 
         return LocalTime.of(hours.toInt(), minutes.toInt(), seconds.toInt())
     }

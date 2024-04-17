@@ -66,12 +66,12 @@ class SelectTimeBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun setTime() {
-        if (viewModel.startTime.value.isBefore(viewModel.endTime.value)) {
+        if (viewModel.startTime.value.equals(viewModel.endTime.value)) {
+            Toast.makeText(requireActivity(), "시간의 범위를 다시 설정해주세요!", Toast.LENGTH_SHORT).show()
+        } else {
             dismiss()
             viewModel.selectState.value = false
             parentViewModel.setSelectedTime(viewModel.startTime.value, viewModel.endTime.value)
-        } else {
-            Toast.makeText(requireActivity(), "시간의 범위를 다시 설정해주세요!", Toast.LENGTH_SHORT).show()
         }
     }
 
