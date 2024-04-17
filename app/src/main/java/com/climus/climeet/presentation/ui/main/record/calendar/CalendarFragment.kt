@@ -44,14 +44,8 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
         setRecycler()
         initEventObserve()
         initStateObserve()
+        initDateObserve()
         customCalendar()
-
-        viewModel.selectedDate.observe(viewLifecycleOwner, Observer { date ->
-            val yearMonth = YearMonth.of(date.year, date.monthValue)
-            binding.calendarView.dayBinder = null
-            setupDayBinder()
-            binding.calendarView.scrollToMonth(yearMonth)  // 새로 선택된 날짜가 있는 월로 이동
-        })
 
     }
 
@@ -73,6 +67,18 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
             }
         }
     }
+
+    private fun initDateObserve(){
+        repeatOnStarted {
+            viewModel.selectedDate.collect { date ->
+                val yearMonth = YearMonth.of(date.year, date.monthValue)
+                binding.calendarView.dayBinder = null
+                setupDayBinder()
+                binding.calendarView.scrollToMonth(yearMonth)  // 새로 선택된 날짜가 있는 월로 이동
+            }
+        }
+    }
+
 
     private fun initEventObserve() {
         repeatOnStarted {
