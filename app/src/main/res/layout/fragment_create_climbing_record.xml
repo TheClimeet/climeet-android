@@ -222,7 +222,7 @@
 
                         <TextView
                             android:id="@+id/tv_route"
-                            style="@style/TextRegular"
+                            style="@style/TextSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="암장을 선택하면 루트를 기록할 수 있어요!"
