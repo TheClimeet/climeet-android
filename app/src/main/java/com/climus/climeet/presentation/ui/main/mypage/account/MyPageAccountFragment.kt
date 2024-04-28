@@ -16,6 +16,7 @@ import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.databinding.FragmentMypageAccountBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroActivity
+import com.climus.climeet.service.TimerService
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -94,7 +95,14 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
                 App.sharedPreferences.edit()
                     .clear()
                     .apply()
-                val intent = Intent(requireContext(), IntroActivity::class.java)
+
+                // 스톱워치 서비스 중단 후 로그아웃
+                var intent = Intent(context, TimerService::class.java)
+                if (TimerService.serviceRunning.value != null) {
+                    context?.stopService(intent)
+                }
+
+                intent = Intent(requireContext(), IntroActivity::class.java)
                 startActivity(intent)
             }
         }
