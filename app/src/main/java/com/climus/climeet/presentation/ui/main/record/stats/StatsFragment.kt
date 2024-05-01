@@ -21,6 +21,7 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
         binding.rvStickChart.adapter = StickChartAdapter()
         binding.vm = viewModel
         initEventObserve()
+        initStateObserve()
     }
 
     private fun initEventObserve() {
@@ -29,6 +30,14 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
                 when (it) {
                     StatsEvent.NavigateToSelectMonthYearBottomSheetFragment -> showBottomSheet()
                 }
+            }
+        }
+    }
+
+    private fun initStateObserve() {
+        repeatOnStarted {
+            viewModel.uiState.collect {
+                binding.testtest.setupChartData(it.chartUiList)
             }
         }
     }
