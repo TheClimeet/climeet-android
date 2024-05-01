@@ -6,7 +6,6 @@ import androidx.fragment.app.activityViewModels
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentStatsBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.climus.climeet.presentation.customview.stickchart.StickChartAdapter
 import com.climus.climeet.presentation.ui.main.record.stats.datepicker.SelectYearMonthBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,7 +34,7 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
     private fun initStateObserve() {
         repeatOnStarted {
             viewModel.uiState.collect {
-                binding.testtest.setupChartData(it.chartUiList)
+                binding.viewStickchart.setupChartData(it.chartUiList)
             }
         }
     }

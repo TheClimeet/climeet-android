@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.customview.stickchart.StickChartUiData
+import com.climus.climeet.presentation.ui.main.record.model.SelectGymData
 import com.climus.climeet.presentation.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,7 +28,8 @@ data class StatusUiState(
     val totalAttemptCount: Int = 0,
     val completedCountString: String = "0문제 완등",
     val attemptCountString: String = "100문제 도전!",
-    val chartUiList: List<StickChartUiData> = emptyList()
+    val chartUiList: List<StickChartUiData> = emptyList(),
+    val gymList: List<SelectGymData> = listOf(SelectGymData(0, "클밋 기준"))
 )
 
 sealed class StatsEvent {
@@ -49,6 +51,8 @@ class StatsViewModel @Inject constructor(
         MutableStateFlow("${selectedDate.value?.year}년 ${selectedDate.value?.monthValue}월")
     val cc = MutableStateFlow("0문제 완등")
     val ac = MutableStateFlow("100문제 도전!")
+
+    var isListShow = MutableStateFlow(false)
 
     init {
         getMyStatus()
@@ -235,6 +239,10 @@ class StatsViewModel @Inject constructor(
         date = selectedDate.value
         curDate.value = "${date.year}년 ${date.monthValue}월"
         getMyStatus()
+    }
+
+    fun changeListShow(){
+        isListShow.value = !isListShow.value
     }
 
 }
