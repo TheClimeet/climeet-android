@@ -1,10 +1,9 @@
 package com.climus.climeet.presentation.ui.main.global.searchprofile.model
 
-data class SearchProfileUiData(
+data class UserFollowingUiData(
     val id: Long,
     val imgUrl: String = "",
     val name : String = "",
-    val keyword: String = "",
     var followers : Int = 0,
     var isFollowing: Boolean,
     val navigateToProfile : (Long) -> Unit,

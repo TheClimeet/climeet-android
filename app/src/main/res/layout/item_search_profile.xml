@@ -36,7 +36,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_following"
+                android:id="@+id/btn_follow"
                 style="@style/TextLargeBold"
                 android:layout_width="72dp"
                 android:layout_height="35dp"
@@ -50,16 +50,16 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_follow"
+                android:id="@+id/btn_following"
                 style="@style/TextLargeBold"
                 android:layout_width="72dp"
                 android:layout_height="35dp"
                 android:layout_marginHorizontal="20dp"
                 android:background="@drawable/btn_follow"
                 android:text="팔로잉"
+                android:visibility="invisible"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/linearLayout"
                 app:layout_constraintTop_toTopOf="parent" />

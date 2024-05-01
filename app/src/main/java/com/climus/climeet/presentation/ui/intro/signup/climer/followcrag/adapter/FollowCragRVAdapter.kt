@@ -35,32 +35,30 @@ class FollowCragRVAdapter() : RecyclerView.Adapter<FollowCragRVAdapter.ViewHolde
         val isFollow = followStatus[position]
 
         if (isFollow) {
-            btnFollowing.visibility = View.INVISIBLE
-            btnFollow.visibility = View.VISIBLE
-        } else {
             btnFollowing.visibility = View.VISIBLE
             btnFollow.visibility = View.INVISIBLE
+        } else {
+            btnFollowing.visibility = View.INVISIBLE
+            btnFollow.visibility = View.VISIBLE
         }
 
-        // 팔로우 +1
         btnFollowing.setOnClickListener {
             followStatus.put(position, !isFollow) // 토글
             btnFollowing.visibility = View.INVISIBLE
             btnFollow.visibility = View.VISIBLE
             notifyItemChanged(position)
             val cragItem = searchList[position]
-            cragItem.followers += 1
+            cragItem.followers -= 1
             ClimerSignupForm.addFollowGym(searchList[position].id)
         }
 
-        // 팔로우 -1
         btnFollow.setOnClickListener {
             followStatus.put(position, !isFollow) // 토글
             btnFollowing.visibility = View.VISIBLE
             btnFollow.visibility = View.INVISIBLE
             notifyItemChanged(position)
             val cragItem = searchList[position]
-            cragItem.followers -= 1
+            cragItem.followers += 1
             ClimerSignupForm.removeFollowGym(searchList[position].id)
         }
     }
@@ -91,8 +89,8 @@ class FollowCragRVAdapter() : RecyclerView.Adapter<FollowCragRVAdapter.ViewHolde
             binding.tvCragName.text = followCrag.name
             binding.tvCragsFollow.text = followCrag.followers.toString()
             if(followCrag.isFollowing) {
-                binding.btnFollowing.visibility = View.INVISIBLE
-                binding.btnFollow.visibility = View.VISIBLE
+                binding.btnFollowing.visibility = View.VISIBLE
+                binding.btnFollow.visibility = View.INVISIBLE
             }
         }
     }

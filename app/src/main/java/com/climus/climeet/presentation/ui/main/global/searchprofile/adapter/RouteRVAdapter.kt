@@ -1,40 +1,37 @@
-package com.climus.climeet.presentation.ui.main.home.recycler.popularroute
+package com.climus.climeet.presentation.ui.main.global.searchprofile.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
-import com.climus.climeet.data.model.response.BestRouteSimpleResponse
+import com.climus.climeet.data.model.response.RouteSimpleInfo
 import com.climus.climeet.databinding.ItemPopularRoutesBinding
-import com.climus.climeet.presentation.ui.main.home.model.PopularRoute
 import com.climus.climeet.presentation.util.Constants
 import kotlin.math.min
 
-class PopularRouteRVAdapter (private val routeList: List<BestRouteDetailInfoResponse>) : RecyclerView.Adapter<PopularRouteRVAdapter.ViewHolder>() {
+class RouteRVAdapter (private val routeList: List<RouteSimpleInfo>, private val gymName: String) : RecyclerView.Adapter<RouteRVAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): PopularRouteRVAdapter.ViewHolder {
+    ): RouteRVAdapter.ViewHolder {
         val binding: ItemPopularRoutesBinding = ItemPopularRoutesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: PopularRouteRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RouteRVAdapter.ViewHolder, position: Int) {
         holder.bind(routeList[position])
     }
 
     override fun getItemCount(): Int {
-        // 최대 10개의 아이템으로 제한
-        return min(routeList.size, 10)
+        return routeList.size
     }
 
     inner class ViewHolder(val binding: ItemPopularRoutesBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(route: BestRouteDetailInfoResponse) {
+        fun bind(route: RouteSimpleInfo) {
 
-            binding.routeView.setRouteImgUrl(route.routeImageUrl)
+            binding.routeView.setRouteImgUrl(route.routeImgUrl)
             binding.routeView.setRouteLevelName(route.gymDifficultyName)
             binding.routeView.setRouteLevelColor(route.gymDifficultyColor)
 
@@ -44,7 +41,7 @@ class PopularRouteRVAdapter (private val routeList: List<BestRouteDetailInfoResp
 
             binding.routeView.setHoldImage(holdImage)
 
-            binding.tvPopularRoutesLocation.text = route.gymName
+            binding.tvPopularRoutesLocation.text = gymName
             binding.tvPopularRoutesSector.text = route.sectorName
         }
     }
