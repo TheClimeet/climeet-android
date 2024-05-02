@@ -32,6 +32,7 @@ class StickChartView @JvmOverloads constructor(
         legend.isEnabled = false
         axisLeft.isEnabled = false
         axisRight.isEnabled = false
+        renderer = RoundedBarChartRenderer(this, this.animator, this.viewPortHandler)
     }
 
     fun setupChartData(data: List<StickChartUiData>) {
