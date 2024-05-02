@@ -3,6 +3,7 @@ package com.climus.climeet.app.di
 import com.climus.climeet.BuildConfig
 import com.climus.climeet.config.AccessTokenInterceptor
 import com.climus.climeet.config.BearerInterceptor
+import com.climus.climeet.config.DataStoreManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +13,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -20,11 +20,10 @@ object NetworkModule {
 
     var isProd = true
 
-    fun changeVersion(state: Boolean){
+    fun changeVersion(state: Boolean) {
         isProd = state
     }
 
-    @Singleton
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
@@ -34,7 +33,6 @@ object NetworkModule {
             .build()
 
     @Provides
-    @Singleton
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply {
             level =
@@ -42,17 +40,25 @@ object NetworkModule {
         }
     }
 
-    @Singleton
+    @Provides
+    fun provideAccessTokenInterceptor(dataStoreManager: DataStoreManager): AccessTokenInterceptor =
+        AccessTokenInterceptor(dataStoreManager)
+
+    @Provides
+    fun provideBearerInterceptor(dataStoreManager: DataStoreManager): BearerInterceptor =
+        BearerInterceptor(dataStoreManager)
+
     @Provides
     fun provideOkHttpClient(
-        httpLoggingInterceptor: HttpLoggingInterceptor
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        accessTokenInterceptor: AccessTokenInterceptor,
+        bearerInterceptor: BearerInterceptor
     ): OkHttpClient = OkHttpClient.Builder()
         .readTimeout(30000, TimeUnit.MILLISECONDS)
         .connectTimeout(30000, TimeUnit.MILLISECONDS)
         .addInterceptor(httpLoggingInterceptor)
-        .addNetworkInterceptor(AccessTokenInterceptor())
-        .addInterceptor(BearerInterceptor())
+        .addNetworkInterceptor(accessTokenInterceptor)
+        .addInterceptor(bearerInterceptor)
         .build()
-
 
 }
