@@ -1,26 +1,26 @@
 package com.climus.climeet.config
 
-import android.util.Log
-import com.climus.climeet.app.App.Companion.sharedPreferences
-import com.climus.climeet.presentation.util.Constants.X_ACCESS_TOKEN
+import com.kakao.sdk.common.Constants.AUTHORIZATION
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
+import javax.inject.Inject
 
-class AccessTokenInterceptor() : Interceptor {
+class AccessTokenInterceptor @Inject constructor(private val dataStoreManager: DataStoreManager) : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder: Request.Builder = chain.request().newBuilder()
 
-        val jwt: String? = sharedPreferences.getString(X_ACCESS_TOKEN, null)
-        Log.d("accessToken",jwt.toString())
+        val jwt = runBlocking {
+            dataStoreManager.getAccessToken().first()
+        }
 
-        jwt?.let {
-            builder.addHeader("Authorization", "Bearer $jwt")
-        } ?: run {
-
+        jwt?.takeIf { it.isNotEmpty() }?.let {
+            builder.addHeader(AUTHORIZATION, it)
         }
 
         return chain.proceed(builder.build())

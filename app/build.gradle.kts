@@ -142,4 +142,8 @@ dependencies {
     // FCM
     implementation("com.google.firebase:firebase-messaging-ktx")
 
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-core:1.0.0")
+
 }
