@@ -3,6 +3,7 @@ package com.climus.climeet.presentation.ui.intro.signup.climer.noticesetting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.app.App
+import com.climus.climeet.config.DataStoreManager
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.ClimerSignupRequest
 import com.climus.climeet.data.repository.IntroRepository
@@ -24,7 +25,8 @@ sealed class NoticeSettingEvent{
 
 @HiltViewModel
 class NoticeSettingViewModel @Inject constructor(
-    private val repository: IntroRepository
+    private val repository: IntroRepository,
+    private val dataStoreManager: DataStoreManager
 ): ViewModel() {
 
     private val _event = MutableSharedFlow<NoticeSettingEvent>()
@@ -39,11 +41,9 @@ class NoticeSettingViewModel @Inject constructor(
             repository.climerSignUp(provider, accessToken, signUpRequest).let{
                 when(it){
                     is BaseState.Success -> {
-                        App.sharedPreferences.edit()
-                            .putString(Constants.X_ACCESS_TOKEN, it.body.accessToken)
-                            .putString(Constants.X_REFRESH_TOKEN, it.body.refreshToken)
-                            .putString(Constants.X_MODE, "CLIMER")
-                            .apply()
+                        dataStoreManager.putAccessToken(it.body.accessToken)
+                        dataStoreManager.putRefreshToken(it.body.refreshToken)
+                        dataStoreManager.putLoginMode("ADMIN")
 
                         _event.emit(NoticeSettingEvent.NavigateToComplete)
                     }

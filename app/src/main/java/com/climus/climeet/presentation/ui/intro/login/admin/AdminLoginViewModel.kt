@@ -3,9 +3,11 @@ package com.climus.climeet.presentation.ui.intro.login.admin
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.app.App
+import com.climus.climeet.config.DataStoreManager
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.ManagerLoginRequest
 import com.climus.climeet.data.repository.IntroRepository
+import com.climus.climeet.presentation.util.Constants
 import com.climus.climeet.presentation.util.Constants.X_ACCESS_TOKEN
 import com.climus.climeet.presentation.util.Constants.X_MODE
 import com.climus.climeet.presentation.util.Constants.X_REFRESH_TOKEN
@@ -30,7 +32,8 @@ sealed class AdminLoginEvent {
 
 @HiltViewModel
 class AdminLoginViewModel @Inject constructor(
-    private val repository: IntroRepository
+    private val repository: IntroRepository,
+    private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
 
     private val _event = MutableSharedFlow<AdminLoginEvent>()
@@ -84,12 +87,10 @@ class AdminLoginViewModel @Inject constructor(
                     is BaseState.Success -> {
                         
                         // todo X_MODE 는 ADMIN / CLIMER 로 나뉨
-                        
-                        App.sharedPreferences.edit()
-                            .putString(X_ACCESS_TOKEN, it.body.accessToken)
-                            .putString(X_REFRESH_TOKEN, it.body.refreshToken)
-                            .putString(X_MODE, "ADMIN")
-                            .apply()
+
+                        dataStoreManager.putAccessToken(it.body.accessToken)
+                        dataStoreManager.putRefreshToken(it.body.refreshToken)
+                        dataStoreManager.putLoginMode("ADMIN")
 
                         _event.emit(AdminLoginEvent.GoToMainActivity)
                     }
@@ -108,6 +109,16 @@ class AdminLoginViewModel @Inject constructor(
             }
         }
 
+    }
+
+    fun testerLogin(){
+        viewModelScope.launch {
+
+            dataStoreManager.putAccessToken(Constants.TEST_ADMIN_TOKEN)
+            dataStoreManager.putLoginMode("ADMIN")
+
+            _event.emit(AdminLoginEvent.GoToMainActivity)
+        }
     }
 
 

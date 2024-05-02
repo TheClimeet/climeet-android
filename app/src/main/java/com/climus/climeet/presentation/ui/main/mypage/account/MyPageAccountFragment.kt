@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.mypage.account
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -12,15 +13,20 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.app.App
+import com.climus.climeet.config.DataStoreManager
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.databinding.FragmentMypageAccountBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout.fragment_mypage_account) {
+class MyPageAccountFragment @Inject constructor(
+    private val dataStoreManager: DataStoreManager
+): BaseFragment<FragmentMypageAccountBinding>(R.layout.fragment_mypage_account) {
 
     private val viewModel: MyPageAccountViewModel by viewModels()
     private var isManger: Boolean = true
@@ -53,24 +59,24 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun setUpInitialSetting() {
-        isManger = checkUserType()
+        repeatOnStarted {
+            isManger = dataStoreManager.getLoginMode().first() == "ADMIN"
 
-        if(isManger) {
-            binding.icVerified.visibility = View.VISIBLE
-            binding.mypageWhoami.text="암장 관리자로 만났어요"
-            binding.btnCompleteLogin.text="로그인 연동 완료"
-        } else {
-            binding.icVerified.visibility = View.GONE
-            binding.mypageWhoami.text="클라이머로 만났어요"
-            binding.btnCompleteLogin.text="카카오 로그인 연동 완료"
+                if(isManger) {
+                    binding.icVerified.visibility = View.VISIBLE
+                    binding.mypageWhoami.text="암장 관리자로 만났어요"
+                    binding.btnCompleteLogin.text="로그인 연동 완료"
+                } else {
+                    binding.icVerified.visibility = View.GONE
+                    binding.mypageWhoami.text="클라이머로 만났어요"
+                    binding.btnCompleteLogin.text="카카오 로그인 연동 완료"
+                }
         }
+
     }
 
-    private fun checkUserType(): Boolean {
-        val userType = App.sharedPreferences.getString("X_MODE", "")
-        return userType == "ADMIN"
-    }
 
     private fun setupOnClickListener() {
 
@@ -91,9 +97,11 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
 
             logoutBtn!!.setOnClickListener {
                 alertDialog.dismiss()
-                App.sharedPreferences.edit()
-                    .clear()
-                    .apply()
+                repeatOnStarted {
+                    dataStoreManager.deleteLoginMode()
+                    dataStoreManager.deleteAccessToken()
+                    dataStoreManager.deleteRefreshToken()
+                }
                 val intent = Intent(requireContext(), IntroActivity::class.java)
                 startActivity(intent)
             }

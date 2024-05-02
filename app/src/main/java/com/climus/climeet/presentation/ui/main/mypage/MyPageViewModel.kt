@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.app.App
+import com.climus.climeet.config.DataStoreManager
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.customview.stickchart.StickChartUiData
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -46,7 +48,8 @@ sealed class MyPageEvent {
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val repository: MainRepository
+    private val repository: MainRepository,
+    private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MyPageUiState())
@@ -117,7 +120,7 @@ class MyPageViewModel @Inject constructor(
     fun navigateToMyProfile() {
         viewModelScope.launch {
 
-            val mode = App.sharedPreferences.getString(X_MODE, null)
+            val mode = dataStoreManager.getLoginMode().first()
 
             mode?.let {
                 when (it) {
@@ -157,6 +160,9 @@ class MyPageViewModel @Inject constructor(
 
     fun logout() {
         viewModelScope.launch {
+            dataStoreManager.deleteAccessToken()
+            dataStoreManager.deleteRefreshToken()
+            dataStoreManager.deleteLoginMode()
             _event.emit(MyPageEvent.Logout)
         }
     }

@@ -171,6 +171,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="16dp"
             android:text="테스트 계정으로 로그인"
+            android:onClick="@{() -> vm.testerLogin()}"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

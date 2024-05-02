@@ -44,9 +44,6 @@ class MyPageFragment: BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypa
                     is MyPageEvent.NavigateToPolicy -> findNavController().toPolicy()
                     is MyPageEvent.NavigateToSendOpinion -> findNavController().toSendOpinion()
                     is MyPageEvent.Logout -> {
-                        App.sharedPreferences.edit()
-                            .clear()
-                            .apply()
                         val intent = Intent(requireContext(),IntroActivity::class.java)
                         startActivity(intent)
                     }

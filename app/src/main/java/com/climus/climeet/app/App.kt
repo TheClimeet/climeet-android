@@ -30,6 +30,7 @@ class App : Application(){
     companion object{
         private const val APP_NAME = "Climeet"
         lateinit var instance : App
+        lateinit var sharedPreferences: SharedPreferences
         val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = APP_NAME)
         var fcmToken = ""
         fun getContext(): Context = instance.applicationContext
@@ -37,6 +38,8 @@ class App : Application(){
 
     override fun onCreate() {
         super.onCreate()
+        sharedPreferences =
+            applicationContext.getSharedPreferences("APP", MODE_PRIVATE)
         initSocialLogin()
         getFCMToken()
     }
