@@ -10,40 +10,39 @@ import com.climus.climeet.databinding.ItemPopularRoutesBinding
 import com.climus.climeet.presentation.util.Constants
 import kotlin.math.min
 
-class RouteRVAdapter (private val routeList: List<RouteSimpleInfo>, private val gymName: String) : RecyclerView.Adapter<RouteRVAdapter.ViewHolder>() {
+class RouteRVAdapter (private val routeList: List<RouteSimpleInfo>, private val gymName: String) : RecyclerView.Adapter<RouteViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RouteRVAdapter.ViewHolder {
+    ): RouteViewHolder {
         val binding: ItemPopularRoutesBinding = ItemPopularRoutesBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+        return RouteViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RouteRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RouteViewHolder, position: Int) {
         holder.bind(routeList[position])
+        holder.binding.tvPopularRoutesLocation.text = gymName
     }
 
     override fun getItemCount(): Int {
         return routeList.size
     }
 
-    inner class ViewHolder(val binding: ItemPopularRoutesBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(route: RouteSimpleInfo) {
+}
 
-            binding.routeView.setRouteImgUrl(route.routeImgUrl)
-            binding.routeView.setRouteLevelName(route.gymDifficultyName)
-            binding.routeView.setRouteLevelColor(route.gymDifficultyColor)
+class RouteViewHolder(val binding: ItemPopularRoutesBinding): RecyclerView.ViewHolder(binding.root){
+    fun bind(route: RouteSimpleInfo) {
 
-            val holdImage = Constants.holdColor[route.holdColor] ?: run {
-                R.drawable.ic_white_hold
-            }
+        binding.routeView.setRouteImgUrl(route.routeImgUrl)
+        binding.routeView.setRouteLevelName(route.gymDifficultyName)
+        binding.routeView.setRouteLevelColor(route.gymDifficultyColor)
 
-            binding.routeView.setHoldImage(holdImage)
-
-            binding.tvPopularRoutesLocation.text = gymName
-            binding.tvPopularRoutesSector.text = route.sectorName
+        val holdImage = Constants.holdColor[route.holdColor] ?: run {
+            R.drawable.ic_white_hold
         }
-    }
 
+        binding.routeView.setHoldImage(holdImage)
+        binding.tvPopularRoutesSector.text = route.sectorName
+    }
 }
