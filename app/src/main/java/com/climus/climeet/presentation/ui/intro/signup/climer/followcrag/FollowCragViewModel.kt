@@ -25,7 +25,6 @@ data class FollowCragUiState(
     val searchList: List<FollowCrag> = emptyList(),
     val progressState: Boolean = false,
     val emptyResultState: Boolean = false,
-    val followState: Boolean = false
 )
 
 sealed class FollowCragEvent {
