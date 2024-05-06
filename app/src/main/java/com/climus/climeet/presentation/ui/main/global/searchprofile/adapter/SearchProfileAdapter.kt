@@ -52,14 +52,6 @@ class SearchProfileAdapter() : RecyclerView.Adapter<SearchProfileAdapter.ViewHol
             val btnFollowing = binding.btnFollowing
             val btnFollow = binding.btnFollow
 
-            if (item.isFollowing) {
-                binding.btnFollowing.visibility = View.VISIBLE
-                binding.btnFollow.visibility = View.INVISIBLE
-            } else {
-                binding.btnFollowing.visibility = View.INVISIBLE
-                binding.btnFollow.visibility = View.VISIBLE
-            }
-
             binding.ivProfile.setOnClickListener {
                 item.navigateToProfile(item.id)
             }
@@ -98,61 +90,3 @@ class SearchProfileAdapter() : RecyclerView.Adapter<SearchProfileAdapter.ViewHol
     }
 
 }
-
-//class SearchProfileViewHolder(val binding: ItemSearchProfileBinding) :
-//    RecyclerView.ViewHolder(binding.root) {
-//    fun bind(item: SearchProfileUiData, keyword: String) {
-//        binding.keyword = keyword
-//        binding.item = item
-//        binding.tvCragsFollow.text = item.followers.toString()
-//
-////        var existingFollowers = item.followers
-////        val btnFollowing = binding.btnFollowing
-////        val btnFollow = binding.btnFollow
-////        val isFollow = item.isFollowing
-////
-////        if (isFollow) {
-////            btnFollowing.visibility = View.VISIBLE
-////            btnFollow.visibility = View.INVISIBLE
-////        } else {
-////            btnFollowing.visibility = View.INVISIBLE
-////            btnFollow.visibility = View.VISIBLE
-////        }
-//
-//        binding.ivProfile.setOnClickListener {
-//            item.navigateToProfile(item.id)
-//        }
-//
-////        btnFollowing.setOnClickListener {
-////            item.follow(item.id)
-////            binding.tvCragsFollow.text = (existingFollowers - 1).toString()
-////            existingFollowers -= 1
-////            btnFollowing.visibility = View.INVISIBLE
-////            btnFollow.visibility = View.VISIBLE
-////            item.isFollowing = false
-////        }
-////
-////        btnFollow.setOnClickListener {
-////            item.unFollow(item.id)
-////            binding.tvCragsFollow.text = (existingFollowers + 1).toString()
-////            existingFollowers += 1
-////            btnFollowing.visibility = View.VISIBLE
-////            btnFollow.visibility = View.INVISIBLE
-////            item.isFollowing = true
-////        }
-//
-//        if (item.imgUrl != null) {
-//            Glide.with(binding.root.context)
-//                .load(item.imgUrl)
-//                .into(binding.ivProfile)
-//        } else {
-//            binding.ivProfile.setImageResource(R.drawable.oval_lightgreyfill_nostroke_noradius)
-//        }
-//        binding.tvCragName.text = item.name
-//        binding.tvCragsFollow.text = item.followers.toString()
-//        if (item.isFollowing) {
-//            binding.btnFollowing.visibility = View.INVISIBLE
-//            binding.btnFollow.visibility = View.VISIBLE
-//        }
-//    }
-//}

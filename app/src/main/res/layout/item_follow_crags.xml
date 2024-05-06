@@ -4,10 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="android.view.View" />
         <variable
             name="keyword"
             type="String" />
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag" />
         <variable
             name="crag"
             type="com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag" />
@@ -43,9 +46,9 @@
                 android:layout_marginHorizontal="20dp"
                 android:background="@drawable/btn_follow"
                 android:text="팔로잉"
+                android:visibility="@{item.isFollowing ? View.VISIBLE : View.INVISIBLE}"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/linearLayout"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -58,6 +61,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:background="@drawable/btn_following"
                 android:text="팔로우"
+                android:visibility="@{item.isFollowing ? View.INVISIBLE : View.VISIBLE}"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"

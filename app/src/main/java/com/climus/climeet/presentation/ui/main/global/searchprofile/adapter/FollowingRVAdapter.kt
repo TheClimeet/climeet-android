@@ -12,9 +12,8 @@ import com.climus.climeet.databinding.ItemFollowingBinding
 import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowingUiData
 import com.climus.climeet.presentation.ui.main.mypage.follow.FollowClimber
 
-class FollowingRVAdapter(private val followingList: List<UserFollowingUiData>) : RecyclerView.Adapter<FollowingRVAdapter.ViewHolder>(){
+class FollowingRVAdapter(private val followingList: List<UserFollowingUiData>) : RecyclerView.Adapter<ViewHolder>(){
 
-    private val followStatus = SparseBooleanArray()
     private var searchList: List<FollowClimber> = emptyList()
     private var keyword: String = ""
 
@@ -39,51 +38,54 @@ class FollowingRVAdapter(private val followingList: List<UserFollowingUiData>) :
 
     override fun getItemCount(): Int = followingList.size
 
-    inner class ViewHolder(val binding: ItemFollowingBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(following: UserFollowingUiData) {
+}
 
-            binding.tvFollowing.text = following.followers.toString()
+class ViewHolder(val binding: ItemFollowingBinding): RecyclerView.ViewHolder(binding.root){
 
-            if (following.imgUrl != null) {
-                Glide.with(binding.root.context)
-                    .load(following.imgUrl)
-                    .into(binding.followingProfileArea)
-            }
+    private val followStatus = SparseBooleanArray()
 
-            binding.followingProfileArea.setOnClickListener {
-                following.navigateToProfile(following.id)
-            }
+    fun bind(following: UserFollowingUiData) {
 
-            binding.tvFollowingName.text = following.name
+        binding.tvFollowing.text = following.followers.toString()
 
-            val btnFollowing = binding.btnFollowing
-            val btnFollow = binding.btnFollow
-            val isFollow = followStatus[position]
+        if (following.imgUrl != null) {
+            Glide.with(binding.root.context)
+                .load(following.imgUrl)
+                .into(binding.followingProfileArea)
+        }
 
-            if (isFollow) {
-                btnFollowing.visibility = View.INVISIBLE
-                btnFollow.visibility = View.VISIBLE
-            } else {
-                btnFollowing.visibility = View.VISIBLE
-                btnFollow.visibility = View.INVISIBLE
-            }
+        binding.followingProfileArea.setOnClickListener {
+            following.navigateToProfile(following.id)
+        }
 
-            btnFollowing.setOnClickListener {
-                followStatus.put(position, !isFollow) // 토글
-                following.unFollow(following.id)
-                btnFollowing.visibility = View.INVISIBLE
-                btnFollow.visibility = View.VISIBLE
-                notifyItemChanged(position)
-                followingList[position].followers -= 1
-            }
+        binding.tvFollowingName.text = following.name
 
-            btnFollow.setOnClickListener {
-                followStatus.put(position, !isFollow) // 토글
-                btnFollowing.visibility = View.VISIBLE
-                btnFollow.visibility = View.INVISIBLE
-                notifyItemChanged(position)
-                followingList[position].followers += 1
-            }
+        val btnFollowing = binding.btnFollowing
+        val btnFollow = binding.btnFollow
+        val isFollow = followStatus[position]
+
+        if (isFollow) {
+            btnFollowing.visibility = View.INVISIBLE
+            btnFollow.visibility = View.VISIBLE
+        } else {
+            btnFollowing.visibility = View.VISIBLE
+            btnFollow.visibility = View.INVISIBLE
+        }
+
+        btnFollowing.setOnClickListener {
+            followStatus.put(position, !isFollow) // 토글
+            following.unFollow(following.id)
+            btnFollowing.visibility = View.INVISIBLE
+            btnFollow.visibility = View.VISIBLE
+            binding.tvFollowing.text = (following.followers - 1).toString()
+        }
+
+        btnFollow.setOnClickListener {
+            followStatus.put(position, !isFollow) // 토글
+            following.follow(following.id)
+            btnFollowing.visibility = View.VISIBLE
+            btnFollow.visibility = View.INVISIBLE
+            binding.tvFollowing.text = (following.followers).toString()
         }
     }
 }
