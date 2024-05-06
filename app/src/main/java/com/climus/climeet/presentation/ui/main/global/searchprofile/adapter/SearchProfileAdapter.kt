@@ -73,9 +73,6 @@ class SearchProfileViewHolder(val binding: ItemSearchProfileBinding): RecyclerVi
         binding.item = item
         binding.tvCragsFollow.text = item.followers.toString()
 
-        val btnFollowing = binding.btnFollowing
-        val btnFollow = binding.btnFollow
-
         binding.ivProfile.setOnClickListener {
             item.navigateToProfile(item.id)
         }
