@@ -36,7 +36,7 @@ class App : Application(){
         sharedPreferences =
             applicationContext.getSharedPreferences("APP", MODE_PRIVATE)
         initSocialLogin()
-        getFCMToken()
+        //getFCMToken()
     }
 
     private fun initSocialLogin(){
