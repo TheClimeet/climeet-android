@@ -1,5 +1,4 @@
-package com.climus.climeet.presentation.ui.main.mypage.follow
-
+package com.climus.climeet.presentation.ui.main.mypage.follow.viewpager.adapter
 
 import android.annotation.SuppressLint
 import android.util.SparseBooleanArray
@@ -10,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.databinding.ItemFollowingBinding
+import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowingUiData
+import com.climus.climeet.presentation.ui.main.mypage.follow.FollowClimber
+
 
 class FollowingRVAdapter(private val followingList: List<UserFollowSimpleResponse>) : RecyclerView.Adapter<FollowingRVAdapter.ViewHolder>(){
 
@@ -41,22 +43,20 @@ class FollowingRVAdapter(private val followingList: List<UserFollowSimpleRespons
             btnFollow.visibility = View.INVISIBLE
         }
 
-        // 팔로우 +1
         btnFollowing.setOnClickListener {
             followStatus.put(position, !isFollow) // 토글
             btnFollowing.visibility = View.INVISIBLE
             btnFollow.visibility = View.VISIBLE
             notifyItemChanged(position)
-            followingList[position].followerCount += 1
+            followingList[position].followerCount -= 1
         }
 
-        // 팔로우 -1
         btnFollow.setOnClickListener {
             followStatus.put(position, !isFollow) // 토글
             btnFollowing.visibility = View.VISIBLE
             btnFollow.visibility = View.INVISIBLE
             notifyItemChanged(position)
-            followingList[position].followerCount -= 1
+            followingList[position].followerCount += 1
         }
     }
 
@@ -83,4 +83,5 @@ class FollowingRVAdapter(private val followingList: List<UserFollowSimpleRespons
 
         }
     }
+
 }

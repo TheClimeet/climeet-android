@@ -1,6 +1,7 @@
 package com.climus.climeet.presentation.ui.intro
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
