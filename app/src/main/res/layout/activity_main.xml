@@ -37,6 +37,7 @@
             android:layout_height="0dp"
             android:background="@color/black"
             app:itemActiveIndicatorStyle="@android:color/transparent"
+            app:itemBackground="@drawable/bnv_main_indicator"
             app:itemTextColor="@color/selector_bnv_text"
             app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"
