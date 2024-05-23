@@ -23,8 +23,8 @@ android {
         applicationId = "com.climus.climeet"
         minSdk = 26
         targetSdk = 34
-        versionCode = 12
-        versionName = "0.2.2"
+        versionCode = 15
+        versionName = "0.2.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "BASE_DEV_URL", getProperty("baseDevUrl"))
@@ -139,6 +139,10 @@ dependencies {
 
     // FCM
     implementation("com.google.firebase:firebase-messaging-ktx")
+
+    // DataStore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-core:1.0.0")
 
     // MPAndroidChart
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")

@@ -36,6 +36,7 @@ import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.GymWeekStatsResponse
 import com.climus.climeet.data.model.response.MyPageProfileResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
+import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
@@ -52,9 +53,6 @@ import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
-import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MainRepository {
@@ -340,4 +338,5 @@ interface MainRepository {
 
 
     suspend fun getAnnouncement(): BaseState<GetAnnouncementResponse>
+
 }

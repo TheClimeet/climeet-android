@@ -1,25 +1,15 @@
 package com.climus.climeet.presentation.ui.main.mypage.announce.adapter
 
-import android.annotation.SuppressLint
-import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.climus.climeet.R
 import com.climus.climeet.data.model.response.GetAnnouncementResponse
 import com.climus.climeet.databinding.ItemAnnouncementBinding
-import com.climus.climeet.databinding.ItemProfileReviewBinding
-import com.climus.climeet.databinding.ItemSearchProfileBinding
-import com.climus.climeet.presentation.ui.main.global.gymprofile.model.GymReview
-import com.climus.climeet.presentation.ui.main.global.searchprofile.adapter.SearchProfileAdapter
-import com.climus.climeet.presentation.ui.main.global.searchprofile.adapter.ViewHolder
-import com.climus.climeet.presentation.ui.main.global.searchprofile.model.SearchProfileUiData
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 @Suppress("DEPRECATION")
-class AnnouncementRVAdapter(private val announcementList: List<GetAnnouncementResponse>) : RecyclerView.Adapter<AnnouncementViewHolder>() {
+class AnnouncementRVAdapter(private val announcementList: List<GetAnnouncementResponse>) :
+    RecyclerView.Adapter<AnnouncementViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -40,10 +30,10 @@ class AnnouncementRVAdapter(private val announcementList: List<GetAnnouncementRe
     override fun getItemCount(): Int = announcementList.size
 
     interface OnItemClickListener {
-        fun onItemClick(item : GetAnnouncementResponse)
+        fun onItemClick(item: GetAnnouncementResponse)
     }
 
-    private lateinit var itemClickListener : OnItemClickListener
+    private lateinit var itemClickListener: OnItemClickListener
 
     fun setItemClickListener(onItemClickListener: OnItemClickListener) {
         this.itemClickListener = onItemClickListener
@@ -61,7 +51,7 @@ class AnnouncementViewHolder(private val binding: ItemAnnouncementBinding) :
                 .into(binding.ivAnnounceProfile)
         }
 
-        if(item.image != null) {
+        if (item.image != null) {
             Glide.with(binding.root.context)
                 .load(item.image)
                 .into(binding.imageFilterView)

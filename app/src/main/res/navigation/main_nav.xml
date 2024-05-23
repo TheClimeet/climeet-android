@@ -332,6 +332,7 @@
     <action
         android:id="@+id/globalActionToGymProfileFragment"
         app:destination="@id/gymProfileFragment" />
+
     <fragment
         android:id="@+id/announceDetailFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.announce.AnnounceDetailFragment"

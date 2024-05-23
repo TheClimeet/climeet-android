@@ -4,6 +4,9 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.climus.climeet.BuildConfig
 import com.climus.climeet.presentation.util.Constants.TAG
 import com.climus.climeet.service.MyFirebaseMessagingService
@@ -25,8 +28,10 @@ class App : Application(){
     }
 
     companion object{
+        private const val APP_NAME = "Climeet"
         lateinit var instance : App
         lateinit var sharedPreferences: SharedPreferences
+        val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = APP_NAME)
         var fcmToken = ""
         fun getContext(): Context = instance.applicationContext
     }

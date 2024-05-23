@@ -29,7 +29,6 @@ interface IntroRepository {
         body : ManagerLoginRequest
     ): BaseState<ManagerLoginResponse>
 
-
     suspend fun managerIdCheck(
         loginId: String
     ): BaseState<Boolean>

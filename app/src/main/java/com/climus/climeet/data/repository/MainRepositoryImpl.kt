@@ -56,8 +56,6 @@ import com.climus.climeet.data.model.runRemote
 import com.climus.climeet.data.remote.MainApi
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
-import retrofit2.Response
-import retrofit2.http.Query
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
@@ -412,7 +410,7 @@ class MainRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getMyShorts(page: Int, size: Int): BaseState<ShortsListResponse> =
-        runRemote { api.getMyShorts(page,size) }
+        runRemote { api.getMyShorts(page, size) }
 
     override suspend fun getUserHomeGyms(userId: Long): BaseState<List<UserHomeGymSimpleResponse>> =
         runRemote { api.getUserHomeGyms(userId) }
@@ -430,4 +428,5 @@ class MainRepositoryImpl @Inject constructor(
     ): BaseState<ShortsListResponse> = runRemote {
         api.getUserShorts(uploaderId, page, size)
     }
+
 }
