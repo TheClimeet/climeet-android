@@ -2,15 +2,10 @@ package com.climus.climeet.presentation.ui.intro.login.admin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.climus.climeet.app.App
-import com.climus.climeet.config.DataStoreManager
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.ManagerLoginRequest
 import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.presentation.util.Constants
-import com.climus.climeet.presentation.util.Constants.X_ACCESS_TOKEN
-import com.climus.climeet.presentation.util.Constants.X_MODE
-import com.climus.climeet.presentation.util.Constants.X_REFRESH_TOKEN
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

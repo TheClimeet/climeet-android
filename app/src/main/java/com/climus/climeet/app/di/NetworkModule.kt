@@ -1,9 +1,8 @@
 package com.climus.climeet.app.di
 
 import com.climus.climeet.BuildConfig
-import com.climus.climeet.config.AccessTokenInterceptor
-import com.climus.climeet.config.BearerInterceptor
-import com.climus.climeet.config.DataStoreManager
+import com.climus.climeet.data.config.AccessTokenInterceptor
+import com.climus.climeet.data.config.BearerInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

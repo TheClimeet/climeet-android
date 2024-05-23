@@ -1,4 +1,5 @@
-package com.climus.climeet.config
+package com.climus.climeet.data.config
+
 
 import com.kakao.sdk.common.Constants.AUTHORIZATION
 import kotlinx.coroutines.flow.first
@@ -20,7 +21,7 @@ class AccessTokenInterceptor @Inject constructor(private val dataStoreManager: D
         }
 
         jwt?.takeIf { it.isNotEmpty() }?.let {
-            builder.addHeader(AUTHORIZATION, it)
+            builder.addHeader(AUTHORIZATION, "Bearer $it")
         }
 
         return chain.proceed(builder.build())

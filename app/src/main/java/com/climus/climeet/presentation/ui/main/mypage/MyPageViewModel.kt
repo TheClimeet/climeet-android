@@ -3,13 +3,8 @@ package com.climus.climeet.presentation.ui.main.mypage
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.climus.climeet.app.App
-import com.climus.climeet.config.DataStoreManager
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
-import com.climus.climeet.presentation.customview.stickchart.StickChartUiData
-import com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileInfoUiState
-import com.climus.climeet.presentation.util.Constants.X_MODE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

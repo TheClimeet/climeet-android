@@ -1,4 +1,4 @@
-package com.climus.climeet.config
+package com.climus.climeet.data.config
 
 import android.util.Log
 import com.climus.climeet.BuildConfig

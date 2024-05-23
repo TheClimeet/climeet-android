@@ -2,13 +2,9 @@ package com.climus.climeet.presentation.ui.intro.signup.climer.noticesetting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.climus.climeet.app.App
-import com.climus.climeet.config.DataStoreManager
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.ClimerSignupRequest
 import com.climus.climeet.data.repository.IntroRepository
-import com.climus.climeet.presentation.ui.intro.login.climer.ClimerLoginEvent
-import com.climus.climeet.presentation.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow

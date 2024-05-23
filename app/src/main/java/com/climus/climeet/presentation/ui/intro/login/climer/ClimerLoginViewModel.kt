@@ -3,8 +3,6 @@ package com.climus.climeet.presentation.ui.intro.login.climer
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.climus.climeet.app.App
-import com.climus.climeet.config.DataStoreManager
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.presentation.util.Constants
