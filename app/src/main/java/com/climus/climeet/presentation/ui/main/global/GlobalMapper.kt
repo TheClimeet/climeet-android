@@ -8,9 +8,11 @@ import com.climus.climeet.data.model.response.RouteItem
 import com.climus.climeet.data.model.response.SearchAvailableGymItem
 import com.climus.climeet.data.model.response.SectorItem
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
+import com.climus.climeet.data.model.response.UserFollowerInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.presentation.ui.main.global.climerprofile.model.ProfileHomeGymUiData
 import com.climus.climeet.presentation.ui.main.global.searchprofile.model.SearchProfileUiData
+import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowerUiData
 import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowingUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.RouteUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.GymLevelUiData
@@ -104,6 +106,38 @@ fun UserFollowSimpleResponse.toUserFollowingUiData(
     follow = follow,
     unFollow = unFollow,
     isFollowing = true
+)
+
+fun UserHomeGymSimpleResponse.toUserFollowingUiData(
+    navigateToProfile: (Long) -> Unit,
+    follow: (Long) -> Unit,
+    unFollow: (Long) -> Unit
+) = UserFollowingUiData(
+    id = gymId,
+    imgUrl = gymProfileUrl,
+    followers = followerCount,
+    name = gymName,
+    navigateToProfile = navigateToProfile,
+    follow = follow,
+    unFollow = unFollow,
+    isFollowing = true
+)
+
+fun UserFollowerInfoResponse.toUserFollowerUiData(
+    navigateToProfile: (Long) -> Unit,
+    follow: (Long) -> Unit,
+    unFollow: (Long) -> Unit
+) = UserFollowerUiData(
+    id = userId,
+    imgUrl = userProfileUrl,
+    followers = followerCount,
+    followings = followingCount,
+    name = userName,
+    isFollowing = isFollower,
+    navigateToProfile = navigateToProfile,
+    follow = follow,
+    unFollow = unFollow,
+
 )
 
 fun UserHomeGymSimpleResponse.toProfileHomeGymUiData(
