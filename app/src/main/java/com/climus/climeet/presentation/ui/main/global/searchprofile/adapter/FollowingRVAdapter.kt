@@ -12,7 +12,7 @@ import com.climus.climeet.databinding.ItemFollowingBinding
 import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowingUiData
 import com.climus.climeet.presentation.ui.main.mypage.follow.FollowClimber
 
-class FollowingRVAdapter(private val followingList: List<UserFollowingUiData>) : RecyclerView.Adapter<ViewHolder>(){
+class FollowingRVAdapter(private val followingList: List<UserFollowingUiData>) : RecyclerView.Adapter<FollowingViewHolder>(){
 
     private var searchList: List<FollowClimber> = emptyList()
     private var keyword: String = ""
@@ -20,12 +20,12 @@ class FollowingRVAdapter(private val followingList: List<UserFollowingUiData>) :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ViewHolder {
+    ): FollowingViewHolder {
         val binding: ItemFollowingBinding = ItemFollowingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+        return FollowingViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FollowingViewHolder, position: Int) {
         holder.bind(followingList[position])
     }
 
@@ -40,7 +40,7 @@ class FollowingRVAdapter(private val followingList: List<UserFollowingUiData>) :
 
 }
 
-class ViewHolder(val binding: ItemFollowingBinding): RecyclerView.ViewHolder(binding.root){
+class FollowingViewHolder(val binding: ItemFollowingBinding): RecyclerView.ViewHolder(binding.root){
 
     private val followStatus = SparseBooleanArray()
 

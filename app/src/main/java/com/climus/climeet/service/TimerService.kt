@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.record.timer.stopwatch
+package com.climus.climeet.service
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -22,8 +22,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.climus.climeet.presentation.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
-// -------------------- 스톱워치 기능 --------------------------
-// todo : 알림을 허용하지 않으면 스톱워치 알림창이 뜨지 않는다..
 @AndroidEntryPoint
 class TimerService : Service() {
     private lateinit var sharedPreferences: SharedPreferences
@@ -51,22 +49,53 @@ class TimerService : Service() {
             "START" -> {
                 startTimer()
                 val notification = createNotification(0L)
-                startForeground(1, notification)
+                startForeground(1, notification)    // 스톱워치 시작 -> 알림창 띄움
             }
 
             "PAUSE" -> pauseTimer()
             "RESTART" -> restartTimer()
-            "STOP" -> {
-                stopTimer()
-                stopForeground(true) // 서비스 백그라운드로 이동
-                stopSelf() // 서비스 종료
-                Log.d("timer", "서비스 종료")
-            }
         }
-        // 서비스 실행중이면 serviceRunning을 true로 성정 (실행 중이지 않으면 null)
-        serviceRunning.postValue(true)
 
         return START_STICKY
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        createNotificationChannelAndGroup()
+
+        sharedPreferences = applicationContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        editor = sharedPreferences.edit()
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopTimer()
+        Log.d("timer", "서비스 종료")
+    }
+
+    // 알림 채널 설정
+    private fun createNotificationChannelAndGroup() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            // Notification Channel Group 생성
+            val groupName = "운동 설정" // 그룹 이름
+            val channelGroup = NotificationChannelGroup(GROUP_ID, groupName)
+            notificationManager.createNotificationChannelGroup(channelGroup)
+
+            // Notification Channel 생성
+            val channelName = "운동 시간"
+            val descriptionText = "운동한 시간을 알려줍니다."
+            val importance = NotificationManager.IMPORTANCE_LOW
+            val channel = NotificationChannel(CHANNEL_ID, channelName, importance).apply {
+                description = descriptionText
+                group = GROUP_ID // 채널을 그룹에 할당
+            }
+
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
     // 알림 생성
@@ -122,38 +151,6 @@ class TimerService : Service() {
         return notification.build()
     }
 
-    // 알림 채널 설정
-    private fun createNotificationChannelAndGroup() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-            // Notification Channel Group 생성
-            val groupName = "운동 설정" // 그룹 이름
-            val channelGroup = NotificationChannelGroup(GROUP_ID, groupName)
-            notificationManager.createNotificationChannelGroup(channelGroup)
-
-            // Notification Channel 생성
-            val channelName = "운동 시간"
-            val descriptionText = "운동한 시간을 알려줍니다."
-            val importance = NotificationManager.IMPORTANCE_LOW
-            val channel = NotificationChannel(CHANNEL_ID, channelName, importance).apply {
-                description = descriptionText
-                group = GROUP_ID // 채널을 그룹에 할당
-            }
-
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        createNotificationChannelAndGroup()
-
-        sharedPreferences = applicationContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        editor = sharedPreferences.edit()
-    }
-
     // 시간이 흘러갈 때 호출 (start, restart)
     private fun setTimer() {
         if (!isPaused) {
@@ -194,7 +191,10 @@ class TimerService : Service() {
         editor.putBoolean(KEY_IS_RUNNING, isRunning)
         editor.apply()
 
-        Log.d("TIMER", "서비스 타이머 시작")
+        // 서비스 실행중이면 serviceRunning을 true로 성정 (실행 중이지 않으면 null)
+        serviceRunning.postValue(true)
+
+        Log.d("TIMER", "서비스 타이머 시작, serviceRunning : ${serviceRunning.value}")
 
 //        val r1 = sharedPreferences.getBoolean(KEY_IS_START, false)
 //        val r2 = sharedPreferences.getBoolean(KEY_IS_PAUSE, false)
