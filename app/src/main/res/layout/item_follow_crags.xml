@@ -11,9 +11,6 @@
         <variable
             name="item"
             type="com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag" />
-        <variable
-            name="crag"
-            type="com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag" />
 
     </data>
 
@@ -46,7 +43,6 @@
                 android:layout_marginHorizontal="20dp"
                 android:background="@drawable/btn_follow"
                 android:text="팔로잉"
-                android:visibility="invisible"
                 android:textColor="@color/white"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -61,6 +57,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:background="@drawable/btn_following"
                 android:text="팔로우"
+                android:visibility="invisible"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -88,11 +85,8 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:layout_marginLeft="15dp"
-                    android:text="@{crag.name}"
-                    app:keyword="@{keyword}"
                     android:textSize="16sp"
-                    tools:text="더클라임 클라이밍 강남점"
-                    app:searchResult="@{crag.name}"/>
+                    tools:text="더클라임 클라이밍 강남점" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

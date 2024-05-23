@@ -16,7 +16,6 @@ class RouteRecordAdapter(private val viewModel: CreateClimbingRecordViewModel) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteRecordViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemRouteRecordBinding.inflate(inflater, parent, false)
-        val context = parent.context
         return RouteRecordViewHolder(binding, viewModel)
     }
 
@@ -42,12 +41,12 @@ class RouteRecordViewHolder(
 
         binding.btnIncrease.setOnClickListener {
             viewModel.selectRoute(item)
-            viewModel.itemIncrease(item.routeId)
+            viewModel.addChallengeNum()
         }
 
         binding.btnDecrease.setOnClickListener {
             viewModel.selectRoute(item)
-            viewModel.itemDecrease(item.routeId)
+            viewModel.subChallengeNum()
         }
 
         binding.ivDelete.setOnClickListener {
@@ -56,7 +55,7 @@ class RouteRecordViewHolder(
 
         binding.ivClear.setOnClickListener {
             viewModel.selectRoute(item)
-            viewModel.setBtnState(item.routeId)
+            viewModel.setClear()
         }
     }
 }

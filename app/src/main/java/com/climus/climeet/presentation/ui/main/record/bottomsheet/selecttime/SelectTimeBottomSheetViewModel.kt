@@ -33,8 +33,8 @@ class SelectTimeBottomViewModel @Inject constructor() : ViewModel() {
     val selectState = MutableStateFlow(true)
     val startTime = MutableStateFlow(CreateRecordData.selectedStartTime)
     val endTime = MutableStateFlow(CreateRecordData.selectedEndTime)
-    val startTimeString = MutableLiveData("")
-    val endTimeString = MutableLiveData("")
+    val startTimeString = MutableStateFlow("")
+    val endTimeString = MutableStateFlow("")
 
     init {
         setStartTime(startTime.value.hour, startTime.value.minute)
@@ -68,24 +68,24 @@ class SelectTimeBottomViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun setTimeToString(time: Int, min: Int, ap: String) =
+        String.format(Locale.getDefault(), "$ap %02d:%02d", time, min)
+
+
     fun setStartTime(hour: Int, min: Int) {
         startTime.value = LocalTime.of(hour, min, 0)
         if (hour < 12 || hour == 24) {
             if (hour == 24) {
-                startTimeString.value =
-                    String.format(Locale.getDefault(), "오전 %02d:%02d", 12, min)
+                startTimeString.value = setTimeToString(12, min, "오전")
             } else {
-                startTimeString.value =
-                    String.format(Locale.getDefault(), "오전 %02d:%02d", hour, min)
+                startTimeString.value = setTimeToString(hour, min, "오전")
             }
 
         } else {
             if (hour == 12) {
-                startTimeString.value =
-                    String.format(Locale.getDefault(), "오후 %02d:%02d", 12, min)
+                startTimeString.value = setTimeToString(12, min, "오후")
             } else {
-                startTimeString.value =
-                    String.format(Locale.getDefault(), "오후 %02d:%02d", hour - 12, min)
+                startTimeString.value = setTimeToString(hour - 12, min, "오후")
             }
         }
     }
@@ -94,20 +94,16 @@ class SelectTimeBottomViewModel @Inject constructor() : ViewModel() {
         endTime.value = LocalTime.of(hour, min, 0)
         if (hour < 12 || hour == 24) {
             if (hour == 24) {
-                endTimeString.value =
-                    String.format(Locale.getDefault(), "오전 %02d:%02d", 12, min)
+                endTimeString.value = setTimeToString(12, min, "오전")
             } else {
-                endTimeString.value =
-                    String.format(Locale.getDefault(), "오전 %02d:%02d", hour, min)
+                endTimeString.value = setTimeToString(hour, min, "오전")
             }
 
         } else {
             if (hour == 12) {
-                endTimeString.value =
-                    String.format(Locale.getDefault(), "오후 %02d:%02d", 12, min)
+                endTimeString.value = setTimeToString(12, min, "오후")
             } else {
-                endTimeString.value =
-                    String.format(Locale.getDefault(), "오후 %02d:%02d", hour - 12, min)
+                endTimeString.value = setTimeToString(hour - 12, min, "오후")
             }
         }
     }

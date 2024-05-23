@@ -13,7 +13,7 @@ import com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiD
 import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
 
-class FollowCragRVAdapter() : RecyclerView.Adapter<FollowCragViewHolder>(){
+class FollowCragRVAdapter() : RecyclerView.Adapter<FollowCragRVAdapter.ViewHolder>(){
 
     private val followStatus = SparseBooleanArray()
     private var searchList: List<FollowCrag> = emptyList()
@@ -22,12 +22,12 @@ class FollowCragRVAdapter() : RecyclerView.Adapter<FollowCragViewHolder>(){
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): FollowCragViewHolder {
+    ): ViewHolder {
         val binding: ItemFollowCragsBinding = ItemFollowCragsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return FollowCragViewHolder(binding)
+        return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: FollowCragViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(searchList[position], keyword)
 
         val btnFollowing = holder.binding.btnFollowing
@@ -72,27 +72,26 @@ class FollowCragRVAdapter() : RecyclerView.Adapter<FollowCragViewHolder>(){
         notifyDataSetChanged()
     }
 
-}
+    inner class ViewHolder(val binding: ItemFollowCragsBinding): RecyclerView.ViewHolder(binding.root){
+        fun bind(followCrag: FollowCrag, keyword: String) {
+            binding.keyword = keyword
+            binding.item = followCrag
 
-class FollowCragViewHolder(val binding: ItemFollowCragsBinding): RecyclerView.ViewHolder(binding.root) {
-    fun bind(followCrag: FollowCrag, keyword: String) {
-        binding.keyword = keyword
-        binding.crag = followCrag
+            binding.tvCragsFollow.text = followCrag.followers.toString()
 
-        binding.tvCragsFollow.text = followCrag.followers.toString()
-
-        if (followCrag.imgUrl != null) {
-            Glide.with(binding.root.context)
-                .load(followCrag.imgUrl)
-                .into(binding.cragsProfileArea)
-        } else {
-            binding.cragsProfileArea.setImageResource(R.drawable.oval_lightgreyfill_nostroke_noradius)
-        }
-        binding.tvCragName.text = followCrag.name
-        binding.tvCragsFollow.text = followCrag.followers.toString()
-        if (followCrag.isFollowing) {
-            binding.btnFollowing.visibility = View.VISIBLE
-            binding.btnFollow.visibility = View.INVISIBLE
+            if (followCrag.imgUrl != null) {
+                Glide.with(binding.root.context)
+                    .load(followCrag.imgUrl)
+                    .into(binding.cragsProfileArea)
+            } else {
+                binding.cragsProfileArea.setImageResource(R.drawable.oval_lightgreyfill_nostroke_noradius)
+            }
+            binding.tvCragName.text = followCrag.name
+            binding.tvCragsFollow.text = followCrag.followers.toString()
+            if(followCrag.isFollowing) {
+                binding.btnFollowing.visibility = View.VISIBLE
+                binding.btnFollow.visibility = View.INVISIBLE
+            }
         }
     }
 }

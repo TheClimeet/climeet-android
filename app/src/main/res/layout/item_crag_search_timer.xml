@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="keyword"
             type="String" />
@@ -22,10 +23,11 @@
             android:id="@+id/iv_crag_profile"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:profileImgUrl="@{data.imgUrl}"
+            tools:src="@drawable/test" />
 
         <TextView
             android:id="@+id/tv_crag_name"
@@ -33,28 +35,28 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
-            android:maxLines="2"
             android:ellipsize="end"
-            tools:text="송도 비블럭 클라이밍"
+            android:maxLines="1"
             android:text="@{data.name}"
             app:keyword="@{keyword}"
-            app:searchResult="@{data.name}"
-            app:layout_constraintStart_toEndOf="@id/iv_crag_profile"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_select"
+            app:layout_constraintStart_toEndOf="@id/iv_crag_profile"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btn_select"/>
+            app:searchResult="@{data.name}"
+            tools:text="송도 비블럭 클라이밍" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_select"
             style="@style/TextTiny"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/rect_mainfill_nostroke_10radius"
             android:minHeight="0dp"
             android:paddingHorizontal="20dp"
             android:paddingVertical="4dp"
             android:text="선택하기"
             android:textColor="@color/black"
-            android:background="@drawable/rect_mainfill_nostroke_10radius"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

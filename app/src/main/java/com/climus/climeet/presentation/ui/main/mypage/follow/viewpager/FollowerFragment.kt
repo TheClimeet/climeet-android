@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.main.mypage.follow.viewpager
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +13,18 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.app.App
 import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.databinding.FragmentFollowerBinding
+import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowerUiData
+import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowingUiData
 import com.climus.climeet.presentation.ui.main.mypage.follow.viewpager.adapter.FollowerUserRVAdapter
+import com.climus.climeet.presentation.ui.toClimerProfile
+import com.climus.climeet.presentation.ui.toGymProfile
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -29,7 +35,7 @@ class FollowerFragment : Fragment() {
     private lateinit var binding : FragmentFollowerBinding
     private val viewModel: FollowerViewModel by viewModels()
     var userCategory: String = "Climber"
-    private var recyclerUserFollower: List<UserFollowingInfoResponse> = emptyList()
+    private var recyclerUserFollower: List<UserFollowerUiData> = emptyList()
 
     fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -50,14 +56,12 @@ class FollowerFragment : Fragment() {
 
         binding.vm = viewModel
         val userId = App.sharedPreferences.getString("USER_ID", "")
-
+        Log.d("USER_ID", userId.toString())
 
         setupInitialSetting()
-        viewModel.getUserFollowing(userId!!.toLong(), userCategory)
-
+        viewModel.getUserFollowers(userId!!.toLong(), userCategory)
         initStateObserve()
-        setupOnClickListener()
-
+        initEventObserve()
     }
 
     private fun setupInitialSetting() {
@@ -68,6 +72,19 @@ class FollowerFragment : Fragment() {
     private fun checkUserType(): Boolean {
         val userType = App.sharedPreferences.getString("X_MODE", "")
         return userType == "ADMIN"
+    }
+
+    private fun initEventObserve() {
+        repeatOnStarted {
+            viewModel.event.collect {
+                when (it) {
+                    is FollowerEvent.NavigateToClimerProfile -> {
+                        findNavController().toClimerProfile(it.id)
+
+                    }
+                }
+            }
+        }
     }
 
     private fun initStateObserve() {
@@ -93,23 +110,6 @@ class FollowerFragment : Fragment() {
     private fun setupRecyclerView(recyclerView: RecyclerView, adapter: RecyclerView.Adapter<*>, orientation: Int) {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity(), orientation, false)
-    }
-
-    fun setupOnClickListener() {
-
-//        binding.tvSearchMenuCrag.setOnClickListener {
-//            binding.tvSearchMenuCrag.setBackgroundResource(R.drawable.rect_backgroundfill_nostroke_999radius)
-//            binding.tvSearchMenuClimber.setBackgroundColor(Color.TRANSPARENT)
-//            binding.rvFollowSearchCrags.visibility = View.VISIBLE
-//            binding.rvSearchFollowing.visibility = View.INVISIBLE
-//        }
-//
-//        binding.tvSearchMenuClimber.setOnClickListener {
-//            binding.tvSearchMenuClimber.setBackgroundResource(R.drawable.rect_backgroundfill_nostroke_999radius)
-//            binding.tvSearchMenuCrag.setBackgroundColor(Color.TRANSPARENT)
-//            binding.rvSearchFollowing.visibility = View.INVISIBLE
-//
-//        }
     }
 
 }

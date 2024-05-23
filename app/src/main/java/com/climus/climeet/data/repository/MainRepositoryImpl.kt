@@ -18,6 +18,7 @@ import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
+import com.climus.climeet.data.model.response.GetAnnouncementResponse
 import com.climus.climeet.data.model.response.GetClimberProfileStatisticsResponse
 import com.climus.climeet.data.model.response.GetClimberProfileTargetGymStatisticsResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
@@ -418,6 +419,9 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun getUserInfo(userId: Long): BaseState<GetUserInfoResponse> =
         runRemote { api.getUserInfo(userId) }
+
+    override suspend fun getAnnouncement(): BaseState<GetAnnouncementResponse> =
+        runRemote { api.getAnnouncement() }
 
     override suspend fun getUserShorts(
         uploaderId: Long,

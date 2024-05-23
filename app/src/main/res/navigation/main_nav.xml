@@ -336,7 +336,13 @@
     <fragment
         android:id="@+id/announceDetailFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.announce.AnnounceDetailFragment"
-        android:label="AnnounceDetailFragment" />
+        android:label="AnnounceDetailFragment">
+
+        <argument
+            android:name="boardId"
+            app:argType="long"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/gymProfileInfoFragment"

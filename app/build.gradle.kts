@@ -120,8 +120,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
 
     // Calendar
-    implementation ("com.github.prolificinteractive:material-calendarview:2.0.1")
-    implementation ("com.jakewharton.threetenabp:threetenabp:1.1.1")
     implementation ("com.kizitonwose.calendar:view:2.4.1")
 
     // View Pager
@@ -146,4 +144,6 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("androidx.datastore:datastore-core:1.0.0")
 
+    // MPAndroidChart
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -34,6 +35,9 @@ class ClimbingRecordCompleteFragment :
         Handler(Looper.getMainLooper()).postDelayed({
             findNavController().toCalendarFragment()
         }, 1000)
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+        }
     }
 
     private fun NavController.toCalendarFragment() {

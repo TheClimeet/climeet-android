@@ -20,7 +20,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:context= "presentation.ui.main.record.timer.stopwatch.selectcrag.TimerCragSelectBottomSheetFragment">
+        tools:context="presentation.ui.main.record.timer.stopwatch.selectcrag.TimerCragSelectBottomSheetFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -59,6 +59,7 @@
                 android:inputType="text"
                 android:paddingHorizontal="45dp"
                 android:paddingVertical="10dp"
+                android:singleLine="true"
                 android:text="@={vm.keyword}"
                 android:textColorHint="@color/cm_grey3"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -91,14 +92,14 @@
                 android:id="@+id/rv_search_crag"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constrainedHeight="true"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="15dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_crag_name"
-                app:layout_constraintBottom_toBottomOf="parent"
                 tools:listitem="@layout/item_crag_search_timer" />
 
             <ProgressBar
@@ -109,7 +110,7 @@
                 android:visibility="@{vm.uiState.progressState? View.VISIBLE : View.INVISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_crag_name"/>
+                app:layout_constraintTop_toBottomOf="@+id/et_crag_name" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_search_none"
