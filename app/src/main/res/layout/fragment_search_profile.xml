@@ -45,9 +45,9 @@
                 android:background="@drawable/rect_lightblackfill_nostroke_8radius"
                 android:drawableStart="@drawable/ic_search_grey"
                 android:drawablePadding="5dp"
-                android:hint="암장 검색하기"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="5dp"
+                android:hint="암장 검색하기"
                 android:text="@={vm.keyword}"
                 android:textColor="@color/white"
                 android:textColorHint="#646464"
@@ -102,13 +102,51 @@
 
         </com.google.android.material.tabs.TabLayout>
 
+        <TextView
+            android:id="@+id/tv_search_homgym"
+            style="@style/TextLargeBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="홈짐"
+            android:visibility="@{vm.uiState.showGymlListState ? View.VISIBLE : View.INVISIBLE}"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/tl_mode"
+            app:layout_constraintTop_toBottomOf="@+id/tl_mode" />
+
+        <TextView
+            android:id="@+id/tv_search_climer"
+            style="@style/TextLargeBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="팔로우"
+            android:visibility="@{vm.uiState.showFollowingListState ? View.VISIBLE : View.GONE}"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/tl_mode"
+            app:layout_constraintTop_toBottomOf="@+id/tl_mode" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_search_follow_route"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:clipToPadding="false"
+            android:visibility="@{vm.uiState.showGymlListState ? View.VISIBLE : View.INVISIBLE}"
+            android:paddingEnd="20dp"
+            android:layout_marginTop="10dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/tv_search_homgym"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/item_homegym_route" />
+
         <ImageView
             android:id="@+id/ic_empty_search"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginTop="40dp"
             android:src="@drawable/ic_empty_search"
-            android:visibility="invisible"
+            android:visibility="@{vm.uiState.emptyResultState? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tl_mode" />
@@ -121,17 +159,30 @@
             android:gravity="center"
             android:text="검색 결과가 없어요.\n다른 검색어로 검색해보세요"
             android:textColor="#8B8B8B"
-            android:visibility="invisible"
+            android:visibility="@{vm.uiState.emptyResultState? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ic_empty_search" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_following_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:visibility="@{vm.uiState.showFollowingListState? View.VISIBLE : View.INVISIBLE}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_search_climer"
+            tools:listitem="@layout/item_search_profile" />
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_search_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:orientation="vertical"
+            android:layout_marginTop="20dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

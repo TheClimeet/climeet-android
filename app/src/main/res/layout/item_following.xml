@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowingUiData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,7 +40,6 @@
                 android:background="@drawable/btn_follow"
                 android:text="팔로잉"
                 android:textColor="@color/white"
-                android:visibility="invisible"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/linearLayout"
@@ -50,9 +53,9 @@
                 android:layout_marginHorizontal="20dp"
                 android:background="@drawable/btn_following"
                 android:text="팔로우"
+                android:visibility="invisible"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/linearLayout"
                 app:layout_constraintTop_toTopOf="parent" />

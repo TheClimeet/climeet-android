@@ -48,4 +48,5 @@ class PopularRouteRVAdapter (private val routeList: List<BestRouteDetailInfoResp
             binding.tvPopularRoutesSector.text = route.sectorName
         }
     }
+
 }

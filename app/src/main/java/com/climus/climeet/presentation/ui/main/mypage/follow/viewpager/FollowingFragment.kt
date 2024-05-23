@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.main.mypage.follow.viewpager
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +19,8 @@ import com.climus.climeet.R
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.databinding.FragmentFollowingBinding
-import com.climus.climeet.presentation.ui.main.mypage.follow.FollowingRVAdapter
 import com.climus.climeet.presentation.ui.main.mypage.follow.viewpager.adapter.FollowGymRVAdapter
+import com.climus.climeet.presentation.ui.main.mypage.follow.viewpager.adapter.FollowingRVAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

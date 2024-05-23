@@ -1,39 +1,59 @@
 package com.climus.climeet.presentation.ui.main.mypage.account
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.app.App
+import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.databinding.FragmentMypageAccountBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroActivity
+import com.climus.climeet.service.TimerService
+import com.climus.climeet.presentation.ui.intro.IntroViewModel
+import com.climus.climeet.presentation.ui.intro.UrlType
+import com.climus.climeet.presentation.ui.main.DataType
+import com.climus.climeet.presentation.ui.main.MainEvent
+import com.climus.climeet.presentation.ui.toMultiPart
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 
 
 @AndroidEntryPoint
 class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout.fragment_mypage_account) {
 
     private val viewModel: MyPageAccountViewModel by viewModels()
+    private val parentViewModel: IntroViewModel by activityViewModels()
     private var isManger: Boolean = true
     private var userProfile: UserProfileInfoResponse? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.vm = viewModel
         viewModel.getUserProfile()
+
         initStateObserve()
 
         setUpInitialSetting()
         setupOnClickListener()
+        initParentImageObserve()
     }
 
     private fun initStateObserve() {
@@ -51,6 +71,21 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
                 }
             }
         }
+    }
+
+    private fun initParentImageObserve() {
+        repeatOnStarted {
+            parentViewModel.imageUri.collect {
+                setImage(it)
+            }
+        }
+    }
+
+    private fun setImage(uri: Uri) {
+        Glide.with(this)
+            .load(uri)
+            .circleCrop() // 기본 이미지
+            .into(binding.ivMypageMyProfile)
     }
 
     private fun setUpInitialSetting() {
@@ -74,6 +109,10 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
 
     private fun setupOnClickListener() {
 
+        binding.ivMypageMyProfile.setOnClickListener {
+            parentViewModel.goToGallery(UrlType.CLIMER_PROFILE)
+        }
+
         binding.btnLogout.setOnClickListener {
             val logoutDialog = LayoutInflater.from(activity).inflate(R.layout.logout_dialog, null)
             val builder = AlertDialog.Builder(activity)
@@ -94,7 +133,14 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
                 App.sharedPreferences.edit()
                     .clear()
                     .apply()
-                val intent = Intent(requireContext(), IntroActivity::class.java)
+
+                // 스톱워치 서비스 중단 후 로그아웃
+                var intent = Intent(context, TimerService::class.java)
+                if (TimerService.serviceRunning.value != null) {
+                    context?.stopService(intent)
+                }
+
+                intent = Intent(requireContext(), IntroActivity::class.java)
                 startActivity(intent)
             }
         }

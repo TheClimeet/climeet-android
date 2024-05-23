@@ -21,8 +21,6 @@ import com.climus.climeet.presentation.ui.main.home.HomeViewModel
 import com.climus.climeet.presentation.ui.main.home.model.PopularRoute
 import com.climus.climeet.presentation.ui.main.home.model.PopularShorts
 import com.climus.climeet.presentation.ui.main.home.popularroutes.adapter.PopularRoutesAllRVadapter
-import com.climus.climeet.presentation.ui.main.home.popularshorts.adapter.PopularShortsAllRVAdapter
-import com.climus.climeet.presentation.ui.main.home.recycler.popularroute.PopularRouteRVAdapter
 import com.climus.climeet.presentation.ui.toSearchProfile
 import dagger.hilt.android.AndroidEntryPoint
 

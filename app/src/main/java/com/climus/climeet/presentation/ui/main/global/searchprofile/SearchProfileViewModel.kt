@@ -4,10 +4,14 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.response.UserFollowSimpleResponse
+import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragEvent
 import com.climus.climeet.presentation.ui.main.global.searchprofile.model.SearchProfileUiData
+import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowingUiData
 import com.climus.climeet.presentation.ui.main.global.toSearchProfileUiData
+import com.climus.climeet.presentation.ui.main.global.toUserFollowingUiData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -26,8 +30,12 @@ import javax.inject.Inject
 data class SearchProfileUiState(
     val isGym: Boolean = true,
     val profileList: List<SearchProfileUiData> = emptyList(),
+    val followingList: List<UserFollowingUiData> = emptyList(),
+    val followGymList: List<UserHomeGymDetailResponse> = emptyList(),
     val progressState: Boolean = false,
     val emptyResultState: Boolean = false,
+    val showGymlListState: Boolean = false,
+    val showFollowingListState: Boolean = false,
 )
 
 sealed class SearchProfileEvent {
@@ -49,28 +57,95 @@ class SearchProfileViewModel @Inject constructor(private val repository: MainRep
     private var curJob: Job? = null
 
     val keyword = MutableStateFlow("")
+    val tab = MutableStateFlow("")
 
     init {
         observeKeyword()
     }
 
+    fun getGymFollowing() {
+        viewModelScope.launch {
+            repository.getGymsFollowing().let {
+                when(it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                followGymList = it.body,
+                                showGymlListState = true,
+                                showFollowingListState = false
+                            )
+                        }
+                    }
+                    is BaseState.Error -> {
+                        it.msg // 서버 에러 메시지
+                        Log.d("API", it.msg)
+                    }
+                }
+            }
+        }
+    }
+
+
+    fun getClimberFollowing() {
+        viewModelScope.launch {
+            repository.getClimberFollowing().let {
+                when(it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                followingList = it.body.map { item ->
+                                    item.toUserFollowingUiData(
+                                        follow = ::follow,
+                                        unFollow = ::unfollow,
+                                        navigateToProfile = ::navigateToProfile
+                                    )
+                                },
+                                showGymlListState = false,
+                                showFollowingListState = true,
+                            )
+                        }
+                    }
+                    is BaseState.Error -> {
+                        it.msg // 서버 에러 메시지
+                        Log.d("API", it.msg)
+                    }
+                }
+            }
+        }
+    }
 
     private fun observeKeyword() {
         keyword.onEach {
             if (it.isBlank()) {
-                _uiState.update { state ->
-                    state.copy(
-                        profileList = emptyList(),
-                        emptyResultState = false
-                    )
+                if (uiState.value.isGym) {
+                    _uiState.update { state ->
+                        state.copy(
+                            profileList = emptyList(),
+                            emptyResultState = false,
+                            showGymlListState = true,
+                            showFollowingListState = false
+                        )
+                    }
+                } else {
+                    _uiState.update { state ->
+                        state.copy(
+                            profileList = emptyList(),
+                            emptyResultState = false,
+                            showGymlListState = false,
+                            showFollowingListState = true
+                        )
+                    }
                 }
+
             } else {
                 curJob?.cancel()
 
                 _uiState.update { state ->
                     state.copy(
                         progressState = true,
-                        emptyResultState = false
+                        emptyResultState = false,
+                        showGymlListState = false,
+                        showFollowingListState = false
                     )
                 }
 
@@ -82,27 +157,55 @@ class SearchProfileViewModel @Inject constructor(private val repository: MainRep
                             when (result) {
                                 is BaseState.Success -> {
                                     if (result.body.result.isNotEmpty()) {
-                                        _uiState.update { state ->
-                                            state.copy(
-                                                profileList = result.body.result.map { item ->
-                                                    item.toSearchProfileUiData(
-                                                        it,
-                                                        follow = ::follow,
-                                                        unFollow = ::unfollow,
-                                                        navigateToProfile = ::navigateToProfile
+                                        if(keyword.value == "") {
+                                            _uiState.update { state ->
+                                                state.copy(
+                                                    profileList = emptyList(),
+                                                    progressState = false,
+                                                    emptyResultState = false,
+                                                    showGymlListState = true,
+                                                    showFollowingListState = false
+                                                )
+                                            }
+                                        } else {
+                                            _uiState.update { state ->
+                                                state.copy(
+                                                    profileList = result.body.result.map { item ->
+                                                        item.toSearchProfileUiData(
+                                                            it,
+                                                            follow = ::follow,
+                                                            unFollow = ::unfollow,
+                                                            navigateToProfile = ::navigateToProfile
 
-                                                    )
-                                                },
-                                                progressState = false
-                                            )
+                                                        )
+                                                    },
+                                                    progressState = false,
+                                                    showGymlListState = false,
+                                                    showFollowingListState = false
+                                                )
+                                            }
                                         }
                                     } else {
-                                        _uiState.update { state ->
-                                            state.copy(
-                                                profileList = emptyList(),
-                                                progressState = false,
-                                                emptyResultState = true
-                                            )
+                                        if(keyword.value == "") {
+                                            _uiState.update { state ->
+                                                state.copy(
+                                                    profileList = emptyList(),
+                                                    progressState = false,
+                                                    emptyResultState = false,
+                                                    showGymlListState = true,
+                                                    showFollowingListState = false
+                                                )
+                                            }
+                                        } else {
+                                            _uiState.update { state ->
+                                                state.copy(
+                                                    profileList = emptyList(),
+                                                    progressState = false,
+                                                    emptyResultState = true,
+                                                    showGymlListState = false,
+                                                    showFollowingListState = false
+                                                )
+                                            }
                                         }
                                     }
                                 }
@@ -111,7 +214,9 @@ class SearchProfileViewModel @Inject constructor(private val repository: MainRep
                                     _uiState.update { state ->
                                         state.copy(
                                             progressState = false,
-                                            emptyResultState = true
+                                            emptyResultState = true,
+                                            showGymlListState = false,
+                                            showFollowingListState = false
                                         )
                                     }
 
@@ -123,25 +228,48 @@ class SearchProfileViewModel @Inject constructor(private val repository: MainRep
                             when (result) {
                                 is BaseState.Success -> {
                                     if (result.body.result.isNotEmpty()) {
-                                        _uiState.update { state ->
-                                            state.copy(
-                                                profileList = result.body.result.map { item ->
-                                                    item.toSearchProfileUiData(
-                                                        it,
-                                                        follow = ::follow,
-                                                        unFollow = ::unfollow,
-                                                        navigateToProfile = ::navigateToProfile
-                                                    )
-                                                },
-                                                progressState = false
-                                            )
+
+                                        if(keyword.value == "") {
+                                            _uiState.update { state ->
+                                                state.copy(
+                                                    profileList = result.body.result.map { item ->
+                                                        item.toSearchProfileUiData(
+                                                            it,
+                                                            follow = ::follow,
+                                                            unFollow = ::unfollow,
+                                                            navigateToProfile = ::navigateToProfile
+                                                        )
+                                                    },
+                                                    progressState = false,
+                                                    showGymlListState = false,
+                                                    showFollowingListState = true
+                                                )
+                                            }
+                                        } else {
+                                            _uiState.update { state ->
+                                                state.copy(
+                                                    profileList = result.body.result.map { item ->
+                                                        item.toSearchProfileUiData(
+                                                            it,
+                                                            follow = ::follow,
+                                                            unFollow = ::unfollow,
+                                                            navigateToProfile = ::navigateToProfile
+                                                        )
+                                                    },
+                                                    progressState = false,
+                                                    showGymlListState = false,
+                                                    showFollowingListState = false
+                                                )
+                                            }
                                         }
                                     } else {
                                         _uiState.update { state ->
                                             state.copy(
                                                 profileList = emptyList(),
                                                 progressState = false,
-                                                emptyResultState = true
+                                                emptyResultState = true,
+                                                showGymlListState = false,
+                                                showFollowingListState = false
                                             )
                                         }
                                     }
@@ -151,7 +279,9 @@ class SearchProfileViewModel @Inject constructor(private val repository: MainRep
                                     _uiState.update { state ->
                                         state.copy(
                                             progressState = false,
-                                            emptyResultState = true
+                                            emptyResultState = true,
+                                            showGymlListState = false,
+                                            showFollowingListState = false
                                         )
                                     }
                                 }
@@ -163,7 +293,6 @@ class SearchProfileViewModel @Inject constructor(private val repository: MainRep
             }
         }.launchIn(viewModelScope)
     }
-
 
     fun follow(id: Long) {
         viewModelScope.launch {
