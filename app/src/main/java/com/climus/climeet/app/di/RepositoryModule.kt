@@ -1,6 +1,7 @@
 package com.climus.climeet.app.di
 
 import com.climus.climeet.data.repository.AuthRepository
+import com.climus.climeet.data.repository.AuthRepositoryImpl
 import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.data.repository.IntroRepositoryImpl
 import com.climus.climeet.data.repository.MainRepository
@@ -21,5 +22,5 @@ abstract class RepositoryModule {
     abstract fun bindMainRepository(globalRepositoryImpl: MainRepositoryImpl): MainRepository
 
     @Binds
-    abstract fun bindAuthRepository(authRepositoryImpl: IntroRepositoryImpl): AuthRepository
+    abstract fun bindAuthRepository(authRepositoryImpl: AuthRepositoryImpl): AuthRepository
 }

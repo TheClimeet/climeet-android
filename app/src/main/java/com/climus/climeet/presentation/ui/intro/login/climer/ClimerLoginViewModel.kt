@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.repository.AuthRepository
 import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.presentation.util.Constants
 import com.climus.climeet.presentation.util.Constants.TAG
@@ -26,7 +27,7 @@ sealed class ClimerLoginEvent {
 @HiltViewModel
 class ClimerLoginViewModel @Inject constructor(
     private val repository: IntroRepository,
-    private val dataStoreManager: DataStoreManager
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _event = MutableSharedFlow<ClimerLoginEvent>()
@@ -35,13 +36,13 @@ class ClimerLoginViewModel @Inject constructor(
     fun login(type: String, token: String) {
 
         viewModelScope.launch {
-            repository.climerLogin(type, token).let{
-                when(it){
+            repository.climerLogin(type, token).let {
+                when (it) {
                     is BaseState.Success -> {
 
-                        dataStoreManager.putAccessToken(it.body.accessToken)
-                        dataStoreManager.putRefreshToken(it.body.refreshToken)
-                        dataStoreManager.putLoginMode("ADMIN")
+                        authRepository.putAccessToken(it.body.accessToken)
+                        authRepository.putRefreshToken(it.body.refreshToken)
+                        authRepository.putLoginMode("ADMIN")
 
                         _event.emit(ClimerLoginEvent.GoToMainActivity)
                     }
@@ -76,10 +77,10 @@ class ClimerLoginViewModel @Inject constructor(
         }
     }
 
-    fun testLogin(){
+    fun testLogin() {
         viewModelScope.launch {
-            dataStoreManager.putAccessToken(Constants.TEST_CLIMER_TOKEN)
-            dataStoreManager.putLoginMode("ADMIN")
+            authRepository.putAccessToken(Constants.TEST_CLIMER_TOKEN)
+            authRepository.putLoginMode("ADMIN")
             _event.emit(ClimerLoginEvent.GoToMainActivity)
         }
     }

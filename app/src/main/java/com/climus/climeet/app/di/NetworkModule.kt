@@ -3,6 +3,8 @@ package com.climus.climeet.app.di
 import com.climus.climeet.BuildConfig
 import com.climus.climeet.data.config.AccessTokenInterceptor
 import com.climus.climeet.data.config.BearerInterceptor
+import com.climus.climeet.data.config.DataStoreManager
+import com.climus.climeet.data.repository.AuthRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,12 +18,6 @@ import java.util.concurrent.TimeUnit
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
-    var isProd = true
-
-    fun changeVersion(state: Boolean) {
-        isProd = state
-    }
 
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =

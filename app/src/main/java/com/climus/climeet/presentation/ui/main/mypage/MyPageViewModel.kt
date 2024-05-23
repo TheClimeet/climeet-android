@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.repository.AuthRepository
 import com.climus.climeet.data.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -12,7 +13,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -44,7 +44,7 @@ sealed class MyPageEvent {
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val repository: MainRepository,
-    private val dataStoreManager: DataStoreManager
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MyPageUiState())
@@ -56,7 +56,7 @@ class MyPageViewModel @Inject constructor(
     fun getProfileInfo() {
         viewModelScope.launch {
             repository.getMyPageProfile().let {
-                when(it){
+                when (it) {
                     is BaseState.Success -> {
 
                         val profileInfo = it.body
@@ -115,7 +115,7 @@ class MyPageViewModel @Inject constructor(
     fun navigateToMyProfile() {
         viewModelScope.launch {
 
-            val mode = dataStoreManager.getLoginMode().first()
+            val mode = authRepository.getLoginMode()
 
             mode?.let {
                 when (it) {
@@ -155,9 +155,9 @@ class MyPageViewModel @Inject constructor(
 
     fun logout() {
         viewModelScope.launch {
-            dataStoreManager.deleteAccessToken()
-            dataStoreManager.deleteRefreshToken()
-            dataStoreManager.deleteLoginMode()
+            authRepository.deleteAccessToken()
+            authRepository.deleteRefreshToken()
+            authRepository.deleteLoginMode()
             _event.emit(MyPageEvent.Logout)
         }
     }

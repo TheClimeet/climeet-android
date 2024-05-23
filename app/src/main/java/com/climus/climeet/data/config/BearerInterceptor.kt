@@ -5,10 +5,12 @@ import com.climus.climeet.BuildConfig
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.runRemote
+import com.climus.climeet.data.remote.AuthApi
 import com.climus.climeet.data.remote.MainApi
+import com.climus.climeet.data.repository.AuthRepository
+import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.util.Constants.TAG
 import com.kakao.sdk.common.Constants.AUTHORIZATION
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -35,7 +37,7 @@ class BearerInterceptor @Inject constructor(
 
             runBlocking {
 
-                val refreshToken = dataStoreManager.getRefreshToken().first()
+                val refreshToken = dataStoreManager.getRefreshToken()
                 refreshToken?.let { token ->
                     getNewAccessToken(token).let {
                         when (it) {
@@ -78,7 +80,7 @@ class BearerInterceptor @Inject constructor(
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
-        val api = retrofit.create(MainApi::class.java)
+        val api = retrofit.create(AuthApi::class.java)
         return runRemote {
             api.refreshToken(
                 refreshToken

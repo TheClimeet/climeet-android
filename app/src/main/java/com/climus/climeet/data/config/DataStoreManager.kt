@@ -1,23 +1,17 @@
-package com.climus.climeet.data.repository
+package com.climus.climeet.data.config
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.climus.climeet.data.model.BaseState
-import com.climus.climeet.data.model.response.RefreshTokenResponse
-import com.climus.climeet.data.model.runRemote
-import com.climus.climeet.data.remote.AuthApi
 import com.kakao.sdk.auth.Constants
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class AuthRepositoryImpl @Inject constructor(
-    private val dataStore: DataStore<Preferences>,
-    private val api: AuthApi
-) :
-    AuthRepository {
+class DataStoreManager @Inject constructor(
+    private val dataStore: DataStore<Preferences>
+) {
 
     companion object {
         private val ACCESS_TOKEN_KEY = stringPreferencesKey(Constants.ACCESS_TOKEN)
@@ -26,63 +20,57 @@ class AuthRepositoryImpl @Inject constructor(
             stringPreferencesKey(com.climus.climeet.presentation.util.Constants.X_MODE)
     }
 
-    override suspend fun getAccessToken(): String? {
+    suspend fun getAccessToken(): String? {
         return dataStore.data.map { prefs ->
             prefs[ACCESS_TOKEN_KEY]
         }.first()
     }
 
-    override suspend fun getRefreshToken(): String? {
+    suspend fun getRefreshToken(): String? {
         return dataStore.data.map { prefs ->
             prefs[REFRESH_TOKEN_KEY]
         }.first()
     }
 
-    override suspend fun getLoginMode(): String? {
+    suspend fun getLoginMode(): String? {
         return dataStore.data.map { prefs ->
             prefs[LOGIN_MODE]
         }.first()
     }
 
-    override suspend fun putAccessToken(token: String) {
+    suspend fun putAccessToken(token: String) {
         dataStore.edit { prefs ->
             prefs[ACCESS_TOKEN_KEY] = token
         }
     }
 
-    override suspend fun putRefreshToken(token: String) {
+    suspend fun putRefreshToken(token: String) {
         dataStore.edit { prefs ->
             prefs[REFRESH_TOKEN_KEY] = token
         }
     }
 
-    override suspend fun putLoginMode(mode: String) {
+    suspend fun putLoginMode(mode: String) {
         dataStore.edit { prefs ->
             prefs[LOGIN_MODE] = mode
         }
     }
 
-    override suspend fun deleteAccessToken() {
+    suspend fun deleteAccessToken() {
         dataStore.edit { prefs ->
             prefs.remove(ACCESS_TOKEN_KEY)
         }
     }
 
-    override suspend fun deleteRefreshToken() {
+    suspend fun deleteRefreshToken() {
         dataStore.edit { prefs ->
             prefs.remove(REFRESH_TOKEN_KEY)
         }
     }
 
-    override suspend fun deleteLoginMode() {
+    suspend fun deleteLoginMode() {
         dataStore.edit { prefs ->
             prefs.remove(LOGIN_MODE)
         }
     }
-
-
-    override suspend fun refreshToken(refreshToken: String): BaseState<RefreshTokenResponse> =
-        runRemote {
-            api.refreshToken(refreshToken)
-        }
 }

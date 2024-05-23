@@ -33,7 +33,6 @@ import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.GymWeekStatsResponse
 import com.climus.climeet.data.model.response.MyPageProfileResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
-import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
@@ -85,11 +84,6 @@ interface MainApi {
     @GET("/api/climber-following")
     suspend fun getClimberFollowing(
     ): Response<List<UserFollowSimpleResponse>>
-
-    @POST("refresh-token")
-    suspend fun refreshToken(
-        @Query("refreshToken") refreshToken: String
-    ): Response<RefreshTokenResponse>
 
     @GET("api/shorts/latest")
     suspend fun getRecentShorts(
@@ -360,7 +354,7 @@ interface MainApi {
     suspend fun getUserShorts(
         @Path("uploaderId") uploaderId: Long,
         @Query("page") page: Int,
-        @Query("size") size : Int
+        @Query("size") size: Int
     ): Response<ShortsListResponse>
 
     @GET("/api/shorts/my-shorts")
