@@ -61,7 +61,8 @@ class CalendarViewModel @Inject constructor(
     val isToday = MutableStateFlow(true)
     val isRecordVisible = MutableStateFlow(false)
 
-    val selectedDate = MutableLiveData(LocalDate.now())
+    private val _selectedDate = MutableStateFlow(LocalDate.now())
+    val selectedDate = _selectedDate.asStateFlow()
 
     init {
         setRecord(LocalDate.now())
@@ -77,7 +78,7 @@ class CalendarViewModel @Inject constructor(
     }
 
     fun setSelectedDate(date: LocalDate) {
-        selectedDate.value = date
+        _selectedDate.value = date
         setIsToday(date == LocalDate.now())
         CreateRecordData.setSelectedDate(date)
         setRecord(date)

@@ -3,21 +3,24 @@
 
     <data>
 
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.record.model.SelectGymData" />
+
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp">
 
         <TextView
             android:id="@+id/tv_gym_name"
             style="@style/TextTiny"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="4dp"
             android:gravity="center"
-            android:paddingVertical="3dp"
-            android:text="클밋 기준"
+            android:text="@{item.name}"
             android:textColor="@color/cm_grey1" />
 
     </LinearLayout>

@@ -18,23 +18,15 @@ class CreateSelectCragFragment :
     BaseFragment<FragmentCreateSelectCragBinding>(R.layout.fragment_create_select_crag) {
 
     private val ClimbingRecordViewModel: CreateClimbingRecordViewModel by activityViewModels()
-    private val parentViewModel: IntroViewModel by activityViewModels()
     private val viewModel: CreateSelectCragViewModel by viewModels()
     private var adapter: CreateSelectCragRVAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        parentViewModel.climerSignUpProgress(4)
         binding.vm = viewModel
         adapter = CreateSelectCragRVAdapter(viewModel, ClimbingRecordViewModel)
         binding.rvSearchCrag.adapter = adapter
-
-        viewModel.exitSignal.observe(viewLifecycleOwner, Observer { shouldExit ->
-            if (shouldExit) {
-                findNavController().navigateUp()
-            }
-        })
 
         initStateObserve()
         initEventObserve()
