@@ -56,7 +56,7 @@
 
         <!--  스톱워치 notification 서비스  -->
         <service
-            android:name=".presentation.ui.main.record.timer.stopwatch.TimerService"
+            android:name=".service.TimerService"
             android:enabled="true"
             android:foregroundServiceType="dataSync"
             android:exported="true"/>
