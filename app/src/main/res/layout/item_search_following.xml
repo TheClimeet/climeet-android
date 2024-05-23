@@ -81,11 +81,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:text="@{following.climberName}"
-                    app:keyword="@{keyword}"
                     android:textSize="16sp"
-                    tools:text="더클라임 클라이밍 강남점"
-                    app:searchResult="@{following.climberName}"/>
+                    tools:text="더클라임 클라이밍 강남점"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"

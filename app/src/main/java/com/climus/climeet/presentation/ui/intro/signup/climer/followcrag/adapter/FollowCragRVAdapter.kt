@@ -75,7 +75,7 @@ class FollowCragRVAdapter() : RecyclerView.Adapter<FollowCragRVAdapter.ViewHolde
     inner class ViewHolder(val binding: ItemFollowCragsBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(followCrag: FollowCrag, keyword: String) {
             binding.keyword = keyword
-            binding.crag = followCrag
+            binding.item = followCrag
 
             binding.tvCragsFollow.text = followCrag.followers.toString()
 

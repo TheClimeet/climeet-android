@@ -13,79 +13,52 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="30dp">
+        android:layout_height="match_parent">
 
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:id="@+id/constraintLayout"-->
-<!--            android:layout_width="155dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginHorizontal="20dp"-->
-<!--            android:layout_marginTop="30dp"-->
-<!--            android:background="@drawable/rect_grey9fill_nostroke_999radius"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent">-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/tv_search_menu_crag"-->
-<!--                style="@style/TextRegular"-->
-<!--                android:layout_width="80dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginVertical="2dp"-->
-<!--                android:layout_marginStart="2dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:background="@drawable/rect_backgroundfill_nostroke_999radius"-->
-<!--                android:gravity="center"-->
-<!--                android:paddingVertical="3dp"-->
-<!--                android:text="암장"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="13sp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/tv_search_menu_climber"-->
-<!--                style="@style/TextRegular"-->
-<!--                android:layout_width="75dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginVertical="2dp"-->
-<!--                android:layout_marginEnd="2dp"-->
-<!--                android:layout_weight="1"-->
-<!--                android:gravity="center"-->
-<!--                android:paddingVertical="3dp"-->
-<!--                android:text="클라이머"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="13sp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_follow_search_crags"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:visibility="visible"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
+       <!-- <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_mode"
+            style="@style/TextSmallSemiBold"
+            android:layout_marginTop="30dp"
+            android:layout_width="155dp"
+            android:layout_height="30dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/rect_blackfill_nostroke_999radius"
+            android:textSize="10sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item_follow_crags" />
+            app:tabBackground="@drawable/mypage_tab_background"
+            app:tabIndicatorColor="@android:color/transparent"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorHeight="0dp"
+            app:tabRippleColor="@color/transparent"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextColor="#B3B3B3">
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_gym"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="암장" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_climer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="클라이머" />
+
+        </com.google.android.material.tabs.TabLayout>-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_search_following"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="vertical"
             android:layout_marginTop="20dp"
-            android:visibility="invisible"
+            android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_following" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

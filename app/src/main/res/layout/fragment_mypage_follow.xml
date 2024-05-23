@@ -32,7 +32,7 @@
             android:background="@color/cm_background"
             android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@+id/textView10"
-            app:tabBackground="@drawable/mypage_tab_background"
+            app:tabBackground="@drawable/mypage_follow_tab"
             app:tabIndicatorColor="@color/cm_main"
             app:tabIndicatorFullWidth="true"
             app:tabIndicatorHeight="1dp"
