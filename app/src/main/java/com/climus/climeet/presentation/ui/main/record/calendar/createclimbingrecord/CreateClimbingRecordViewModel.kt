@@ -274,7 +274,8 @@ class CreateClimbingRecordViewModel @Inject constructor(
                                 gymLevelList = gymLevelList,
                                 routeList = it.body.result.map { data ->
                                     data.toRouteUiData(::selectRoute)
-                                }
+                                },
+                                curFloor = 1
                             )
                         }
                     }
