@@ -115,6 +115,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
     val alpha = MutableLiveData(1f)
 
     init {
+        CreateRecordData.setSelectedTime(LocalTime.now(), LocalTime.of(11, 0, 0))
         selectCrag(0, "클라이밍 암장을 선택해주세요")
     }
 
@@ -532,7 +533,7 @@ class CreateClimbingRecordViewModel @Inject constructor(
 
     fun resetState() {
         timePickText.value = defaultTimeText
-        CreateRecordData.setSelectedTime(defaultTime, defaultTime)
+        CreateRecordData.setSelectedTime(LocalTime.now(), defaultTime)
         resetCrag()
     }
 
