@@ -1,8 +1,10 @@
 package com.climus.climeet.presentation.ui.main.record.stats
 
 import android.util.Log
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
@@ -62,24 +64,25 @@ class StatsViewModel @Inject constructor(
 
     init {
         getMyStatus()
-        loadDummy()
+        getMyClimbedGymList()
     }
 
-    private fun loadDummy() {
+    private fun getMyClimbedGymList() {
         val dummyGyms = listOf(
             SelectGymData(id = 0, name = "클밋 기준", onClickListener = ::onGymClicked),
-            SelectGymData(id = 1, name = "Gym 1", onClickListener = ::onGymClicked),
-            SelectGymData(id = 2, name = "Gym 2", onClickListener = ::onGymClicked),
-            SelectGymData(id = 3, name = "Gym 3", onClickListener = ::onGymClicked),
-            SelectGymData(id = 4, name = "Gym 4", onClickListener = ::onGymClicked),
-            SelectGymData(id = 5, name = "Gym 5", onClickListener = ::onGymClicked),
-            SelectGymData(id = 6, name = "Gym 6", onClickListener = ::onGymClicked),
+            SelectGymData(id = 1, name = "더 클라임 신사점", onClickListener = ::onGymClicked),
+            SelectGymData(id = 2, name = "피커스 구로", onClickListener = ::onGymClicked),
+            SelectGymData(id = 3, name = "클라이머스 연남점", onClickListener = ::onGymClicked),
+            SelectGymData(id = 4, name = "서울숲 구로", onClickListener = ::onGymClicked),
+            SelectGymData(id = 5, name = "더 클라임 연남점", onClickListener = ::onGymClicked),
+            SelectGymData(id = 6, name = "나는 짱", onClickListener = ::onGymClicked),
         )
         _uiState.value = _uiState.value.copy(gymList = dummyGyms)
     }
 
     private fun onGymClicked(gym: SelectGymData) {
         _selectedGymId.value = gym.id
+        changeListShow()
         selectedGymName.update { gym.name }
         if (gym.id.toInt() == 0) {
             getMyStatus()
@@ -268,13 +271,21 @@ class StatsViewModel @Inject constructor(
         }
         date = selectedDate.value
         curDate.value = "${date.year}년 ${date.monthValue}월"
+        _selectedGymId.update { 0 }
+        selectedGymName.update { "클밋 기준" }
         getMyStatus()
     }
 
-    fun changeListShow() {
-        isListShow.value = !isListShow.value
+    fun showPopupWindow() {
+        changeListShow()
         viewModelScope.launch {
             _event.emit(StatsEvent.ShowPopupWindow)
+        }
+    }
+
+    fun changeListShow(){
+        viewModelScope.launch{
+            isListShow.value = !isListShow.value
         }
     }
 

@@ -50,7 +50,7 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
         }
     }
 
-    private fun showBottomSheet(){
+    private fun showBottomSheet() {
         viewModel.selectedDate.value?.let {
             SelectYearMonthBottomSheet(
                 requireContext(),
@@ -65,11 +65,17 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.popup_select_gym, null)
         val recyclerView: RecyclerView = view.findViewById(R.id.rv_select_gym)
-        val popupWindow = PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+        val popupWindow = PopupWindow(
+            view,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            true
+        )
 
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = SelectGymAdapter(viewModel.selectedGymId.value) {
             popupWindow.dismiss()
+            repeatOnStarted { viewModel.changeListShow() }
         }
         adapter.submitList(viewModel.uiState.value.gymList)
 
