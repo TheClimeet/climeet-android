@@ -1,14 +1,19 @@
 package com.climus.climeet.presentation.ui.main.record.stats
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.climus.climeet.R
 import com.climus.climeet.databinding.ItemStatsGymBinding
 import com.climus.climeet.presentation.ui.main.record.model.SelectGymData
 
-class SelectGymAdapter :
+class SelectGymAdapter(
+    private val selectedItemId: Long,
+    private val itemClickListener: (SelectGymData) -> Unit
+) :
     ListAdapter<SelectGymData, SelectGymAdapter.SelectGymViewHolder>(diffCallback) {
 
     companion object {
@@ -45,9 +50,18 @@ class SelectGymAdapter :
     inner class SelectGymViewHolder(private val binding: ItemStatsGymBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: SelectGymData) {
+            if (item.id == selectedItemId) {
+                binding.tvGymName.setBackgroundResource(R.drawable.rect_mainfill_nostroke_999radius_8elevation)
+                binding.tvGymName.setTextColor(Color.BLACK)
+            } else {
+                binding.tvGymName.setBackgroundResource(com.kakao.sdk.friend.R.color.transparent)
+                binding.tvGymName.setTextColor(Color.WHITE)
+            }
+
             binding.item = item
             binding.root.setOnClickListener {
                 item.onClickListener(item)
+                itemClickListener(item)
             }
         }
     }

@@ -47,6 +47,11 @@ class StatsViewModel @Inject constructor(
     private val _event = MutableSharedFlow<StatsEvent>()
     val event: SharedFlow<StatsEvent> = _event.asSharedFlow()
 
+    private val _selectedGymId = MutableStateFlow<Long>(0)
+    val selectedGymId: StateFlow<Long> = _selectedGymId.asStateFlow()
+
+    var selectedGymName = MutableStateFlow("클밋 기준")
+
     val selectedDate = MutableLiveData(LocalDate.now())
     val curDate =
         MutableStateFlow("${selectedDate.value?.year}년 ${selectedDate.value?.monthValue}월")
@@ -62,6 +67,7 @@ class StatsViewModel @Inject constructor(
 
     private fun loadDummy() {
         val dummyGyms = listOf(
+            SelectGymData(id = 0, name = "클밋 기준", onClickListener = ::onGymClicked),
             SelectGymData(id = 1, name = "Gym 1", onClickListener = ::onGymClicked),
             SelectGymData(id = 2, name = "Gym 2", onClickListener = ::onGymClicked),
             SelectGymData(id = 3, name = "Gym 3", onClickListener = ::onGymClicked),
@@ -73,7 +79,13 @@ class StatsViewModel @Inject constructor(
     }
 
     private fun onGymClicked(gym: SelectGymData) {
-        // 아이템 클릭 시 처리할 작업
+        _selectedGymId.value = gym.id
+        selectedGymName.update { gym.name }
+        if (gym.id.toInt() == 0) {
+            getMyStatus()
+        } else {
+            getGymStatus(gym)
+        }
     }
 
     fun navigateToSelectMonthYearBottomSheetFragment() {
@@ -175,7 +187,7 @@ class StatsViewModel @Inject constructor(
             } ?: run {
                 LocalDate.of(0, 0, 0)
             }
-            repository.getMyStatsTargetGymMonth(2, date.year, date.monthValue).let { result ->
+            repository.getMyStatsTargetGymMonth(gym.id, date.year, date.monthValue).let { result ->
                 when (result) {
                     is BaseState.Success -> {
                         val body = result.body

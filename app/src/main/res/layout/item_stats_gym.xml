@@ -13,15 +13,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="3dp">
-
-        <View
-            android:id="@+id/item_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/cm_grey8"
-            android:elevation="4dp"
-            android:visibility="gone" />
+        android:paddingVertical="5dp">
 
         <TextView
             android:id="@+id/tv_gym_name"

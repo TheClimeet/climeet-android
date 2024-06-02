@@ -18,7 +18,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats) {
     private val viewModel: StatsViewModel by activityViewModels()
-    private var adapter = SelectGymAdapter()
+    private var adapter = SelectGymAdapter(0) {
+
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,19 +65,23 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.popup_select_gym, null)
         val recyclerView: RecyclerView = view.findViewById(R.id.rv_select_gym)
+        val popupWindow = PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+
         recyclerView.layoutManager = LinearLayoutManager(context)
+        adapter = SelectGymAdapter(viewModel.selectedGymId.value) {
+            popupWindow.dismiss()
+        }
         adapter.submitList(viewModel.uiState.value.gymList)
 
         recyclerView.adapter = adapter
 
-        val popupWindow = PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
         popupWindow.elevation = 10f
 
         // 외부 터치 시 팝업 닫기 설정
         popupWindow.isOutsideTouchable = true
         popupWindow.isFocusable = true
 
-        popupWindow.showAsDropDown(binding.layoutToggle, 0, 0)
+        popupWindow.showAsDropDown(binding.layoutToggle, 0, 10)
     }
 
 
