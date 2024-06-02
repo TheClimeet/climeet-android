@@ -29,11 +29,12 @@ data class StatusUiState(
     val completedCountString: String = "0문제 완등",
     val attemptCountString: String = "100문제 도전!",
     val chartUiList: List<StickChartUiData> = emptyList(),
-    val gymList: List<SelectGymData> = listOf(SelectGymData(0, "클밋 기준"))
+    val gymList: List<SelectGymData> = emptyList()
 )
 
 sealed class StatsEvent {
     data object NavigateToSelectMonthYearBottomSheetFragment : StatsEvent()
+    data object ShowPopupWindow : StatsEvent()
 }
 
 @HiltViewModel
@@ -56,6 +57,23 @@ class StatsViewModel @Inject constructor(
 
     init {
         getMyStatus()
+        loadDummy()
+    }
+
+    private fun loadDummy() {
+        val dummyGyms = listOf(
+            SelectGymData(id = 1, name = "Gym 1", onClickListener = ::onGymClicked),
+            SelectGymData(id = 2, name = "Gym 2", onClickListener = ::onGymClicked),
+            SelectGymData(id = 3, name = "Gym 3", onClickListener = ::onGymClicked),
+            SelectGymData(id = 4, name = "Gym 4", onClickListener = ::onGymClicked),
+            SelectGymData(id = 5, name = "Gym 5", onClickListener = ::onGymClicked),
+            SelectGymData(id = 6, name = "Gym 6", onClickListener = ::onGymClicked),
+        )
+        _uiState.value = _uiState.value.copy(gymList = dummyGyms)
+    }
+
+    private fun onGymClicked(gym: SelectGymData) {
+        // 아이템 클릭 시 처리할 작업
     }
 
     fun navigateToSelectMonthYearBottomSheetFragment() {
@@ -150,7 +168,7 @@ class StatsViewModel @Inject constructor(
         }
     }
 
-    fun getGymStatus() {
+    fun getGymStatus(gym: SelectGymData) {
         viewModelScope.launch {
             val date = selectedDate.value?.let {
                 it
@@ -241,8 +259,11 @@ class StatsViewModel @Inject constructor(
         getMyStatus()
     }
 
-    fun changeListShow(){
+    fun changeListShow() {
         isListShow.value = !isListShow.value
+        viewModelScope.launch {
+            _event.emit(StatsEvent.ShowPopupWindow)
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,10 +10,18 @@
 
     </data>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="10dp">
+        android:paddingVertical="3dp">
+
+        <View
+            android:id="@+id/item_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/cm_grey8"
+            android:elevation="4dp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_gym_name"
@@ -21,7 +30,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@{item.name}"
-            android:textColor="@color/cm_grey1" />
+            android:textColor="@color/white"
+            tools:text="더클라임 홍대"
+            tools:background="@drawable/rect_mainfill_nostroke_999radius_8elevation"/>
 
-    </LinearLayout>
+    </FrameLayout>
 </layout>
