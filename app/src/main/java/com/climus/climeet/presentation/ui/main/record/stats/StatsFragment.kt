@@ -36,6 +36,7 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
                 when (it) {
                     StatsEvent.NavigateToSelectMonthYearBottomSheetFragment -> showBottomSheet()
                     StatsEvent.ShowPopupWindow -> showPopupWindow()
+                    is StatsEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }

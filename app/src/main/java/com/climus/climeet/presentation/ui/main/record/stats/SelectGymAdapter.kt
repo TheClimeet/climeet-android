@@ -11,7 +11,7 @@ import com.climus.climeet.databinding.ItemStatsGymBinding
 import com.climus.climeet.presentation.ui.main.record.model.SelectGymData
 
 class SelectGymAdapter(
-    private val selectedItemId: Long,
+    private val selectedItemId: Int,
     private val itemClickListener: (SelectGymData) -> Unit
 ) :
     ListAdapter<SelectGymData, SelectGymAdapter.SelectGymViewHolder>(diffCallback) {

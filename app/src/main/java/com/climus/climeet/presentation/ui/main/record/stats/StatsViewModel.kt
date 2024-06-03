@@ -9,7 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.customview.stickchart.StickChartUiData
+import com.climus.climeet.presentation.ui.main.global.searchprofile.SearchProfileEvent
 import com.climus.climeet.presentation.ui.main.record.model.SelectGymData
+import com.climus.climeet.presentation.ui.main.record.model.toSelectGymData
 import com.climus.climeet.presentation.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -37,6 +39,7 @@ data class StatusUiState(
 sealed class StatsEvent {
     data object NavigateToSelectMonthYearBottomSheetFragment : StatsEvent()
     data object ShowPopupWindow : StatsEvent()
+    data class ShowToastMessage(val msg: String) : StatsEvent()
 }
 
 @HiltViewModel
@@ -49,8 +52,8 @@ class StatsViewModel @Inject constructor(
     private val _event = MutableSharedFlow<StatsEvent>()
     val event: SharedFlow<StatsEvent> = _event.asSharedFlow()
 
-    private val _selectedGymId = MutableStateFlow<Long>(0)
-    val selectedGymId: StateFlow<Long> = _selectedGymId.asStateFlow()
+    private val _selectedGymId = MutableStateFlow<Int>(0)
+    val selectedGymId: StateFlow<Int> = _selectedGymId.asStateFlow()
 
     var selectedGymName = MutableStateFlow("클밋 기준")
 
@@ -68,6 +71,42 @@ class StatsViewModel @Inject constructor(
     }
 
     private fun getMyClimbedGymList() {
+//        viewModelScope.launch {
+//            val climbedDate = selectedDate.value?.let {
+//                it
+//            } ?: run {
+//                LocalDate.now()
+//            }
+//            // todo 사용자의 userId를 어떻게 가져오지
+//            repository.getUserClimbedGymList(1, climbedDate.year, climbedDate.monthValue)
+//                .let { result ->
+//                    when (result) {
+//                        is BaseState.Success -> {
+//                            _uiState.update { state ->
+//                                state.copy(
+//                                    gymList = listOf(
+//                                        SelectGymData(0, "클밋 기준", ::onGymClicked)
+//                                    ) + result.body.visitedClimbingGym.map {
+//                                        it.toSelectGymData(::onGymClicked)
+//                                    }
+//                                )
+//                            }
+//                        }
+//
+//                        is BaseState.Error -> {
+//                            _uiState.update { state ->
+//                                state.copy(
+//                                    gymList = listOf(
+//                                        SelectGymData(0, "클밋 기준", ::onGymClicked)
+//                                    )
+//                                )
+//                            }
+//                            _event.emit(StatsEvent.ShowToastMessage("암장을 불러오지 못했습니다!"))
+//                        }
+//                    }
+//                }
+//        }
+
         val dummyGyms = listOf(
             SelectGymData(id = 0, name = "클밋 기준", onClickListener = ::onGymClicked),
             SelectGymData(id = 1, name = "더 클라임 신사점", onClickListener = ::onGymClicked),
@@ -84,7 +123,7 @@ class StatsViewModel @Inject constructor(
         _selectedGymId.value = gym.id
         changeListShow()
         selectedGymName.update { gym.name }
-        if (gym.id.toInt() == 0) {
+        if (gym.id == 0) {
             getMyStatus()
         } else {
             getGymStatus(gym)
@@ -190,66 +229,67 @@ class StatsViewModel @Inject constructor(
             } ?: run {
                 LocalDate.of(0, 0, 0)
             }
-            repository.getMyStatsTargetGymMonth(gym.id, date.year, date.monthValue).let { result ->
-                when (result) {
-                    is BaseState.Success -> {
-                        val body = result.body
-                        _uiState.update { state ->
-                            state.copy(
-                                totalTime = body.time,
-                                totalCompletedCount = body.totalCompletedCount,
-                                totalAttemptCount = body.attemptRouteCount
-                            )
-                        }
-
-                        val list = mutableListOf<StickChartUiData>()
-
-                        var maxPercent = -1f
-                        body.difficulty.forEach {
-                            if (maxPercent < it.count.toFloat()) {
-                                maxPercent = it.count.toFloat()
-                            }
-                        }
-
-                        body.difficulty.forEach {
-                            val percent = if (it.count == 0) {
-                                0
-                            } else {
-                                ((it.count.toFloat() / body.totalCompletedCount.toFloat()) * 100).roundToInt()
-                            }
-
-                            list.add(
-                                StickChartUiData(
-                                    percentString = "$percent%",
-                                    percent = if (percent == 0) 0f else (it.count.toFloat() / maxPercent) * 1f,
-                                    levelName = it.gymDifficultyName,
-                                    levelHex = it.gymDifficultyColor
+            repository.getMyStatsTargetGymMonth(gym.id.toLong(), date.year, date.monthValue)
+                .let { result ->
+                    when (result) {
+                        is BaseState.Success -> {
+                            val body = result.body
+                            _uiState.update { state ->
+                                state.copy(
+                                    totalTime = body.time,
+                                    totalCompletedCount = body.totalCompletedCount,
+                                    totalAttemptCount = body.attemptRouteCount
                                 )
-                            )
+                            }
+
+                            val list = mutableListOf<StickChartUiData>()
+
+                            var maxPercent = -1f
+                            body.difficulty.forEach {
+                                if (maxPercent < it.count.toFloat()) {
+                                    maxPercent = it.count.toFloat()
+                                }
+                            }
+
+                            body.difficulty.forEach {
+                                val percent = if (it.count == 0) {
+                                    0
+                                } else {
+                                    ((it.count.toFloat() / body.totalCompletedCount.toFloat()) * 100).roundToInt()
+                                }
+
+                                list.add(
+                                    StickChartUiData(
+                                        percentString = "$percent%",
+                                        percent = if (percent == 0) 0f else (it.count.toFloat() / maxPercent) * 1f,
+                                        levelName = it.gymDifficultyName,
+                                        levelHex = it.gymDifficultyColor
+                                    )
+                                )
+                            }
+
+                            _uiState.update { state ->
+                                state.copy(
+                                    chartUiList = list
+                                )
+                            }
+
+                            setProgress()
                         }
 
-                        _uiState.update { state ->
-                            state.copy(
-                                chartUiList = list
-                            )
+                        is BaseState.Error -> {
+                            _uiState.update { state ->
+                                state.copy(
+                                    totalTime = "00:00:00",
+                                    totalCompletedCount = 0,
+                                    totalAttemptCount = 0,
+                                    chartUiList = emptyList()
+                                )
+                            }
+                            setProgress()
                         }
-
-                        setProgress()
-                    }
-
-                    is BaseState.Error -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                totalTime = "00:00:00",
-                                totalCompletedCount = 0,
-                                totalAttemptCount = 0,
-                                chartUiList = emptyList()
-                            )
-                        }
-                        setProgress()
                     }
                 }
-            }
         }
     }
 
@@ -283,8 +323,8 @@ class StatsViewModel @Inject constructor(
         }
     }
 
-    fun changeListShow(){
-        viewModelScope.launch{
+    fun changeListShow() {
+        viewModelScope.launch {
             isListShow.value = !isListShow.value
         }
     }
