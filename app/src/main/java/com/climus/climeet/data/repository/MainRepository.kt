@@ -27,6 +27,7 @@ import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.GetUserClimbedListResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
 import com.climus.climeet.data.model.response.GymLevelBestClimberResponse
@@ -310,6 +311,12 @@ interface MainRepository {
         userId: Long,
         gymId: Long
     ): BaseState<GetClimberProfileTargetGymStatisticsResponse>
+
+    suspend fun getUserClimbedGymList(
+        userId: Int,
+        year: Int,
+        month: Int
+    ): BaseState<GetUserClimbedListResponse>
 
     suspend fun getMyStatsTargetGymMonth(
         gymId: Long,

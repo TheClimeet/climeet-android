@@ -24,6 +24,7 @@ import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.GetUserClimbedListResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
 import com.climus.climeet.data.model.response.GymLevelBestClimberResponse
@@ -349,6 +350,13 @@ interface MainApi {
         @Path("userId") userId: Long,
         @Path("gymId") gymId: Long
     ): Response<GetClimberProfileTargetGymStatisticsResponse>
+
+    @GET("/api/climbing-records/users/{userId}/month/list")
+    suspend fun getUserClimbedGymList(
+        @Path("userId") userId: Int,
+        @Query("year") year: Int,
+        @Query("month") month: Int
+    ): Response<GetUserClimbedListResponse>
 
     @GET("/api/shorts/uploader/{uploaderId}")
     suspend fun getUserShorts(
