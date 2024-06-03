@@ -24,11 +24,7 @@ data class ClimberProfileInfoUiState(
     val homeGymList: List<ProfileHomeGymUiData> = emptyList(),
     val chartUiList: List<StickChartUiData> = emptyList(),
     val averageDoneProgress: Int = 0,
-    val percent: String = "",
-    val userName: String = "",
-    val userProfileImg: String = "",
-    val followingString: String = "",
-    val isFollower: Boolean = false
+    val percent: String = ""
 )
 
 sealed class ClimberProfileEvent {
@@ -113,7 +109,11 @@ class ClimberProfileInfoViewModel @Inject constructor(private val repository: Ma
                     }
 
                     is BaseState.Error -> {
-
+                        _uiState.update { state ->
+                            state.copy(
+                                chartUiList = emptyList()
+                            )
+                        }
                     }
                 }
             }

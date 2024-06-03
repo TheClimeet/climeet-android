@@ -11,6 +11,7 @@ import com.climus.climeet.presentation.customview.stickchart.StickChartAdapter
 import com.climus.climeet.presentation.ui.main.global.climerprofile.adapter.HomeGymAdapter
 import com.climus.climeet.presentation.ui.toGymProfile
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -24,11 +25,11 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvHomeHomegym.adapter = HomeGymAdapter()
-        binding.rvStickChart.adapter = StickChartAdapter()
         binding.vm = viewModel
         viewModel.setUserId(userId)
 
         initEventObserver()
+        initStateObserve()
     }
 
     private fun initEventObserver() {
@@ -39,6 +40,14 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
                         it.id
                     )
                 }
+            }
+        }
+    }
+
+    private fun initStateObserve() {
+        repeatOnStarted {
+            viewModel.uiState.collect{
+                binding.viewStickchart.setupChartData(it.chartUiList)
             }
         }
     }
