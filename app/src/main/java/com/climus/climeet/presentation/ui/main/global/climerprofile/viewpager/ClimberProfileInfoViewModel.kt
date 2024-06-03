@@ -8,7 +8,6 @@ import com.climus.climeet.presentation.customview.stickchart.StickChartUiData
 import com.climus.climeet.presentation.ui.main.global.climerprofile.model.ProfileHomeGymUiData
 import com.climus.climeet.presentation.ui.main.global.toProfileHomeGymUiData
 import com.climus.climeet.presentation.ui.main.record.model.SelectGymData
-import com.climus.climeet.presentation.ui.main.record.stats.StatsEvent
 import com.climus.climeet.presentation.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -118,8 +117,7 @@ class ClimberProfileInfoViewModel @Inject constructor(private val repository: Ma
         if (gym.id == 0) {
             getStatistics()
         } else {
-            // todo gymId에 따른 값들 가져오기
-            getStatistics()
+            getGymStatus(gym)
         }
     }
 
@@ -129,8 +127,8 @@ class ClimberProfileInfoViewModel @Inject constructor(private val repository: Ma
                 when (it) {
                     is BaseState.Success -> {
 
-                        val total  = it.body.totalCompletedCount ?: run { 0 }
-                        val attempt =  it.body.attemptRouteCount ?: run { 1 }
+                        val total = it.body.totalCompletedCount ?: run { 0 }
+                        val attempt = it.body.attemptRouteCount ?: run { 1 }
 
                         val percent =
                             (total.toFloat() / attempt * 100).roundToInt()
@@ -194,6 +192,71 @@ class ClimberProfileInfoViewModel @Inject constructor(private val repository: Ma
         }
     }
 
+    fun getGymStatus(gym: SelectGymData) {
+        viewModelScope.launch {
+            repository.getClimberProfileTargetGymStatistics(userId, gym.id.toLong())
+                .let { result ->
+                    when (result) {
+                        is BaseState.Success -> {
+                            val body = result.body
+                            val total = result.body.totalCompletedCount ?: run { 0 }
+                            val attempt = result.body.attemptRouteCount ?: run { 1 }
+
+                            val percent =
+                                (total.toFloat() / attempt * 100).roundToInt()
+
+                            _uiState.update { state ->
+                                state.copy(
+                                    averageDoneProgress = percent,
+                                    percent = "$percent%"
+                                )
+                            }
+
+                            val list = mutableListOf<StickChartUiData>()
+
+                            var maxPercent = -1f
+                            body.difficulty.forEach {
+                                if (maxPercent < it.count.toFloat()) {
+                                    maxPercent = it.count.toFloat()
+                                }
+                            }
+
+                            body.difficulty.forEach {
+                                val percent = if (it.count == 0) {
+                                    0
+                                } else {
+                                    ((it.count.toFloat() / body.totalCompletedCount.toFloat()) * 100).roundToInt()
+                                }
+
+                                list.add(
+                                    StickChartUiData(
+                                        percentString = "$percent%",
+                                        percent = if (percent == 0) 0f else (it.count.toFloat() / maxPercent) * 1f,
+                                        levelName = it.gymDifficultyName,
+                                        levelHex = it.gymDifficultyColor
+                                    )
+                                )
+                            }
+
+                            _uiState.update { state ->
+                                state.copy(
+                                    chartUiList = list
+                                )
+                            }
+
+                        }
+
+                        is BaseState.Error -> {
+                            _uiState.update { state ->
+                                state.copy(
+                                    chartUiList = emptyList()
+                                )
+                            }
+                        }
+                    }
+                }
+        }
+    }
 
 
     private fun getUserHomeGyms() {
