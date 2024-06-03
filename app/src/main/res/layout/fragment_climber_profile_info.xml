@@ -115,6 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:onClick="@{()->vm.showPopupWindow()}"
                 app:layout_constraintStart_toStartOf="@id/tv_complete_level_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_complete_level_title">
 
@@ -122,7 +123,7 @@
                     android:id="@+id/iv_toggle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_down" />
+                    android:src="@{vm.isListShow() ? @drawable/ic_arrow_up : @drawable/ic_arrow_down}" />
 
                 <TextView
                     android:id="@+id/tv_standard"
@@ -131,7 +132,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="5dp"
                     android:gravity="center"
-                    android:text="클밋 기준"
+                    android:text="@{vm.selectedGymName}"
                     android:textSize="15sp" />
 
             </LinearLayout>

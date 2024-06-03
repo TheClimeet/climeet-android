@@ -1,14 +1,20 @@
 package com.climus.climeet.presentation.ui.main.global.climerprofile.viewpager
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.PopupWindow
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentClimberProfileInfoBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.stickchart.StickChartAdapter
 import com.climus.climeet.presentation.ui.main.global.climerprofile.adapter.HomeGymAdapter
+import com.climus.climeet.presentation.ui.main.record.stats.SelectGymAdapter
 import com.climus.climeet.presentation.ui.toGymProfile
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -20,6 +26,8 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
 
 
     private val viewModel: ClimberProfileInfoViewModel by viewModels()
+    private var adapter = SelectGymAdapter(0) {
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // api
         super.onViewCreated(view, savedInstanceState)
@@ -39,6 +47,9 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
                     is ClimberProfileEvent.NavigateToGymProfile -> findNavController().toGymProfile(
                         it.id
                     )
+
+                    ClimberProfileEvent.ShowPopupWindow -> showPopupWindow()
+                    is ClimberProfileEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }
@@ -48,7 +59,37 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
         repeatOnStarted {
             viewModel.uiState.collect{
                 binding.viewStickchart.setupChartData(it.chartUiList)
+                adapter.submitList(it.gymList)
             }
         }
+    }
+
+    private fun showPopupWindow() {
+        val inflater = LayoutInflater.from(context)
+        val view = inflater.inflate(R.layout.popup_select_gym, null)
+        val recyclerView: RecyclerView = view.findViewById(R.id.rv_select_gym)
+        val popupWindow = PopupWindow(
+            view,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            true
+        )
+
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        adapter = SelectGymAdapter(viewModel.selectedGymId.value) {
+            popupWindow.dismiss()
+            repeatOnStarted { viewModel.changeListShow() }
+        }
+        adapter.submitList(viewModel.uiState.value.gymList)
+
+        recyclerView.adapter = adapter
+
+        popupWindow.elevation = 10f
+
+        // 외부 터치 시 팝업 닫기 설정
+        popupWindow.isOutsideTouchable = true
+        popupWindow.isFocusable = true
+
+        popupWindow.showAsDropDown(binding.layoutToggle, 0, 10)
     }
 }
