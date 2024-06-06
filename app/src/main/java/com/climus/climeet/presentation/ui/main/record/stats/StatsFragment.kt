@@ -76,7 +76,6 @@ class StatsFragment : BaseFragment<FragmentStatsBinding>(R.layout.fragment_stats
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = SelectGymAdapter(viewModel.selectedGymId.value) {
             popupWindow.dismiss()
-            repeatOnStarted { viewModel.changeListShow() }
         }
         adapter.submitList(viewModel.uiState.value.gymList)
 

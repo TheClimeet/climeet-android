@@ -63,8 +63,6 @@ class StatsViewModel @Inject constructor(
     val cc = MutableStateFlow("0문제 완등")
     val ac = MutableStateFlow("100문제 도전!")
 
-    var isListShow = MutableStateFlow(false)
-
     init {
         getMyStatus()
         getMyClimbedGymList()
@@ -121,7 +119,6 @@ class StatsViewModel @Inject constructor(
 
     private fun onGymClicked(gym: SelectGymData) {
         _selectedGymId.value = gym.id
-        changeListShow()
         selectedGymName.update { gym.name }
         if (gym.id == 0) {
             getMyStatus()
@@ -139,6 +136,7 @@ class StatsViewModel @Inject constructor(
     fun setSelectedDate(date: LocalDate) {
         selectedDate.value = date
         curDate.value = "${date.year}년 ${date.monthValue}월"
+        selectedGymReset()
         getMyStatus()
     }
 
@@ -313,21 +311,18 @@ class StatsViewModel @Inject constructor(
         }
         date = selectedDate.value
         curDate.value = "${date.year}년 ${date.monthValue}월"
-        _selectedGymId.update { 0 }
-        selectedGymName.update { "클밋 기준" }
+        selectedGymReset()
         getMyStatus()
     }
 
-    fun showPopupWindow() {
-        changeListShow()
-        viewModelScope.launch {
-            _event.emit(StatsEvent.ShowPopupWindow)
-        }
+    private fun selectedGymReset() {
+        _selectedGymId.update { 0 }
+        selectedGymName.update { "클밋 기준" }
     }
 
-    fun changeListShow() {
+    fun showPopupWindow() {
         viewModelScope.launch {
-            isListShow.value = !isListShow.value
+            _event.emit(StatsEvent.ShowPopupWindow)
         }
     }
 

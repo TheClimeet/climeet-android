@@ -78,7 +78,6 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = SelectGymAdapter(viewModel.selectedGymId.value) {
             popupWindow.dismiss()
-            repeatOnStarted { viewModel.changeListShow() }
         }
         adapter.submitList(viewModel.uiState.value.gymList)
 

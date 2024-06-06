@@ -50,7 +50,6 @@ class ClimberProfileInfoViewModel @Inject constructor(private val repository: Ma
 
     private var userId: Long = 0
 
-    var isListShow = MutableStateFlow(false)
     var selectedGymName = MutableStateFlow("클밋 기준")
 
 
@@ -112,7 +111,6 @@ class ClimberProfileInfoViewModel @Inject constructor(private val repository: Ma
 
     private fun onGymClicked(gym: SelectGymData) {
         _selectedGymId.value = gym.id
-        changeListShow()
         selectedGymName.update { gym.name }
         if (gym.id == 0) {
             getStatistics()
@@ -284,15 +282,8 @@ class ClimberProfileInfoViewModel @Inject constructor(private val repository: Ma
     }
 
     fun showPopupWindow() {
-        changeListShow()
         viewModelScope.launch {
             _event.emit(ClimberProfileEvent.ShowPopupWindow)
-        }
-    }
-
-    fun changeListShow() {
-        viewModelScope.launch {
-            isListShow.value = !isListShow.value
         }
     }
 
