@@ -39,77 +39,69 @@ class GymProfileAvgCompletionViewModel @Inject constructor(
     private fun getMyStatus() {
 
         viewModelScope.launch {
-            repository.getMyGymSkill(gymId).let {
-                when (it) {
-                    is BaseState.Success -> {
-                        Log.d("gym_profile", "내 실력 : ${it.body}")
-                        _uiState.update { state ->
-                            state.copy(
-                                mySkill = it.body.string()
-                            )
-                        }
+            when (val myGymSkillResult = repository.getMyGymSkill(gymId)) {
+                is BaseState.Success -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            mySkill = myGymSkillResult.body.string()
+                        )
                     }
+                }
 
-                    is BaseState.Error -> {
-                        it.msg // 서버 에러 메시지
-                        Log.d("API", it.msg)
-                    }
+                is BaseState.Error -> {
+                    myGymSkillResult.msg // 서버 에러 메시지
+                    Log.d("API", myGymSkillResult.msg)
                 }
             }
 
-            repository.getGymStatsWeek(gymId).let { result ->
-                when (result) {
-                    is BaseState.Success -> {
-                        val body = result.body
+            when (val result = repository.getGymStatsWeek(gymId)) {
+                is BaseState.Success -> {
+                    val body = result.body
 
-                        val list = mutableListOf<StickChartUiData>()
+                    val maxPercent = body.difficulty.maxOfOrNull { it.count } ?: 0
+                    var totalCount = body.difficulty.sumBy { it.count }
 
-                        var maxPercent = -1f
-                        var totalCount = 0
-                        body.difficulty.forEach {
-                            if (maxPercent < it.count.toFloat()) {
-                                maxPercent = it.count.toFloat()
-                            }
-                            totalCount += it.count
-                        }
+                    Log.d("gym_profile", "총 횟수 : $totalCount")
 
-                        Log.d("gym_profile", "총 횟수 : $totalCount")
+                    val list = if (totalCount == 0) {
+                        emptyList()
+                    } else {
+                        body.difficulty.map { item ->
+                            val percent =
+                                ((item.count.toFloat() / totalCount.toFloat()) * 100).roundToInt()
 
-                        body.difficulty.forEach {
-                            val percent = if (it.count == 0) {
-                                0
-                            } else {
-                                ((it.count.toFloat() / totalCount.toFloat()) * 100).roundToInt()
-                            }
-
-                            val color = if(it.gymDifficultyName == uiState.value.mySkill){
+                            val color = if (item.gymDifficultyName == _uiState.value.mySkill) {
                                 "#BEDF22"
                             } else {
                                 "#FFFFFF"
                             }
 
-                            list.add(
-                                StickChartUiData(
-                                    percentString = "$percent%",
-                                    percent = if(percent == 0) 0f else (it.count.toFloat() / maxPercent) * 0.8f,
-                                    levelName = it.gymDifficultyName,
-                                    levelHex = it.gymDifficultyColor,
-                                    levelStringColor = color
-                                )
-                            )
-                        }
-
-                        _uiState.update { state ->
-                            state.copy(
-                                chartUiList = list
+                            StickChartUiData(
+                                percentString = "$percent%",
+                                percent = if (maxPercent == 0) 0f else (item.count.toFloat() / maxPercent.toFloat()) * 0.8f,
+                                levelName = item.gymDifficultyName,
+                                levelHex = item.gymDifficultyColor,
+                                levelStringColor = color
                             )
                         }
 
                     }
-                    is BaseState.Error -> {
-                        result.msg // 서버 에러 메시지
-                        Log.d("API", result.msg)
+
+                    _uiState.update { state ->
+                        state.copy(
+                            chartUiList = list
+                        )
                     }
+
+                }
+
+                is BaseState.Error -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            chartUiList = emptyList()
+                        )
+                    }
+                    Log.d("testfucking", "Error: ${result.msg}")
                 }
             }
         }

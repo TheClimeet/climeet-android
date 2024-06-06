@@ -39,7 +39,6 @@ class GymProfileSkillViewModel @Inject constructor(
             when (val mySkillResult = repository.getMyGymSkill(gymId)) {
                 is BaseState.Success -> {
                     val mySkill = mySkillResult.body.string()
-                    Log.d("gym_profile", "내 실력 : $mySkill")
                     _uiState.update { state ->
                         state.copy(mySkill = mySkill)
                     }
@@ -81,7 +80,11 @@ class GymProfileSkillViewModel @Inject constructor(
                 }
 
                 is BaseState.Error -> {
-                    Log.d("API", "skill Error : ${gymSkillDistributionResult.msg}")
+                    _uiState.update { state ->
+                        state.copy(
+                            chartUiList = emptyList()
+                        )
+                    }
                 }
             }
         }
