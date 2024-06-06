@@ -36,68 +36,52 @@ class GymProfileSkillViewModel @Inject constructor(
 
     private fun getMyStatus() {
         viewModelScope.launch {
-            repository.getMyGymSkill(gymId).let {
-                when (it) {
-                    is BaseState.Success -> {
-                        Log.d("gym_profile", "내 실력 : ${it.body.string()}")
-                        _uiState.update { state ->
-                            // todo 저장이 안됨
-                            state.copy(
-                                mySkill = it.body.string()
-                            )
-                        }
-                        Log.d("gym_profile", "저장 skill : ${_uiState.value.mySkill}")
-                    }
-
-                    is BaseState.Error -> {
-                        it.msg // 서버 에러 메시지
-                        Log.d("API", it.msg)
+            when (val mySkillResult = repository.getMyGymSkill(gymId)) {
+                is BaseState.Success -> {
+                    val mySkill = mySkillResult.body.string()
+                    Log.d("gym_profile", "내 실력 : $mySkill")
+                    _uiState.update { state ->
+                        state.copy(mySkill = mySkill)
                     }
                 }
+
+                is BaseState.Error -> {
+                    Log.d("API", mySkillResult.msg)
+                }
             }
-
-            repository.getGymSkillDistribution(gymId).let {
-                when (it) {
-                    is BaseState.Success -> {
-                        val list = mutableListOf<StickChartUiData>()
-
-                        it.body.forEach {
-                            val percent = if (it.percentage == 0) {
-                                0
-                            } else {
-                                it.percentage
-                            }
-                            Log.d("gym_profile", "rmrm 실력 : ${it.gymDifficultyName}")
-                            Log.d("gym_profile", "내 실력 : ${_uiState.value.mySkill}")
-                            val color = if(it.gymDifficultyName == _uiState.value.mySkill){
-                                "#BEDF22"
-                            } else {
-                                "#FFFFFF"
-                            }
-                            list.add(
-                                StickChartUiData(
-                                    // todo 차트 꼭대기 퍼센트 스트링
-                                    percentString = "${it.percentage}%",
-                                    // todo 차트 막대 길이비율 정하는 float값
-                                    percent = maxOf((percent.toFloat() / 100) * 0.8f, 0.001f),
-                                    // todo 차트 하단에 레벨이름
-                                    levelName = it.gymDifficultyName,
-                                    // todo 색상 hex 값
-                                    levelHex = it.gymDifficultyColor,
-                                    levelStringColor = color
-                                )
-                            )
+            when (val gymSkillDistributionResult =
+                repository.getGymSkillDistribution(gymId)) {
+                is BaseState.Success -> {
+                    val list = mutableListOf<StickChartUiData>()
+                    gymSkillDistributionResult.body.forEach {
+                        val percent = if (it.percentage == 0) {
+                            0
+                        } else {
+                            it.percentage
                         }
-                        _uiState.update { state ->
-                            state.copy(
-                                chartUiList = list
-                            )
+                        val color = if (it.gymDifficultyName == _uiState.value.mySkill) {
+                            "#BEDF22"
+                        } else {
+                            "#FFFFFF"
                         }
+
+                        list.add(
+                            StickChartUiData(
+                                percentString = "${it.percentage}%",
+                                percent = maxOf((percent.toFloat() / 100) * 0.8f, 0.001f),
+                                levelName = it.gymDifficultyName,
+                                levelHex = it.gymDifficultyColor,
+                                levelStringColor = color
+                            )
+                        )
                     }
-                    is BaseState.Error -> {
-                        it.msg // 서버 에러 메시지
-                        Log.d("API", "skill Error : ${it.msg}")
+                    _uiState.update { state ->
+                        state.copy(chartUiList = list)
                     }
+                }
+
+                is BaseState.Error -> {
+                    Log.d("API", "skill Error : ${gymSkillDistributionResult.msg}")
                 }
             }
         }

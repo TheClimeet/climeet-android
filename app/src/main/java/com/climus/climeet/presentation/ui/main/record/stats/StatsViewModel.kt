@@ -190,7 +190,8 @@ class StatsViewModel @Inject constructor(
                                     // todo 차트 하단에 레벨이름
                                     levelName = it.key,
                                     // todo 레벨에 대응되는 색상 hex 값
-                                    levelHex = Constants.climeetColor[it.key]
+                                    levelHex = Constants.climeetColor[it.key],
+                                    levelStringColor = "#FFFFFF"
                                 )
                             )
                         }
@@ -263,7 +264,8 @@ class StatsViewModel @Inject constructor(
                                         percentString = "$percent%",
                                         percent = if (percent == 0) 0f else (it.count.toFloat() / maxPercent) * 1f,
                                         levelName = it.gymDifficultyName,
-                                        levelHex = it.gymDifficultyColor
+                                        levelHex = it.gymDifficultyColor,
+                                        levelStringColor = "#FFFFFF"
                                     )
                                 )
                             }
