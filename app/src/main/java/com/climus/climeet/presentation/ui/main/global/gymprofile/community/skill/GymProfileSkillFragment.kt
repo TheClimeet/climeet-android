@@ -19,7 +19,15 @@ class GymProfileSkillFragment:
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
-        binding.rvStickChart.adapter = StickChartAdapter()
+        initStateObserve()
+    }
+
+    private fun initStateObserve() {
+        repeatOnStarted {
+            viewModel.uiState.collect{
+                binding.viewStickchart.setupChartData(it.chartUiList)
+            }
+        }
     }
 
 }

@@ -39,12 +39,14 @@ class GymProfileSkillViewModel @Inject constructor(
             repository.getMyGymSkill(gymId).let {
                 when (it) {
                     is BaseState.Success -> {
-                        Log.d("gym_profile", "내 실력 : ${it.body}")
+                        Log.d("gym_profile", "내 실력 : ${it.body.string()}")
                         _uiState.update { state ->
+                            // todo 저장이 안됨
                             state.copy(
                                 mySkill = it.body.string()
                             )
                         }
+                        Log.d("gym_profile", "저장 skill : ${_uiState.value.mySkill}")
                     }
 
                     is BaseState.Error -> {
@@ -65,8 +67,9 @@ class GymProfileSkillViewModel @Inject constructor(
                             } else {
                                 it.percentage
                             }
-
-                            val color = if(it.gymDifficultyName == uiState.value.mySkill){
+                            Log.d("gym_profile", "rmrm 실력 : ${it.gymDifficultyName}")
+                            Log.d("gym_profile", "내 실력 : ${_uiState.value.mySkill}")
+                            val color = if(it.gymDifficultyName == _uiState.value.mySkill){
                                 "#BEDF22"
                             } else {
                                 "#FFFFFF"
@@ -93,7 +96,7 @@ class GymProfileSkillViewModel @Inject constructor(
                     }
                     is BaseState.Error -> {
                         it.msg // 서버 에러 메시지
-                        Log.d("API", it.msg)
+                        Log.d("API", "skill Error : ${it.msg}")
                     }
                 }
             }

@@ -53,14 +53,14 @@ class StickChartView @JvmOverloads constructor(
 
         val barData = BarData(dataSet).apply {
             val barWidth = when (data.size) {
-                5 -> 0.4f
-                6 -> 0.3f
-                7 -> 0.25f
-                8 -> 0.22f
-                9 -> 0.2f
-                10 -> 0.17f
+                5 -> 0.25f
+                6 -> 0.23f
+                7 -> 0.21f
+                8 -> 0.2f
+                9 -> 0.18f
+                10 -> 0.18f
                 11 -> 0.17f
-                else -> 0.14f
+                else -> 0.17f
             }
             setBarWidth(barWidth * density)
         }
@@ -76,6 +76,7 @@ class StickChartView @JvmOverloads constructor(
             setLabelCount(data.size, false)
         }
 
+        this.extraBottomOffset = 20f
         this.data = barData
         this.invalidate()
     }
