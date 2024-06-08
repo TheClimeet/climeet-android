@@ -49,30 +49,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        handleIntent(intent)
         setBnv()
         initEventObserve()
         viewModel.patchFcmToken()
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-
-        handleIntent(intent)
-    }
-
-    // 알림창을 눌렀을 때 스톱워치 화면이 보여지게 설정하는 함수
-    private fun handleIntent(intent: Intent) {
-        if (intent.hasExtra("showTimerFragment")) {
-            val navHostFragment =
-                supportFragmentManager.findFragmentById(R.id.main_container) as NavHostFragment
-            val navController = navHostFragment.navController
-
-            if (intent.getBooleanExtra("showTimerFragment", true)) {
-                // TimerExerciseFragment로 이동
-                navController.navigate(R.id.calendar_fragment)
-            }
-        }
     }
 
     private fun setBnv() {
@@ -103,6 +82,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             } else {
                 binding.mainBnv.visibility = View.INVISIBLE
             }
+        }
+
+        handleIntent()
+    }
+
+    // 알림창을 눌렀을 때 스톱워치 화면이 보여지게 설정하는 함수
+    private fun handleIntent() {
+        if (intent.hasExtra("showTimerFragment")) {
+            navController.navigate(R.id.record_fragment)
         }
     }
 
