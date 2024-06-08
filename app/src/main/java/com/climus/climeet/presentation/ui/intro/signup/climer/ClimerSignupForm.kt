@@ -71,6 +71,8 @@ object ClimerSignupForm {
 
     fun toSignupRequest(): ClimerSignupRequest {
         return ClimerSignupRequest(
+            token = this.token,
+            socialType = this.socialType,
             nickName = this.nickName,
             climbingLevel = this.level,
             discoveryChannel = this.way,

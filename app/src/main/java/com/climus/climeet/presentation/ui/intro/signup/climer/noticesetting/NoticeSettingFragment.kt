@@ -54,8 +54,6 @@ class NoticeSettingFragment :
 
     private fun startSignUp(){
         viewModel.signUp(
-            provider = ClimerSignupForm.socialType,
-            accessToken = ClimerSignupForm.token,
             signUpRequest = ClimerSignupForm.toSignupRequest()
         )
     }
