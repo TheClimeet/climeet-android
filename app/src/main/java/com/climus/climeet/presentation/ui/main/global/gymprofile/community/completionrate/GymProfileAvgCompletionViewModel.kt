@@ -49,8 +49,7 @@ class GymProfileAvgCompletionViewModel @Inject constructor(
                 }
 
                 is BaseState.Error -> {
-                    myGymSkillResult.msg // 서버 에러 메시지
-                    Log.d("API", myGymSkillResult.msg)
+                    myGymSkillResult.msg
                 }
             }
 
@@ -61,30 +60,28 @@ class GymProfileAvgCompletionViewModel @Inject constructor(
                     val maxPercent = body.difficulty.maxOfOrNull { it.count } ?: 0
                     var totalCount = body.difficulty.sumBy { it.count }
 
-                    Log.d("gym_profile", "총 횟수 : $totalCount")
+                    Log.d("gym_profile", "결과 : $body")
 
-                    val list = if (totalCount == 0) {
-                        emptyList()
-                    } else {
-                        body.difficulty.map { item ->
-                            val percent =
-                                ((item.count.toFloat() / totalCount.toFloat()) * 100).roundToInt()
-
-                            val color = if (item.gymDifficultyName == _uiState.value.mySkill) {
-                                "#BEDF22"
-                            } else {
-                                "#FFFFFF"
-                            }
-
-                            StickChartUiData(
-                                percentString = "$percent%",
-                                percent = if (maxPercent == 0) 0f else (item.count.toFloat() / maxPercent.toFloat()) * 0.8f,
-                                levelName = item.gymDifficultyName,
-                                levelHex = item.gymDifficultyColor,
-                                levelStringColor = color
-                            )
+                    val list = body.difficulty.map { item ->
+                        val percent = if(totalCount == 0) {
+                            0
+                        } else {
+                            ((item.count.toFloat() / totalCount.toFloat()) * 100).roundToInt()
                         }
 
+                        val color = if (item.gymDifficultyName == _uiState.value.mySkill) {
+                            "#BEDF22"
+                        } else {
+                            "#FFFFFF"
+                        }
+
+                        StickChartUiData(
+                            percentString = "$percent%",
+                            percent = if (maxPercent == 0) 0f else (item.count.toFloat() / maxPercent.toFloat()) * 0.8f,
+                            levelName = item.gymDifficultyName,
+                            levelHex = item.gymDifficultyColor,
+                            levelStringColor = color
+                        )
                     }
 
                     _uiState.update { state ->
@@ -92,7 +89,6 @@ class GymProfileAvgCompletionViewModel @Inject constructor(
                             chartUiList = list
                         )
                     }
-
                 }
 
                 is BaseState.Error -> {
@@ -101,7 +97,6 @@ class GymProfileAvgCompletionViewModel @Inject constructor(
                             chartUiList = emptyList()
                         )
                     }
-                    Log.d("testfucking", "Error: ${result.msg}")
                 }
             }
         }

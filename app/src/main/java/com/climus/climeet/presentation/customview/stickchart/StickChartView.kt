@@ -38,6 +38,7 @@ class StickChartView @JvmOverloads constructor(
         legend.isEnabled = false
         axisLeft.isEnabled = false
         axisRight.isEnabled = false
+        axisLeft.axisMinimum = 0f
         renderer = RoundedBarChartRenderer(this, this.animator, this.viewPortHandler)
     }
 
@@ -80,6 +81,7 @@ class StickChartView @JvmOverloads constructor(
             setDrawAxisLine(false)
             setDrawGridLines(false)
             setLabelCount(data.size, false)
+            yOffset = 5f * density
         }
 
         this.setXAxisRenderer(
@@ -90,7 +92,7 @@ class StickChartView @JvmOverloads constructor(
                 data
             )
         )
-        this.extraBottomOffset = 20f
+        this.extraBottomOffset = 10f
         this.data = barData
         this.invalidate()
     }
@@ -130,7 +132,7 @@ class StickChartView @JvmOverloads constructor(
                 val x = positions[i]
                 if (mViewPortHandler.isInBoundsX(x)) {
                     val index = i / 2
-                    if (index >= data.size) continue // Avoid IndexOutOfBoundsException
+                    if (index >= data.size) continue
                     val label = valueFormatter.getAxisLabel(mXAxis.mEntries[index], mXAxis)
                     paint.color = Color.parseColor(data[index].levelStringColor)
                     drawLabel(canvas, label, x, pos, anchor, paint)
