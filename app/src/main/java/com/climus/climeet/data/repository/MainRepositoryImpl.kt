@@ -378,10 +378,10 @@ class MainRepositoryImpl @Inject constructor(
         return routeRecordDao.getAttemptCount(level)
     }
 
-    override suspend fun followGym(gymId: Long): BaseState<String> =
+    override suspend fun followGym(gymId: Long): BaseState<ResponseBody> =
         runRemote { api.followGym(gymId) }
 
-    override suspend fun unFollowGym(gymId: Long): BaseState<String> =
+    override suspend fun unFollowGym(gymId: Long): BaseState<ResponseBody> =
         runRemote { api.unfollowGym(gymId) }
 
     override suspend fun getGymListToFollow(

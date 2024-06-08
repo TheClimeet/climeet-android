@@ -106,12 +106,12 @@ interface MainApi {
     @POST("/follow-relationship/gym")
     suspend fun followGym(
         @Query("gymId") gymId: Long
-    ): Response<String>
+    ): Response<ResponseBody>
 
     @DELETE("/follow-relationship/gym")
     suspend fun unfollowGym(
         @Query("gymId") gymId: Long
-    ): Response<String>
+    ): Response<ResponseBody>
 
     @GET("/api/climber/search")
     suspend fun getClimberSearchingList(

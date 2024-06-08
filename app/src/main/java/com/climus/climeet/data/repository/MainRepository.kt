@@ -143,11 +143,11 @@ interface MainRepository {
 
     suspend fun followGym(
         gymId: Long
-    ): BaseState<String>
+    ): BaseState<ResponseBody>
 
     suspend fun unFollowGym(
         gymId: Long
-    ): BaseState<String>
+    ): BaseState<ResponseBody>
 
     suspend fun getGymFilteringKey(
         gymId: Long,

@@ -41,7 +41,7 @@ class GymProfileFragment : BaseFragment<FragmentGymProfileBinding>(R.layout.frag
 
     private fun initCragInfo() {
         sharedPreferences.edit().putLong("gymId", gymId).apply()
-        viewModel.gymId.value = gymId
+        viewModel.setGymId(gymId)
     }
 
     private fun initViewPager() {
@@ -55,16 +55,6 @@ class GymProfileFragment : BaseFragment<FragmentGymProfileBinding>(R.layout.frag
     }
 
     private fun initClickListener() {
-
-        binding.btnFollow.setOnClickListener {
-            viewModel.followState.value = true
-            Log.d("gym_profile", "버튼 눌림 true")
-        }
-
-        binding.btnFollowing.setOnClickListener{
-            viewModel.followState.value = false
-            Log.d("gym_profile", "버튼 눌림 false")
-        }
 
         // 탭 indicator 색 바꾸기
         binding.tbMenu.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

@@ -83,11 +83,11 @@
                             android:id="@+id/tv_gym_name"
                             style="@style/TextRegularBig"
                             layout_constrainedWidth="true"
-                            android:paddingEnd="14dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:maxLines="1"
+                            android:paddingEnd="14dp"
                             android:text="@{vm.uiState.gymName}"
                             android:textStyle="bold"
                             app:layout_constraintStart_toStartOf="parent"
@@ -265,30 +265,16 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <androidx.appcompat.widget.AppCompatButton
+                        <TextView
                             android:id="@+id/btn_follow"
                             style="@style/TextSmall"
                             android:layout_width="72dp"
                             android:layout_height="26dp"
-                            android:background="@drawable/btn_following"
-                            android:text="팔로우"
-                            android:textColor="@color/black"
-                            android:visibility="@{vm.followState? View.GONE : View.VISIBLE}"
+                            android:gravity="center"
+                            android:onClick="@{() -> vm.toggleFollowState()}"
+                            app:followState="@{vm.followState}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/btn_following"
-                            style="@style/TextSmall"
-                            android:layout_width="72dp"
-                            android:layout_height="26dp"
-                            android:background="@drawable/btn_follow"
-                            android:text="팔로잉"
-                            android:textColor="@color/white"
-                            android:visibility="@{vm.followState? View.VISIBLE : View.GONE}"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -309,7 +295,7 @@
                     app:tabRippleColor="@color/transparent"
                     app:tabSelectedTextColor="@color/cm_main"
                     app:tabTextAppearance="@style/TabText"
-                    app:tabTextColor="@color/cm_grey5"></com.google.android.material.tabs.TabLayout>
+                    app:tabTextColor="@color/cm_grey5" />
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/vp_tab_detail"
