@@ -68,11 +68,13 @@ class GymProfileInfoViewModel @Inject constructor(
                                 address = it.body.address ?: state.address,
                                 location = it.body.location ?: state.location,
                                 tel = it.body.tel ?: state.tel,
-                                gymBusinessHours = it.body.businessHours?.map {
-                                    GymBusinessHour(
-                                        it.key,
-                                        it.value
-                                    )
+                                gymBusinessHours = it.body.businessHours?.let { hours ->
+                                    getCompleteBusinessHours(hours).map {
+                                        GymBusinessHour(
+                                            it.key,
+                                            it.value
+                                        )
+                                    }
                                 } ?: state.gymBusinessHours,
                                 gymServiceList = it.body.serviceList?.map { GymService(it) }
                                     ?: state.gymServiceList,
@@ -117,6 +119,24 @@ class GymProfileInfoViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun getCompleteBusinessHours(businessHours: Map<String, List<String>>): Map<String, List<String>> {
+        val completeHours = mutableMapOf(
+            "일" to listOf("휴무"),
+            "월" to listOf("휴무"),
+            "화" to listOf("휴무"),
+            "수" to listOf("휴무"),
+            "목" to listOf("휴무"),
+            "금" to listOf("휴무"),
+            "토" to listOf("휴무")
+        )
+
+        businessHours.forEach { (day, hours) ->
+            completeHours[day] = hours
+        }
+
+        return completeHours
     }
 
     fun navigateToGymReviewBottomSheetFragment() {

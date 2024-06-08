@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
 
         <variable
@@ -69,6 +70,7 @@
                         android:id="@+id/iv_date_toggle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="@{()->vm.showDatePicker()}"
                         android:src="@drawable/ic_gym_profile_toggle"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -235,9 +237,9 @@
                         style="@style/TextMediumBold"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="20dp"
-                        android:layout_marginStart="25dp"
                         android:background="@drawable/rect_silver2fill_nostroke_8radius"
                         android:onClick="@{() -> vm.clearSelectedRoute()}"
                         android:text="취소"
@@ -351,7 +353,7 @@
                         <ImageButton
                             android:id="@+id/btn_remove_filter"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
                             android:layout_marginStart="12dp"
                             android:background="@android:color/transparent"
                             android:onClick="@{() -> vm.clearSelectedRoute()}"
