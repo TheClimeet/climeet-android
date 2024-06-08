@@ -34,7 +34,11 @@ data class GymProfileTabInfoUiState(
     val averageRating: Float = 0f,
     val reviewNum: Int = 0,
     val myGymReview: Review? = null,
-    val gymReviewList: List<Review>? = emptyList()
+    val gymReviewList: List<Review>? = emptyList(),
+    val isTimeVisible: Boolean = false,
+    val isTimeErrorVisible: Boolean = false,
+    val isRvTimeVisible: Boolean = false,
+    val isIvToggleVisible: Boolean = false
 )
 
 sealed class GymProfileInfoEvent {
@@ -60,43 +64,51 @@ class GymProfileInfoViewModel @Inject constructor(
 
     fun getGymTabInfo() {
         viewModelScope.launch {
-            repository.getGymProfileTabInfo(gymId).let { it ->
-                when (it) {
-                    is BaseState.Success -> {
-                        // 성공
-                        _uiState.update { state ->
-                            state.copy(
-                                gymId = gymId,
-                                address = it.body.address ?: state.address,
-                                location = it.body.location ?: state.location,
-                                tel = it.body.tel ?: state.tel,
-                                gymBusinessHours = it.body.businessHours?.let { hours ->
-                                    getCompleteBusinessHours(hours).map {
-                                        GymBusinessHour(
-                                            it.key,
-                                            it.value
-                                        )
-                                    }
-                                } ?: state.gymBusinessHours,
-                                gymServiceList = it.body.serviceList?.map { GymService(it) }
-                                    ?: state.gymServiceList,
-                                gymPriceList = it.body.priceList?.map { GymPrice(it.key, it.value) }
-                                    ?: state.gymPriceList,
-                                startTime = setTodayOpeningTime(state.gymBusinessHours)
-                            )
-                        }
-                    }
-
-                    is BaseState.Error -> {
-                        it.msg // 서버 에러 메시지
-                        Log.d("gym_profile", "정보 탭 불러오기 실패")
+            when (val result = repository.getGymProfileTabInfo(gymId)) {
+                is BaseState.Success -> {
+                    // 성공
+                    _uiState.update { state ->
+                        state.copy(
+                            gymId = gymId,
+                            address = result.body.address ?: state.address,
+                            location = result.body.location ?: state.location,
+                            tel = result.body.tel ?: state.tel,
+                            gymBusinessHours = result.body.businessHours?.let { hours ->
+                                getCompleteBusinessHours(hours).map {
+                                    GymBusinessHour(
+                                        it.key,
+                                        it.value
+                                    )
+                                }
+                            } ?: state.gymBusinessHours,
+                            gymServiceList = result.body.serviceList?.map { GymService(it) }
+                                ?: state.gymServiceList,
+                            gymPriceList = result.body.priceList?.map { GymPrice(it.key, it.value) }
+                                ?: state.gymPriceList,
+                            startTime = setTodayOpeningTime(state.gymBusinessHours),
+                            isTimeVisible = state.gymBusinessHours.isNullOrEmpty().not(),
+                            isTimeErrorVisible = state.gymBusinessHours.isNullOrEmpty(),
+                            isRvTimeVisible = false,
+                            isIvToggleVisible = false
+                        )
                     }
                 }
-            }
 
-            getReviewInfo()
+                is BaseState.Error -> {
+                    result.msg // 서버 에러 메시지
+                    Log.d("gym_profile", "정보 탭 불러오기 실패")
+                }
+            }
+            _uiState.update { state ->
+                state.copy(
+                    startTime = setTodayOpeningTime(state.gymBusinessHours)
+                )
+            }
         }
+
+        getReviewInfo()
     }
+
 
     fun getReviewInfo() {
         viewModelScope.launch {
@@ -158,6 +170,24 @@ class GymProfileInfoViewModel @Inject constructor(
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
         val daysOfWeek = listOf("일", "월", "화", "수", "목", "금", "토")
         return daysOfWeek[dayOfWeek - 1] // Calendar.DAY_OF_WEEK는 1부터 시작하므로, 1을 빼줍니다.
+    }
+
+    fun onLayoutTimeTitleClick() {
+        _uiState.update { state ->
+            state.copy(
+                isRvTimeVisible = !state.isRvTimeVisible,
+                isIvToggleVisible = !state.isIvToggleVisible
+            )
+        }
+    }
+
+    fun onRvTimeClick() {
+        _uiState.update { state ->
+            state.copy(
+                isRvTimeVisible = false,
+                isIvToggleVisible = false
+            )
+        }
     }
 
     fun navigateToGymReviewBottomSheetFragment() {

@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="parentVM"
             type="com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileViewModel" />
@@ -235,6 +237,8 @@
                             android:padding="10dp"
                             android:layout_marginStart="60dp"
                             android:layout_marginTop="10dp"
+                            android:visibility="@{vm.uiState.isTimeVisible ? View.VISIBLE : View.GONE}"
+                            android:onClick="@{() -> vm.onLayoutTimeTitleClick()}"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
@@ -244,7 +248,7 @@
                                 style="@style/TextSmall"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="10:30에 영업시작" />
+                                android:text="@{vm.uiState.startTime}" />
 
                             <ImageView
                                 android:id="@+id/iv_toggle"
@@ -252,8 +256,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginTop="8dp"
-                                android:src="@drawable/ic_gym_profile_toggle"
-                                android:visibility="visible" />
+                                android:src="@{vm.uiState.isIvToggleVisible ? @drawable/ic_gym_profile_toggle_off : @drawable/ic_gym_profile_toggle}" />
 
                         </LinearLayout>
 
@@ -264,7 +267,8 @@
                             android:layout_marginStart="10dp"
                             android:clipToPadding="false"
                             android:orientation="vertical"
-                            android:visibility="visible"
+                            android:visibility="@{vm.uiState.isRvTimeVisible ? View.VISIBLE : View.GONE}"
+                            android:onClick="@{() -> vm.onLayoutTimeTitleClick()}"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="@id/layout_time_title"
@@ -281,7 +285,7 @@
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="20dp"
                             android:text="@string/gym_profile_null"
-                            android:visibility="gone"
+                            android:visibility="@{vm.uiState.isTimeErrorVisible ? View.VISIBLE : View.GONE}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
