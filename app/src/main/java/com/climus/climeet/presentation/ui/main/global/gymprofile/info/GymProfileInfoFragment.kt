@@ -107,12 +107,7 @@ class GymProfileInfoFragment :
                 }
 
                 // 영업 시간
-                if(it.gymBusinessHours?.isEmpty() == true) {
-                    binding.rvTime.visibility = View.GONE
-                    binding.tvTimeError.visibility = View.VISIBLE
-                } else {
-                    binding.rvTime.visibility = View.VISIBLE
-                    binding.tvTimeError.visibility = View.GONE
+                if(it.gymBusinessHours?.isNotEmpty() == true) {
                     timeAdapter?.setList(it.gymBusinessHours!!)
                 }
 
