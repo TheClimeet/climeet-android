@@ -228,19 +228,47 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
+                        <LinearLayout
+                            android:id="@+id/layout_time_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:layout_marginStart="60dp"
+                            android:layout_marginTop="10dp"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/tv_time_title"
+                                style="@style/TextSmall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="10:30에 영업시작" />
+
+                            <ImageView
+                                android:id="@+id/iv_toggle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="8dp"
+                                android:src="@drawable/ic_gym_profile_toggle"
+                                android:visibility="visible" />
+
+                        </LinearLayout>
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="70dp"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="10dp"
                             android:clipToPadding="false"
                             android:orientation="vertical"
                             android:visibility="visible"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/layout_time_title"
+                            app:layout_constraintTop_toBottomOf="@id/layout_time_title"
                             tools:itemCount="1"
                             tools:listitem="@layout/item_profile_time" />
 
@@ -257,30 +285,6 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageView
-                            android:id="@+id/iv_toggle_off"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="7dp"
-                            android:src="@drawable/ic_gym_profile_toggle"
-                            android:visibility="visible"
-                            app:layout_constraintStart_toEndOf="@id/rv_time"
-                            app:layout_constraintTop_toTopOf="@id/rv_time" />
-
-                        <ImageView
-                            android:id="@+id/iv_toggle_on"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="7dp"
-                            android:src="@drawable/ic_gym_profile_toggle"
-                            android:visibility="invisible"
-                            app:layout_constraintStart_toEndOf="@id/rv_time"
-                            app:layout_constraintTop_toTopOf="@id/rv_time" />
-
-                        <!--    todo : 토글 달아주기    -->
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

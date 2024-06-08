@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 
 data class GymProfileTabInfoUiState(
@@ -26,10 +27,11 @@ data class GymProfileTabInfoUiState(
     val address: String? = "암장 정보가 비어있어요",
     val location: String? = "암장 정보가 비어있어요",
     val tel: String? = "암장 정보가 비어있어요",
+    val startTime: String = "휴무",
     val gymBusinessHours: List<GymBusinessHour>? = emptyList(),
     val gymServiceList: List<GymService>? = emptyList(),
     val gymPriceList: List<GymPrice>? = emptyList(),
-    val averageRating : Float = 0f,
+    val averageRating: Float = 0f,
     val reviewNum: Int = 0,
     val myGymReview: Review? = null,
     val gymReviewList: List<Review>? = emptyList()
@@ -79,7 +81,8 @@ class GymProfileInfoViewModel @Inject constructor(
                                 gymServiceList = it.body.serviceList?.map { GymService(it) }
                                     ?: state.gymServiceList,
                                 gymPriceList = it.body.priceList?.map { GymPrice(it.key, it.value) }
-                                    ?: state.gymPriceList
+                                    ?: state.gymPriceList,
+                                startTime = setTodayOpeningTime(state.gymBusinessHours)
                             )
                         }
                     }
@@ -95,7 +98,7 @@ class GymProfileInfoViewModel @Inject constructor(
         }
     }
 
-    fun getReviewInfo(){
+    fun getReviewInfo() {
         viewModelScope.launch {
             delay(500)
             repository.getGymReview(gymId, 0, 15).let { it ->
@@ -121,7 +124,7 @@ class GymProfileInfoViewModel @Inject constructor(
         }
     }
 
-    fun getCompleteBusinessHours(businessHours: Map<String, List<String>>): Map<String, List<String>> {
+    private fun getCompleteBusinessHours(businessHours: Map<String, List<String>>): Map<String, List<String>> {
         val completeHours = mutableMapOf(
             "일" to listOf("휴무"),
             "월" to listOf("휴무"),
@@ -137,6 +140,24 @@ class GymProfileInfoViewModel @Inject constructor(
         }
 
         return completeHours
+    }
+
+    private fun setTodayOpeningTime(gymBusinessHours: List<GymBusinessHour>?): String {
+        val today = getCurrentDayOfWeek()
+        val todayBusinessHour = gymBusinessHours?.find { it.day == today }
+
+        return if (todayBusinessHour != null && todayBusinessHour.hours.isNotEmpty() && todayBusinessHour.hours[0] != "휴무") {
+            "${todayBusinessHour.hours[0]}에 영업 시작"
+        } else {
+            "휴무"
+        }
+    }
+
+    private fun getCurrentDayOfWeek(): String {
+        val calendar = Calendar.getInstance()
+        val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+        val daysOfWeek = listOf("일", "월", "화", "수", "목", "금", "토")
+        return daysOfWeek[dayOfWeek - 1] // Calendar.DAY_OF_WEEK는 1부터 시작하므로, 1을 빼줍니다.
     }
 
     fun navigateToGymReviewBottomSheetFragment() {
