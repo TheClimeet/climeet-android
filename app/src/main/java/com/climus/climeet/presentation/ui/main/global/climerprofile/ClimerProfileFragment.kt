@@ -1,16 +1,13 @@
 package com.climus.climeet.presentation.ui.main.global.climerprofile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentClimerProfileBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.global.climerprofile.viewpager.ClimberProfileVPAdapter
-import com.climus.climeet.presentation.ui.main.mypage.myshorts.viewpager.MyShortsVPAdapter
-import com.climus.climeet.presentation.util.Constants.TAG
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,7 +17,7 @@ class ClimerProfileFragment : BaseFragment<FragmentClimerProfileBinding>(R.layou
     private val args : ClimerProfileFragmentArgs by navArgs()
     private val userId by lazy { args.userId }
 
-    private val viewModel : ClimberProfileViewModel by viewModels()
+    private val viewModel : ClimberProfileViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -284,10 +284,16 @@
             android:id="@+id/action_myPageAdminMyProfileFragment_self"
             app:destination="@id/myPageAdminMyProfileFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/myPageClimerMyProfileFragment"
-        android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.MyPageMyProfileFragment"
-        android:label="MyPageClimerMyProfileFragment" />
+        android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.MyPageClimberProfileFragment"
+        android:label="MyPageClimerMyProfileFragment" >
+        <argument
+            android:name="userId"
+            app:argType="long"/>
+    </fragment>
+
     <fragment
         android:id="@+id/myPageMyShortsFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.myshorts.MyPageMyShortsFragment"

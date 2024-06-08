@@ -2,7 +2,7 @@ package com.climus.climeet.presentation.ui.main.global.climerprofile.viewpager
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentClimberProfileInfoBinding
@@ -18,7 +18,7 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
     BaseFragment<FragmentClimberProfileInfoBinding>(R.layout.fragment_climber_profile_info) {
 
 
-    private val viewModel: ClimberProfileInfoViewModel by viewModels()
+    private val viewModel: ClimberProfileInfoViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // api
         super.onViewCreated(view, savedInstanceState)
