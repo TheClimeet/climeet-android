@@ -45,7 +45,7 @@ class GymProfileSkillViewModel @Inject constructor(
                 }
 
                 is BaseState.Error -> {
-                    Log.d("API", mySkillResult.msg)
+                    mySkillResult.msg
                 }
             }
             when (val gymSkillDistributionResult =
@@ -67,7 +67,7 @@ class GymProfileSkillViewModel @Inject constructor(
                         list.add(
                             StickChartUiData(
                                 percentString = "${it.percentage}%",
-                                percent = maxOf((percent.toFloat() / 100) * 0.8f, 0.001f),
+                                percent = maxOf((percent.toFloat() / 100) * 0.8f, 0.01f),
                                 levelName = it.gymDifficultyName,
                                 levelHex = it.gymDifficultyColor,
                                 levelStringColor = color
