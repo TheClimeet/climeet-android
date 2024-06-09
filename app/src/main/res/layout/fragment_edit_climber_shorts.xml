@@ -46,20 +46,20 @@
                 style="@style/TextTiny"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
                 android:background="@drawable/rect_mainfill_nostroke_8radius"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
                 android:onClick="@{() -> vm.showShortsBtns()}"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="5dp"
-                android:text="@{vm.uiState.shortsPublic ? `전체공개` : `나만보기`}"
+                android:text="@{vm.uiState.state}"
                 android:textColor="@color/black"
                 android:visibility="@{vm.btnState.shorts ? View.GONE : View.VISIBLE}"
-                app:layout_constraintTop_toTopOf="@id/tv_header"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:text="전체보기" />
+                app:layout_constraintTop_toTopOf="@id/tv_header"
+                tools:text="전체공개" />
 
             <LinearLayout
                 android:id="@+id/layout_no_item"
@@ -105,43 +105,60 @@
                 android:id="@+id/layout_shorts_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
                 android:orientation="vertical"
                 android:visibility="@{vm.btnState.shorts ? View.VISIBLE : View.GONE}"
-                app:layout_constraintTop_toTopOf="@id/tv_header"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_header">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_shorts_public"
                     style="@style/TextTiny"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rect_mainfill_nostroke_top8radius"
+                    android:background="@{vm.uiState.public ? @drawable/rect_mainfill_nostroke_top8radius : @drawable/rect_grey7fill_nostroke_top8radius}"
                     android:minWidth="0dp"
                     android:minHeight="0dp"
-                    android:onClick="@{() -> vm.setShortsState(true)}"
+                    android:onClick="@{() -> vm.setShortsVisibility(1)}"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="5dp"
                     android:text="전체공개"
-                    android:textColor="@color/black"
+                    android:textColor="@{vm.uiState.public ? @color/black : @color/white}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_shorts_follow"
+                    style="@style/TextTiny"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@{vm.uiState.follow ? @color/cm_main : @color/cm_grey7}"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:onClick="@{() -> vm.setShortsVisibility(2)}"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="5dp"
+                    android:text="팔로우만"
+                    android:textColor="@{vm.uiState.follow ? @color/black : @color/white}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_shorts_public" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_shorts_closed"
                     style="@style/TextTiny"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rect_grey7fill_nostroke_bottom8radius"
+                    android:background="@{vm.uiState.closed ? @drawable/rect_mainfill_nostroke_bottom8radius : @drawable/rect_grey7fill_nostroke_bottom8radius}"
                     android:minWidth="0dp"
                     android:minHeight="0dp"
-                    android:onClick="@{() -> vm.setShortsState(false)}"
+                    android:onClick="@{() -> vm.setShortsVisibility(3)}"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="5dp"
                     android:text="나만보기"
+                    android:textColor="@{vm.uiState.closed ? @color/black : @color/white}"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/btn_shorts_public" />
+                    app:layout_constraintTop_toBottomOf="@id/btn_shorts_follow" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
