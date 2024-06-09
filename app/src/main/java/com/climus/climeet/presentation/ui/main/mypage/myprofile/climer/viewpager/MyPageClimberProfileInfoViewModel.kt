@@ -3,7 +3,6 @@ package com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.viewpage
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.model.MyPageClimberProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +26,6 @@ sealed class MyPageClimberProfileEvent {
 
 @HiltViewModel
 class MyPageClimberProfileInfoViewModel @Inject constructor() : ViewModel() {
-    // todo : 공개 범위 버튼 설정 가져오기 및 변경 사항 서버에 반영
 
     // 공개 범위 설정 버튼 visibility 관리
     private val _btnState = MutableStateFlow(ClimberProfileSettingBtnState())
@@ -75,7 +73,7 @@ class MyPageClimberProfileInfoViewModel @Inject constructor() : ViewModel() {
             _event.emit(MyPageClimberProfileEvent.ChangePrivacyState("homeGym", privacy))
         }
 
-        Log.d("mypage_edit", "홈짐 : $privacy")
+        Log.d("mypage_climber", "홈짐 : $privacy")
     }
 
     fun setAvgCompleteState(privacy: Boolean) {
@@ -88,7 +86,7 @@ class MyPageClimberProfileInfoViewModel @Inject constructor() : ViewModel() {
             _event.emit(MyPageClimberProfileEvent.ChangePrivacyState("avgComplete", privacy))
         }
 
-        Log.d("mypage_edit", "평균 완등률 : $privacy")
+        Log.d("mypage_climber", "평균 완등률 : $privacy")
     }
 
     fun setAvgCompleteLevelState(privacy: Boolean) {
@@ -101,6 +99,6 @@ class MyPageClimberProfileInfoViewModel @Inject constructor() : ViewModel() {
             _event.emit(MyPageClimberProfileEvent.ChangePrivacyState("avgCompleteLevel", privacy))
         }
 
-        Log.d("mypage_edit", "평균 완등 레벨 : $privacy")
+        Log.d("mypage_climber", "평균 완등 레벨 : $privacy")
     }
 }

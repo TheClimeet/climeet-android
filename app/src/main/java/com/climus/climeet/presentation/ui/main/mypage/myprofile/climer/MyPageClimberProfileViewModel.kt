@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.model.MyPageClimberProfileUiState
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.viewpager.ClimberProfileSettingBtnState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -71,7 +70,7 @@ class MyPageClimberProfileViewModel @Inject constructor(
                     repository.editHomeGymPrivacy().let {
                         when (it) {
                             is BaseState.Success -> {
-                                Log.d("climber_edit", "홈짐 공개범위 수정")
+                                Log.d("mypage_climber", "홈짐 공개범위 수정")
                             }
 
                             is BaseState.Error -> {
@@ -93,7 +92,7 @@ class MyPageClimberProfileViewModel @Inject constructor(
                     repository.editAvgCompletePrivacy().let {
                         when (it) {
                             is BaseState.Success -> {
-                                Log.d("climber_edit", "평균 완등률 공개범위 수정")
+                                Log.d("mypage_climber", "평균 완등률 공개범위 수정")
                             }
 
                             is BaseState.Error -> {
@@ -115,7 +114,7 @@ class MyPageClimberProfileViewModel @Inject constructor(
                     repository.editAvgCompleteLevelPrivacy().let {
                         when (it) {
                             is BaseState.Success -> {
-                                Log.d("climber_edit", "평균 완등 레벨 공개범위 수정")
+                                Log.d("mypage_climber", "평균 완등 레벨 공개범위 수정")
                             }
 
                             is BaseState.Error -> {
