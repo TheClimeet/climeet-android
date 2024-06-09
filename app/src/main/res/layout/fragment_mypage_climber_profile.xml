@@ -11,6 +11,9 @@
             name="svm"
             type="com.climus.climeet.presentation.ui.main.global.climerprofile.ClimberProfileViewModel" />
 
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.MyPageClimberProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

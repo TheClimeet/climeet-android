@@ -12,6 +12,10 @@
             type="com.climus.climeet.presentation.ui.main.global.climerprofile.viewpager.ClimberProfileInfoViewModel" />
 
         <variable
+            name="mainvm"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.MyPageClimberProfileViewModel"/>
+
+        <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.viewpager.MyPageClimberProfileInfoViewModel" />
 
@@ -62,7 +66,7 @@
                     android:onClick="@{() -> vm.showHomeGymBtns()}"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="5dp"
-                    android:text="@{vm.uiState.homeGymPublic ? `전체공개` : `나만보기`}"
+                    android:text="@{mainvm.uiState.homeGymPublic ? `전체공개` : `나만보기`}"
                     android:textColor="@color/black"
                     android:visibility="@{vm.btnState.homeGym ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -167,7 +171,7 @@
                     android:onClick="@{() -> vm.showCompleteBtns()}"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="5dp"
-                    android:text="@{vm.uiState.avgCompletionRatePublic ? `전체공개` : `나만보기`}"
+                    android:text="@{mainvm.uiState.avgCompletionRatePublic ? `전체공개` : `나만보기`}"
                     android:textColor="@color/black"
                     android:visibility="@{vm.btnState.avgComplete ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -292,7 +296,7 @@
                     android:onClick="@{() -> vm.showCompleteLevelBtns()}"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="5dp"
-                    android:text="@{vm.uiState.avgCompletionLevelPublic ? `전체공개` : `나만보기`}"
+                    android:text="@{mainvm.uiState.avgCompletionLevelPublic ? `전체공개` : `나만보기`}"
                     android:textColor="@color/black"
                     android:visibility="@{vm.btnState.avgCompleteLevel ? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -1,8 +1,10 @@
 package com.climus.climeet.presentation.ui.main.mypage.myprofile.climer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMypageClimberProfileBinding
@@ -17,6 +19,7 @@ class MyPageClimberProfileFragment :
     BaseFragment<FragmentMypageClimberProfileBinding>(R.layout.fragment_mypage_climber_profile) {
 
     private val sharedViewModel: ClimberProfileViewModel by activityViewModels()
+    private val viewModel: MyPageClimberProfileViewModel by activityViewModels()
 
     private val args: MyPageClimberProfileFragmentArgs by navArgs()
     private val userId by lazy { args.userId }
@@ -25,7 +28,13 @@ class MyPageClimberProfileFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.svm = sharedViewModel
+        binding.vm = viewModel
+
+        Log.d("mypage_climber", "현재 유저 id : $userId")
+
         sharedViewModel.setUserId(userId)
+        viewModel.setClimberId(userId)
+
         setupTabLayout()
     }
 

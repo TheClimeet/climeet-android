@@ -31,6 +31,7 @@ import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
 import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.GymWeekStatsResponse
+import com.climus.climeet.data.model.response.MyPageClimberProfilePrivacyResponse
 import com.climus.climeet.data.model.response.MyPageProfileResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
@@ -375,5 +376,19 @@ interface MainApi {
 
     @GET("/api/boards")
     suspend fun getAnnouncement(): Response<GetAnnouncementResponse>
+
+    @GET("/api/climber/privacy-setting")
+    suspend fun getClimberProfilePrivacyState(
+        @Query("climberId") climberId: Long
+    ): Response<MyPageClimberProfilePrivacyResponse>
+
+    @PATCH("/api/climber/homegym-privacy-setting")
+    suspend fun editHomeGymPrivacy(): Response<ResponseBody>
+
+    @PATCH("/api/climber/averageCompletionRate-privacy-setting")
+    suspend fun editAvgCompletePrivacy(): Response<ResponseBody>
+
+    @PATCH("/api/climber/averageCompletionLevel-privacy-setting")
+    suspend fun editAvgCompleteLevelPrivacy(): Response<ResponseBody>
 
 }

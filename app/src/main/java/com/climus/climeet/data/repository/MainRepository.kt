@@ -34,6 +34,7 @@ import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
 import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.GymWeekStatsResponse
+import com.climus.climeet.data.model.response.MyPageClimberProfilePrivacyResponse
 import com.climus.climeet.data.model.response.MyPageProfileResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.RefreshTokenResponse
@@ -262,6 +263,10 @@ interface MainRepository {
     ): BaseState<GymWeekStatsResponse>
 
     suspend fun getMyPageProfile(): BaseState<MyPageProfileResponse>
+
+    suspend fun getClimberProfilePrivacyState(
+        climberId: Long,
+    ): BaseState<MyPageClimberProfilePrivacyResponse>
 
     // -------- RoomDB ClimbingRecordDao 암장 정보 ----------
     fun insert(climbingRecordData: ClimbingRecordData)
