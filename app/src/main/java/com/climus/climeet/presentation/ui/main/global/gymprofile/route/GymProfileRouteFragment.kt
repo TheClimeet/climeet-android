@@ -11,6 +11,7 @@ import com.climus.climeet.databinding.FragmentGymProfileRouteBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheet
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheetViewModel
+import com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileData
 import com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileViewModel
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLevelAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
@@ -87,7 +88,8 @@ class GymProfileRouteFragment :
                         SelectDateBottomSheet(
                             requireContext(),
                             dateViewModel,
-                            CreateRecordData.selectedDate
+                            GymProfileData.selectedDate,
+                            GymProfileData::setSelectedDate
                         ) { date ->
                             viewModel.setSelectedDate(date)
                         }.show()

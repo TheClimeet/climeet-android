@@ -89,7 +89,8 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
                         SelectDateBottomSheet(
                             requireContext(),
                             dateViewModel,
-                            CreateRecordData.selectedDate
+                            CreateRecordData.selectedDate,
+                            CreateRecordData::setSelectedDate
                         ) { date ->
                             viewModel.setSelectedDate(date)
                         }.show()
