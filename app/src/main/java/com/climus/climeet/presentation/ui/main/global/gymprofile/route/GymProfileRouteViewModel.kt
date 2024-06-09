@@ -66,7 +66,7 @@ class GymProfileRouteViewModel @Inject constructor(
     private var sectorNameList = listOf<SectorNameUiData>()
     private var gymLevelList = listOf<GymLevelUiData>()
 
-    private val initDate = GymProfileData.selectedDate
+    private val initDate = LocalDate.now()
     val datePickText =
         MutableStateFlow("${initDate.year}년 ${initDate.monthValue}월 ${initDate.dayOfMonth}일")
     val selectedDate = MutableLiveData(initDate)
@@ -78,7 +78,7 @@ class GymProfileRouteViewModel @Inject constructor(
     var cragName: String = ""
 
     init {
-        Log.d("gym_test", "${LocalDate.now().monthValue}")
+        GymProfileData.setSelectedDate(initDate)
     }
 
     fun setSelectedDate(date: LocalDate) {

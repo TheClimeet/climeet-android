@@ -51,7 +51,6 @@ class GymProfileRouteFragment :
     }
 
     private fun setRouteTab() {
-        // 암장 id, 이름 설정
         parentViewModel.gymId.observe(viewLifecycleOwner, Observer { id ->
 
             sharedViewModel.setCurFilter(id)
