@@ -24,10 +24,6 @@ class MyPageClimberProfileViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MyPageClimberProfileUiState())
     val uiState: StateFlow<MyPageClimberProfileUiState> = _uiState.asStateFlow()
 
-    // 공개 범위 설정 버튼 관리
-    private val _btnState = MutableStateFlow(ClimberProfileSettingBtnState())
-    val btnState: StateFlow<ClimberProfileSettingBtnState> = _btnState.asStateFlow()
-
     private var climberId: Long = 0
 
     fun setClimberId(id: Long) {
@@ -61,11 +57,7 @@ class MyPageClimberProfileViewModel @Inject constructor(
         }
     }
 
-    private fun editProfilePrivacy() {
-
-    }
-
-    // 정보탭 공개 범위
+    // 정보탭 공개 범위 수정 반영
     fun setPrivacyState(target: String, privacy: Boolean) {
         when (target) {
             "homeGym" -> {
@@ -73,6 +65,20 @@ class MyPageClimberProfileViewModel @Inject constructor(
                     state.copy(
                         homeGymPublic = privacy
                     )
+                }
+
+                viewModelScope.launch {
+                    repository.editHomeGymPrivacy().let {
+                        when (it) {
+                            is BaseState.Success -> {
+                                Log.d("climber_edit", "홈짐 공개범위 수정")
+                            }
+
+                            is BaseState.Error -> {
+
+                            }
+                        }
+                    }
                 }
             }
 
@@ -82,6 +88,20 @@ class MyPageClimberProfileViewModel @Inject constructor(
                         avgCompletionRatePublic = privacy
                     )
                 }
+
+                viewModelScope.launch {
+                    repository.editAvgCompletePrivacy().let {
+                        when (it) {
+                            is BaseState.Success -> {
+                                Log.d("climber_edit", "평균 완등률 공개범위 수정")
+                            }
+
+                            is BaseState.Error -> {
+
+                            }
+                        }
+                    }
+                }
             }
 
             "avgCompleteLevel" -> {
@@ -89,6 +109,20 @@ class MyPageClimberProfileViewModel @Inject constructor(
                     state.copy(
                         avgCompletionLevelPublic = privacy
                     )
+                }
+
+                viewModelScope.launch {
+                    repository.editAvgCompleteLevelPrivacy().let {
+                        when (it) {
+                            is BaseState.Success -> {
+                                Log.d("climber_edit", "평균 완등 레벨 공개범위 수정")
+                            }
+
+                            is BaseState.Error -> {
+
+                            }
+                        }
+                    }
                 }
             }
 

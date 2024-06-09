@@ -433,4 +433,13 @@ class MainRepositoryImpl @Inject constructor(
         api.getUserShorts(uploaderId, page, size)
     }
 
+    override suspend fun editHomeGymPrivacy(): BaseState<ResponseBody> =
+        runRemote { api.editHomeGymPrivacy() }
+
+    override suspend fun editAvgCompletePrivacy(): BaseState<ResponseBody> =
+        runRemote { api.editAvgCompletePrivacy() }
+
+    override suspend fun editAvgCompleteLevelPrivacy(): BaseState<ResponseBody> =
+        runRemote { api.editAvgCompleteLevelPrivacy() }
+
 }

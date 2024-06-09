@@ -268,6 +268,10 @@ interface MainRepository {
         climberId: Long,
     ): BaseState<MyPageClimberProfilePrivacyResponse>
 
+    suspend fun editHomeGymPrivacy(): BaseState<ResponseBody>
+    suspend fun editAvgCompletePrivacy(): BaseState<ResponseBody>
+    suspend fun editAvgCompleteLevelPrivacy(): BaseState<ResponseBody>
+
     // -------- RoomDB ClimbingRecordDao 암장 정보 ----------
     fun insert(climbingRecordData: ClimbingRecordData)
     fun update(climbingRecordData: ClimbingRecordData)
