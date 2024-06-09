@@ -351,7 +351,7 @@ interface MainApi {
         @Path("gymId") gymId: Long
     ): Response<GetClimberProfileTargetGymStatisticsResponse>
 
-    @GET("/api/climbing-records/users/{userId}/month/list")
+    @GET("/api/climbing-records/users/{userId}/months/list")
     suspend fun getUserClimbedGymList(
         @Path("userId") userId: Int,
         @Query("year") year: Int,
