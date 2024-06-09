@@ -172,14 +172,15 @@
                             app:shapeAppearanceOverlay="@style/All10RadiusImageView"
                             tools:src="@drawable/test" />
 
-                        <androidx.recyclerview.widget.RecyclerView
+                        <com.climus.climeet.presentation.customview.ScrollBlockRecyclerView
                             android:id="@+id/rv_sector_name"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="12dp"
-                            android:layout_marginTop="8dp"
                             android:clipToPadding="false"
+                            android:nestedScrollingEnabled="true"
                             android:orientation="horizontal"
+                            android:paddingTop="8dp"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -187,14 +188,15 @@
                             app:list="@{vm.uiState.sectorNameList}"
                             tools:listitem="@layout/item_sector_name" />
 
-                        <androidx.recyclerview.widget.RecyclerView
+                        <com.climus.climeet.presentation.customview.ScrollBlockRecyclerView
                             android:id="@+id/rv_sector_level"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="12dp"
-                            android:layout_marginTop="8dp"
                             android:clipToPadding="false"
+                            android:nestedScrollingEnabled="true"
                             android:orientation="horizontal"
+                            android:paddingTop="8dp"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -202,14 +204,15 @@
                             app:list="@{vm.uiState.gymLevelList}"
                             tools:listitem="@layout/item_gym_level" />
 
-                        <androidx.recyclerview.widget.RecyclerView
+                        <com.climus.climeet.presentation.customview.ScrollBlockRecyclerView
                             android:id="@+id/rv_sector_image"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="12dp"
-                            android:layout_marginTop="16dp"
                             android:clipToPadding="false"
+                            android:nestedScrollingEnabled="true"
                             android:orientation="horizontal"
+                            android:paddingVertical="16dp"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -272,6 +275,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:background="@color/cm_lightblack"
+                    android:paddingHorizontal="20dp"
                     android:paddingVertical="12dp"
                     android:visibility="@{svm.uiState.curFilter.cragName.empty? View.GONE : View.VISIBLE}"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -282,10 +286,9 @@
                         android:id="@+id/chip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:background="@drawable/rect_grey8fill_nostroke_5radius"
-                        android:paddingHorizontal="16dp"
                         android:paddingVertical="2dp"
+                        android:paddingStart="16dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -354,9 +357,9 @@
                             android:id="@+id/btn_remove_filter"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
-                            android:layout_marginStart="12dp"
                             android:background="@android:color/transparent"
                             android:onClick="@{() -> vm.clearSelectedRoute()}"
+                            android:paddingHorizontal="15dp"
                             android:src="@drawable/ic_main_exit"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@id/tv_level_filter"
