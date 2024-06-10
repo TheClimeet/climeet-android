@@ -536,7 +536,7 @@
                             android:layout_height="wrap_content"
                             android:isIndicator="true"
                             android:numStars="5"
-                            android:rating="@{parentVM.uiState.averageRating}"
+                            android:rating="@{vm.uiState.averageRating}"
                             android:scaleX="0.6"
                             android:scaleY="0.6"
                             android:stepSize="0.1"
