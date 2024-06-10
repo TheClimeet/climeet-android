@@ -37,6 +37,7 @@ import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
 import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.GymWeekStatsResponse
+import com.climus.climeet.data.model.response.MyClimbedGym
 import com.climus.climeet.data.model.response.MyPageProfileResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
@@ -47,6 +48,7 @@ import com.climus.climeet.data.model.response.ShortsMainCommentResponse
 import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
+import com.climus.climeet.data.model.response.UserClimbedGym
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserFollowerInfoResponse
 import com.climus.climeet.data.model.response.UserFollowingInfoResponse
@@ -416,6 +418,13 @@ class MainRepositoryImpl @Inject constructor(
         month: Int
     ): BaseState<GetMyStatsTargetGymMonthResponse> = runRemote {
         api.getMyStatsTargetGymMonth(gymId, year, month)
+    }
+
+    override suspend fun getMyClimbedGymList(
+        year: Int,
+        month: Int
+    ): BaseState<List<MyClimbedGym>> = runRemote {
+        api.getMyClimbedGymList(year, month)
     }
 
     override suspend fun getMyShorts(page: Int, size: Int): BaseState<ShortsListResponse> =

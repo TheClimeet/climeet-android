@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.record.model
 
+import com.climus.climeet.data.model.response.MyClimbedGym
 import com.climus.climeet.data.model.response.UserClimbedGym
 
 data class SelectGymData(
@@ -15,3 +16,12 @@ fun UserClimbedGym.toSelectGymData(
     name = gymName,
     onClickListener = onClickListener
 )
+
+fun MyClimbedGym.toSelectGymData(
+    onClickListener: (SelectGymData) -> Unit
+) = SelectGymData(
+    id = gymId,
+    name = gymName,
+    onClickListener = onClickListener
+)
+

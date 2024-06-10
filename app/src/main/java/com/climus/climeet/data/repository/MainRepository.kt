@@ -35,6 +35,7 @@ import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
 import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.GymWeekStatsResponse
+import com.climus.climeet.data.model.response.MyClimbedGym
 import com.climus.climeet.data.model.response.MyPageProfileResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.RefreshTokenResponse
@@ -46,6 +47,7 @@ import com.climus.climeet.data.model.response.ShortsMainCommentResponse
 import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
+import com.climus.climeet.data.model.response.UserClimbedGym
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserFollowerInfoResponse
 import com.climus.climeet.data.model.response.UserFollowingInfoResponse
@@ -323,6 +325,11 @@ interface MainRepository {
         year: Int,
         month: Int
     ): BaseState<GetMyStatsTargetGymMonthResponse>
+
+    suspend fun getMyClimbedGymList(
+        year: Int,
+        month: Int
+    ): BaseState<List<MyClimbedGym>>
 
     suspend fun getUserShorts(
         uploaderId: Long,

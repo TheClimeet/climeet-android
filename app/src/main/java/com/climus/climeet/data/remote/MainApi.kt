@@ -32,6 +32,7 @@ import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
 import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.GymWeekStatsResponse
+import com.climus.climeet.data.model.response.MyClimbedGym
 import com.climus.climeet.data.model.response.MyPageProfileResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
@@ -42,6 +43,7 @@ import com.climus.climeet.data.model.response.ShortsMainCommentResponse
 import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
+import com.climus.climeet.data.model.response.UserClimbedGym
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserFollowerInfoResponse
 import com.climus.climeet.data.model.response.UserFollowingInfoResponse
@@ -279,6 +281,12 @@ interface MainApi {
         @Query("year") year: Int,
         @Query("month") month: Int
     ): Response<GetMyStatsTargetGymMonthResponse>
+
+    @GET("/api/climbing-records/users/months/list")
+    suspend fun getMyClimbedGymList(
+        @Query("year") year: Int,
+        @Query("month") month: Int
+    ): Response<List<MyClimbedGym>>
 
     @GET("/api/gyms/{gymId}/review")
     suspend fun getGymReview(
