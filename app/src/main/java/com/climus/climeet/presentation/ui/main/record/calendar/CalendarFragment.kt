@@ -98,6 +98,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment
 
                     is CalendarEvent.ShowToastMessage -> showToastMessage(it.msg)
                     is CalendarEvent.NavigateToTimerMain -> findNavController().toTimerMain()
+                    is CalendarEvent.ShowPermissionDialog -> showPermissionSnackBar(binding.snackGuide, it.msg)
                 }
             }
         }
