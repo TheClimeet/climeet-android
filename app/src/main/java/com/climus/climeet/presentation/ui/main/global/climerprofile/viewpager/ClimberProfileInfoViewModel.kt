@@ -55,7 +55,6 @@ class ClimberProfileInfoViewModel @Inject constructor(private val repository: Ma
 
     fun setUserId(id: Long) {
         userId = id
-        getStatistics()
         getMyClimbedGymList()
     }
 

@@ -79,6 +79,10 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
                 averageCompletionRatePublic = it.averageCompletionRatePublic
                 averageCompletionLevelPublic = it.averageCompletionLevelPublic
 
+                if(it.averageCompletionLevelPublic || it.averageCompletionRatePublic) {
+                    viewModel.getStatistics()
+                }
+
                 if(it.homeGymPublic) {
                     binding.rvHomeHomegym.visibility = View.VISIBLE
                     binding.layoutPrivacyHome.visibility = View.GONE
@@ -86,6 +90,14 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
                 } else {
                     binding.rvHomeHomegym.visibility = View.INVISIBLE
                     binding.layoutPrivacyHome.visibility = View.VISIBLE
+                }
+
+                if(it.averageCompletionRatePublic) {
+                    binding.layoutPrivacyRate.visibility = View.INVISIBLE
+                    binding.layoutAvgComplete.visibility = View.VISIBLE
+                } else {
+                    binding.layoutPrivacyRate.visibility = View.VISIBLE
+                    binding.layoutAvgComplete.visibility = View.INVISIBLE
                 }
             }
         }
