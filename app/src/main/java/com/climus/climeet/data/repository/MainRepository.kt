@@ -137,11 +137,11 @@ interface MainRepository {
 
     suspend fun followUser(
         followingUserId: Long
-    ): BaseState<String>
+    ): BaseState<ResponseBody>
 
     suspend fun unfollowUser(
         followingUserId: Long
-    ): BaseState<String>
+    ): BaseState<ResponseBody>
 
     suspend fun followGym(
         gymId: Long

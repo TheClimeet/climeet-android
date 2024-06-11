@@ -48,13 +48,6 @@ class ClimerProfileFragment : BaseFragment<FragmentClimerProfileBinding>(R.layou
             viewModel.event.collect{
                 when(it){
                     is ClimberProfileEvent.ChangeFollowing -> {
-                        if(it.state){
-                            binding.btnFollow.visibility = View.INVISIBLE
-                            binding.btnFollowing.visibility = View.VISIBLE
-                        } else {
-                            binding.btnFollow.visibility = View.VISIBLE
-                            binding.btnFollowing.visibility = View.INVISIBLE
-                        }
                     }
                 }
             }

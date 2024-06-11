@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.global.climerprofile
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
@@ -20,11 +21,12 @@ data class ClimberProfileUiState(
     val userName: String = "",
     val userProfileImg: String = "",
     val followingString: String = "",
-    val isFollower: Boolean = false
+    val isFollower: Boolean = false,
+    val followerCount: Int = 0,
 )
 
-sealed class ClimberProfileEvent{
-    data class ChangeFollowing(val state: Boolean): ClimberProfileEvent()
+sealed class ClimberProfileEvent {
+    data class ChangeFollowing(val state: Boolean) : ClimberProfileEvent()
 }
 
 @HiltViewModel
@@ -39,6 +41,7 @@ class ClimberProfileViewModel @Inject constructor(
     val event: SharedFlow<ClimberProfileEvent> = _event.asSharedFlow()
 
     private var userId: Long = 0
+    private var followingCount = 0
 
     fun setUserId(id: Long) {
         userId = id
@@ -50,14 +53,17 @@ class ClimberProfileViewModel @Inject constructor(
             repository.getUserInfo(userId).let {
                 when (it) {
                     is BaseState.Success -> {
+                        Log.d("follow_test", it.body.toString())
                         _uiState.update { state ->
                             state.copy(
                                 userName = it.body.userName,
                                 userProfileImg = it.body.userProfileUrl,
                                 followingString = "팔로워 ${it.body.followerCount}  |  팔로잉 ${it.body.followingCount}",
-                                isFollower = it.body.isFollower
+                                isFollower = it.body.isFollower,
+                                followerCount = it.body.followerCount
                             )
                         }
+                        followingCount = it.body.followingCount
                     }
 
                     is BaseState.Error -> {
@@ -68,42 +74,52 @@ class ClimberProfileViewModel @Inject constructor(
         }
     }
 
-    fun follow() {
+    fun toggleFollowState() {
         viewModelScope.launch {
-            repository.followUser(userId).let {
-                when (it) {
-                    is BaseState.Success -> {
-                        _uiState.update { state ->
-                            state.copy(isFollower = true)
+            viewModelScope.launch {
+                Log.d("follow_test", _uiState.value.isFollower.toString())
+                Log.d("follow_test", userId.toString())
+                if (!_uiState.value.isFollower) {
+                    val result = repository.followUser(userId)
+                    when (result) {
+                        is BaseState.Success -> {
+                            _uiState.update { state ->
+                                state.copy(
+                                    followerCount = _uiState.value.followerCount + 1,
+                                    followingString = "팔로워 ${_uiState.value.followerCount + 1}  |  팔로잉 $followingCount",
+                                    isFollower = true
+                                )
+                            }
+                            Log.d("follow_test", "${result}")
                         }
-                        _event.emit(ClimberProfileEvent.ChangeFollowing(true))
+
+                        is BaseState.Error -> {
+                            Log.d("follow_test", "${result}")
+                        }
+
                     }
 
-                    is BaseState.Error -> {
+                } else {
+                    val result = repository.unfollowUser(userId)
+                    when (result) {
+                        is BaseState.Success -> {
+                            _uiState.update { state ->
+                                state.copy(
+                                    followerCount = _uiState.value.followerCount - 1,
+                                    followingString = "팔로워 ${_uiState.value.followerCount - 1}  |  팔로잉 $followingCount",
+                                    isFollower = false
+                                )
+                            }
+                            Log.d("follow_test", "${result}")
+                        }
 
+                        is BaseState.Error -> {
+                            Log.d("follow_test", "${result.msg}")
+                        }
                     }
+
                 }
             }
         }
     }
-
-    fun unFollow() {
-        viewModelScope.launch {
-            repository.unfollowUser(userId).let {
-                when (it) {
-                    is BaseState.Success -> {
-                        _uiState.update { state ->
-                            state.copy(isFollower = false)
-                        }
-                        _event.emit(ClimberProfileEvent.ChangeFollowing(false))
-                    }
-
-                    is BaseState.Error -> {
-
-                    }
-                }
-            }
-        }
-    }
-
 }

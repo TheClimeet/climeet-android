@@ -113,13 +113,13 @@ fun selectTimeColor(tv: TextView, state: Boolean) {
 
 @BindingAdapter("followState")
 fun setFollowState(tv: TextView, isFollowing: Boolean) {
-    if (!isFollowing) {
-        tv.setBackgroundResource(R.drawable.btn_following)
-        tv.setTextColor(Color.BLACK)
-        tv.text = tv.context.getString(R.string.gym_profile_following)
-    } else {
+    if (isFollowing) {
         tv.setBackgroundResource(R.drawable.btn_follow)
         tv.setTextColor(Color.WHITE)
         tv.text = tv.context.getString(R.string.gym_profile_follow)
+    } else {
+        tv.setBackgroundResource(R.drawable.btn_following)
+        tv.setTextColor(Color.BLACK)
+        tv.text = tv.context.getString(R.string.gym_profile_following)
     }
 }

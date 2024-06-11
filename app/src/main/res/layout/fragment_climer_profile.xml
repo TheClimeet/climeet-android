@@ -62,32 +62,14 @@
 
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_following"
-            style="@style/TextLargeBold"
-            android:layout_width="72dp"
-            android:layout_height="35dp"
-            android:layout_marginHorizontal="20dp"
-            android:background="@drawable/btn_follow"
-            android:onClick="@{() -> vm.unFollow()}"
-            android:text="팔로잉"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_climber_profile"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_climber_profile" />
-
-        <androidx.appcompat.widget.AppCompatButton
+        <TextView
             android:id="@+id/btn_follow"
-            style="@style/TextLargeBold"
+            style="@style/TextSmall"
             android:layout_width="72dp"
-            android:layout_height="35dp"
-            android:layout_marginHorizontal="20dp"
-            android:background="@drawable/btn_following"
-            android:onClick="@{() -> vm.follow()}"
-            android:text="팔로우"
-            android:textColor="@color/black"
-            android:textSize="14sp"
+            android:layout_height="26dp"
+            android:gravity="center"
+            android:onClick="@{() -> vm.toggleFollowState()}"
+            app:followState="@{vm.uiState.isFollower}"
             app:layout_constraintBottom_toBottomOf="@+id/iv_climber_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/iv_climber_profile" />

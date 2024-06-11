@@ -98,12 +98,12 @@ interface MainApi {
     @POST("/follow-relationship")
     suspend fun followUser(
         @Query("followingUserId") userId: Long
-    ): Response<String>
+    ): Response<ResponseBody>
 
     @DELETE("/follow-relationship")
     suspend fun unfollowUser(
         @Query("followingUserId") userId: Long
-    ): Response<String>
+    ): Response<ResponseBody>
 
     @POST("/follow-relationship/gym")
     suspend fun followGym(

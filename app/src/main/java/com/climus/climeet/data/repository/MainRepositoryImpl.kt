@@ -128,12 +128,12 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun followUser(
         followingUserId: Long
-    ): BaseState<String> =
+    ): BaseState<ResponseBody> =
         runRemote { api.followUser(followingUserId) }
 
     override suspend fun unfollowUser(
         followingUserId: Long
-    ): BaseState<String> =
+    ): BaseState<ResponseBody> =
         runRemote { api.unfollowUser(followingUserId) }
 
     override suspend fun getClimberSearchingList(
