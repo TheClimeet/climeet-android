@@ -178,6 +178,40 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_privacy_rate" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_privacy_level"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/rect_grey8fill_nostroke_5radius"
+                android:padding="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_complete_level_title">
+
+                <ImageView
+                    android:id="@+id/iv_privacy_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_lock"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    style="@style/TextSmallBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="15dp"
+                    android:text="비공개 정보입니다"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/iv_privacy_level"
+                    app:layout_constraintStart_toStartOf="@id/iv_privacy_level"
+                    app:layout_constraintTop_toBottomOf="@id/iv_privacy_level" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <LinearLayout
                 android:id="@+id/layout_toggle"
                 android:layout_width="wrap_content"

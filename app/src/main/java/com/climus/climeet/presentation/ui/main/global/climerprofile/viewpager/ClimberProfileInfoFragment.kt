@@ -99,6 +99,16 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
                     binding.layoutPrivacyRate.visibility = View.VISIBLE
                     binding.layoutAvgComplete.visibility = View.INVISIBLE
                 }
+
+                if(it.averageCompletionLevelPublic) {
+                    binding.layoutPrivacyLevel.visibility = View.INVISIBLE
+                    binding.viewStickchart.visibility = View.VISIBLE
+                    binding.layoutToggle.visibility = View.VISIBLE
+                } else {
+                    binding.layoutPrivacyLevel.visibility = View.VISIBLE
+                    binding.viewStickchart.visibility = View.INVISIBLE
+                    binding.layoutToggle.visibility = View.INVISIBLE
+                }
             }
         }
     }
