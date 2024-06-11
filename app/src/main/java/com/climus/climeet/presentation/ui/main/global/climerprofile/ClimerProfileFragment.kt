@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
@@ -22,7 +23,7 @@ class ClimerProfileFragment :
     private val args: ClimerProfileFragmentArgs by navArgs()
     private val userId by lazy { args.userId }
 
-    private val viewModel: ClimberProfileViewModel by viewModels()
+    private val viewModel: ClimberProfileViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

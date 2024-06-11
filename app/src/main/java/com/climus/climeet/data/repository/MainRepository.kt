@@ -125,7 +125,7 @@ interface MainRepository {
 
     suspend fun getHomeGyms(): BaseState<List<UserHomeGymSimpleResponse>>
 
-    suspend fun getClimberSearchingList(
+    suspend fun getClimberPrivacySetting(
         @Query("climberId") climberId: Int
     ): BaseState<GetClimberPrivacySettingResponse>
 

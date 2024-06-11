@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.response.GetClimberPrivacySettingResponse
 import com.climus.climeet.data.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -44,12 +45,21 @@ class ClimberProfileViewModel @Inject constructor(
     private val _isFollower = MutableLiveData<Boolean>()
     val isFollower: LiveData<Boolean> = _isFollower
 
+    private val _climberPrivacySetting = MutableStateFlow(GetClimberPrivacySettingResponse(
+        shortsPublic = false,
+        homeGymPublic = false,
+        averageCompletionRatePublic = false,
+        averageCompletionLevelPublic = false
+    ))
+    val climberPrivacySetting: StateFlow<GetClimberPrivacySettingResponse> = _climberPrivacySetting.asStateFlow()
+
     private var userId: Long = 0
     private var followingCount = 0
 
     fun setUserId(id: Long) {
         userId = id
         getUserInfo()
+        getClimberPrivacySetting()
     }
 
     private fun getUserInfo() {
@@ -73,7 +83,33 @@ class ClimberProfileViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-                        it.msg
+
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getClimberPrivacySetting() {
+        viewModelScope.launch {
+            repository.getClimberPrivacySetting(userId.toInt()).let {
+                when(it) {
+                    is BaseState.Success -> {
+                        Log.d("testteststs", userId.toString())
+                        Log.d("testteststs", it.body.toString())
+                        _climberPrivacySetting.update { state ->
+                            state.copy(
+                                shortsPublic = it.body.shortsPublic,
+                                homeGymPublic = it.body.homeGymPublic,
+                                averageCompletionRatePublic = it.body.averageCompletionRatePublic,
+                                averageCompletionLevelPublic = it.body.averageCompletionLevelPublic
+                            )
+                        }
+                    }
+                    is BaseState.Error -> {
+                        Log.d("testteststs", climberPrivacySetting.value.toString())
+                        Log.d("testteststs", userId.toString())
+                        Log.d("testteststs", it.msg)
                     }
                 }
             }

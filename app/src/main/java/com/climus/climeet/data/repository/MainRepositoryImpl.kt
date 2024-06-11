@@ -124,7 +124,7 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun getHomeGyms(): BaseState<List<UserHomeGymSimpleResponse>> =
         runRemote { api.getHomeGyms() }
 
-    override suspend fun getClimberSearchingList(climberId: Int): BaseState<GetClimberPrivacySettingResponse> =
+    override suspend fun getClimberPrivacySetting(climberId: Int): BaseState<GetClimberPrivacySettingResponse> =
         runRemote { api.getClimberPrivacySetting(climberId) }
 
     override suspend fun getClimberFollowing(): BaseState<List<UserFollowSimpleResponse>> =
