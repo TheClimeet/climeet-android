@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -25,7 +26,7 @@ import kotlinx.coroutines.launch
 class GymProfileLevelDetailFragment : Fragment() {
 
     private lateinit var binding: FragmentLevelDetailBinding
-    private val viewModel: GymProfileLevelDetailViewModel by viewModels()
+    private val viewModel: GymProfileLevelDetailViewModel by activityViewModels()
 
     private lateinit var profileImg1: ImageView
     private lateinit var profileImg2: ImageView

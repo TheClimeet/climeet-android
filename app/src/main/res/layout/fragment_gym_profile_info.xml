@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="parentVM"
             type="com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileViewModel" />
@@ -228,19 +230,49 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
+                        <LinearLayout
+                            android:id="@+id/layout_time_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="60dp"
+                            android:layout_marginTop="10dp"
+                            android:onClick="@{() -> vm.onLayoutTimeTitleClick()}"
+                            android:padding="10dp"
+                            android:visibility="@{vm.uiState.isTimeVisible ? View.VISIBLE : View.GONE}"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:id="@+id/tv_time_title"
+                                style="@style/TextSmall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.uiState.startTime}" />
+
+                            <ImageView
+                                android:id="@+id/iv_toggle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="8dp"
+                                android:src="@{vm.uiState.isIvToggleVisible ? @drawable/ic_gym_profile_toggle_off : @drawable/ic_gym_profile_toggle}" />
+
+                        </LinearLayout>
+
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="70dp"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="10dp"
                             android:clipToPadding="false"
+                            android:onClick="@{() -> vm.onLayoutTimeTitleClick()}"
                             android:orientation="vertical"
-                            android:visibility="visible"
+                            android:visibility="@{vm.uiState.isRvTimeVisible ? View.VISIBLE : View.GONE}"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/layout_time_title"
+                            app:layout_constraintTop_toBottomOf="@id/layout_time_title"
                             tools:itemCount="1"
                             tools:listitem="@layout/item_profile_time" />
 
@@ -253,34 +285,10 @@
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="20dp"
                             android:text="@string/gym_profile_null"
-                            android:visibility="gone"
+                            android:visibility="@{vm.uiState.isTimeErrorVisible ? View.VISIBLE : View.GONE}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageView
-                            android:id="@+id/iv_toggle_off"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="7dp"
-                            android:src="@drawable/ic_gym_profile_toggle"
-                            android:visibility="visible"
-                            app:layout_constraintStart_toEndOf="@id/rv_time"
-                            app:layout_constraintTop_toTopOf="@id/rv_time" />
-
-                        <ImageView
-                            android:id="@+id/iv_toggle_on"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="7dp"
-                            android:src="@drawable/ic_gym_profile_toggle"
-                            android:visibility="invisible"
-                            app:layout_constraintStart_toEndOf="@id/rv_time"
-                            app:layout_constraintTop_toTopOf="@id/rv_time" />
-
-                        <!--    todo : 토글 달아주기    -->
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -528,7 +536,7 @@
                             android:layout_height="wrap_content"
                             android:isIndicator="true"
                             android:numStars="5"
-                            android:rating="@{parentVM.uiState.averageRating}"
+                            android:rating="@{vm.uiState.averageRating}"
                             android:scaleX="0.6"
                             android:scaleY="0.6"
                             android:stepSize="0.1"
@@ -539,11 +547,12 @@
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_create_review"
                             style="@style/TextSmall"
-                            android:layout_width="119dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="30dp"
                             android:layout_marginTop="10dp"
                             android:background="@drawable/rect_nofill_mainstroke_8radius"
-                            android:drawableLeft="@drawable/ic_plus_mainfill"
+                            android:drawableStart="@drawable/ic_plus_mainfill"
+                            android:drawablePadding="5dp"
                             android:onClick="@{() -> vm.navigateToGymReviewBottomSheetFragment()}"
                             android:paddingStart="15dp"
                             android:paddingEnd="10dp"

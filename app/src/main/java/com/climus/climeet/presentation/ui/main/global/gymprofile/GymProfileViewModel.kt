@@ -22,7 +22,7 @@ data class GymProfileInfoUiState(
     val followerCount: Int = 0,
     val followingCount: Int = 0,
     val averageRating: Float = 0F,
-    val reviewCount: Int = 0
+    val reviewCount: Int = 0,
 )
 
 @HiltViewModel
@@ -37,42 +37,35 @@ class GymProfileViewModel @Inject constructor(
 
     val followState = MutableStateFlow(false)
 
-    init {
-        // 임의로 팔로워 수 증가
+    fun setGymId(id : Long) {
         viewModelScope.launch {
-            followState.collect { isFollowing ->
-                _uiState.value = if (isFollowing) {
-                    _uiState.value.copy(followerCount = _uiState.value.followerCount + 1)
-                } else {
-                    _uiState.value.copy(followerCount = _uiState.value.followerCount - 1)
-                }
-            }
+            gymId.value = id
         }
     }
 
     fun getGymProfileInfo() {
         viewModelScope.launch {
             gymId.value?.let {
-                repository.getGymProfileTopInfo(it).let { it ->
-                    when (it) {
+                repository.getGymProfileTopInfo(it).let { result ->
+                    when (result) {
                         is BaseState.Success -> {
-                            // 성공
                             _uiState.update { state ->
                                 state.copy(
                                     gymId = gymId.value!!,
-                                    gymProfileImageUrl = it.body.gymProfileImageUrl,
-                                    gymBackGroundImageUrl = it.body.gymBackGroundImageUrl,
-                                    gymName = it.body.gymName,
-                                    followerCount = it.body.followerCount,
-                                    followingCount = it.body.followingCount,
-                                    averageRating = it.body.averageRating,
-                                    reviewCount = it.body.reviewCount
+                                    gymProfileImageUrl = result.body.gymProfileImageUrl,
+                                    gymBackGroundImageUrl = result.body.gymBackGroundImageUrl,
+                                    gymName = result.body.gymName,
+                                    followerCount = result.body.followerCount,
+                                    followingCount = result.body.followingCount,
+                                    averageRating = result.body.averageRating,
+                                    reviewCount = result.body.reviewCount
                                 )
                             }
+                            followState.value = result.body.isFollower
                         }
 
                         is BaseState.Error -> {
-                            it.msg // 서버 에러 메시지
+                            result.msg
                             Log.d("gym_profile", "상단 정보 불러오기 실패")
                         }
                     }
@@ -80,4 +73,30 @@ class GymProfileViewModel @Inject constructor(
             }
         }
     }
+
+    fun toggleFollowState() {
+        followState.value = !followState.value
+        viewModelScope.launch {
+            gymId.value?.let { id ->
+                viewModelScope.launch {
+                    if (followState.value) {
+                        repository.followGym(id)
+                        _uiState.update { state ->
+                            state.copy(
+                                followerCount = _uiState.value.followerCount + 1
+                            )
+                        }
+                    } else {
+                        repository.unFollowGym(id)
+                        _uiState.update { state ->
+                            state.copy(
+                                followerCount = _uiState.value.followerCount - 1
+                            )
+                        }
+                    }
+                }
+            } ?: Log.d("gym_profile", "암장 아이디가 설정되지 않았습니다.")
+        }
+    }
+
 }

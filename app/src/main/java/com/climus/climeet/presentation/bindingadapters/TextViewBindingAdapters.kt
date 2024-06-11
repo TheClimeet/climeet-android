@@ -1,9 +1,11 @@
 package com.climus.climeet.presentation.bindingadapters
 
+import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColorInt
@@ -106,5 +108,18 @@ fun selectTimeColor(tv: TextView, state: Boolean) {
         tv.setTextColor(ContextCompat.getColor(tv.context, R.color.cm_lightgrey2))
     } else {
         tv.setTextColor(ContextCompat.getColor(tv.context, R.color.white))
+    }
+}
+
+@BindingAdapter("followState")
+fun setFollowState(tv: TextView, isFollowing: Boolean) {
+    if (!isFollowing) {
+        tv.setBackgroundResource(R.drawable.btn_following)
+        tv.setTextColor(Color.BLACK)
+        tv.text = tv.context.getString(R.string.gym_profile_following)
+    } else {
+        tv.setBackgroundResource(R.drawable.btn_follow)
+        tv.setTextColor(Color.WHITE)
+        tv.text = tv.context.getString(R.string.gym_profile_follow)
     }
 }

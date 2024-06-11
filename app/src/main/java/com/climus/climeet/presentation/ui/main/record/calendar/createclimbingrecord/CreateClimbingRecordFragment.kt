@@ -61,7 +61,8 @@ class CreateClimbingRecordFragment :
                         SelectDateBottomSheet(
                             requireContext(),
                             dateViewModel,
-                            CreateRecordData.selectedDate
+                            CreateRecordData.selectedDate,
+                            CreateRecordData::setSelectedDate
                         ) { date ->
                             viewModel.setSelectedDate(date)
                             calendarViewModel.setSelectedDate(date)

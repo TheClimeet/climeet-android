@@ -44,6 +44,8 @@ class GymTimeViewHolder(private val binding: ItemProfileTimeBinding) :
             val closingTime = item.hours[1]
 
             formattedTime = "$openingTime - $closingTime"
+        }else{
+            formattedTime = item.hours[0]
         }
         binding.tvTime.text = item.day + " " + formattedTime
     }

@@ -37,5 +37,7 @@
 
     <!--  암장 프로필  -->
     <string name="gym_profile_null">"암장 정보가 비어있어요"</string>
+    <string name="gym_profile_follow">"팔로우"</string>
+    <string name="gym_profile_following">"팔로잉"</string>
 
 </resources>

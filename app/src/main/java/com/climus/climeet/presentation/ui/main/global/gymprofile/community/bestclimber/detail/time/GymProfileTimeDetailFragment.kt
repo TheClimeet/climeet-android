@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -26,7 +27,7 @@ class GymProfileTimeDetailFragment : Fragment() {
 
     private lateinit var binding : FragmentTimeDetailBinding
 
-    private val viewModel: GymProfileTimeDetailViewModel by viewModels()
+    private val viewModel: GymProfileTimeDetailViewModel by activityViewModels()
 
     private lateinit var profileImg1 : ImageView
     private lateinit var profileImg2 : ImageView
