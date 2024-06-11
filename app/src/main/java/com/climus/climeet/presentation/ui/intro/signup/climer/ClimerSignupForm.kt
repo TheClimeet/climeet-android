@@ -22,7 +22,7 @@ object ClimerSignupForm {
     private var noticePermission: Boolean = false
 
     fun setToken(data: String) {
-        token = "Bearer $data"
+        token = data
     }
 
     fun setSocialType(data: String) {
