@@ -30,18 +30,17 @@ class NoticeSettingViewModel @Inject constructor(
     val event: SharedFlow<NoticeSettingEvent> = _event.asSharedFlow()
 
     fun signUp(
-        provider: String,
-        accessToken: String,
         signUpRequest: ClimerSignupRequest
     ) {
         viewModelScope.launch {
-            repository.climerSignUp(provider, accessToken, signUpRequest).let {
+            repository.climerSignUp(signUpRequest).let {
                 when (it) {
                     is BaseState.Success -> {
                         authRepository.putAccessToken(it.body.accessToken)
-                        authRepository.putRefreshToken(it.body.refreshToken)
-                        authRepository.putLoginMode("ADMIN")
-
+                        it.body.refreshToken?.let { data ->
+                            authRepository.putRefreshToken(data)
+                        }
+                        authRepository.putLoginMode("CLIMER")
                         _event.emit(NoticeSettingEvent.NavigateToComplete)
                     }
 

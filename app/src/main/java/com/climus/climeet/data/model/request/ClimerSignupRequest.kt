@@ -1,6 +1,8 @@
 package com.climus.climeet.data.model.request
 
 data class ClimerSignupRequest(
+    val token: String,
+    val socialType: String,
     val nickName: String,
     val climbingLevel: ClimbingLevel,
     val discoveryChannel: DiscoveryChannel,
