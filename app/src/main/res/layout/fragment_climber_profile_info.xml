@@ -115,6 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:onClick="@{()->vm.showPopupWindow()}"
                 app:layout_constraintStart_toStartOf="@id/tv_complete_level_title"
                 app:layout_constraintTop_toBottomOf="@id/tv_complete_level_title">
 
@@ -131,22 +132,20 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="5dp"
                     android:gravity="center"
-                    android:text="클밋 기준"
+                    android:text="@{vm.selectedGymName}"
                     android:textSize="15sp" />
 
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_stick_chart"
-                android:layout_width="0dp"
-                android:layout_height="240dp"
-                android:layout_marginHorizontal="20dp"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            <com.climus.climeet.presentation.customview.stickchart.StickChartView
+                android:id="@+id/view_stickchart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="40dp"
+                android:paddingBottom="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_toggle"
-                app:list="@{vm.uiState.chartUiList}" />
+                app:layout_constraintTop_toBottomOf="@id/layout_toggle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

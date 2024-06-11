@@ -1,17 +1,12 @@
 package com.climus.climeet.presentation.ui.main.record.calendar
 
-import android.util.Log
 import androidx.core.app.NotificationManagerCompat
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
-import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragEvent
 import com.climus.climeet.presentation.ui.main.record.model.ClimbingRecordData
 import com.climus.climeet.presentation.ui.main.record.model.CreateRecordData
-import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -40,6 +35,8 @@ sealed class CalendarEvent {
     data class ShowToastMessage(val msg: String): CalendarEvent()
 
     data object NavigateToTimerMain: CalendarEvent()
+
+    data class ShowPermissionDialog(val msg: String): CalendarEvent()
 }
 
 @HiltViewModel
@@ -164,7 +161,7 @@ class CalendarViewModel @Inject constructor(
         }
     }
 
-    fun navigateToTimerMain(){
+    fun navigateToTimerMain() {
         val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
 
         if (areNotificationsEnabled) {
@@ -174,7 +171,7 @@ class CalendarViewModel @Inject constructor(
         } else {
             // 알림 권한이 허용되지 않았을 때 처리, 필요에 따라 수정
             viewModelScope.launch {
-                _event.emit(CalendarEvent.ShowToastMessage("알림 권한을 허용해야 사용할 수 있습니다!"))
+                _event.emit(CalendarEvent.ShowPermissionDialog("알림 권한을 허용해주세요."))
             }
         }
     }

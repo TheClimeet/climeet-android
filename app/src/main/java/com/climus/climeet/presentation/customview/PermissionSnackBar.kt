@@ -48,6 +48,11 @@ class PermissionSnackBar(
         }
     }
 
+    // 메세지 수정
+    fun setText(text: String) {
+        binding.tvInfo.text = text
+    }
+
     fun show() {
         snackBar.show()
     }

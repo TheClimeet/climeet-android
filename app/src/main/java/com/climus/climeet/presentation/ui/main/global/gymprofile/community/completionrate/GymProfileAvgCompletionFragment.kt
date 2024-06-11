@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.main.global.gymprofile.community.comp
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentGymProfileAvgCompletionBinding
@@ -13,13 +14,21 @@ import dagger.hilt.android.AndroidEntryPoint
 class GymProfileAvgCompletionFragment :
     BaseFragment<FragmentGymProfileAvgCompletionBinding>(R.layout.fragment_gym_profile_avg_completion) {
 
-    private val viewModel: GymProfileAvgCompletionViewModel by viewModels()
+    private val viewModel: GymProfileAvgCompletionViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
-        binding.rvStickChart.adapter = StickChartAdapter()
+        initStateObserve()
+    }
+
+    private fun initStateObserve() {
+        repeatOnStarted {
+            viewModel.uiState.collect{
+                binding.viewStickchart.setupChartData(it.chartUiList)
+            }
+        }
     }
 
 }

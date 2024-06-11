@@ -8,5 +8,6 @@ data class GymProfileTopInfoResponse (
     val followerCount: Int,
     val followingCount: Int,
     val averageRating: Float,
-    val reviewCount: Int
+    val reviewCount: Int,
+    val isFollower: Boolean
 )

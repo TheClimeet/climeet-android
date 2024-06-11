@@ -18,6 +18,13 @@
         android:layout_height="match_parent"
         tools:context=".presentation.ui.main.record.calendar.CalendarFragment">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/snack_guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.88" />
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -173,9 +180,9 @@
                     android:id="@+id/rv_record"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:minHeight="127dp"
                     android:layout_marginHorizontal="15dp"
                     android:layout_marginTop="10dp"
+                    android:minHeight="127dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -219,7 +226,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_play"
+                    android:src="@drawable/ic_play_black"
                     android:visibility="@{vm.isToday ? View.VISIBLE : View.INVISIBLE}"
                     app:layout_constraintBottom_toBottomOf="@id/btn_exercise"
                     app:layout_constraintEnd_toEndOf="@id/btn_exercise"
