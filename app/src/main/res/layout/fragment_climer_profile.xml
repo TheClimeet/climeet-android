@@ -67,9 +67,10 @@
             style="@style/TextSmall"
             android:layout_width="72dp"
             android:layout_height="26dp"
+            android:layout_marginEnd="20dp"
             android:gravity="center"
             android:onClick="@{() -> vm.toggleFollowState()}"
-            app:followState="@{vm.uiState.isFollower}"
+            app:followLive="@{vm.isFollower}"
             app:layout_constraintBottom_toBottomOf="@+id/iv_climber_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/iv_climber_profile" />

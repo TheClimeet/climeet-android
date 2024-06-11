@@ -1,6 +1,8 @@
 package com.climus.climeet.presentation.ui.main.global.climerprofile
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
@@ -21,7 +23,6 @@ data class ClimberProfileUiState(
     val userName: String = "",
     val userProfileImg: String = "",
     val followingString: String = "",
-    val isFollower: Boolean = false,
     val followerCount: Int = 0,
 )
 
@@ -40,6 +41,9 @@ class ClimberProfileViewModel @Inject constructor(
     private val _event = MutableSharedFlow<ClimberProfileEvent>()
     val event: SharedFlow<ClimberProfileEvent> = _event.asSharedFlow()
 
+    private val _isFollower = MutableLiveData<Boolean>()
+    val isFollower: LiveData<Boolean> = _isFollower
+
     private var userId: Long = 0
     private var followingCount = 0
 
@@ -54,12 +58,14 @@ class ClimberProfileViewModel @Inject constructor(
                 when (it) {
                     is BaseState.Success -> {
                         Log.d("follow_test", it.body.toString())
+                        _isFollower.postValue(
+                            it.body.isFollower
+                        )
                         _uiState.update { state ->
                             state.copy(
                                 userName = it.body.userName,
                                 userProfileImg = it.body.userProfileUrl,
                                 followingString = "팔로워 ${it.body.followerCount}  |  팔로잉 ${it.body.followingCount}",
-                                isFollower = it.body.isFollower,
                                 followerCount = it.body.followerCount
                             )
                         }
@@ -77,17 +83,17 @@ class ClimberProfileViewModel @Inject constructor(
     fun toggleFollowState() {
         viewModelScope.launch {
             viewModelScope.launch {
-                Log.d("follow_test", _uiState.value.isFollower.toString())
+                Log.d("follow_test", _isFollower.toString())
                 Log.d("follow_test", userId.toString())
-                if (!_uiState.value.isFollower) {
+                if (_isFollower.value == false) {
                     val result = repository.followUser(userId)
                     when (result) {
                         is BaseState.Success -> {
+                            _isFollower.postValue(true)
                             _uiState.update { state ->
                                 state.copy(
                                     followerCount = _uiState.value.followerCount + 1,
                                     followingString = "팔로워 ${_uiState.value.followerCount + 1}  |  팔로잉 $followingCount",
-                                    isFollower = true
                                 )
                             }
                             Log.d("follow_test", "${result}")
@@ -103,11 +109,11 @@ class ClimberProfileViewModel @Inject constructor(
                     val result = repository.unfollowUser(userId)
                     when (result) {
                         is BaseState.Success -> {
+                            _isFollower.postValue(false)
                             _uiState.update { state ->
                                 state.copy(
                                     followerCount = _uiState.value.followerCount - 1,
                                     followingString = "팔로워 ${_uiState.value.followerCount - 1}  |  팔로잉 $followingCount",
-                                    isFollower = false
                                 )
                             }
                             Log.d("follow_test", "${result}")

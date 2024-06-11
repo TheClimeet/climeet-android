@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.global.climerprofile
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,12 +16,13 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ClimerProfileFragment : BaseFragment<FragmentClimerProfileBinding>(R.layout.fragment_climer_profile) {
+class ClimerProfileFragment :
+    BaseFragment<FragmentClimerProfileBinding>(R.layout.fragment_climer_profile) {
 
-    private val args : ClimerProfileFragmentArgs by navArgs()
+    private val args: ClimerProfileFragmentArgs by navArgs()
     private val userId by lazy { args.userId }
 
-    private val viewModel : ClimberProfileViewModel by viewModels()
+    private val viewModel: ClimberProfileViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,7 +31,6 @@ class ClimerProfileFragment : BaseFragment<FragmentClimerProfileBinding>(R.layou
         viewModel.setUserId(userId)
         setupTabLayout()
         initEventObserve()
-
     }
 
     private fun setupTabLayout() {
@@ -43,10 +44,10 @@ class ClimerProfileFragment : BaseFragment<FragmentClimerProfileBinding>(R.layou
 
     }
 
-    private fun initEventObserve(){
+    private fun initEventObserve() {
         repeatOnStarted {
-            viewModel.event.collect{
-                when(it){
+            viewModel.event.collect {
+                when (it) {
                     is ClimberProfileEvent.ChangeFollowing -> {
                     }
                 }
