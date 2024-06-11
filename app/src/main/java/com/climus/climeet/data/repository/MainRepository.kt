@@ -17,6 +17,7 @@ import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetAnnouncementResponse
+import com.climus.climeet.data.model.response.GetClimberPrivacySettingResponse
 import com.climus.climeet.data.model.response.GetClimberProfileStatisticsResponse
 import com.climus.climeet.data.model.response.GetClimberProfileTargetGymStatisticsResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
@@ -123,6 +124,10 @@ interface MainRepository {
     suspend fun getClimberFollowing(): BaseState<List<UserFollowSimpleResponse>>
 
     suspend fun getHomeGyms(): BaseState<List<UserHomeGymSimpleResponse>>
+
+    suspend fun getClimberSearchingList(
+        @Query("climberId") climberId: Int
+    ): BaseState<GetClimberPrivacySettingResponse>
 
     suspend fun getClimberSearchingList(
         @Query("page") page: Int,

@@ -14,6 +14,7 @@ import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetAnnouncementResponse
+import com.climus.climeet.data.model.response.GetClimberPrivacySettingResponse
 import com.climus.climeet.data.model.response.GetClimberProfileStatisticsResponse
 import com.climus.climeet.data.model.response.GetClimberProfileTargetGymStatisticsResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
@@ -114,6 +115,11 @@ interface MainApi {
     suspend fun unfollowGym(
         @Query("gymId") gymId: Long
     ): Response<ResponseBody>
+
+    @GET("/api/climber/privacy-setting")
+    suspend fun getClimberPrivacySetting(
+        @Query("climberId") climberId: Int
+    ): Response<GetClimberPrivacySettingResponse>
 
     @GET("/api/climber/search")
     suspend fun getClimberSearchingList(
