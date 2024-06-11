@@ -35,10 +35,44 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_goneMarginTop="20dp" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_privacy_home"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/rect_grey8fill_nostroke_5radius"
+                android:padding="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_homegym_label">
+
+                <ImageView
+                    android:id="@+id/iv_privacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_lock"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    style="@style/TextSmallBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="15dp"
+                    android:text="비공개 정보입니다"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/iv_privacy"
+                    app:layout_constraintStart_toStartOf="@id/iv_privacy"
+                    app:layout_constraintTop_toBottomOf="@id/iv_privacy" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_home_homegym"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="145dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 android:clipToPadding="false"

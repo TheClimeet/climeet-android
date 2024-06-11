@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentClimberProfileInfoBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.stickchart.StickChartAdapter
+import com.climus.climeet.presentation.ui.main.global.climerprofile.ClimberProfileViewModel
 import com.climus.climeet.presentation.ui.main.global.climerprofile.adapter.HomeGymAdapter
 import com.climus.climeet.presentation.ui.main.record.stats.SelectGymAdapter
 import com.climus.climeet.presentation.ui.toGymProfile
@@ -26,8 +28,13 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
 
 
     private val viewModel: ClimberProfileInfoViewModel by viewModels()
+    private val parentViewModel: ClimberProfileViewModel by activityViewModels()
     private var adapter = SelectGymAdapter(0) {
     }
+
+    private var homeGymPublic = false
+    private var averageCompletionRatePublic = false
+    private var averageCompletionLevelPublic = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // api
         super.onViewCreated(view, savedInstanceState)
@@ -38,6 +45,7 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
 
         initEventObserver()
         initStateObserve()
+        initParentStateObserve()
     }
 
     private fun initEventObserver() {
@@ -57,9 +65,28 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
 
     private fun initStateObserve() {
         repeatOnStarted {
-            viewModel.uiState.collect{
+            viewModel.uiState.collect {
                 binding.viewStickchart.setupChartData(it.chartUiList)
                 adapter.submitList(it.gymList)
+            }
+        }
+    }
+
+    private fun initParentStateObserve() {
+        repeatOnStarted {
+            parentViewModel.climberPrivacySetting.collect {
+                homeGymPublic = it.homeGymPublic
+                averageCompletionRatePublic = it.averageCompletionRatePublic
+                averageCompletionLevelPublic = it.averageCompletionLevelPublic
+
+                if(it.homeGymPublic) {
+                    binding.rvHomeHomegym.visibility = View.VISIBLE
+                    binding.layoutPrivacyHome.visibility = View.GONE
+                    viewModel.getUserHomeGyms()
+                } else {
+                    binding.rvHomeHomegym.visibility = View.INVISIBLE
+                    binding.layoutPrivacyHome.visibility = View.VISIBLE
+                }
             }
         }
     }

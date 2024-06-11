@@ -56,7 +56,6 @@ class ClimberProfileInfoViewModel @Inject constructor(private val repository: Ma
     fun setUserId(id: Long) {
         userId = id
         getStatistics()
-        getUserHomeGyms()
         getMyClimbedGymList()
     }
 
@@ -119,7 +118,7 @@ class ClimberProfileInfoViewModel @Inject constructor(private val repository: Ma
         }
     }
 
-    private fun getStatistics() {
+    fun getStatistics() {
         viewModelScope.launch {
             repository.getClimberProfileStatistics(userId).let {
                 when (it) {
@@ -259,7 +258,7 @@ class ClimberProfileInfoViewModel @Inject constructor(private val repository: Ma
     }
 
 
-    private fun getUserHomeGyms() {
+    fun getUserHomeGyms() {
         viewModelScope.launch {
             repository.getUserHomeGyms(userId).let {
                 when (it) {
