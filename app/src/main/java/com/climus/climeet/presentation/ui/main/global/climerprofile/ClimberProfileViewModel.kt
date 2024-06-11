@@ -73,57 +73,58 @@ class ClimberProfileViewModel @Inject constructor(
                     }
 
                     is BaseState.Error -> {
-
+                        it.msg
                     }
                 }
             }
         }
     }
 
+    // todo api 수정되면 쓸모없는거 싸그리 삭제
     fun toggleFollowState() {
         viewModelScope.launch {
             viewModelScope.launch {
                 Log.d("follow_test", _isFollower.toString())
                 Log.d("follow_test", userId.toString())
-                if (_isFollower.value == false) {
-                    val result = repository.followUser(userId)
-                    when (result) {
-                        is BaseState.Success -> {
-                            _isFollower.postValue(true)
-                            _uiState.update { state ->
-                                state.copy(
-                                    followerCount = _uiState.value.followerCount + 1,
-                                    followingString = "팔로워 ${_uiState.value.followerCount + 1}  |  팔로잉 $followingCount",
-                                )
+                if (isFollower.value == false) {
+                    repository.followUser(userId).let { result ->
+                        when (result) {
+                            is BaseState.Success -> {
+                                _isFollower.postValue(true)
+                                _uiState.update { state ->
+                                    state.copy(
+                                        followerCount = _uiState.value.followerCount + 1,
+                                        followingString = "팔로워 ${_uiState.value.followerCount + 1}  |  팔로잉 $followingCount",
+                                    )
+                                }
+                                Log.d("follow_test", "${result}")
                             }
-                            Log.d("follow_test", "${result}")
-                        }
 
-                        is BaseState.Error -> {
-                            Log.d("follow_test", "${result}")
-                        }
+                            is BaseState.Error -> {
+                                Log.d("follow_test", "${result}")
+                            }
 
+                        }
                     }
-
                 } else {
-                    val result = repository.unfollowUser(userId)
-                    when (result) {
-                        is BaseState.Success -> {
-                            _isFollower.postValue(false)
-                            _uiState.update { state ->
-                                state.copy(
-                                    followerCount = _uiState.value.followerCount - 1,
-                                    followingString = "팔로워 ${_uiState.value.followerCount - 1}  |  팔로잉 $followingCount",
-                                )
+                    repository.unfollowUser(userId).let { result ->
+                        when (result) {
+                            is BaseState.Success -> {
+                                _isFollower.postValue(false)
+                                _uiState.update { state ->
+                                    state.copy(
+                                        followerCount = _uiState.value.followerCount - 1,
+                                        followingString = "팔로워 ${_uiState.value.followerCount - 1}  |  팔로잉 $followingCount",
+                                    )
+                                }
+                                Log.d("follow_test", "${result}")
                             }
-                            Log.d("follow_test", "${result}")
-                        }
 
-                        is BaseState.Error -> {
-                            Log.d("follow_test", "${result.msg}")
+                            is BaseState.Error -> {
+                                Log.d("follow_test", "${result.msg}")
+                            }
                         }
                     }
-
                 }
             }
         }
