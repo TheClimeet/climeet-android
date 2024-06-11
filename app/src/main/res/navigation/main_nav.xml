@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_nav"
-    app:startDestination="@id/home_fragment">
+    app:startDestination="@id/myPageAdminSetRouteFragment">
 
     <fragment
         android:id="@+id/home_fragment"
@@ -359,5 +359,9 @@
         android:id="@+id/gymReviewBottomSheetFragment"
         android:name="com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymReviewBottomSheetFragment"
         android:label="GymReviewBottomSheetFragment"/>
+    <fragment
+        android:id="@+id/myPageAdminSetRouteFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.setroute.MyPageAdminSetRouteFragment"
+        android:label="MyPageAdminSetRouteFragment" />
 
 </navigation>
