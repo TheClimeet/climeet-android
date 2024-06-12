@@ -22,7 +22,7 @@ object ClimerSignupForm {
     private var noticePermission: Boolean = false
 
     fun setToken(data: String) {
-        token = "Bearer $data"
+        token = data
     }
 
     fun setSocialType(data: String) {
@@ -71,6 +71,8 @@ object ClimerSignupForm {
 
     fun toSignupRequest(): ClimerSignupRequest {
         return ClimerSignupRequest(
+            token = this.token,
+            socialType = this.socialType,
             nickName = this.nickName,
             climbingLevel = this.level,
             discoveryChannel = this.way,

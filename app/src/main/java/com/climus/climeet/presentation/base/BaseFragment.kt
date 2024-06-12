@@ -1,7 +1,10 @@
 package com.climus.climeet.presentation.base
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +18,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.climus.climeet.presentation.customview.LoadingDialog
+import com.climus.climeet.presentation.customview.PermissionSnackBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -69,6 +73,21 @@ abstract class BaseFragment<B : ViewDataBinding>(
             loadingDialog.dismiss()
         }
         _binding = null
+    }
+
+    fun showPermissionSnackBar(
+        view: View,
+        message: String
+    ) {
+        val snackBar = PermissionSnackBar.make(view) {
+            val intent = Intent().apply {
+                action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                data = Uri.parse("package:${requireContext().packageName}")
+            }
+            startActivity(intent)
+        }
+        snackBar.setText(message)
+        snackBar.show()
     }
 
 }

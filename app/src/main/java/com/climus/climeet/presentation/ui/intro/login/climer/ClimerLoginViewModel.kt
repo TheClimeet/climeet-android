@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.request.AuthRequest
 import com.climus.climeet.data.repository.AuthRepository
 import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.presentation.util.Constants
@@ -36,21 +37,33 @@ class ClimerLoginViewModel @Inject constructor(
     fun login(type: String, token: String) {
 
         viewModelScope.launch {
-            repository.climerLogin(type, token).let {
+            repository.climerLogin(type, AuthRequest(token)).let {
                 when (it) {
                     is BaseState.Success -> {
 
-                        authRepository.putAccessToken(it.body.accessToken)
-                        authRepository.putRefreshToken(it.body.refreshToken)
-                        authRepository.putLoginMode("ADMIN")
+                        when (it.body.responseType) {
+                            "SIGN_IN" -> {
+                                authRepository.putAccessToken(it.body.accessToken)
+                                it.body.refreshToken?.let { data ->
+                                    authRepository.putRefreshToken(data)
+                                }
+                                authRepository.putLoginMode("CLIMER")
+                                _event.emit(ClimerLoginEvent.GoToMainActivity)
+                            }
 
-                        _event.emit(ClimerLoginEvent.GoToMainActivity)
+                            "SIGN_UP" -> {
+                                _event.emit(
+                                    ClimerLoginEvent.NavigateToSignUp(
+                                        type,
+                                        it.body.accessToken
+                                    )
+                                )
+                            }
+                        }
                     }
 
                     is BaseState.Error -> {
-                        // todo 에러코드에 따라서, 회원가입으로 이동, 토스트메세지 띄우기 분기
-
-                        _event.emit(ClimerLoginEvent.NavigateToSignUp(type, token))
+                        _event.emit(ClimerLoginEvent.ShowToastMessage(it.msg))
                     }
                 }
             }
