@@ -1,24 +1,22 @@
-package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.setroute
+package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.createroute
 
 import android.annotation.SuppressLint
 import android.graphics.Matrix
 import android.graphics.PointF
 import android.os.Bundle
 import android.view.MotionEvent
-import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.ImageView
 import androidx.fragment.app.viewModels
 import com.climus.climeet.R
-import com.climus.climeet.databinding.FragmentMypageAdminSetrouteBinding
+import com.climus.climeet.databinding.FragmentMypageAdminCreateRouteBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import kotlin.math.atan2
 import kotlin.math.sqrt
 
-class MyPageAdminSetRouteFragment :
-    BaseFragment<FragmentMypageAdminSetrouteBinding>(R.layout.fragment_mypage_admin_setroute) {
+class MyPageAdminCreateRouteFragment :
+    BaseFragment<FragmentMypageAdminCreateRouteBinding>(R.layout.fragment_mypage_admin_create_route) {
 
-    private val viewModel: MyPageAdminSetRouteViewModel by viewModels()
+    private val viewModel: MyPageAdminCreateRouteViewModel by viewModels()
 
     internal enum class TouchMode {
         NONE,

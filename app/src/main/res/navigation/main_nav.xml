@@ -361,7 +361,7 @@
         android:label="GymReviewBottomSheetFragment"/>
     <fragment
         android:id="@+id/myPageAdminSetRouteFragment"
-        android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.setroute.MyPageAdminSetRouteFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.createroute.MyPageAdminCreateRouteFragment"
         android:label="MyPageAdminSetRouteFragment" />
 
 </navigation>

@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.setroute
+package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.createroute
 
 import android.view.ScaleGestureDetector
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
