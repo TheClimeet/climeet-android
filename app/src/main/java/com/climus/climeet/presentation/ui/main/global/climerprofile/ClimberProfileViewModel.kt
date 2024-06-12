@@ -95,8 +95,6 @@ class ClimberProfileViewModel @Inject constructor(
             repository.getClimberPrivacySetting(userId.toInt()).let {
                 when(it) {
                     is BaseState.Success -> {
-                        Log.d("testteststs", userId.toString())
-                        Log.d("testteststs", it.body.toString())
                         _climberPrivacySetting.update { state ->
                             state.copy(
                                 shortsPublic = it.body.shortsPublic,
@@ -107,9 +105,14 @@ class ClimberProfileViewModel @Inject constructor(
                         }
                     }
                     is BaseState.Error -> {
-                        Log.d("testteststs", climberPrivacySetting.value.toString())
-                        Log.d("testteststs", userId.toString())
-                        Log.d("testteststs", it.msg)
+                        _climberPrivacySetting.update { state ->
+                            state.copy(
+                                shortsPublic = true,
+                                homeGymPublic = false,
+                                averageCompletionRatePublic = false,
+                                averageCompletionLevelPublic = false
+                            )
+                        }
                     }
                 }
             }

@@ -217,36 +217,36 @@ class ShortsPlayerViewModel @Inject constructor(
         viewModelScope.launch {
             if (uiState.value.hasNext) {
 
-                repository.getUserShorts(userId, uiState.value.page, 10).let {
-                    when (it) {
-                        is BaseState.Success -> {
+                val result = repository.getUserShorts(userId, uiState.value.page, 10)
+                when (result) {
+                    is BaseState.Success -> {
 
-                            val shortsThumbnailUiData = it.body.result.map { data ->
-                                data.toShortsThumbnailUiData(
-                                    ::navigateToShortsPlayer
-                                )
-                            }
-
-                            val shortsUiData = it.body.result.map { data ->
-                                data.toShortsUiData()
-                            }
-
-                            _uiState.update { state ->
-                                state.copy(
-                                    page = uiState.value.page + 1,
-                                    hasNext = it.body.hasNext,
-                                    shortsThumbnailList = if (option == ShortsOption.NEXT_PAGE) uiState.value.shortsThumbnailList + shortsThumbnailUiData else shortsThumbnailUiData,
-                                    shortsList = if (option == ShortsOption.NEXT_PAGE) uiState.value.shortsList + shortsUiData else shortsUiData
-                                )
-                            }
+                        val shortsThumbnailUiData = result.body.result.map { data ->
+                            data.toShortsThumbnailUiData(
+                                ::navigateToShortsPlayer
+                            )
                         }
 
-                        is BaseState.Error -> {
-                            _event.emit(ShortsPlayerEvent.ShowToastMessage(it.msg))
+                        val shortsUiData = result.body.result.map { data ->
+                            data.toShortsUiData()
                         }
+
+                        _uiState.update { state ->
+                            state.copy(
+                                page = uiState.value.page + 1,
+                                hasNext = result.body.hasNext,
+                                shortsThumbnailList = if (option == ShortsOption.NEXT_PAGE) uiState.value.shortsThumbnailList + shortsThumbnailUiData else shortsThumbnailUiData,
+                                shortsList = if (option == ShortsOption.NEXT_PAGE) uiState.value.shortsList + shortsUiData else shortsUiData
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> {
+                        _event.emit(ShortsPlayerEvent.ShowToastMessage(result.msg))
                     }
                 }
             }
+
         }
     }
 
@@ -300,7 +300,7 @@ class ShortsPlayerViewModel @Inject constructor(
             )
         }
 
-        if(gymProfileDelete.value){
+        if (gymProfileDelete.value) {
             val gymId = sharedPreferences.getLong("gymId", 0L)
             setCurFilter(gymId)
             gymProfileDelete.value = false
