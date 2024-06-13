@@ -292,6 +292,19 @@
         <argument
             android:name="userId"
             app:argType="long"/>
+        <action
+            android:id="@+id/action_myPageClimberProfileFragment_to_myPageClimberProfileEditFragment"
+            app:destination="@id/myPageClimberProfileEditFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/myPageClimberProfileEditFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.editprofile.MyPageClimberProfileEditFragment"
+        android:label="MyPageClimberProfileEditFragment" >
+
+        <action
+            android:id="@+id/action_myPageClimberProfileEditFragmetn_to_myPageClimberProfileFragment"
+            app:destination="@+id/myPageClimerMyProfileFragment"/>
     </fragment>
 
     <fragment

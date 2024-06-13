@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMypageClimberProfileBinding
@@ -36,6 +37,7 @@ class MyPageClimberProfileFragment :
         viewModel.setClimberId(userId)
 
         setupTabLayout()
+        initEventObserve()
     }
 
     private fun setupTabLayout() {
@@ -46,6 +48,20 @@ class MyPageClimberProfileFragment :
         TabLayoutMediator(binding.tbClimberProfile, binding.vpClimberProfile) { tab, position ->
             tab.text = tabMenu[position]
         }.attach()
+    }
 
+    private fun initEventObserve(){
+        repeatOnStarted {
+            viewModel.event.collect{
+                when(it){
+                    is MyPageClimberProfileEvent.NavigateToEditClimberProfile -> findNavController().toEditPage()
+                }
+            }
+        }
+    }
+
+    private fun NavController.toEditPage(){
+        val action = MyPageClimberProfileFragmentDirections.actionMyPageClimberProfileFragmentToMyPageClimberProfileEditFragment()
+        navigate(action)
     }
 }

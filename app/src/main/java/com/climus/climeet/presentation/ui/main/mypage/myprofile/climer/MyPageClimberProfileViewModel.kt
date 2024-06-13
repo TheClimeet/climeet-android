@@ -7,12 +7,19 @@ import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.model.MyPageClimberProfileUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+sealed class MyPageClimberProfileEvent {
+    data object NavigateToEditClimberProfile : MyPageClimberProfileEvent()
+}
 
 @HiltViewModel
 class MyPageClimberProfileViewModel @Inject constructor(
@@ -23,11 +30,18 @@ class MyPageClimberProfileViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MyPageClimberProfileUiState())
     val uiState: StateFlow<MyPageClimberProfileUiState> = _uiState.asStateFlow()
 
+    private val _event = MutableSharedFlow<MyPageClimberProfileEvent>()
+    val event: SharedFlow<MyPageClimberProfileEvent> = _event.asSharedFlow()
+
     private var climberId: Long = 0
 
     fun setClimberId(id: Long) {
         climberId = id
         getProfilePrivacy()
+    }
+
+    fun getClimberId(): Long {
+        return climberId
     }
 
     private fun getProfilePrivacy() {
@@ -127,6 +141,12 @@ class MyPageClimberProfileViewModel @Inject constructor(
 
             else -> {
             }
+        }
+    }
+
+    fun navigateToEditPage() {
+        viewModelScope.launch {
+            _event.emit(MyPageClimberProfileEvent.NavigateToEditClimberProfile)
         }
     }
 }
