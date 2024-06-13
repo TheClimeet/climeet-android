@@ -64,3 +64,13 @@ fun Bitmap.toMultiPart(context: Context): MultipartBody.Part? {
     }
 }
 
+fun Bitmap.bitmapToUri(context: Context): Uri {
+    val filesDir = context.filesDir
+    val imageFile = File(filesDir, "image.jpg")
+    val os = FileOutputStream(imageFile)
+    compress(Bitmap.CompressFormat.JPEG, 100, os)
+    os.flush()
+    os.close()
+    return Uri.fromFile(imageFile)
+}
+
