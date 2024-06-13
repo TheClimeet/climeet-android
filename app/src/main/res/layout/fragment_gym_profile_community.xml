@@ -42,24 +42,7 @@
                 app:tabRippleColor="@color/transparent"
                 app:tabSelectedTextColor="@color/white"
                 app:tabTextAppearance="@style/TextTinyBig"
-                app:tabTextColor="#B3B3B3">
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="실력분포" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="BEST 클라이머" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="평균 완등률" />
-
-            </com.google.android.material.tabs.TabLayout>
+                app:tabTextColor="#B3B3B3"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

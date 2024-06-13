@@ -14,7 +14,8 @@ class SelectDateBottomSheet(
     context: Context,
     private val viewModel: SelectDateBottomSheetViewModel,
     private var curDate: LocalDate,
-    private var changeDate: (LocalDate) -> Unit
+    private var changeDate: (LocalDate) -> Unit,
+    private val setSelectedDate: (LocalDate) -> Unit
 ) : BottomSheetDialog(context) {
 
     private lateinit var binding: FragmentSelectDateBottomSheetBinding
@@ -51,7 +52,7 @@ class SelectDateBottomSheet(
             binding.datepicker.dayOfMonth
         )
         changeDate(date)
-        CreateRecordData.setSelectedDate(date)
+        setSelectedDate(date)
         dismiss()
     }
 

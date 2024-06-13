@@ -29,6 +29,7 @@ import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
+import com.climus.climeet.data.model.response.GetUserClimbedListResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
 import com.climus.climeet.data.model.response.GymLevelBestClimberResponse
@@ -381,10 +382,10 @@ class MainRepositoryImpl @Inject constructor(
         return routeRecordDao.getAttemptCount(level)
     }
 
-    override suspend fun followGym(gymId: Long): BaseState<String> =
+    override suspend fun followGym(gymId: Long): BaseState<ResponseBody> =
         runRemote { api.followGym(gymId) }
 
-    override suspend fun unFollowGym(gymId: Long): BaseState<String> =
+    override suspend fun unFollowGym(gymId: Long): BaseState<ResponseBody> =
         runRemote { api.unfollowGym(gymId) }
 
     override suspend fun getGymListToFollow(
@@ -403,6 +404,14 @@ class MainRepositoryImpl @Inject constructor(
         gymId: Long
     ): BaseState<GetClimberProfileTargetGymStatisticsResponse> = runRemote {
         api.getClimberProfileTargetGymStatistics(userId, gymId)
+    }
+
+    override suspend fun getUserClimbedGymList(
+        userId: Int,
+        year: Int,
+        month: Int
+    ): BaseState<GetUserClimbedListResponse> = runRemote {
+        api.getUserClimbedGymList(userId, year, month)
     }
 
     override suspend fun getMyStatsTargetGymMonth(
