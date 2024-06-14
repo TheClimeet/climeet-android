@@ -45,13 +45,16 @@ class ClimberProfileViewModel @Inject constructor(
     private val _isFollower = MutableLiveData<Boolean>()
     val isFollower: LiveData<Boolean> = _isFollower
 
-    private val _climberPrivacySetting = MutableStateFlow(GetClimberPrivacySettingResponse(
-        shortsPublic = false,
-        homeGymPublic = false,
-        averageCompletionRatePublic = false,
-        averageCompletionLevelPublic = false
-    ))
-    val climberPrivacySetting: StateFlow<GetClimberPrivacySettingResponse> = _climberPrivacySetting.asStateFlow()
+    private val _climberPrivacySetting = MutableStateFlow(
+        GetClimberPrivacySettingResponse(
+            shortsPublic = false,
+            homeGymPublic = false,
+            averageCompletionRatePublic = false,
+            averageCompletionLevelPublic = false
+        )
+    )
+    val climberPrivacySetting: StateFlow<GetClimberPrivacySettingResponse> =
+        _climberPrivacySetting.asStateFlow()
 
     private var userId: Long = 0
     private var followingCount = 0
@@ -93,30 +96,25 @@ class ClimberProfileViewModel @Inject constructor(
     private fun getClimberPrivacySetting() {
         viewModelScope.launch {
             repository.getClimberPrivacySetting(userId.toInt()).let {
-                when(it) {
+                when (it) {
                     is BaseState.Success -> {
                         _climberPrivacySetting.update { state ->
-//                            state.copy(
-//                                shortsPublic = it.body.shortsPublic,
-//                                homeGymPublic = it.body.homeGymPublic,
-//                                averageCompletionRatePublic = it.body.averageCompletionRatePublic,
-//                                averageCompletionLevelPublic = it.body.averageCompletionLevelPublic
-//                            )
                             state.copy(
-                                shortsPublic = true,
-                                homeGymPublic = true,
-                                averageCompletionRatePublic = true,
-                                averageCompletionLevelPublic = true
+                                shortsPublic = it.body.shortsPublic,
+                                homeGymPublic = it.body.homeGymPublic,
+                                averageCompletionRatePublic = it.body.averageCompletionRatePublic,
+                                averageCompletionLevelPublic = it.body.averageCompletionLevelPublic
                             )
                         }
                     }
+
                     is BaseState.Error -> {
                         _climberPrivacySetting.update { state ->
                             state.copy(
-                                shortsPublic = true,
-                                homeGymPublic = true,
-                                averageCompletionRatePublic = true,
-                                averageCompletionLevelPublic = true
+                                shortsPublic = false,
+                                homeGymPublic = false,
+                                averageCompletionRatePublic = false,
+                                averageCompletionLevelPublic = false
                             )
                         }
                     }
