@@ -54,6 +54,7 @@ import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
+import com.climus.climeet.data.model.response.userShortsSortType
 import com.climus.climeet.data.model.runRemote
 import com.climus.climeet.data.remote.MainApi
 import okhttp3.MultipartBody
@@ -442,9 +443,10 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun getUserShorts(
         uploaderId: Long,
         page: Int,
-        size: Int
+        size: Int,
+        sortType: userShortsSortType
     ): BaseState<ShortsListResponse> = runRemote {
-        api.getUserShorts(uploaderId, page, size)
+        api.getUserShorts(uploaderId, page, size, sortType)
     }
 
 }

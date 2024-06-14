@@ -49,6 +49,7 @@ import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
+import com.climus.climeet.data.model.response.userShortsSortType
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -372,7 +373,8 @@ interface MainApi {
     suspend fun getUserShorts(
         @Path("uploaderId") uploaderId: Long,
         @Query("page") page: Int,
-        @Query("size") size: Int
+        @Query("size") size: Int,
+        @Query("sortType") sortType: userShortsSortType
     ): Response<ShortsListResponse>
 
     @GET("/api/shorts/my-shorts")

@@ -43,3 +43,5 @@ data class UserShortsSimpleInfo(
     val profileName: String,
     val userId: Long
 )
+
+enum class userShortsSortType { LATEST, POPULAR }

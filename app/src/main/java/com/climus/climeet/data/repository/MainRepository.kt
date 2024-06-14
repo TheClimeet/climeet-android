@@ -52,6 +52,7 @@ import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
+import com.climus.climeet.data.model.response.userShortsSortType
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.http.Query
@@ -334,7 +335,8 @@ interface MainRepository {
     suspend fun getUserShorts(
         uploaderId: Long,
         page: Int,
-        size: Int
+        size: Int,
+        sortType: userShortsSortType
     ): BaseState<ShortsListResponse>
 
     suspend fun getMyShorts(
