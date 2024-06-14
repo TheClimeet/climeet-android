@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.response.userShortsSortType
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedFilter
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
@@ -55,7 +56,12 @@ class ShortsPlayerViewModel @Inject constructor(
     private val _event = MutableSharedFlow<ShortsPlayerEvent>()
     val event: SharedFlow<ShortsPlayerEvent> = _event.asSharedFlow()
 
+    private val _userSortType = MutableStateFlow(userShortsSortType.POPULAR)
+    val userSortType: StateFlow<userShortsSortType> = _userSortType
+
     val gymProfileDelete = MutableStateFlow(false)
+
+    var userId = 0
 
     companion object {
         const val ITEM = 0
@@ -213,12 +219,10 @@ class ShortsPlayerViewModel @Inject constructor(
     }
 
     fun getUserShorts(option: ShortsOption, userId: Long) {
-
+        this.userId = userId.toInt()
         viewModelScope.launch {
             if (uiState.value.hasNext) {
-
-                val result = repository.getUserShorts(userId, uiState.value.page, 10)
-                when (result) {
+                when (val result = repository.getUserShorts(userId, uiState.value.page, 10, userSortType.value)) {
                     is BaseState.Success -> {
 
                         val shortsThumbnailUiData = result.body.result.map { data ->
@@ -272,6 +276,34 @@ class ShortsPlayerViewModel @Inject constructor(
                     )
                 }
                 getShorts(ShortsOption.NEW_SORT)
+            }
+        }
+    }
+
+    fun changeUserSortType() {
+        when (uiState.value.sortType) {
+            SortType.POPULAR -> {
+                _uiState.update { state ->
+                    state.copy(
+                        hasNext = true,
+                        page = 0,
+                        sortType = SortType.RECENT
+                    )
+                }
+                _userSortType.update { userShortsSortType.LATEST }
+                getUserShorts(ShortsOption.NEW_SORT, userId.toLong())
+            }
+
+            SortType.RECENT -> {
+                _uiState.update { state ->
+                    state.copy(
+                        hasNext = true,
+                        page = 0,
+                        sortType = SortType.POPULAR
+                    )
+                }
+                _userSortType.update { userShortsSortType.POPULAR }
+                getUserShorts(ShortsOption.NEW_SORT, userId.toLong())
             }
         }
     }

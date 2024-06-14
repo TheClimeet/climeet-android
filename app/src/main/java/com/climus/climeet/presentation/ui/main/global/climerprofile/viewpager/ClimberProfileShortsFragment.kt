@@ -96,11 +96,11 @@ class ClimberProfileShortsFragment @Inject constructor(
                 shortsPrivacy = it.shortsPublic
                 if(parentViewModel.climberPrivacySetting.value.shortsPublic) {
                     binding.layoutPrivacy.visibility = View.GONE
-//                    binding.btnFilterToggle.visibility = View.VISIBLE
+                    binding.btnFilterToggle.visibility = View.VISIBLE
                     sharedViewModel.getUserShorts(ShortsOption.NEW_SORT, userId)
                 } else {
                     binding.layoutPrivacy.visibility = View.VISIBLE
-//                    binding.btnFilterToggle.visibility = View.GONE
+                    binding.btnFilterToggle.visibility = View.GONE
                 }
             }
         }

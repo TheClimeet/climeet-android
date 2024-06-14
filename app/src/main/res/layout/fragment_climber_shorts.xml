@@ -37,22 +37,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-<!--            <androidx.appcompat.widget.AppCompatButton-->
-<!--                android:id="@+id/btn_filter_toggle"-->
-<!--                style="@style/TextSmall"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginEnd="20dp"-->
-<!--                android:background="@drawable/rect_grey8fill_nostroke_5radius"-->
-<!--                android:minWidth="0dp"-->
-<!--                android:minHeight="0dp"-->
-<!--                android:onClick="@{() -> svm.changeSortType()}"-->
-<!--                android:paddingHorizontal="16dp"-->
-<!--                android:paddingVertical="2dp"-->
-<!--                android:text="@{svm.uiState.sortType.text}"-->
-<!--                app:layout_constraintBottom_toBottomOf="@id/tv_header"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="@id/tv_header" />-->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_filter_toggle"
+                style="@style/TextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/rect_grey8fill_nostroke_5radius"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:onClick="@{() -> svm.changeUserSortType()}"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="2dp"
+                android:text="@{svm.uiState.sortType.text}"
+                app:layout_constraintBottom_toBottomOf="@id/tv_header"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_header" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_privacy"
