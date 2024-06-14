@@ -8,6 +8,7 @@ import com.climus.climeet.presentation.customview.stickchart.StickChartUiData
 import com.climus.climeet.presentation.ui.main.global.climerprofile.model.ProfileHomeGymUiData
 import com.climus.climeet.presentation.ui.main.global.toProfileHomeGymUiData
 import com.climus.climeet.presentation.ui.main.record.model.SelectGymData
+import com.climus.climeet.presentation.ui.main.record.model.toSelectGymData
 import com.climus.climeet.presentation.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -59,41 +60,35 @@ class ClimberProfileInfoViewModel @Inject constructor(private val repository: Ma
     }
 
     private fun getMyClimbedGymList() {
-//        viewModelScope.launch {
-//            val climbedDate = selectedDate.value?.let {
-//                it
-//            } ?: run {
-//                LocalDate.now()
-//            }
-//            // todo 사용자의 userId를 어떻게 가져오지
-//            repository.getUserClimbedGymList(1, climbedDate.year, climbedDate.monthValue)
-//                .let { result ->
-//                    when (result) {
-//                        is BaseState.Success -> {
-//                            _uiState.update { state ->
-//                                state.copy(
-//                                    gymList = listOf(
-//                                        SelectGymData(0, "클밋 기준", ::onGymClicked)
-//                                    ) + result.body.visitedClimbingGym.map {
-//                                        it.toSelectGymData(::onGymClicked)
-//                                    }
-//                                )
-//                            }
-//                        }
-//
-//                        is BaseState.Error -> {
-//                            _uiState.update { state ->
-//                                state.copy(
-//                                    gymList = listOf(
-//                                        SelectGymData(0, "클밋 기준", ::onGymClicked)
-//                                    )
-//                                )
-//                            }
-//                            _event.emit(StatsEvent.ShowToastMessage("암장을 불러오지 못했습니다!"))
-//                        }
-//                    }
-//                }
-//        }
+        viewModelScope.launch {
+            repository.getUserClimbedGymList(userId.toInt())
+                .let { result ->
+                    when (result) {
+                        is BaseState.Success -> {
+                            _uiState.update { state ->
+                                state.copy(
+                                    gymList = listOf(
+                                        SelectGymData(0, "클밋 기준", ::onGymClicked)
+                                    ) + result.body.map {
+                                        it.toSelectGymData(::onGymClicked)
+                                    }
+                                )
+                            }
+                        }
+
+                        is BaseState.Error -> {
+                            _uiState.update { state ->
+                                state.copy(
+                                    gymList = listOf(
+                                        SelectGymData(0, "클밋 기준", ::onGymClicked)
+                                    )
+                                )
+                            }
+                            _event.emit(ClimberProfileEvent.ShowToastMessage("암장을 불러오지 못했습니다!"))
+                        }
+                    }
+                }
+        }
 
         val dummyGyms = listOf(
             SelectGymData(id = 0, name = "클밋 기준", onClickListener = ::onGymClicked),

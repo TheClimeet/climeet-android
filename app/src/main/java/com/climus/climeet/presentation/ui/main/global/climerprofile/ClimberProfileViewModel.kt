@@ -96,11 +96,17 @@ class ClimberProfileViewModel @Inject constructor(
                 when(it) {
                     is BaseState.Success -> {
                         _climberPrivacySetting.update { state ->
+//                            state.copy(
+//                                shortsPublic = it.body.shortsPublic,
+//                                homeGymPublic = it.body.homeGymPublic,
+//                                averageCompletionRatePublic = it.body.averageCompletionRatePublic,
+//                                averageCompletionLevelPublic = it.body.averageCompletionLevelPublic
+//                            )
                             state.copy(
-                                shortsPublic = it.body.shortsPublic,
-                                homeGymPublic = it.body.homeGymPublic,
-                                averageCompletionRatePublic = it.body.averageCompletionRatePublic,
-                                averageCompletionLevelPublic = it.body.averageCompletionLevelPublic
+                                shortsPublic = true,
+                                homeGymPublic = true,
+                                averageCompletionRatePublic = true,
+                                averageCompletionLevelPublic = true
                             )
                         }
                     }
@@ -108,9 +114,9 @@ class ClimberProfileViewModel @Inject constructor(
                         _climberPrivacySetting.update { state ->
                             state.copy(
                                 shortsPublic = true,
-                                homeGymPublic = false,
-                                averageCompletionRatePublic = false,
-                                averageCompletionLevelPublic = false
+                                homeGymPublic = true,
+                                averageCompletionRatePublic = true,
+                                averageCompletionLevelPublic = true
                             )
                         }
                     }

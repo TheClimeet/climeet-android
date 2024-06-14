@@ -12,6 +12,7 @@ import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
 import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
+import com.climus.climeet.data.model.response.ClimbedGym
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetAnnouncementResponse
 import com.climus.climeet.data.model.response.GetClimberPrivacySettingResponse
@@ -25,7 +26,6 @@ import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
-import com.climus.climeet.data.model.response.GetUserClimbedListResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
 import com.climus.climeet.data.model.response.GymLevelBestClimberResponse
@@ -33,7 +33,6 @@ import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
 import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.GymWeekStatsResponse
-import com.climus.climeet.data.model.response.MyClimbedGym
 import com.climus.climeet.data.model.response.MyPageProfileResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
@@ -44,7 +43,6 @@ import com.climus.climeet.data.model.response.ShortsMainCommentResponse
 import com.climus.climeet.data.model.response.ShortsSubCommentResponse
 import com.climus.climeet.data.model.response.ShortsUpdatedFollowResponse
 import com.climus.climeet.data.model.response.UploadImgResponse
-import com.climus.climeet.data.model.response.UserClimbedGym
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserFollowerInfoResponse
 import com.climus.climeet.data.model.response.UserFollowingInfoResponse
@@ -292,7 +290,7 @@ interface MainApi {
     suspend fun getMyClimbedGymList(
         @Query("year") year: Int,
         @Query("month") month: Int
-    ): Response<List<MyClimbedGym>>
+    ): Response<List<ClimbedGym>>
 
     @GET("/api/gyms/{gymId}/review")
     suspend fun getGymReview(
@@ -365,12 +363,10 @@ interface MainApi {
         @Path("gymId") gymId: Long
     ): Response<GetClimberProfileTargetGymStatisticsResponse>
 
-    @GET("/api/climbing-records/users/{userId}/months/list")
+    @GET("/api/climbing-records/users/{userId}/list")
     suspend fun getUserClimbedGymList(
         @Path("userId") userId: Int,
-        @Query("year") year: Int,
-        @Query("month") month: Int
-    ): Response<GetUserClimbedListResponse>
+    ): Response<List<ClimbedGym>>
 
     @GET("/api/shorts/uploader/{uploaderId}")
     suspend fun getUserShorts(
