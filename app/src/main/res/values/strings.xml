@@ -40,4 +40,9 @@
     <string name="gym_profile_follow">"팔로우"</string>
     <string name="gym_profile_following">"팔로잉"</string>
 
+    <!-- 루트 파인딩 -->
+    <string name="route_finding_title">"루트 파인딩"</string>
+    <string name="route_finding_update_date">"업데이트 날짜"</string>
+
+
 </resources>
