@@ -85,6 +85,7 @@
                     android:background="@drawable/rect_grey8fill_nostroke_5radius"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="13dp"
+                    android:onClick="@{()->vm.showDatePicker()}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_update_date">
@@ -94,6 +95,7 @@
                         style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{vm.selectedDateText}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
