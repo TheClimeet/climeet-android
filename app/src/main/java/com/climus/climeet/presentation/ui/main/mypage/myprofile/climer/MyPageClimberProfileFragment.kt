@@ -61,7 +61,9 @@ class MyPageClimberProfileFragment :
     }
 
     private fun NavController.toEditPage(){
-        val action = MyPageClimberProfileFragmentDirections.actionMyPageClimberProfileFragmentToMyPageClimberProfileEditFragment()
+        val name = sharedViewModel.uiState.value.userName
+        val image = sharedViewModel.uiState.value.userProfileImg
+        val action = MyPageClimberProfileFragmentDirections.actionMyPageClimberProfileFragmentToMyPageClimberProfileEditFragment(name, image)
         navigate(action)
     }
 }

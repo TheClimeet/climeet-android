@@ -24,7 +24,7 @@ data class SetClimberNickUiState(
 )
 
 sealed class EditClimberProfileEvent {
-    data object NavigateToBack :EditClimberProfileEvent()
+    data object NavigateToBack : EditClimberProfileEvent()
     data object NavigateToProfile : EditClimberProfileEvent()
     data class ShowToastMessage(val msg: String) : EditClimberProfileEvent()
 }
@@ -41,16 +41,27 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
     val event: SharedFlow<EditClimberProfileEvent> = _event.asSharedFlow()
 
     // 닉네임 관리
+    var userNickname = ""
     val nickname = MutableStateFlow("")
     val nickAvailable = MutableStateFlow(false)
-    val nextAvailable = MutableStateFlow(false)
-    var checkNick = ""
+    val nickUpdated = MutableStateFlow(false)
+    private var checkNick = ""
 
-    val imageUpdated = MutableStateFlow(false)
+    // 이미지 관리
+    private val imageUpdated = MutableStateFlow(false)
+    var profileImage = ""
+
+    val nextAvailable = MutableStateFlow(false)
 
 
     init {
         nickObserve()
+        imageObserve()
+    }
+
+    fun initProfile(userName: String, image: String) {
+        userNickname = userName
+        profileImage = image
     }
 
     // todo 닉네임
@@ -71,9 +82,9 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
                                     )
                                 }
                                 ClimberEditProfileForm.setNickName(nickname.value)
-                                nextAvailable.value = true
                                 checkNick = nickname.value
-                                checkNextState()
+                                nextAvailable.value = true
+                                nickUpdated.value = true
                             } else {
                                 _uiState.update { state ->
                                     state.copy(
@@ -95,7 +106,6 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
 
     private fun nickObserve() {
         nickname.onEach {
-            Log.d("nickObserve", "Nick value: $it")
             if (it.isNotBlank()) {
                 if (isNickNameValid(nickname.value) && nickname.value != checkNick) {
                     nickAvailable.value = true
@@ -106,6 +116,7 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
                     }
                     nickAvailable.value = true
                     nextAvailable.value = false
+                    nickUpdated.value = false
                 } else {
                     _uiState.update { state ->
                         state.copy(
@@ -114,6 +125,7 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
                     }
                     nickAvailable.value = false
                     nextAvailable.value = false
+                    nickUpdated.value = false
                 }
 
             } else {
@@ -123,24 +135,33 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
                     )
                 }
                 nickAvailable.value = false
-                nextAvailable.value = false
+                nickUpdated.value = false
+                // 만약 이미지 불러오고 닉네임은 빈칸일 때, 이미지만 바꾼다고 판단하여 다음 버튼 활성화
+                nextAvailable.value = imageUpdated.value
             }
         }.launchIn(viewModelScope)
     }
 
-    fun setImageUpdated(state: Boolean){
-        viewModelScope.launch {
-            imageUpdated.value = state
-        }
-
-        if(state) {
-            checkNextState()
-        }
+    private fun imageObserve() {
+        ClimberEditProfileForm.imageUriState.onEach { uri ->
+            if (uri.isNotBlank()) {
+                imageUpdated.value = true
+                nextAvailable.value = true
+            }
+        }.launchIn(viewModelScope)
     }
 
-    // 수정 반영 버튼 상태 관리
-    private fun checkNextState() {
-        nextAvailable.value = nickAvailable.value && imageUpdated.value
+    private fun updateProfile() {
+        if (imageUpdated.value) {
+            // todo 이미지 업데이트
+            Log.d("mypage", "프로필 이미지 바꿈")
+        }
+
+        if (nickUpdated.value) {
+            // todo 닉네임 업데이트
+            Log.d("mypage", "닉네임 바꿈")
+        }
+        ClimberEditProfileForm.resetState()
     }
 
     fun navigateToBack() {
@@ -150,6 +171,7 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
     }
 
     fun navigateToProfile() {
+        updateProfile()
         viewModelScope.launch {
             _event.emit(EditClimberProfileEvent.NavigateToProfile)
         }

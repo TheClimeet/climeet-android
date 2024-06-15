@@ -302,6 +302,13 @@
         android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.editprofile.MyPageClimberProfileEditFragment"
         android:label="MyPageClimberProfileEditFragment" >
 
+        <argument
+            android:name="userName"
+            app:argType="string"/>
+        <argument
+            android:name="userImage"
+            app:argType="string"/>
+
         <action
             android:id="@+id/action_myPageClimberProfileEditFragmetn_to_myPageClimberProfileFragment"
             app:destination="@+id/myPageClimerMyProfileFragment"/>
