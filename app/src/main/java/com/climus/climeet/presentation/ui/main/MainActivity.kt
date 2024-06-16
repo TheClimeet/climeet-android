@@ -23,8 +23,9 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.ActivityMainBinding
 import com.climus.climeet.presentation.base.BaseActivity
 import com.climus.climeet.presentation.customview.SelectImageMethodDialog
-import com.climus.climeet.presentation.ui.bitmapToUri
-import com.climus.climeet.presentation.ui.toMultiPart
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.editprofile.ClimberEditProfileForm
+import com.climus.climeet.presentation.ui.saveCameraImage
+import com.climus.climeet.presentation.ui.toMultiPartImage
 import com.climus.climeet.presentation.ui.toVideoThumbnail
 import com.climus.climeet.presentation.util.Constants.CAMERA_PERMISSION
 import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION
@@ -72,7 +73,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         binding.mainBnv.apply {
             setupWithNavController(navController)
             setOnItemSelectedListener { item ->
-                NavigationUI.onNavDestinationSelected(item,navController)
+                NavigationUI.onNavDestinationSelected(item, navController)
                 navController.popBackStack(item.itemId, inclusive = false)
                 true
             }
@@ -110,10 +111,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     is MainEvent.GoToSetProfileImage -> showMethodSelectionDialog(it.context)
                     is MainEvent.ShowToastMessage -> showToastMessage(it.msg)
                     is MainEvent.ChangeStatusBarBlack -> {
-                        window.statusBarColor = ContextCompat.getColor(this@MainActivity,R.color.black)
+                        window.statusBarColor =
+                            ContextCompat.getColor(this@MainActivity, R.color.black)
                     }
+
                     is MainEvent.ChangeStatusBarBackground -> {
-                        window.statusBarColor = ContextCompat.getColor(this@MainActivity,R.color.cm_background)
+                        window.statusBarColor =
+                            ContextCompat.getColor(this@MainActivity, R.color.cm_background)
                     }
                 }
             }
@@ -192,7 +196,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == STORAGE_PERMISSION) {
@@ -270,16 +274,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val uri = result.data?.data
+
                 uri?.let {
                     viewModel.setImageUri(it)
-                    it.toMultiPart(this)?.let { file ->
-                        viewModel.fileToUrl(file, DataType.CHANGE_PROFILE_IMAGE)
+
+                    it.toMultiPartImage(this)?.let { image ->
+                        ClimberEditProfileForm.setProfileImage(image)
                     } ?: run {
                         showToastMessage("이미지 파일 변환 실패")
                     }
                 }
-            } else if (result.resultCode == Activity.RESULT_CANCELED) {
-                navController.navigateUp()
             }
         }
 
@@ -287,16 +291,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val bitmap = result.data?.extras?.get("data") as Bitmap
-                bitmap.bitmapToUri(this).let { uri ->
-                    viewModel.setImageUri(uri)
+                bitmap.saveCameraImage(this).let { uri ->
+                    uri?.let {
+                        viewModel.setImageUri(it)
+                    }
                 }
-                bitmap.toMultiPart(this)?.let { file ->
-                    viewModel.fileToUrl(file, DataType.CHANGE_PROFILE_IMAGE)
+                bitmap.toMultiPartImage(this)?.let { image ->
+                    ClimberEditProfileForm.setProfileImage(image)
                 } ?: run {
                     showToastMessage("이미지 파일 변환 실패")
                 }
-            } else if (result.resultCode == Activity.RESULT_CANCELED) {
-                navController.navigateUp()
             }
         }
 }

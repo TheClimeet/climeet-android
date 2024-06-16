@@ -51,7 +51,7 @@ class MyPageClimberProfileEditFragment :
             viewModel.event.collect {
                 when (it) {
                     is EditClimberProfileEvent.NavigateToProfile -> findNavController().toMyPageClimberProfile()
-                    is EditClimberProfileEvent.NavigateToBack -> findNavController().navigateUp()
+                    is EditClimberProfileEvent.NavigateToBack -> findNavController().toMyPageClimberProfile()
                     is EditClimberProfileEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }

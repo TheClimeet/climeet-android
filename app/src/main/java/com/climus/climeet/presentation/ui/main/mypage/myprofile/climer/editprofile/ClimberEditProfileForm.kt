@@ -1,35 +1,35 @@
 package com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.editprofile
 
+import android.content.Context
+import android.net.Uri
 import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import okhttp3.MultipartBody
+import okio.Buffer
+import java.io.File
 
 object ClimberEditProfileForm {
 
-    private var nickname = ""
-    private var profileImgUrl = ""
-    private var imageUpdateState = false
+    private var profileImg: MultipartBody.Part? = null
 
     private val _imageUriState = MutableStateFlow("")
     val imageUriState: StateFlow<String> = _imageUriState
 
+    fun setProfileImage(image: MultipartBody.Part) {
+        profileImg = image
+        _imageUriState.value = image.toString()
 
-    fun setNickName(name: String) {
-        nickname = name
-        Log.d("form", "닉네임 저장 : $nickname")
+        Log.d("form", "이미지 파일 저장 : 이름=${image.headers?.get("Content-Disposition")}, " +
+                "타입=${image.body.contentType()}, 크기=${image.body.contentLength()}")
     }
 
-    fun setProfileImageUri(uri: String) {
-        profileImgUrl = uri
-        imageUpdateState = true
-        _imageUriState.value = uri
-        Log.d("form", "이미지 uri 저장 : $uri")
+    fun getProfileImagePath(): MultipartBody.Part? {
+        return profileImg
     }
 
     fun resetState() {
-        nickname = ""
-        profileImgUrl = ""
-        imageUpdateState = false
+        profileImg = null
         _imageUriState.value = ""
     }
 }

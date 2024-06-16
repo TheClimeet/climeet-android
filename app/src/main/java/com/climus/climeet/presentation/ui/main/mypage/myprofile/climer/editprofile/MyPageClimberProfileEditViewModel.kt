@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.IntroRepository
+import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.InputState
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.editprofile.ClimberEditProfileForm.getProfileImagePath
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,6 +34,7 @@ sealed class EditClimberProfileEvent {
 @HiltViewModel
 class MyPageClimberProfileEditViewModel @Inject constructor(
     private val introRepository: IntroRepository,
+    private val mainRepository: MainRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SetClimberNickUiState())
@@ -81,7 +84,6 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
                                         nickState = InputState.Success("사용 가능한 닉네임입니다.")
                                     )
                                 }
-                                ClimberEditProfileForm.setNickName(nickname.value)
                                 checkNick = nickname.value
                                 nextAvailable.value = true
                                 nickUpdated.value = true
@@ -151,17 +153,44 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    // 프로필 수정 반영
     private fun updateProfile() {
-        if (imageUpdated.value) {
+        viewModelScope.launch {
             // todo 이미지 업데이트
-            Log.d("mypage", "프로필 이미지 바꿈")
-        }
-
-        if (nickUpdated.value) {
+            if (imageUpdated.value) {
+                val image = getProfileImagePath()
+                image?.let {
+                    mainRepository.updateUserProfileImage(it).let {
+                        when (it) {
+                            is BaseState.Success -> {
+                                Log.d("mypage_climber", "프로필 이미지 수정")
+                            }
+                            is BaseState.Error -> {
+                                _event.emit(EditClimberProfileEvent.ShowToastMessage(it.msg))
+                            }
+                        }
+                    }
+                } ?: run {
+                    _event.emit(EditClimberProfileEvent.ShowToastMessage("프로필 이미지 반영 실패"))
+                }
+            }
             // todo 닉네임 업데이트
-            Log.d("mypage", "닉네임 바꿈")
+            if (nickUpdated.value) {
+                val name = checkNick
+
+                mainRepository.updateUserName(name).let {
+                    when (it) {
+                        is BaseState.Success -> {
+                            Log.d("mypage_climber", "닉네임 수정")
+                        }
+                        is BaseState.Error -> {
+                            _event.emit(EditClimberProfileEvent.ShowToastMessage(it.msg))
+                        }
+                    }
+                }
+            }
+            ClimberEditProfileForm.resetState()
         }
-        ClimberEditProfileForm.resetState()
     }
 
     fun navigateToBack() {

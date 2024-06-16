@@ -9,7 +9,6 @@ import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.FcmTokenRequest
 import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.data.repository.MainRepository
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.editprofile.ClimberEditProfileForm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -75,7 +74,6 @@ class MainViewModel @Inject constructor(
                     is BaseState.Success -> {
                         when(type){
                             DataType.SHORTS_THUMBNAIL -> _shortsThumbnail.emit(it.body.imgUrl)
-                            DataType.CHANGE_PROFILE_IMAGE -> ClimberEditProfileForm.setProfileImageUri(it.body.imgUrl)
                         }
                     }
 
@@ -117,6 +115,5 @@ class MainViewModel @Inject constructor(
 }
 
 enum class DataType{
-    SHORTS_THUMBNAIL,
-    CHANGE_PROFILE_IMAGE
+    SHORTS_THUMBNAIL
 }

@@ -49,6 +49,7 @@ import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
+import com.climus.climeet.data.model.response.userShortsVisibilityType
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -399,4 +400,14 @@ interface MainApi {
     @PATCH("/api/climber/averageCompletionLevel-privacy-setting")
     suspend fun editAvgCompleteLevelPrivacy(): Response<ResponseBody>
 
+    @Multipart
+    @PATCH("/api/profile-image")
+    suspend fun updateUserProfileImage(
+        @Part image: MultipartBody.Part
+    ): Response<ResponseBody>
+
+    @PATCH("/api/profile-name")
+    suspend fun updateUserName(
+        @Query("name") params: String
+    ): Response<ResponseBody>
 }

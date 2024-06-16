@@ -38,7 +38,6 @@ import com.climus.climeet.data.model.response.GymWeekStatsResponse
 import com.climus.climeet.data.model.response.MyPageClimberProfilePrivacyResponse
 import com.climus.climeet.data.model.response.MyPageProfileResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
-import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
 import com.climus.climeet.data.model.response.SearchGymResponse
 import com.climus.climeet.data.model.response.ShortsListResponse
@@ -272,6 +271,15 @@ interface MainRepository {
     suspend fun editHomeGymPrivacy(): BaseState<ResponseBody>
     suspend fun editAvgCompletePrivacy(): BaseState<ResponseBody>
     suspend fun editAvgCompleteLevelPrivacy(): BaseState<ResponseBody>
+
+    suspend fun updateUserProfileImage(
+        image: MultipartBody.Part
+    ): BaseState<ResponseBody>
+
+    suspend fun updateUserName(
+        name: String,
+    ): BaseState<ResponseBody>
+
 
     // -------- RoomDB ClimbingRecordDao 암장 정보 ----------
     fun insert(climbingRecordData: ClimbingRecordData)

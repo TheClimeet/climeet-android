@@ -40,6 +40,12 @@ class MyPageClimberProfileFragment :
         initEventObserve()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // 상단 정보 설정
+        sharedViewModel.setUserId(userId)
+    }
+
     private fun setupTabLayout() {
         val myPageClimberProfileAdapter = MyPageClimberProfileVPAdapter(this, userId)
         binding.vpClimberProfile.adapter = myPageClimberProfileAdapter

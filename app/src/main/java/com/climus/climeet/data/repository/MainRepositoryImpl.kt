@@ -451,4 +451,11 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun editAvgCompleteLevelPrivacy(): BaseState<ResponseBody> =
         runRemote { api.editAvgCompleteLevelPrivacy() }
 
+    override suspend fun updateUserProfileImage(
+        image: MultipartBody.Part
+    ): BaseState<ResponseBody> = runRemote { api.updateUserProfileImage(image) }
+
+    override suspend fun updateUserName(name: String): BaseState<ResponseBody> =
+        runRemote { api.updateUserName(name) }
+
 }

@@ -311,7 +311,9 @@
 
         <action
             android:id="@+id/action_myPageClimberProfileEditFragmetn_to_myPageClimberProfileFragment"
-            app:destination="@+id/myPageClimerMyProfileFragment"/>
+            app:destination="@+id/myPageClimerMyProfileFragment"
+            app:popUpTo="@id/myPageClimerMyProfileFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
