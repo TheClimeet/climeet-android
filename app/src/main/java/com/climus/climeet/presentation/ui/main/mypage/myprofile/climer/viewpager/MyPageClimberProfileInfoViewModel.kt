@@ -22,6 +22,7 @@ data class ClimberProfileSettingBtnState(
 
 sealed class MyPageClimberProfileEvent {
     data class ChangePrivacyState(val target: String, val state: Boolean) : MyPageClimberProfileEvent()
+    data object ShowPopupWindow : MyPageClimberProfileEvent()
 }
 
 @HiltViewModel
@@ -100,5 +101,11 @@ class MyPageClimberProfileInfoViewModel @Inject constructor() : ViewModel() {
         }
 
         Log.d("mypage_climber", "평균 완등 레벨 : $privacy")
+    }
+
+    fun showPopupWindow() {
+        viewModelScope.launch {
+            _event.emit(MyPageClimberProfileEvent.ShowPopupWindow)
+        }
     }
 }

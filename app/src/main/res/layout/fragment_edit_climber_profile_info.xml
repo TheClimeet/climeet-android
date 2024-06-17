@@ -289,7 +289,7 @@
                     style="@style/TextTiny"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="13dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="15dp"
                     android:background="@drawable/rect_mainfill_nostroke_8radius"
                     android:minWidth="0dp"
@@ -304,59 +304,48 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_complete_level_title"
                     tools:text="전체보기" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_complete_level_info"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:id="@+id/layout_toggle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="8dp"
+                    android:onClick="@{()->vm.showPopupWindow()}"
+                    app:layout_constraintStart_toStartOf="@id/tv_complete_level_title"
                     app:layout_constraintTop_toBottomOf="@id/tv_complete_level_title">
 
-                    <LinearLayout
-                        android:id="@+id/layout_toggle"
+                    <ImageView
+                        android:id="@+id/iv_toggle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="18dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
+                        android:src="@drawable/ic_arrow_down" />
 
-                        <ImageView
-                            android:id="@+id/iv_toggle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_arrow_down" />
+                    <TextView
+                        android:id="@+id/tv_standard"
+                        style="@style/TextMediumSemiBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:text="@{svm.selectedGymName}"
+                        android:textSize="15sp" />
 
-                        <TextView
-                            android:id="@+id/tv_standard"
-                            style="@style/TextMediumSemiBold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="5dp"
-                            android:gravity="center"
-                            android:text="클밋 기준"
-                            android:textSize="15sp" />
+                </LinearLayout>
 
-                    </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_stick_chart"
-                        android:layout_width="0dp"
-                        android:layout_height="240dp"
-                        android:layout_marginHorizontal="20dp"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/layout_toggle"
-                        app:list="@{svm.uiState.chartUiList}" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.climus.climeet.presentation.customview.stickchart.StickChartView
+                    android:id="@+id/view_stickchart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="40dp"
+                    android:paddingBottom="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_toggle" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_complete_level_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="13dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="15dp"
                     android:orientation="vertical"
                     android:visibility="@{vm.btnState.avgCompleteLevel ? View.VISIBLE : View.GONE}"
