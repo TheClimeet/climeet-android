@@ -28,7 +28,8 @@ import com.climus.climeet.presentation.ui.saveCameraImage
 import com.climus.climeet.presentation.ui.toMultiPartImage
 import com.climus.climeet.presentation.ui.toVideoThumbnail
 import com.climus.climeet.presentation.util.Constants.CAMERA_PERMISSION
-import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION
+import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION_IMAGE
+import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION_VIDEO
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -140,7 +141,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             ActivityCompat.requestPermissions(
                 this,
                 neededPermissionList.toTypedArray(),
-                STORAGE_PERMISSION
+                STORAGE_PERMISSION_VIDEO
             )
         } else {
             openGalleryForVideo()
@@ -163,7 +164,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             ActivityCompat.requestPermissions(
                 this,
                 neededPermissionList.toTypedArray(),
-                STORAGE_PERMISSION
+                STORAGE_PERMISSION_IMAGE
             )
         } else {
             openGalleryForImage()
@@ -199,24 +200,37 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == STORAGE_PERMISSION) {
-            neededPermissionList.forEach {
-                if (ContextCompat.checkSelfPermission(
-                        this,
-                        it
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) return
+        when (requestCode) {
+            STORAGE_PERMISSION_VIDEO -> {
+                neededPermissionList.forEach {
+                    if (ContextCompat.checkSelfPermission(
+                            this,
+                            it
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) return
+                }
+                openGalleryForVideo()
             }
-            openGalleryForVideo()
-        } else if (requestCode == CAMERA_PERMISSION) {
-            neededPermissionList.forEach {
-                if (ContextCompat.checkSelfPermission(
-                        this,
-                        it
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) return
+            STORAGE_PERMISSION_IMAGE -> {
+                neededPermissionList.forEach {
+                    if (ContextCompat.checkSelfPermission(
+                            this,
+                            it
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) return
+                }
+                openGalleryForImage()
             }
-            openCamera()
+            CAMERA_PERMISSION -> {
+                neededPermissionList.forEach {
+                    if (ContextCompat.checkSelfPermission(
+                            this,
+                            it
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) return
+                }
+                openCamera()
+            }
         }
     }
 

@@ -21,6 +21,8 @@ object Constants {
     const val STORAGE_PERMISSION = 1000
     const val ALARM_PERMISSION = 1001
     const val CAMERA_PERMISSION = 1002
+    const val STORAGE_PERMISSION_IMAGE = 1003
+    const val STORAGE_PERMISSION_VIDEO = 1004
 
     val climeetColor = hashMapOf<String, String>(
         "VB" to "#FFFFFF",
