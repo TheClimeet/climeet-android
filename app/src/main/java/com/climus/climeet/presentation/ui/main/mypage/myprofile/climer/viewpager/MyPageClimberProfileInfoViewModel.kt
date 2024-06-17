@@ -3,6 +3,10 @@ package com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.viewpage
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.ui.main.global.climerprofile.model.ProfileHomeGymUiData
+import com.climus.climeet.presentation.ui.main.global.toProfileHomeGymUiData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +18,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+data class MyPageClimberProfileInfoUiState(
+    val homeGymList: List<ProfileHomeGymUiData> = emptyList()
+)
+
 data class ClimberProfileSettingBtnState(
     val homeGym: Boolean = false,
     val avgComplete: Boolean = false,
@@ -21,12 +29,16 @@ data class ClimberProfileSettingBtnState(
 )
 
 sealed class MyPageClimberProfileEvent {
+    data class NavigateToGymProfile(val id: Long) : MyPageClimberProfileEvent()
     data class ChangePrivacyState(val target: String, val state: Boolean) : MyPageClimberProfileEvent()
     data object ShowPopupWindow : MyPageClimberProfileEvent()
 }
 
 @HiltViewModel
-class MyPageClimberProfileInfoViewModel @Inject constructor() : ViewModel() {
+class MyPageClimberProfileInfoViewModel @Inject constructor(private val repository: MainRepository) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(MyPageClimberProfileInfoUiState())
+    val uiState: StateFlow<MyPageClimberProfileInfoUiState> = _uiState.asStateFlow()
 
     // 공개 범위 설정 버튼 visibility 관리
     private val _btnState = MutableStateFlow(ClimberProfileSettingBtnState())
@@ -34,6 +46,35 @@ class MyPageClimberProfileInfoViewModel @Inject constructor() : ViewModel() {
 
     private val _event = MutableSharedFlow<MyPageClimberProfileEvent>()
     val event: SharedFlow<MyPageClimberProfileEvent> = _event.asSharedFlow()
+
+    private var userId: Long = 0
+
+    fun setUserId(id: Long) {
+        userId = id
+        getUserHomeGyms()
+    }
+
+    private fun getUserHomeGyms() {
+        viewModelScope.launch {
+            repository.getUserHomeGyms(userId).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                homeGymList = it.body.map { data ->
+                                    data.toProfileHomeGymUiData(::navigateToGymProfile)
+                                }
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> {
+
+                    }
+                }
+            }
+        }
+    }
 
     // 버튼 클릭 시, 선택지 버튼 보이게 설정
     fun showHomeGymBtns() {
@@ -106,6 +147,12 @@ class MyPageClimberProfileInfoViewModel @Inject constructor() : ViewModel() {
     fun showPopupWindow() {
         viewModelScope.launch {
             _event.emit(MyPageClimberProfileEvent.ShowPopupWindow)
+        }
+    }
+
+    private fun navigateToGymProfile(id: Long) {
+        viewModelScope.launch {
+            _event.emit(MyPageClimberProfileEvent.NavigateToGymProfile(id))
         }
     }
 }

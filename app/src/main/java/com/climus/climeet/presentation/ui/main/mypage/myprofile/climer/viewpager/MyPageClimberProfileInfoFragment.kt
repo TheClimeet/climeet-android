@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.PopupWindow
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
@@ -16,8 +17,11 @@ import com.climus.climeet.presentation.ui.main.global.climerprofile.adapter.Home
 import com.climus.climeet.presentation.ui.main.global.climerprofile.viewpager.ClimberProfileInfoViewModel
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.MyPageClimberProfileViewModel
 import com.climus.climeet.presentation.ui.main.record.stats.SelectGymAdapter
+import com.climus.climeet.presentation.ui.toGymProfile
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MyPageClimberProfileInfoFragment @Inject constructor(
     private val userId: Long
 ) : BaseFragment<FragmentEditClimberProfileInfoBinding>(R.layout.fragment_edit_climber_profile_info) {
@@ -39,6 +43,7 @@ class MyPageClimberProfileInfoFragment @Inject constructor(
         binding.vm = viewModel
 
         sharedViewModel.setUserId(userId)
+        viewModel.setUserId(userId)
 
         initStateObserve()
         initEventObserver()
@@ -57,8 +62,15 @@ class MyPageClimberProfileInfoFragment @Inject constructor(
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
-                    is MyPageClimberProfileEvent.ChangePrivacyState -> setPrivacyState(it.target, it.state)
+                    is MyPageClimberProfileEvent.ChangePrivacyState -> setPrivacyState(
+                        it.target,
+                        it.state
+                    )
+
                     MyPageClimberProfileEvent.ShowPopupWindow -> showPopupWindow()
+                    is MyPageClimberProfileEvent.NavigateToGymProfile -> findNavController().toGymProfile(
+                        it.id
+                    )
                 }
             }
         }
