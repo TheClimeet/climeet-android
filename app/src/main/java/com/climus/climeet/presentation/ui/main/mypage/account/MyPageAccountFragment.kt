@@ -20,7 +20,6 @@ import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroActivity
 import com.climus.climeet.service.TimerService
 import com.climus.climeet.presentation.ui.intro.IntroViewModel
-import com.climus.climeet.presentation.ui.intro.UrlType
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -39,9 +38,9 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
         viewModel.getUserProfile()
 
         initStateObserve()
+        initEventObserver()
 
         setUpInitialSetting()
-        setupOnClickListener()
         initParentImageObserve()
     }
 
@@ -57,6 +56,17 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
                             .into(binding.ivMypageMyProfile)
 
                     }
+                }
+            }
+        }
+    }
+
+    private fun initEventObserver() {
+        repeatOnStarted {
+            viewModel.event.collect {
+                when (it) {
+                    MyPageAccountEvent.ShowLogoutDialog -> logout()
+                    MyPageAccountEvent.ShowWithdrawDialog -> withdraw()
                 }
             }
         }
@@ -91,63 +101,58 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
         }
     }
 
-    private fun setupOnClickListener() {
+    private fun logout() {
+        val logoutDialog = LayoutInflater.from(activity).inflate(R.layout.logout_dialog, null)
+        val builder = AlertDialog.Builder(activity)
+            .setView(logoutDialog)
 
-        binding.ivMypageMyProfile.setOnClickListener {
-            parentViewModel.goToGallery(UrlType.CLIMER_PROFILE)
+        val alertDialog = builder.show()
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val cancelBtn = alertDialog.findViewById<AppCompatButton>(R.id.btn_dialog_logout_cancel)
+        val logoutBtn = alertDialog.findViewById<AppCompatButton>(R.id.btn_dialog_logout)
+
+        cancelBtn!!.setOnClickListener {
+            alertDialog.dismiss()
         }
 
-        binding.btnLogout.setOnClickListener {
-            val logoutDialog = LayoutInflater.from(activity).inflate(R.layout.logout_dialog, null)
-            val builder = AlertDialog.Builder(activity)
-                .setView(logoutDialog)
+        logoutBtn!!.setOnClickListener {
+            alertDialog.dismiss()
+            App.sharedPreferences.edit()
+                .clear()
+                .apply()
 
-            val alertDialog = builder.show()
-            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-            val cancelBtn = alertDialog.findViewById<AppCompatButton>(R.id.btn_dialog_logout_cancel)
-            val logoutBtn = alertDialog.findViewById<AppCompatButton>(R.id.btn_dialog_logout)
-
-            cancelBtn!!.setOnClickListener {
-                alertDialog.dismiss()
+            // 스톱워치 서비스 중단 후 로그아웃
+            var intent = Intent(context, TimerService::class.java)
+            if (TimerService.serviceRunning.value != null) {
+                context?.stopService(intent)
             }
 
-            logoutBtn!!.setOnClickListener {
-                alertDialog.dismiss()
-                App.sharedPreferences.edit()
-                    .clear()
-                    .apply()
+            // back stack 지우기
+            val logoutIntent = Intent(requireContext(), IntroActivity::class.java)
+            logoutIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(logoutIntent)
+            activity?.finish()
+        }
+    }
 
-                // 스톱워치 서비스 중단 후 로그아웃
-                var intent = Intent(context, TimerService::class.java)
-                if (TimerService.serviceRunning.value != null) {
-                    context?.stopService(intent)
-                }
+    private fun withdraw() {
+        val withdrawDialog = LayoutInflater.from(activity).inflate(R.layout.withdraw_dialog, null)
+        val builder = AlertDialog.Builder(activity)
+            .setView(withdrawDialog)
 
-                intent = Intent(requireContext(), IntroActivity::class.java)
-                startActivity(intent)
-            }
+        val alertDialog = builder.show()
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val cancelBtn = alertDialog.findViewById<AppCompatButton>(R.id.btn_dialog_withdraw_cancel)
+        val logoutBtn = alertDialog.findViewById<AppCompatButton>(R.id.btn_dialog_withdraw)
+
+        cancelBtn!!.setOnClickListener {
+            alertDialog.dismiss()
         }
 
-        binding.btnWithdraw.setOnClickListener {
-            val withdrawDialog = LayoutInflater.from(activity).inflate(R.layout.withdraw_dialog, null)
-            val builder = AlertDialog.Builder(activity)
-                .setView(withdrawDialog)
-
-            val alertDialog = builder.show()
-            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-            val cancelBtn = alertDialog.findViewById<AppCompatButton>(R.id.btn_dialog_withdraw_cancel)
-            val logoutBtn = alertDialog.findViewById<AppCompatButton>(R.id.btn_dialog_withdraw)
-
-            cancelBtn!!.setOnClickListener {
-                alertDialog.dismiss()
-            }
-
-            logoutBtn!!.setOnClickListener {
-                alertDialog.dismiss()
-            }
+        logoutBtn!!.setOnClickListener {
+            alertDialog.dismiss()
         }
-
     }
 }

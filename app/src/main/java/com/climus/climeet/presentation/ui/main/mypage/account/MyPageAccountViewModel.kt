@@ -8,29 +8,40 @@ import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.data.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class MyPageAccountUiState(
-    val myProfile: UserProfileInfoResponse? = null
+    val myProfile: UserProfileInfoResponse? = null,
 )
+
+sealed class MyPageAccountEvent {
+    data object ShowLogoutDialog : MyPageAccountEvent()
+    data object ShowWithdrawDialog : MyPageAccountEvent()
+}
 
 @HiltViewModel
 class MyPageAccountViewModel @Inject constructor(
     private val repository: MainRepository,
-    private val dataStoreManager: DataStoreManager
+    private val dataStoreManager: DataStoreManager,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MyPageAccountUiState())
     val uiState: StateFlow<MyPageAccountUiState> = _uiState.asStateFlow()
 
-    private var userType : String? = null
+    private val _event = MutableSharedFlow<MyPageAccountEvent>()
+    val event: SharedFlow<MyPageAccountEvent> = _event.asSharedFlow()
 
-    fun checkUserType(): Boolean{
+    private var userType: String? = null
+
+    fun checkUserType(): Boolean {
         viewModelScope.launch {
             userType = dataStoreManager.getLoginMode()
         }
@@ -58,4 +69,15 @@ class MyPageAccountViewModel @Inject constructor(
         }
     }
 
+    fun showLogoutDialog() {
+        viewModelScope.launch {
+            _event.emit(MyPageAccountEvent.ShowLogoutDialog)
+        }
+    }
+
+    fun showWithdrawDialog() {
+        viewModelScope.launch {
+            _event.emit(MyPageAccountEvent.ShowWithdrawDialog)
+        }
+    }
 }
