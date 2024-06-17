@@ -54,6 +54,7 @@ import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
+import com.climus.climeet.data.model.response.UserShortsVisibilityType
 import com.climus.climeet.data.model.runRemote
 import com.climus.climeet.data.remote.MainApi
 import okhttp3.MultipartBody
@@ -422,8 +423,11 @@ class MainRepositoryImpl @Inject constructor(
         api.getMyStatsTargetGymMonth(gymId, year, month)
     }
 
-    override suspend fun getMyShorts(page: Int, size: Int): BaseState<ShortsListResponse> =
-        runRemote { api.getMyShorts(page, size) }
+    override suspend fun getMyShorts(
+        shortsVisibility: UserShortsVisibilityType,
+        page: Int,
+        size: Int
+    ): BaseState<ShortsListResponse> = runRemote { api.getMyShorts(shortsVisibility, page, size) }
 
     override suspend fun getUserHomeGyms(userId: Long): BaseState<List<UserHomeGymSimpleResponse>> =
         runRemote { api.getUserHomeGyms(userId) }

@@ -1,11 +1,13 @@
 package com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.viewpager
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
+import com.climus.climeet.data.model.response.UserShortsVisibilityType
 import com.climus.climeet.databinding.FragmentEditClimberShortsBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsThumbnailAdapter
@@ -19,8 +21,6 @@ class MyPageClimberProfileShortsFragment @Inject constructor(
     private val userId: Long
 ) : BaseFragment<FragmentEditClimberShortsBinding>(R.layout.fragment_edit_climber_shorts) {
 
-    // todo : 공개범위 버튼 설정 및 서버에 반영
-
     private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
     private val viewModel: MyPageClimberProfileShortsViewModel by viewModels()
     private var bottomScrollState = true
@@ -33,8 +33,9 @@ class MyPageClimberProfileShortsFragment @Inject constructor(
         binding.rvShorts.adapter = ShortsThumbnailAdapter()
 
         sharedViewModel.initViewModel()
-        sharedViewModel.getUserShorts(ShortsOption.NEW_SORT, userId)
+        sharedViewModel.getMyShorts(ShortsOption.NEW_SORT, UserShortsVisibilityType.PUBLIC)
         addOnScrollListener()
+        initShortsEventObserve()
         initEventObserve()
         initStateObserve()
     }
@@ -55,7 +56,7 @@ class MyPageClimberProfileShortsFragment @Inject constructor(
         }
     }
 
-    private fun initEventObserve() {
+    private fun initShortsEventObserve() {
         repeatOnStarted {
             sharedViewModel.event.collect {
                 when (it) {
@@ -71,6 +72,16 @@ class MyPageClimberProfileShortsFragment @Inject constructor(
         }
     }
 
+    private fun initEventObserve(){
+        repeatOnStarted {
+            viewModel.event.collect { event ->
+                when (event) {
+                    is MyPageClimberProfileShortsEvent.SetShortsVisibility -> resetShortsVisibility(event.state)
+                }
+            }
+        }
+    }
+
     private fun initStateObserve() {
         repeatOnStarted {
             sharedViewModel.uiState.collect {
@@ -81,5 +92,10 @@ class MyPageClimberProfileShortsFragment @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun resetShortsVisibility(type: UserShortsVisibilityType){
+        sharedViewModel.initViewModel()
+        sharedViewModel.getMyShorts(ShortsOption.NEW_SORT, type)
     }
 }

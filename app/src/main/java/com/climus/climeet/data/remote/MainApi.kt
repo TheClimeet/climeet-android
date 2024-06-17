@@ -49,7 +49,7 @@ import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
-import com.climus.climeet.data.model.response.userShortsVisibilityType
+import com.climus.climeet.data.model.response.UserShortsVisibilityType
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -369,6 +369,7 @@ interface MainApi {
 
     @GET("/api/shorts/my-shorts")
     suspend fun getMyShorts(
+        @Query("shortsVisibility") shortsVisibility: UserShortsVisibilityType,
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<ShortsListResponse>

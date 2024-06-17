@@ -43,3 +43,5 @@ data class UserShortsSimpleInfo(
     val profileName: String,
     val userId: Long
 )
+
+enum class UserShortsVisibilityType { PUBLIC, FOLLOWERS_ONLY, PRIVATE }
