@@ -3,6 +3,7 @@ package com.climus.climeet.presentation.ui.main.mypage.account
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.data.config.DataStoreManager
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.data.repository.MainRepository
@@ -19,11 +20,22 @@ data class MyPageAccountUiState(
 )
 
 @HiltViewModel
-class MyPageAccountViewModel @Inject constructor(private val repository: MainRepository) :
-    ViewModel() {
+class MyPageAccountViewModel @Inject constructor(
+    private val repository: MainRepository,
+    private val dataStoreManager: DataStoreManager
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MyPageAccountUiState())
     val uiState: StateFlow<MyPageAccountUiState> = _uiState.asStateFlow()
+
+    private var userType : String? = null
+
+    fun checkUserType(): Boolean{
+        viewModelScope.launch {
+            userType = dataStoreManager.getLoginMode()
+        }
+        return userType == "ADMIN"
+    }
 
     fun getUserProfile() {
         viewModelScope.launch {

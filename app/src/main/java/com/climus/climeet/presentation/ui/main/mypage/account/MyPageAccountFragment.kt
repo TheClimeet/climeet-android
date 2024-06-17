@@ -1,25 +1,19 @@
 package com.climus.climeet.presentation.ui.main.mypage.account
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.app.App
-import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.databinding.FragmentMypageAccountBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -27,12 +21,7 @@ import com.climus.climeet.presentation.ui.intro.IntroActivity
 import com.climus.climeet.service.TimerService
 import com.climus.climeet.presentation.ui.intro.IntroViewModel
 import com.climus.climeet.presentation.ui.intro.UrlType
-import com.climus.climeet.presentation.ui.main.DataType
-import com.climus.climeet.presentation.ui.main.MainEvent
-import com.climus.climeet.presentation.ui.toMultiPart
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
 
 
 @AndroidEntryPoint
@@ -89,7 +78,7 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
     }
 
     private fun setUpInitialSetting() {
-        isManger = checkUserType()
+        isManger = viewModel.checkUserType()
 
         if(isManger) {
             binding.icVerified.visibility = View.VISIBLE
@@ -100,11 +89,6 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
             binding.mypageWhoami.text="클라이머로 만났어요"
             binding.btnCompleteLogin.text="카카오 로그인 연동 완료"
         }
-    }
-
-    private fun checkUserType(): Boolean {
-        val userType = App.sharedPreferences.getString("X_MODE", "")
-        return userType == "ADMIN"
     }
 
     private fun setupOnClickListener() {
