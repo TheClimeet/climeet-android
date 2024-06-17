@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 data class SetClimberNickUiState(
@@ -53,6 +54,7 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
     // 이미지 관리
     private val imageUpdated = MutableStateFlow(false)
     var profileImage = ""
+    private lateinit var imageToChange : MultipartBody.Part
 
     val nextAvailable = MutableStateFlow(false)
 
@@ -149,6 +151,8 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
             if (uri.isNotBlank()) {
                 imageUpdated.value = true
                 nextAvailable.value = true
+                imageToChange = getProfileImagePath()
+                Log.d("mypage", "이미지 업데이트 : $imageToChange")
             }
         }.launchIn(viewModelScope)
     }
@@ -156,24 +160,6 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
     // 프로필 수정 반영
     private fun updateProfile() {
         viewModelScope.launch {
-            // todo 이미지 업데이트
-            if (imageUpdated.value) {
-                val image = getProfileImagePath()
-                image?.let {
-                    mainRepository.updateUserProfileImage(it).let {
-                        when (it) {
-                            is BaseState.Success -> {
-                                Log.d("mypage_climber", "프로필 이미지 수정")
-                            }
-                            is BaseState.Error -> {
-                                _event.emit(EditClimberProfileEvent.ShowToastMessage(it.msg))
-                            }
-                        }
-                    }
-                } ?: run {
-                    _event.emit(EditClimberProfileEvent.ShowToastMessage("프로필 이미지 반영 실패"))
-                }
-            }
             // todo 닉네임 업데이트
             if (nickUpdated.value) {
                 val name = checkNick
@@ -183,6 +169,20 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
                         is BaseState.Success -> {
                             Log.d("mypage_climber", "닉네임 수정")
                         }
+                        is BaseState.Error -> {
+                            _event.emit(EditClimberProfileEvent.ShowToastMessage(it.msg))
+                        }
+                    }
+                }
+            }
+            // todo 이미지 업데이트
+            if (imageUpdated.value) {
+                mainRepository.updateUserProfileImage(imageToChange).let {
+                    when (it) {
+                        is BaseState.Success -> {
+                            Log.d("mypage_climber", "프로필 이미지 수정")
+                        }
+
                         is BaseState.Error -> {
                             _event.emit(EditClimberProfileEvent.ShowToastMessage(it.msg))
                         }

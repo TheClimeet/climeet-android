@@ -409,6 +409,6 @@ interface MainApi {
 
     @PATCH("/api/profile-name")
     suspend fun updateUserName(
-        @Query("name") params: String
+        @Query("name") name: String
     ): Response<ResponseBody>
 }
