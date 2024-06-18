@@ -359,5 +359,14 @@
         android:id="@+id/gymReviewBottomSheetFragment"
         android:name="com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymReviewBottomSheetFragment"
         android:label="GymReviewBottomSheetFragment"/>
+    <fragment
+        android:id="@+id/myPageAdminRouteFindingFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.MyPageAdminRouteFindingFragment"
+        android:label="MyPageAdminRouteFindingFragment" />
+
+    <action
+        android:id="@+id/globalActionTomyPageAdminRouteFindingFragment"
+        app:destination="@id/myPageAdminRouteFindingFragment" />
+
 
 </navigation>

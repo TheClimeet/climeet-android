@@ -28,13 +28,14 @@ class MyPageAdminRouteFindingFragment :
 
         binding.vm = viewModel
 
+        setRV()
         initEventObserve()
     }
 
     private fun initEventObserve() {
         repeatOnStarted {
             viewModel.event.collect {
-                when(it) {
+                when (it) {
                     MyPageAdminRouteFindingEvent.ShowDatePicker -> {
                         SelectDateBottomSheet(
                             requireContext(),
@@ -50,4 +51,8 @@ class MyPageAdminRouteFindingFragment :
         }
     }
 
+    private fun setRV() {
+        val adapter = LevelColorAdapter(viewModel)
+        binding.rvLevelColor.adapter = adapter
+    }
 }

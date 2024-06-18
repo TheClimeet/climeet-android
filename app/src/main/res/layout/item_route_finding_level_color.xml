@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <variable
+            name="rc"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.RouteColor" />
 
     </data>
 
     <FrameLayout
         android:layout_width="26dp"
         android:layout_height="26dp"
-        android:layout_marginStart="1dp"
+        android:layout_marginStart="2dp"
         android:layout_marginBottom="1dp">
 
         <View
@@ -20,7 +25,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="1dp"
+            android:layout_margin="2dp"
             android:background="@drawable/oval_grey8fill_nostroke" />
 
         <TextView
@@ -28,11 +33,10 @@
             style="@style/TextTiny"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="2dp"
-            android:text="C"
+            android:layout_margin="3dp"
             android:gravity="center"
             android:textColor="@color/black"
-            android:background="@drawable/oval_mainfill_nostroke_noradius" />
+            app:dynamicOvalBackground="@{rc.color}" />
 
     </FrameLayout>
 </layout>

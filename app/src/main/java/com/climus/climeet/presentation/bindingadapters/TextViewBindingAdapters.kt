@@ -1,6 +1,9 @@
 package com.climus.climeet.presentation.bindingadapters
 
+import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.OvalShape
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -140,4 +143,18 @@ fun setFollowLive(tv: TextView, isFollowing: LiveData<Boolean>?) {
             }
         }
     }
+}
+
+@BindingAdapter("dynamicOvalBackground")
+fun setDynamicOvalBackground(view: TextView, color: String) {
+    val shapeDrawable = ShapeDrawable(OvalShape()).apply {
+        paint.color = Color.parseColor(color)
+        intrinsicWidth = 54.dpToPx(view.context)
+        intrinsicHeight = 54.dpToPx(view.context)
+    }
+    view.background = shapeDrawable
+}
+
+fun Int.dpToPx(context: Context): Int {
+    return (this * context.resources.displayMetrics.density).toInt()
 }

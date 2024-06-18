@@ -172,17 +172,19 @@
                             android:layout_marginTop="24dp"
                             android:background="@drawable/oval_silver2fill_nostroke"
                             android:gravity="center"
-                            android:text="하양"
+                            android:text="@{vm.selectedColor.name}"
                             android:textSize="18sp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:textHexColor="@{vm.selectedColor.color}" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_level_color"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="53dp"
                             android:layout_marginStart="24dp"
                             android:layout_marginEnd="34dp"
+                            app:list="@{vm.colorList}"
                             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                             app:layout_constraintBottom_toBottomOf="@+id/tv_selected_level"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -224,6 +226,17 @@
                                 app:layout_constraintTop_toTopOf="@id/tv_level_string" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <TextView
+                            android:id="@+id/tv_explain"
+                            style="@style/TextTiny"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:text="컴피티션 레벨은 C에 고정되어 있어요"
+                            android:textColor="@color/cm_main"
+                            app:layout_constraintTop_toBottomOf="@id/layout_set_level"
+                            app:layout_constraintStart_toStartOf="@id/layout_set_level"/>
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_add_level_complete"
