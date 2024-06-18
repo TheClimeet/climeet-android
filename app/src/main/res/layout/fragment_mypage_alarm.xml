@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.mypage.alarm.MyPageAlarmViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,6 +56,7 @@
             android:layout_height="0dp"
             android:layout_marginEnd="20dp"
             android:thumb="@drawable/switch_thumb_selector"
+            app:checked="@{vm.uiState.follower}"
             app:layout_constraintBottom_toBottomOf="@+id/tv_follower"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_follower"
@@ -59,7 +64,6 @@
             app:thumbTint="@null"
             app:track="@drawable/switch_track_selector"
             app:trackTint="@null" />
-
 
         <TextView
             android:id="@+id/tv_like"
@@ -79,6 +83,7 @@
             android:layout_height="0dp"
             android:layout_marginEnd="20dp"
             android:thumb="@drawable/switch_thumb_selector"
+            app:checked="@{vm.uiState.like}"
             app:layout_constraintBottom_toBottomOf="@+id/tv_like"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_like"
@@ -105,6 +110,7 @@
             android:layout_height="0dp"
             android:layout_marginEnd="20dp"
             android:thumb="@drawable/switch_thumb_selector"
+            app:checked="@{vm.uiState.comment}"
             app:layout_constraintBottom_toBottomOf="@+id/tv_comment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_comment"
@@ -143,6 +149,7 @@
             android:layout_height="0dp"
             android:layout_marginEnd="20dp"
             android:thumb="@drawable/switch_thumb_selector"
+            app:checked="@{vm.uiState.appPush}"
             app:layout_constraintBottom_toBottomOf="@+id/tv_app_push"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_app_push"
