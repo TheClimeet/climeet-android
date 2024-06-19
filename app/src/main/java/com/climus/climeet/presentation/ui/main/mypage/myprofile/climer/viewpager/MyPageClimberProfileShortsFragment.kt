@@ -48,7 +48,8 @@ class MyPageClimberProfileShortsFragment @Inject constructor(
 
                 if (bottomScrollState) {
                     bottomScrollState = false
-                    sharedViewModel.getUserShorts(ShortsOption.NEXT_PAGE, userId)
+                    val visibilityType = viewModel.uiState.value.nowState
+                    sharedViewModel.getMyShorts(ShortsOption.NEXT_PAGE, visibilityType)
                 }
             } else {
                 bottomScrollState = true

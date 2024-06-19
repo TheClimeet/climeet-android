@@ -19,15 +19,17 @@ data class ClimberProfileShortsBtnState(
     val shorts: Boolean = false,
 )
 
-data class ClimberShortsVisibilityState (
+data class ClimberShortsVisibilityState(
     val public: Boolean = true,
     val follow: Boolean = false,
     val closed: Boolean = false,
-    val state: String = "전체공개"
+    val state: String = "전체공개",
+    val nowState: UserShortsVisibilityType = UserShortsVisibilityType.PUBLIC,
 )
 
 sealed class MyPageClimberProfileShortsEvent {
-    data class SetShortsVisibility(val state: UserShortsVisibilityType) : MyPageClimberProfileShortsEvent()
+    data class SetShortsVisibility(val state: UserShortsVisibilityType) :
+        MyPageClimberProfileShortsEvent()
 }
 
 @HiltViewModel
@@ -60,10 +62,33 @@ class MyPageClimberProfileShortsViewModel @Inject constructor() : ViewModel() {
 
         _uiState.update { state ->
             when (type) {
-                1 -> state.copy(public = true, follow = false, closed = false, state = "전체공개")
-                2 -> state.copy(public = false, follow = true, closed = false, state = "팔로우만")
-                3 -> state.copy(public = false, follow = false, closed = true, state = "나만보기")
-                else -> state.copy(public = true, follow = false, closed = false, state = "전체공개")
+                1 -> {
+                    state.copy(
+                        public = true, follow = false, closed = false, state = "전체공개",
+                        nowState = UserShortsVisibilityType.PUBLIC
+                    )
+                }
+
+                2 -> {
+                    state.copy(
+                        public = false, follow = true, closed = false, state = "팔로우만",
+                        nowState = UserShortsVisibilityType.FOLLOWERS_ONLY
+                    )
+                }
+
+                3 -> {
+                    state.copy(
+                        public = false, follow = false, closed = true, state = "나만보기",
+                        nowState = UserShortsVisibilityType.PRIVATE
+                    )
+                }
+
+                else -> {
+                    state.copy(
+                        public = true, follow = false, closed = false, state = "전체공개",
+                        nowState = UserShortsVisibilityType.PUBLIC
+                    )
+                }
             }
         }
 
@@ -73,17 +98,10 @@ class MyPageClimberProfileShortsViewModel @Inject constructor() : ViewModel() {
             )
         }
 
-        val visibility = when (type) {
-            1 -> UserShortsVisibilityType.PUBLIC
-            2 -> UserShortsVisibilityType.FOLLOWERS_ONLY
-            else -> UserShortsVisibilityType.PRIVATE
-        }
-
-
         // 숏츠 다시 불러오기
         viewModelScope.launch {
-            _event.emit(MyPageClimberProfileShortsEvent.SetShortsVisibility(visibility))
-            Log.d("shorts", "숏츠 다시 가져오기 : $visibility")
+            _event.emit(MyPageClimberProfileShortsEvent.SetShortsVisibility(uiState.value.nowState))
+            Log.d("shorts", "숏츠 다시 가져오기 : $uiState.value.nowState")
         }
     }
 }
