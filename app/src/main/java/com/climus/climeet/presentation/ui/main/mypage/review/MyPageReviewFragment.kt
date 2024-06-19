@@ -26,9 +26,9 @@ class MyPageReviewFragment : BaseFragment<FragmentMyPageReviewBinding>(R.layout.
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/games?hl=ko-KR"))
             startActivity(intent)
         }
-        // todo : 토스 익명 계좌 연결
+        // 토스 계좌
         binding.btnSupport.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://toss.im/"))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://toss.me/클라이밍을만나다클밋"))
             startActivity(intent)
         }
     }
