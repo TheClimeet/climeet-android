@@ -43,14 +43,18 @@ class SetLevelBottomSheet(
 
     private fun setLevelPicker() {
         val levelPicker = binding.npLevel
+        val levelsArray = LevelColorData.LEVELS.toTypedArray()
+
         levelPicker.minValue = 0
-        levelPicker.maxValue = LevelColorData.LEVELS.size - 1
-        levelPicker.displayedValues = LevelColorData.LEVELS.toTypedArray()
+        levelPicker.maxValue = levelsArray.size - 1
+        levelPicker.displayedValues = levelsArray
 
-        levelPicker.value =
-            LevelColorData.LEVELS.indexOf(viewModel.selectedLevel.value).takeIf { it != -1 } ?: 0
+        val currentIndex = LevelColorData.LEVELS.indexOf(viewModel.selectedLevel.value).takeIf { it != -1 } ?: 0
+        levelPicker.value = currentIndex
 
-        selectedLevel = LevelColorData.LEVELS[levelPicker.value]
+        selectedLevel = levelsArray[currentIndex]
+
+        levelPicker.wrapSelectorWheel = false
 
         levelPicker.setOnValueChangedListener { _, _, newVal ->
             selectedLevel = LevelColorData.LEVELS[newVal]
