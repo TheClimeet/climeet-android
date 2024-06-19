@@ -27,20 +27,7 @@ class AnnounceDetailFragment :
         binding.vm = viewModel
         viewModel.getAnnouncement(boardId)
 
-        observeUiState()
         initEventObserve()
-    }
-
-    private fun observeUiState() {
-        repeatOnStarted {
-            viewModel.uiState.collect { data ->
-                data.profileImageUrl.let {
-                    if (it.isNotEmpty()) {
-                        viewModel.loadProfileImage(binding.ivAnnounceProfile, it)
-                    }
-                }
-            }
-        }
     }
 
     private fun initEventObserve() {

@@ -89,17 +89,6 @@ class AnnounceDetailViewModel @Inject constructor(val repository: MainRepository
         return targetFormat.format(date)
     }
 
-    fun loadProfileImage(imageView: CircleImageView, profileImageUrl: String?) {
-        profileImageUrl?.let {
-            Glide.with(imageView.context)
-                .load(it)
-                .placeholder(R.drawable.ic_logo)
-                .error(R.drawable.ic_logo)
-                .circleCrop()
-                .into(imageView)
-        }
-    }
-
     private fun setImageList(imageList: List<String>) {
         viewModelScope.launch {
             _event.emit(AnnouncementDetailEvent.SetRVAdapter(imageList))
