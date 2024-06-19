@@ -1,12 +1,18 @@
 package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.bottomsheet
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.util.Log
+import android.view.View
 import androidx.core.content.ContextCompat
 import com.climus.climeet.R
 import com.climus.climeet.databinding.DialogSetLevelBottomSheetBinding
+import com.climus.climeet.presentation.customview.PermissionSnackBar
+import com.climus.climeet.presentation.customview.WarningSnackBar
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.MyPageAdminRouteFindingViewModel
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.LevelColorData
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -14,7 +20,8 @@ import com.google.android.material.snackbar.Snackbar
 
 class SetLevelBottomSheet(
     context: Context,
-    private val viewModel: MyPageAdminRouteFindingViewModel
+    private val viewModel: MyPageAdminRouteFindingViewModel,
+    private val parentView: View
 ) : BottomSheetDialog(context) {
 
     private lateinit var binding: DialogSetLevelBottomSheetBinding
@@ -75,11 +82,18 @@ class SetLevelBottomSheet(
             binding.tvOk.isEnabled = false
             binding.tvOk.setBackgroundResource(R.drawable.rect_silverfill_nostroke_5radius)
             binding.tvOk.setTextColor(ContextCompat.getColor(context, R.color.white))
-            Snackbar.make(binding.root, "레벨이 이미 선택되었습니다", Snackbar.LENGTH_SHORT).show()
+            showCustomSnackbar("$selectedLevel 레벨은 이미 설정되어 있어요!")
         } else {
             binding.tvOk.isEnabled = true
             binding.tvOk.setBackgroundResource(R.drawable.rect_mainfill_nostroke_5radius)
             binding.tvOk.setTextColor(ContextCompat.getColor(context, R.color.black))
+        }
+    }
+
+    private fun showCustomSnackbar(message: String) {
+        WarningSnackBar.make(binding.layoutLevelBottom).apply {
+            setText(message)
+            show()
         }
     }
 

@@ -45,7 +45,8 @@ class MyPageAdminRouteFindingFragment :
                     MyPageAdminRouteFindingEvent.ShowSetLevel -> {
                         SetLevelBottomSheet(
                             requireContext(),
-                            viewModel
+                            viewModel,
+                            requireView()
                         ).show()
                     }
                 }

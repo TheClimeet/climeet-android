@@ -20,7 +20,9 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 data class MyPageAdminRouteFindingUiState(
-    val selectedLevelColor: List<LevelColor> = emptyList()
+    val selectedLevelColor: List<LevelColor> = listOf(
+        LevelColor(RouteColor("하양", "#FFFFFF"), "V1")
+    )
 )
 
 sealed class MyPageAdminRouteFindingEvent {
