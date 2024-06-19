@@ -384,8 +384,8 @@ interface MainApi {
         @Path("userId") userId: Long
     ): Response<GetUserInfoResponse>
 
-    @GET("/api/boards")
-    suspend fun getAnnouncement(): Response<GetAnnouncementResponse>
+    @GET("/boards")
+    suspend fun getAnnouncement(): Response<List<GetAnnouncementResponse>>
 
     @GET("/api/climber/privacy-setting")
     suspend fun getClimberProfilePrivacyState(

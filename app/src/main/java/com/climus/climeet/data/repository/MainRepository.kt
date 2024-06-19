@@ -362,7 +362,5 @@ interface MainRepository {
         userId: Long
     ): BaseState<GetUserInfoResponse>
 
-
-    suspend fun getAnnouncement(): BaseState<GetAnnouncementResponse>
-
+    suspend fun getAnnouncement(): BaseState<List<GetAnnouncementResponse>>
 }
