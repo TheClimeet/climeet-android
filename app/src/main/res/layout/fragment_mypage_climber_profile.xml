@@ -20,6 +20,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/snack_guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.90" />
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_climber_profile"
             android:layout_width="73dp"

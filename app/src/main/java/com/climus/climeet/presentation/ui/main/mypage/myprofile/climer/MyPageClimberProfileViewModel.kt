@@ -35,6 +35,9 @@ class MyPageClimberProfileViewModel @Inject constructor(
 
     private var climberId: Long = 0
 
+    private val _showSnackbar = MutableStateFlow(false)
+    val showSnackbar: StateFlow<Boolean> = _showSnackbar
+
     fun setClimberId(id: Long) {
         climberId = id
         getProfilePrivacy()
@@ -142,6 +145,10 @@ class MyPageClimberProfileViewModel @Inject constructor(
             else -> {
             }
         }
+    }
+
+    fun setSnackBarState(value: Boolean) {
+        _showSnackbar.value = value
     }
 
     fun navigateToEditPage() {

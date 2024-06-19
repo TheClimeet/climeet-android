@@ -50,7 +50,10 @@ class MyPageClimberProfileEditFragment :
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
-                    is EditClimberProfileEvent.NavigateToProfile -> findNavController().toMyPageClimberProfile()
+                    is EditClimberProfileEvent.NavigateToProfile -> {
+                        idViewModel.setSnackBarState(true)
+                        findNavController().toMyPageClimberProfile()
+                    }
                     is EditClimberProfileEvent.NavigateToBack -> findNavController().toMyPageClimberProfile()
                     is EditClimberProfileEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
