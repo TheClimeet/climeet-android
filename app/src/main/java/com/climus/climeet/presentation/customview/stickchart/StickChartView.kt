@@ -128,12 +128,13 @@ class StickChartView @JvmOverloads constructor(
             val valueFormatter = mXAxis.valueFormatter
             val positions = getTransformedPositions()
 
+            // Ensure that the indices used are within bounds
             for (i in positions.indices step 2) {
                 val x = positions[i]
                 if (mViewPortHandler.isInBoundsX(x)) {
                     val index = i / 2
-                    if (index >= data.size) continue
-                    val label = valueFormatter.getAxisLabel(mXAxis.mEntries[index], mXAxis)
+                    if (index >= data.size) continue // Prevent out-of-bounds access
+                    val label = valueFormatter.getAxisLabel(mXAxis.mEntries.getOrNull(index) ?: 0f, mXAxis)
                     paint.color = Color.parseColor(data[index].levelStringColor)
                     drawLabel(canvas, label, x, pos, anchor, paint)
                 }
@@ -155,7 +156,9 @@ class StickChartView @JvmOverloads constructor(
         private fun getTransformedPositions(): FloatArray {
             val positions = FloatArray(mXAxis.mEntryCount * 2)
             for (i in mXAxis.mEntries.indices) {
-                positions[i * 2] = mXAxis.mEntries[i]
+                if (i * 2 < positions.size) { // Ensure we don't go out of bounds
+                    positions[i * 2] = mXAxis.mEntries[i]
+                }
             }
             mTrans.pointValuesToPixel(positions)
             return positions

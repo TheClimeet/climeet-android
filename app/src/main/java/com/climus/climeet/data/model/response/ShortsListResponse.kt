@@ -14,14 +14,14 @@ data class ShortsItem(
     val gymName: String?,
     val shortsDetailInfo: ShortsDetailInfo,
     val shortsId: Long,
-    val thumbnailImageUrl: String
+    val thumbnailImageUrl: String?
 )
 
 data class ShortsDetailInfo(
     val bookmarkCount: Int,
     val bookmarked: Boolean,
     val commentCount: Int,
-    val description: String,
+    val description: String?,
     val gymDifficultyColor: String?,
     val gymDifficultyName: String?,
     val gymId: Long?,
@@ -43,3 +43,5 @@ data class UserShortsSimpleInfo(
     val profileName: String,
     val userId: Long
 )
+
+enum class userShortsSortType { LATEST, POPULAR }

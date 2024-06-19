@@ -13,6 +13,7 @@ import com.climus.climeet.presentation.ui.main.global.searchprofile.SearchProfil
 import com.climus.climeet.presentation.ui.main.record.model.SelectGymData
 import com.climus.climeet.presentation.ui.main.record.model.toSelectGymData
 import com.climus.climeet.presentation.util.Constants
+import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -69,52 +70,43 @@ class StatsViewModel @Inject constructor(
     }
 
     private fun getMyClimbedGymList() {
-//        viewModelScope.launch {
-//            val climbedDate = selectedDate.value?.let {
-//                it
-//            } ?: run {
-//                LocalDate.now()
-//            }
-//            // todo 사용자의 userId를 어떻게 가져오지
-//            repository.getUserClimbedGymList(1, climbedDate.year, climbedDate.monthValue)
-//                .let { result ->
-//                    when (result) {
-//                        is BaseState.Success -> {
-//                            _uiState.update { state ->
-//                                state.copy(
-//                                    gymList = listOf(
-//                                        SelectGymData(0, "클밋 기준", ::onGymClicked)
-//                                    ) + result.body.visitedClimbingGym.map {
-//                                        it.toSelectGymData(::onGymClicked)
-//                                    }
-//                                )
-//                            }
-//                        }
-//
-//                        is BaseState.Error -> {
-//                            _uiState.update { state ->
-//                                state.copy(
-//                                    gymList = listOf(
-//                                        SelectGymData(0, "클밋 기준", ::onGymClicked)
-//                                    )
-//                                )
-//                            }
-//                            _event.emit(StatsEvent.ShowToastMessage("암장을 불러오지 못했습니다!"))
-//                        }
-//                    }
-//                }
-//        }
+        viewModelScope.launch {
+            val climbedDate = selectedDate.value?.let {
+                it
+            } ?: run {
+                LocalDate.now()
+            }
+            val result = repository.getMyClimbedGymList(climbedDate.year, climbedDate.monthValue)
+                .let { result ->
+                    when (result) {
+                        is BaseState.Success -> {
+                            Log.d(TAG, "${result.body}")
+                            _uiState.update { state ->
+                                state.copy(
+                                    gymList = listOf(
+                                        SelectGymData(0, "클밋 기준", ::onGymClicked)
+                                    ) + result.body.map {
+                                        it.toSelectGymData(::onGymClicked)
+                                    }
+                                )
+                            }
+                        }
 
-        val dummyGyms = listOf(
-            SelectGymData(id = 0, name = "클밋 기준", onClickListener = ::onGymClicked),
-            SelectGymData(id = 1, name = "더 클라임 신사점", onClickListener = ::onGymClicked),
-            SelectGymData(id = 2, name = "피커스 구로", onClickListener = ::onGymClicked),
-            SelectGymData(id = 3, name = "클라이머스 연남점", onClickListener = ::onGymClicked),
-            SelectGymData(id = 4, name = "서울숲 구로", onClickListener = ::onGymClicked),
-            SelectGymData(id = 5, name = "더 클라임 연남점", onClickListener = ::onGymClicked),
-            SelectGymData(id = 6, name = "나는 짱", onClickListener = ::onGymClicked),
-        )
-        _uiState.value = _uiState.value.copy(gymList = dummyGyms)
+                        is BaseState.Error -> {
+                            _uiState.update { state ->
+                                state.copy(
+                                    gymList = listOf(
+                                        SelectGymData(0, "클밋 기준", ::onGymClicked)
+                                    )
+                                )
+                            }
+                            _event.emit(StatsEvent.ShowToastMessage("암장을 불러오지 못했습니다!"))
+                        }
+                    }
+                }
+
+            Log.d(TAG, "${_uiState.value.gymList}")
+        }
     }
 
     private fun onGymClicked(gym: SelectGymData) {
@@ -137,6 +129,7 @@ class StatsViewModel @Inject constructor(
         selectedDate.value = date
         curDate.value = "${date.year}년 ${date.monthValue}월"
         selectedGymReset()
+        getMyClimbedGymList()
         getMyStatus()
     }
 
@@ -312,6 +305,7 @@ class StatsViewModel @Inject constructor(
         date = selectedDate.value
         curDate.value = "${date.year}년 ${date.monthValue}월"
         selectedGymReset()
+        getMyClimbedGymList()
         getMyStatus()
     }
 

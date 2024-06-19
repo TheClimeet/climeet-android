@@ -17,8 +17,10 @@ import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
 import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
+import com.climus.climeet.data.model.response.ClimbedGym
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetAnnouncementResponse
+import com.climus.climeet.data.model.response.GetClimberPrivacySettingResponse
 import com.climus.climeet.data.model.response.GetClimberProfileStatisticsResponse
 import com.climus.climeet.data.model.response.GetClimberProfileTargetGymStatisticsResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
@@ -29,7 +31,6 @@ import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
-import com.climus.climeet.data.model.response.GetUserClimbedListResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
 import com.climus.climeet.data.model.response.GymLevelBestClimberResponse
@@ -53,6 +54,7 @@ import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
+import com.climus.climeet.data.model.response.userShortsSortType
 import com.climus.climeet.data.model.runRemote
 import com.climus.climeet.data.remote.MainApi
 import okhttp3.MultipartBody
@@ -121,17 +123,20 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun getHomeGyms(): BaseState<List<UserHomeGymSimpleResponse>> =
         runRemote { api.getHomeGyms() }
 
+    override suspend fun getClimberPrivacySetting(climberId: Int): BaseState<GetClimberPrivacySettingResponse> =
+        runRemote { api.getClimberPrivacySetting(climberId) }
+
     override suspend fun getClimberFollowing(): BaseState<List<UserFollowSimpleResponse>> =
         runRemote { api.getClimberFollowing() }
 
     override suspend fun followUser(
         followingUserId: Long
-    ): BaseState<String> =
+    ): BaseState<ResponseBody> =
         runRemote { api.followUser(followingUserId) }
 
     override suspend fun unfollowUser(
         followingUserId: Long
-    ): BaseState<String> =
+    ): BaseState<ResponseBody> =
         runRemote { api.unfollowUser(followingUserId) }
 
     override suspend fun getClimberSearchingList(
@@ -403,11 +408,9 @@ class MainRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUserClimbedGymList(
-        userId: Int,
-        year: Int,
-        month: Int
-    ): BaseState<GetUserClimbedListResponse> = runRemote {
-        api.getUserClimbedGymList(userId, year, month)
+        userId: Int
+    ): BaseState<List<ClimbedGym>> = runRemote {
+        api.getUserClimbedGymList(userId)
     }
 
     override suspend fun getMyStatsTargetGymMonth(
@@ -416,6 +419,13 @@ class MainRepositoryImpl @Inject constructor(
         month: Int
     ): BaseState<GetMyStatsTargetGymMonthResponse> = runRemote {
         api.getMyStatsTargetGymMonth(gymId, year, month)
+    }
+
+    override suspend fun getMyClimbedGymList(
+        year: Int,
+        month: Int
+    ): BaseState<List<ClimbedGym>> = runRemote {
+        api.getMyClimbedGymList(year, month)
     }
 
     override suspend fun getMyShorts(page: Int, size: Int): BaseState<ShortsListResponse> =
@@ -433,9 +443,10 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun getUserShorts(
         uploaderId: Long,
         page: Int,
-        size: Int
+        size: Int,
+        sortType: userShortsSortType
     ): BaseState<ShortsListResponse> = runRemote {
-        api.getUserShorts(uploaderId, page, size)
+        api.getUserShorts(uploaderId, page, size, sortType)
     }
 
 }
