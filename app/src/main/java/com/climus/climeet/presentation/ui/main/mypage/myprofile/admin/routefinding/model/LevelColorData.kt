@@ -30,8 +30,7 @@ object LevelColorData {
         "V6",
         "V7",
         "V8",
-        "V9+",
-        "C"
+        "V9+"
     )
 
 }

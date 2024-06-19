@@ -203,6 +203,7 @@
                             android:background="@drawable/rect_silver2fill_nostroke_5radius"
                             android:paddingHorizontal="20dp"
                             android:paddingVertical="13dp"
+                            android:onClick="@{()->vm.showSetLevel()}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_selected_level">
@@ -212,7 +213,7 @@
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="레벨 설정"
+                                android:text="@{vm.selectedLevel}"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />

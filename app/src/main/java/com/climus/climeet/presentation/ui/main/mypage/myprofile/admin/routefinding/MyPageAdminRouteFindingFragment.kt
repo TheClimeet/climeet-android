@@ -8,6 +8,7 @@ import com.climus.climeet.databinding.FragmentMyPageAdminRouteFindingBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheet
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheetViewModel
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.bottomsheet.SetLevelBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,6 +40,13 @@ class MyPageAdminRouteFindingFragment :
                         ) { date ->
                             viewModel.setSelectedDate(date)
                         }.show()
+                    }
+
+                    MyPageAdminRouteFindingEvent.ShowSetLevel -> {
+                        SetLevelBottomSheet(
+                            requireContext(),
+                            viewModel
+                        ).show()
                     }
                 }
             }

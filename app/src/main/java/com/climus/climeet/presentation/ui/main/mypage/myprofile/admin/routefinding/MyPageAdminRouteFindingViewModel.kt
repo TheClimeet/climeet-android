@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.LevelColor
@@ -24,6 +25,7 @@ data class MyPageAdminRouteFindingUiState(
 
 sealed class MyPageAdminRouteFindingEvent {
     data object ShowDatePicker : MyPageAdminRouteFindingEvent()
+    data object ShowSetLevel : MyPageAdminRouteFindingEvent()
 }
 
 @HiltViewModel
@@ -44,11 +46,25 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     val selectedColor = MutableStateFlow(RouteColor("-", "#FFFFFF"))
     val colorList = LevelColorData.COLORS
 
+    val selectedLevel = MutableStateFlow("레벨 설정")
+
     fun setSelectedDate(updateDate: LocalDate) {
         selectedDate.update { updateDate }
         selectedDateText.update {
             "${updateDate.year}년 ${updateDate.monthValue}월 ${updateDate.dayOfMonth}일 (${dayOfWeekMap[updateDate.dayOfWeek]})"
         }
+    }
+
+    fun selectColor(color: RouteColor) {
+        selectedColor.value = color
+    }
+
+    fun selectLevel(level: String) {
+        selectedLevel.value = level
+    }
+
+    fun noUse(dateDate: LocalDate) {
+
     }
 
     fun showDatePicker() {
@@ -57,12 +73,10 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         }
     }
 
-    fun selectColor(color: RouteColor) {
-        selectedColor.value = color
-    }
-
-    fun noUse(dateDate: LocalDate) {
-
+    fun showSetLevel() {
+        viewModelScope.launch {
+            _event.emit(MyPageAdminRouteFindingEvent.ShowSetLevel)
+        }
     }
 
     companion object {
