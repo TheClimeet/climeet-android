@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.mypage.announce.AnnounceDetailViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -62,9 +66,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="20dp"
                         android:layout_marginTop="25dp"
-                        android:text="안녕하세요 여러분!"
+                        android:text="@{vm.uiState.title}"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="안녕하세요 여러분!" />
 
                     <TextView
                         android:id="@+id/tv_date"
@@ -72,11 +77,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="2024. 02. 12 10:13"
+                        android:text="@{vm.uiState.createdAt}"
                         android:textColor="@color/white"
                         android:textSize="10sp"
                         app:layout_constraintStart_toStartOf="@+id/tv_title"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                        tools:text="2024. 02. 12 10:13" />
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/iv_announce_profile"
@@ -106,17 +112,54 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:text="클밋 공식 계정" />
+                            android:text="@{vm.uiState.profileName}"
+                            tools:text="클밋 공식 계정" />
 
-                        <TextView
-                            android:id="@+id/tv_follow"
-                            style="@style/TextTiny"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:text="팔로워 25,883|팔로잉 11"
-                            android:textColor="@color/white"
-                            android:textSize="10sp" />
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/TextTiny"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="팔로워"
+                                android:textColor="@color/white"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/tv_follower"
+                                style="@style/TextTiny"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.uiState.followerCount}"
+                                android:textColor="@color/white"
+                                android:textSize="10sp"
+                                tools:text="25,883" />
+
+                            <TextView
+                                style="@style/TextTiny"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text=" | 팔로잉"
+                                android:textColor="@color/white"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/tv_following"
+                                style="@style/TextTiny"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="@{vm.uiState.followingCount}"
+                                android:textColor="@color/white"
+                                android:textSize="10sp"
+                                tools:text="11" />
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -137,23 +180,37 @@
                         android:layout_marginHorizontal="20dp"
                         android:layout_marginTop="10dp"
                         android:lineSpacingExtra="5dp"
-                        android:text="드디어 클밋이 세상에 출시하게 되었습니다. \n클밋은 클라이머를 위한 루트 파인딩 어플이에요. \n모두가 즐겁게 클라이밍을 즐길 수 있도록, \n클밋이 앞으로도 만들어 나가겠습니다!!!\n\n\n감사합니다 ㅎㅎ\n클밋 드림"
+                        android:text="@{vm.uiState.content}"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/view2" />
+                        app:layout_constraintTop_toBottomOf="@+id/view2"
+                        tools:text="드디어 클밋이 세상에 출시하게 되었습니다. \n클밋은 클라이머를 위한 루트 파인딩 어플이에요. \n모두가 즐겁게 클라이밍을 즐길 수 있도록, \n클밋이 앞으로도 만들어 나가겠습니다!!!\n\n\n감사합니다 ㅎㅎ\n클밋 드림" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:paddingEnd="20dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintBottom_toTopOf="@id/iv_like"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_contents"
+                        tools:listitem="@layout/item_announcement_image" />
 
                     <ImageView
                         android:id="@+id/iv_like"
                         android:layout_width="20dp"
                         android:layout_height="18dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="25dp"
                         android:src="@drawable/img_good"
-                        app:layout_constraintBottom_toBottomOf="@+id/tv_announce_box"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/tv_contents"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_contents"
+                        app:layout_constraintTop_toBottomOf="@+id/rv_image"
                         app:tint="@color/cm_grey6" />
 
                     <TextView
@@ -175,12 +232,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
-                        android:text="36"
+                        android:text="@{vm.uiState.likeCount}"
                         android:textColor="@color/cm_grey6"
                         android:textSize="15sp"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_like"
                         app:layout_constraintStart_toEndOf="@+id/tv_like"
-                        app:layout_constraintTop_toTopOf="@+id/iv_like" />
+                        app:layout_constraintTop_toTopOf="@+id/iv_like"
+                        tools:text="36" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>

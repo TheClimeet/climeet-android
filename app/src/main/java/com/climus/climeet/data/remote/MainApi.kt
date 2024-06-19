@@ -13,6 +13,7 @@ import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
+import com.climus.climeet.data.model.response.GetAnnouncementDetailResponse
 import com.climus.climeet.data.model.response.GetAnnouncementResponse
 import com.climus.climeet.data.model.response.GetClimberProfileStatisticsResponse
 import com.climus.climeet.data.model.response.GetClimberProfileTargetGymStatisticsResponse
@@ -386,6 +387,11 @@ interface MainApi {
 
     @GET("/boards")
     suspend fun getAnnouncement(): Response<List<GetAnnouncementResponse>>
+
+    @GET("/boards/{boardId}")
+    suspend fun getAnnouncementDetail(
+        @Path("boardId") boardId: Long
+    ): Response<GetAnnouncementDetailResponse>
 
     @GET("/api/climber/privacy-setting")
     suspend fun getClimberProfilePrivacyState(

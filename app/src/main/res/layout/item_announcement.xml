@@ -65,18 +65,28 @@
             android:singleLine="true"
             android:text="안녕하세요 여러분!"
             android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/iv_image"
+            app:layout_constraintEnd_toStartOf="@+id/cv_image"
             app:layout_constraintStart_toStartOf="@+id/tv_announcement_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_created_date" />
 
-        <ImageView
-            android:id="@+id/iv_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/img_announce"
+            app:cardCornerRadius="5dp"
+            app:contentPadding="0dp"
             app:layout_constraintEnd_toEndOf="@+id/tv_announce_box"
-            app:layout_constraintTop_toTopOf="@+id/tv_announcement_name" />
+            app:layout_constraintTop_toTopOf="@+id/tv_announcement_name">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_announce" />
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/tv_announcement_contents"
@@ -89,7 +99,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:text="안녕하세요 여러분! 드디어 클밋이 세상에 출시하게 되었습니다. \n클밋은 클라이머를 위한 루트 파인딩 어플이에요."
-            app:layout_constraintEnd_toStartOf="@+id/iv_image"
+            app:layout_constraintEnd_toStartOf="@+id/cv_image"
             app:layout_constraintStart_toStartOf="@+id/tv_announcement_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_announcement_title" />
 

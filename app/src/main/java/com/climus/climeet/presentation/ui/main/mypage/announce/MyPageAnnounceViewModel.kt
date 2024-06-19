@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 import javax.inject.Inject
 
 data class AnnounceUiData(
@@ -40,7 +42,11 @@ class MyPageAnnounceViewModel @Inject constructor(val repository: MainRepository
             repository.getAnnouncement().let {
                 when (it) {
                     is BaseState.Success -> {
-                        val announcements = it.body.map { response -> response.toAnnouncementUiData() }
+                        val announcements = it.body.map { response ->
+                            response.toAnnouncementUiData().copy(
+                                createdAt = formatDate(response.createdAt)
+                            )
+                        }
                         _uiState.update { state ->
                             state.copy(
                                 announceList = announcements
@@ -55,6 +61,14 @@ class MyPageAnnounceViewModel @Inject constructor(val repository: MainRepository
                 }
             }
         }
+    }
+
+    private fun formatDate(time: String): String {
+        val isoFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val date = isoFormatter.parse(time)
+
+        val targetFormat = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault())
+        return targetFormat.format(date)
     }
 
     fun navigateToAnnounceDetail(boardId: Long) {
