@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -37,7 +38,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
 
     private val initDate = LocalDate.now()
     val selectedDateText =
-        MutableStateFlow("${initDate.year}년 ${initDate.monthValue}월 ${initDate.dayOfMonth}일 (${initDate.dayOfWeek})")
+        MutableStateFlow("${initDate.year}년 ${initDate.monthValue}월 ${initDate.dayOfMonth}일 (${dayOfWeekMap[initDate.dayOfWeek]})")
     val selectedDate = MutableStateFlow(initDate)
 
     val selectedColor = MutableStateFlow(RouteColor("-", "#FFFFFF"))
@@ -45,7 +46,9 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
 
     fun setSelectedDate(updateDate: LocalDate) {
         selectedDate.update { updateDate }
-        selectedDateText.update { "${updateDate}년 ${updateDate}월 ${updateDate}일 (${updateDate})" }
+        selectedDateText.update {
+            "${updateDate.year}년 ${updateDate.monthValue}월 ${updateDate.dayOfMonth}일 (${dayOfWeekMap[updateDate.dayOfWeek]})"
+        }
     }
 
     fun showDatePicker() {
@@ -58,8 +61,20 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         selectedColor.value = color
     }
 
-    fun noUse(dateDate : LocalDate) {
+    fun noUse(dateDate: LocalDate) {
 
+    }
+
+    companion object {
+        private val dayOfWeekMap = mapOf(
+            DayOfWeek.MONDAY to "월",
+            DayOfWeek.TUESDAY to "화",
+            DayOfWeek.WEDNESDAY to "수",
+            DayOfWeek.THURSDAY to "목",
+            DayOfWeek.FRIDAY to "금",
+            DayOfWeek.SATURDAY to "토",
+            DayOfWeek.SUNDAY to "일"
+        )
     }
 
 }
