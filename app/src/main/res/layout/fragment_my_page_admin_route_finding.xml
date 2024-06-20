@@ -132,12 +132,17 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_level_manage">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_level"
+                        android:id="@+id/rv_route_finding_level"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_add_level"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:list="@{vm.uiState.selectedLevelColor}"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/item_route_finding_level" />
 
                     <TextView
                         android:id="@+id/tv_add_level"
@@ -146,12 +151,13 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/rect_grey8fill_nostroke_5radius"
                         android:drawablePadding="3dp"
+                        android:onClick="@{()->vm.resetSelectedColorAndLevel()}"
                         android:paddingVertical="6dp"
                         android:paddingStart="13dp"
                         android:paddingEnd="16dp"
                         android:text="@string/route_finding_add_level"
                         app:drawableStartCompat="@drawable/ic_add_white_14"
-                        app:layout_constraintStart_toEndOf="@id/rv_level"
+                        app:layout_constraintStart_toEndOf="@+id/rv_route_finding_level"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -184,12 +190,12 @@
                             android:layout_height="53dp"
                             android:layout_marginStart="24dp"
                             android:layout_marginEnd="34dp"
-                            app:list="@{vm.colorList}"
                             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                             app:layout_constraintBottom_toBottomOf="@+id/tv_selected_level"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/tv_selected_level"
                             app:layout_constraintTop_toTopOf="@id/tv_selected_level"
+                            app:list="@{vm.colorList}"
                             app:spanCount="7"
                             tools:itemCount="14"
                             tools:listitem="@layout/item_route_finding_level_color" />
@@ -201,9 +207,9 @@
                             android:layout_marginHorizontal="18dp"
                             android:layout_marginTop="20dp"
                             android:background="@drawable/rect_silver2fill_nostroke_5radius"
+                            android:onClick="@{()->vm.showSetLevel()}"
                             android:paddingHorizontal="20dp"
                             android:paddingVertical="13dp"
-                            android:onClick="@{()->vm.showSetLevel()}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_selected_level">
@@ -236,8 +242,8 @@
                             android:layout_marginTop="7dp"
                             android:text="컴피티션 레벨은 C에 고정되어 있어요"
                             android:textColor="@color/cm_main"
-                            app:layout_constraintTop_toBottomOf="@id/layout_set_level"
-                            app:layout_constraintStart_toStartOf="@id/layout_set_level"/>
+                            app:layout_constraintStart_toStartOf="@id/layout_set_level"
+                            app:layout_constraintTop_toBottomOf="@id/layout_set_level" />
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_add_level_complete"
@@ -246,6 +252,7 @@
                             android:layout_height="30dp"
                             android:layout_marginTop="30dp"
                             android:background="@drawable/rect_mainfill_nostroke_8radius"
+                            android:onClick="@{()->vm.addLevelColor()}"
                             android:paddingHorizontal="16dp"
                             android:paddingTop="5.5dp"
                             android:paddingBottom="6.5dp"

@@ -8,6 +8,8 @@ import com.climus.climeet.databinding.FragmentMyPageAdminRouteFindingBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheet
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheetViewModel
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.LevelColorAdapter
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.RouteFindingLevelAdapter
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.bottomsheet.SetLevelBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,6 +19,7 @@ class MyPageAdminRouteFindingFragment :
 
     private val dateViewModel: SelectDateBottomSheetViewModel by viewModels()
     private val viewModel: MyPageAdminRouteFindingViewModel by viewModels()
+    private lateinit var lvAdapter: RouteFindingLevelAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -25,6 +28,7 @@ class MyPageAdminRouteFindingFragment :
 
         setRV()
         initEventObserve()
+        initStateObserve()
     }
 
     private fun initEventObserve() {
@@ -54,8 +58,19 @@ class MyPageAdminRouteFindingFragment :
         }
     }
 
+    private fun initStateObserve() {
+        repeatOnStarted {
+            viewModel.uiState.collect { state ->
+                lvAdapter.submitList(state.selectedLevelColor)
+            }
+        }
+    }
+
     private fun setRV() {
         val adapter = LevelColorAdapter(viewModel)
         binding.rvLevelColor.adapter = adapter
+
+        lvAdapter = RouteFindingLevelAdapter(viewModel)
+        binding.rvRouteFindingLevel.adapter = lvAdapter
     }
 }

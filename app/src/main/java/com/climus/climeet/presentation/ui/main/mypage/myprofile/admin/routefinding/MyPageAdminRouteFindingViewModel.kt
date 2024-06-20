@@ -20,9 +20,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 data class MyPageAdminRouteFindingUiState(
-    val selectedLevelColor: List<LevelColor> = listOf(
-        LevelColor(RouteColor("하양", "#FFFFFF"), "V1")
-    )
+    val selectedLevelColor: List<LevelColor> = emptyList()
 )
 
 sealed class MyPageAdminRouteFindingEvent {
@@ -65,9 +63,26 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         selectedLevel.value = level
     }
 
-    fun noUse(dateDate: LocalDate) {
+    fun addLevelColor() {
+        val newLevelColor = LevelColor(
+            level = selectedLevel.value,
+            color = selectedColor.value
+        )
+
+        _uiState.update { state ->
+            state.copy(
+                selectedLevelColor = state.selectedLevelColor + newLevelColor
+            )
+        }
 
     }
+
+    fun resetSelectedColorAndLevel() {
+        selectedColor.update { RouteColor() }
+        selectedLevel.update { "레벨 설정" }
+    }
+
+    fun noUse(dateDate: LocalDate) {}
 
     fun showDatePicker() {
         viewModelScope.launch {

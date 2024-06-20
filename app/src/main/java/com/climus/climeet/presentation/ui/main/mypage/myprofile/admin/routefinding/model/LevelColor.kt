@@ -6,6 +6,6 @@ data class LevelColor(
 )
 
 data class RouteColor(
-    val name: String,
-    val color: String
+    val name: String = "-",
+    val color: String = "#FFFFFF"
 )
