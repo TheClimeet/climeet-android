@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="svm"
+            type="com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel" />
+
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.viewpager.MyPageClimberProfileShortsViewModel" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/layout_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingBottom="100dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".presentation.ui.main.mypage.myprofile.climer.viewpager.MyPageClimberProfileShortsFragment">
+
+            <TextView
+                android:id="@+id/tv_header"
+                style="@style/TextLargeBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:text="숏츠 보기"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_shorts"
+                style="@style/TextTiny"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/rect_mainfill_nostroke_8radius"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:onClick="@{() -> vm.showShortsBtns()}"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="5dp"
+                android:text="@{vm.uiState.state}"
+                android:textColor="@color/black"
+                android:visibility="@{vm.btnState.shorts ? View.GONE : View.VISIBLE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_header"
+                tools:text="전체공개" />
+
+            <LinearLayout
+                android:id="@+id/layout_no_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="80dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_header">
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/ic_no_shorts" />
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="등록된 숏츠가 없습니다."
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_shorts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_header"
+                app:list="@{svm.uiState.shortsThumbnailList}"
+                app:spanCount="2" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_shorts_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:orientation="vertical"
+                android:visibility="@{vm.btnState.shorts ? View.VISIBLE : View.GONE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_header">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_shorts_public"
+                    style="@style/TextTiny"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@{vm.uiState.public ? @drawable/rect_mainfill_nostroke_top8radius : @drawable/rect_grey7fill_nostroke_top8radius}"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:onClick="@{() -> vm.setShortsVisibility(1)}"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="5dp"
+                    android:text="전체공개"
+                    android:textColor="@{vm.uiState.public ? @color/black : @color/white}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_shorts_follow"
+                    style="@style/TextTiny"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@{vm.uiState.follow ? @color/cm_main : @color/cm_grey7}"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:onClick="@{() -> vm.setShortsVisibility(2)}"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="5dp"
+                    android:text="팔로우만"
+                    android:textColor="@{vm.uiState.follow ? @color/black : @color/white}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_shorts_public" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_shorts_closed"
+                    style="@style/TextTiny"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@{vm.uiState.closed ? @drawable/rect_mainfill_nostroke_bottom8radius : @drawable/rect_grey7fill_nostroke_bottom8radius}"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:onClick="@{() -> vm.setShortsVisibility(3)}"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="5dp"
+                    android:text="나만보기"
+                    android:textColor="@{vm.uiState.closed ? @color/black : @color/white}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_shorts_follow" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

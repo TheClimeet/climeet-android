@@ -7,8 +7,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
-import com.climus.climeet.app.App
-import com.climus.climeet.app.di.NetworkModule
 import com.climus.climeet.databinding.FragmentMypageBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroActivity
@@ -108,7 +106,7 @@ class MyPageFragment: BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypa
     }
 
     private fun NavController.toClimerMyProfile(){
-        val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageClimerMyProfileFragment()
+        val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageClimerMyProfileFragment(viewModel.uiState.value.userId)
         navigate(action)
     }
 

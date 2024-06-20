@@ -45,3 +45,5 @@ data class UserShortsSimpleInfo(
 )
 
 enum class userShortsSortType { LATEST, POPULAR }
+
+enum class UserShortsVisibilityType { PUBLIC, FOLLOWERS_ONLY, PRIVATE }

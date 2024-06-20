@@ -1,15 +1,12 @@
 package com.climus.climeet.presentation.ui.main.record.stats
 
 import android.util.Log
-import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.customview.stickchart.StickChartUiData
-import com.climus.climeet.presentation.ui.main.global.searchprofile.SearchProfileEvent
 import com.climus.climeet.presentation.ui.main.record.model.SelectGymData
 import com.climus.climeet.presentation.ui.main.record.model.toSelectGymData
 import com.climus.climeet.presentation.util.Constants

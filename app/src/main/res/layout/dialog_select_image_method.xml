@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rect_whitefill_nostroke_12radius"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="spread">
+
+            <Button
+                android:id="@+id/buttonCamera"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:gravity="center_vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="5dp"
+                android:text="카메라로 사진찍기"
+                android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/buttonGallery"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:gravity="center_vertical"
+                android:paddingStart="20dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="10dp"
+                android:text="갤러리에서 선택하기"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

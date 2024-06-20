@@ -38,6 +38,7 @@ import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
 import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.GymWeekStatsResponse
+import com.climus.climeet.data.model.response.MyPageClimberProfilePrivacyResponse
 import com.climus.climeet.data.model.response.MyPageProfileResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
@@ -55,6 +56,7 @@ import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.data.model.response.userShortsSortType
+import com.climus.climeet.data.model.response.UserShortsVisibilityType
 import com.climus.climeet.data.model.runRemote
 import com.climus.climeet.data.remote.MainApi
 import okhttp3.MultipartBody
@@ -421,15 +423,18 @@ class MainRepositoryImpl @Inject constructor(
         api.getMyStatsTargetGymMonth(gymId, year, month)
     }
 
+    override suspend fun getMyShorts(
+        shortsVisibility: UserShortsVisibilityType,
+        page: Int,
+        size: Int
+    ): BaseState<ShortsListResponse> = runRemote { api.getMyShorts(shortsVisibility, page, size) }
+
     override suspend fun getMyClimbedGymList(
         year: Int,
         month: Int
     ): BaseState<List<ClimbedGym>> = runRemote {
         api.getMyClimbedGymList(year, month)
     }
-
-    override suspend fun getMyShorts(page: Int, size: Int): BaseState<ShortsListResponse> =
-        runRemote { api.getMyShorts(page, size) }
 
     override suspend fun getUserHomeGyms(userId: Long): BaseState<List<UserHomeGymSimpleResponse>> =
         runRemote { api.getUserHomeGyms(userId) }
@@ -448,5 +453,21 @@ class MainRepositoryImpl @Inject constructor(
     ): BaseState<ShortsListResponse> = runRemote {
         api.getUserShorts(uploaderId, page, size, sortType)
     }
+
+    override suspend fun editHomeGymPrivacy(): BaseState<ResponseBody> =
+        runRemote { api.editHomeGymPrivacy() }
+
+    override suspend fun editAvgCompletePrivacy(): BaseState<ResponseBody> =
+        runRemote { api.editAvgCompletePrivacy() }
+
+    override suspend fun editAvgCompleteLevelPrivacy(): BaseState<ResponseBody> =
+        runRemote { api.editAvgCompleteLevelPrivacy() }
+
+    override suspend fun updateUserProfileImage(
+        image: MultipartBody.Part
+    ): BaseState<ResponseBody> = runRemote { api.updateUserProfileImage(image) }
+
+    override suspend fun updateUserName(name: String): BaseState<ResponseBody> =
+        runRemote { api.updateUserName(name) }
 
 }

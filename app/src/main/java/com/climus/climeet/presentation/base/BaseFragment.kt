@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.climus.climeet.presentation.customview.LoadingDialog
 import com.climus.climeet.presentation.customview.PermissionSnackBar
+import com.climus.climeet.presentation.customview.CustomSnackBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -86,6 +87,12 @@ abstract class BaseFragment<B : ViewDataBinding>(
             }
             startActivity(intent)
         }
+        snackBar.setText(message)
+        snackBar.show()
+    }
+
+    fun showCustomSnackBar(view: View, message: String) {
+        val snackBar = CustomSnackBar(view)
         snackBar.setText(message)
         snackBar.show()
     }

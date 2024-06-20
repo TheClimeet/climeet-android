@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,6 +19,7 @@ import javax.inject.Inject
 
 sealed class MainEvent{
     data object GoToGalleryForVideo: MainEvent()
+    data class GoToSetProfileImage(val context: Context) : MainEvent()
     data class ShowToastMessage(val msg: String) : MainEvent()
     data object ChangeStatusBarBlack : MainEvent()
     data object ChangeStatusBarBackground : MainEvent()
@@ -35,6 +37,9 @@ class MainViewModel @Inject constructor(
     private val _videoUri = MutableSharedFlow<Uri>()
     val videoUri: SharedFlow<Uri> = _videoUri.asSharedFlow()
 
+    private val _imageUri = MutableSharedFlow<Uri>()
+    val imageUri: SharedFlow<Uri> = _imageUri.asSharedFlow()
+
     private val _shortsThumbnail = MutableSharedFlow<String>()
     val shortsThumbnail: SharedFlow<String> = _shortsThumbnail.asSharedFlow()
 
@@ -44,9 +49,21 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun goToSetProfileImage(context: Context){
+        viewModelScope.launch {
+            _event.emit(MainEvent.GoToSetProfileImage(context))
+        }
+    }
+
     fun setVideoUri(uri: Uri){
         viewModelScope.launch {
             _videoUri.emit(uri)
+        }
+    }
+
+    fun setImageUri(uri: Uri) {
+        viewModelScope.launch {
+            _imageUri.emit(uri)
         }
     }
 
@@ -56,9 +73,7 @@ class MainViewModel @Inject constructor(
                 when (it) {
                     is BaseState.Success -> {
                         when(type){
-                            DataType.SHORTS_THUMBNAIL -> {
-                                _shortsThumbnail.emit(it.body.imgUrl)
-                            }
+                            DataType.SHORTS_THUMBNAIL -> _shortsThumbnail.emit(it.body.imgUrl)
                         }
                     }
 

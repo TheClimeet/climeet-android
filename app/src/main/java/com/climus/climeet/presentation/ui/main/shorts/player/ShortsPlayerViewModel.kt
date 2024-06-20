@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.climus.climeet.app.App.Companion.sharedPreferences
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.response.userShortsSortType
+import com.climus.climeet.data.model.response.UserShortsVisibilityType
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SelectedFilter
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
@@ -179,13 +180,12 @@ class ShortsPlayerViewModel @Inject constructor(
         }
     }
 
-    fun getMyShorts(option: ShortsOption) {
+    fun getMyShorts(option: ShortsOption, type: UserShortsVisibilityType) {
 
         viewModelScope.launch {
             if (uiState.value.hasNext) {
 
-
-                repository.getMyShorts(uiState.value.page, 10).let {
+                repository.getMyShorts(type, uiState.value.page, 10).let {
                     when (it) {
                         is BaseState.Success -> {
 

@@ -13,13 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentClimberProfileInfoBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.climus.climeet.presentation.customview.stickchart.StickChartAdapter
 import com.climus.climeet.presentation.ui.main.global.climerprofile.ClimberProfileViewModel
 import com.climus.climeet.presentation.ui.main.global.climerprofile.adapter.HomeGymAdapter
 import com.climus.climeet.presentation.ui.main.record.stats.SelectGymAdapter
 import com.climus.climeet.presentation.ui.toGymProfile
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -55,8 +53,7 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
                     is ClimberProfileEvent.NavigateToGymProfile -> findNavController().toGymProfile(
                         it.id
                     )
-
-                    ClimberProfileEvent.ShowPopupWindow -> showPopupWindow()
+                    is ClimberProfileEvent.ShowPopupWindow -> showPopupWindow()
                     is ClimberProfileEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
@@ -79,11 +76,11 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
                 averageCompletionRatePublic = it.averageCompletionRatePublic
                 averageCompletionLevelPublic = it.averageCompletionLevelPublic
 
-                if(it.averageCompletionLevelPublic || it.averageCompletionRatePublic) {
+                if (it.averageCompletionLevelPublic || it.averageCompletionRatePublic) {
                     viewModel.getStatistics()
                 }
 
-                if(it.homeGymPublic) {
+                if (it.homeGymPublic) {
                     binding.rvHomeHomegym.visibility = View.VISIBLE
                     binding.layoutPrivacyHome.visibility = View.GONE
                     viewModel.getUserHomeGyms()
@@ -92,7 +89,7 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
                     binding.layoutPrivacyHome.visibility = View.VISIBLE
                 }
 
-                if(it.averageCompletionRatePublic) {
+                if (it.averageCompletionRatePublic) {
                     binding.layoutPrivacyRate.visibility = View.INVISIBLE
                     binding.layoutAvgComplete.visibility = View.VISIBLE
                 } else {
@@ -100,7 +97,7 @@ class ClimberProfileInfoFragment @Inject constructor(private val userId: Long) :
                     binding.layoutAvgComplete.visibility = View.INVISIBLE
                 }
 
-                if(it.averageCompletionLevelPublic) {
+                if (it.averageCompletionLevelPublic) {
                     binding.layoutPrivacyLevel.visibility = View.INVISIBLE
                     binding.viewStickchart.visibility = View.VISIBLE
                     binding.layoutToggle.visibility = View.VISIBLE

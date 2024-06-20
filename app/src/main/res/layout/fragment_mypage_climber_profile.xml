@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="svm"
+            type="com.climus.climeet.presentation.ui.main.global.climerprofile.ClimberProfileViewModel" />
+
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.MyPageClimberProfileViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/snack_guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.90" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_climber_profile"
+            android:layout_width="73dp"
+            android:layout_height="73dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:profileImgUrl="@{svm.uiState.userProfileImg}" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:ellipsize="end"
+            android:maxWidth="280dp"
+            android:orientation="vertical"
+            android:singleLine="true"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_climber_profile"
+            app:layout_constraintStart_toEndOf="@+id/iv_climber_profile"
+            app:layout_constraintTop_toTopOf="@+id/iv_climber_profile">
+
+            <TextView
+                android:id="@+id/tv_nickname"
+                style="@style/TextLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxWidth="180dp"
+                android:maxLines="1"
+                android:text="@{svm.uiState.userName}"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="클라이머 켈리" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/TextTiny"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:background="@drawable/rect_grey7fill_nostroke_8radius"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:onClick="@{() -> vm.navigateToEditPage()}"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="3dp"
+                android:text="프로필편집"
+                app:layout_constraintBottom_toBottomOf="@id/tv_nickname"
+                app:layout_constraintStart_toEndOf="@id/tv_nickname"
+                app:layout_constraintTop_toTopOf="@id/tv_nickname" />
+
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@{svm.uiState.followingString}"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_nickname"
+                tools:text="팔로워 25,883  |  팔로잉 11" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tb_climber_profile"
+            style="@style/TextSmallSemiBold"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/cm_background"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@+id/iv_climber_profile"
+            app:tabBackground="@drawable/mypage_follow_tab"
+            app:tabIndicatorColor="@color/cm_main"
+            app:tabIndicatorFullWidth="true"
+            app:tabIndicatorHeight="1dp"
+            app:tabRippleColor="@color/transparent"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextColor="#A5A5A5" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_climber_profile"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tb_climber_profile" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

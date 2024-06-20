@@ -36,6 +36,7 @@ import com.climus.climeet.data.model.response.GymProfileTabInfoResponse
 import com.climus.climeet.data.model.response.GymProfileTopInfoResponse
 import com.climus.climeet.data.model.response.GymTimeBestClimberResponse
 import com.climus.climeet.data.model.response.GymWeekStatsResponse
+import com.climus.climeet.data.model.response.MyPageClimberProfilePrivacyResponse
 import com.climus.climeet.data.model.response.MyPageProfileResponse
 import com.climus.climeet.data.model.response.MyStatsMonthResponse
 import com.climus.climeet.data.model.response.SearchAvailableGymResponse
@@ -53,6 +54,7 @@ import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.data.model.response.userShortsSortType
+import com.climus.climeet.data.model.response.UserShortsVisibilityType
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.http.Query
@@ -269,6 +271,19 @@ interface MainRepository {
 
     suspend fun getMyPageProfile(): BaseState<MyPageProfileResponse>
 
+    suspend fun editHomeGymPrivacy(): BaseState<ResponseBody>
+    suspend fun editAvgCompletePrivacy(): BaseState<ResponseBody>
+    suspend fun editAvgCompleteLevelPrivacy(): BaseState<ResponseBody>
+
+    suspend fun updateUserProfileImage(
+        image: MultipartBody.Part
+    ): BaseState<ResponseBody>
+
+    suspend fun updateUserName(
+        name: String,
+    ): BaseState<ResponseBody>
+
+
     // -------- RoomDB ClimbingRecordDao 암장 정보 ----------
     fun insert(climbingRecordData: ClimbingRecordData)
     fun update(climbingRecordData: ClimbingRecordData)
@@ -340,6 +355,7 @@ interface MainRepository {
     ): BaseState<ShortsListResponse>
 
     suspend fun getMyShorts(
+        shortsVisibility: UserShortsVisibilityType,
         page: Int,
         size: Int
     ): BaseState<ShortsListResponse>

@@ -50,6 +50,7 @@ import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.data.model.response.userShortsSortType
+import com.climus.climeet.data.model.response.UserShortsVisibilityType
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -379,6 +380,7 @@ interface MainApi {
 
     @GET("/api/shorts/my-shorts")
     suspend fun getMyShorts(
+        @Query("shortsVisibility") shortsVisibility: UserShortsVisibilityType,
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<ShortsListResponse>
@@ -396,4 +398,23 @@ interface MainApi {
     @GET("/api/boards")
     suspend fun getAnnouncement(): Response<GetAnnouncementResponse>
 
+    @PATCH("/api/climber/homegym-privacy-setting")
+    suspend fun editHomeGymPrivacy(): Response<ResponseBody>
+
+    @PATCH("/api/climber/averageCompletionRate-privacy-setting")
+    suspend fun editAvgCompletePrivacy(): Response<ResponseBody>
+
+    @PATCH("/api/climber/averageCompletionLevel-privacy-setting")
+    suspend fun editAvgCompleteLevelPrivacy(): Response<ResponseBody>
+
+    @Multipart
+    @PATCH("/api/profile-image")
+    suspend fun updateUserProfileImage(
+        @Part image: MultipartBody.Part
+    ): Response<ResponseBody>
+
+    @PATCH("/api/profile-name")
+    suspend fun updateUserName(
+        @Query("name") name: String
+    ): Response<ResponseBody>
 }
