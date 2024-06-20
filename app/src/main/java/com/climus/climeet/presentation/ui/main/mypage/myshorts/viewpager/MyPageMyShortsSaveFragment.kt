@@ -3,12 +3,11 @@ package com.climus.climeet.presentation.ui.main.mypage.myshorts.viewpager
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
-import com.climus.climeet.data.model.response.UserShortsVisibilityType
 import com.climus.climeet.databinding.FragmentMypageMyshortsSaveBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsThumbnailAdapter
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
@@ -16,22 +15,25 @@ import com.climus.climeet.presentation.ui.toShortsPlayer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyPageMyShortsSaveFragment :
-    BaseFragment<FragmentMypageMyshortsSaveBinding>(R.layout.fragment_mypage_myshorts_save) {
+class MyPageMyShortsSaveFragment(
+    // todo: userId 넘겨받아야 할수도 (api 안 나와서 모르겠음)
+    private val userId: Long = 75,
+) : BaseFragment<FragmentMypageMyshortsSaveBinding>(R.layout.fragment_mypage_myshorts_save) {
 
     private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
-    private val viewModel: MyPageShortsCommentViewModel by viewModels()
 
     private var bottomScrollState = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
 
         binding.svm = sharedViewModel
+        binding.rvShorts.adapter = ShortsThumbnailAdapter()
 
         sharedViewModel.initViewModel()
-        // todo : api 나오면 그거로 연결
-        sharedViewModel.getMyShorts(ShortsOption.NEW_SORT, UserShortsVisibilityType.PUBLIC)
+        // todo: api 나오면 수정
+        sharedViewModel.getUserShorts(ShortsOption.NEW_SORT, userId)
 
         addOnScrollListener()
         initShortsEventObserve()
@@ -47,7 +49,7 @@ class MyPageMyShortsSaveFragment :
                 if (bottomScrollState) {
                     bottomScrollState = false
                     // todo : api 나오면 그거로 연결
-                    sharedViewModel.getMyShorts(ShortsOption.NEXT_PAGE, UserShortsVisibilityType.PUBLIC)
+                    sharedViewModel.getUserShorts(ShortsOption.NEXT_PAGE, userId)
                 }
             } else {
                 bottomScrollState = true

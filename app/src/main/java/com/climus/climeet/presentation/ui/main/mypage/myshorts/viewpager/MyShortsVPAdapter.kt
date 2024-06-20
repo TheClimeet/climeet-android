@@ -9,11 +9,9 @@ class MyShortsVPAdapter(fragment : Fragment) : FragmentStateAdapter(fragment) {
 
     override fun createFragment(position: Int): Fragment {
         return when(position) {
-
             0 -> MyPageMyShortsLikeFragment()
             1-> MyPageMyShortsCommentFragment()
             else -> MyPageMyShortsSaveFragment()
-
         }
     }
 }
