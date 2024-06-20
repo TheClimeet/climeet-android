@@ -113,6 +113,4 @@ class MyPageAdminCreateRouteFragment :
         return sqrt((x * x + y * y).toDouble()).toFloat()
     }
 
-
-
 }

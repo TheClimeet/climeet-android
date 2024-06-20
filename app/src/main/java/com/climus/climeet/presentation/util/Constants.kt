@@ -50,4 +50,22 @@ object Constants {
         "핑크" to R.drawable.ic_pink_hold,
         "검정" to R.drawable.ic_black_hold
     )
+
+    val colorName = hashMapOf<String, String>(
+        "하양" to "#FFFFFF",
+        "빨강" to "#F34040",
+        "주황" to "#FF9000",
+        "노랑" to "#FDDA16",
+        "초록" to "#63B75D",
+        "하늘" to "#74D5FF",
+        "파랑" to "#0094FF",
+        "남색" to "#393FD6",
+        "보라" to "#A259FF",
+        "갈색" to "#FF74E9",
+        "회색" to "#6E4C41",
+        "핑크" to "#8B8B8B",
+        "검정" to "#000000",
+        "컴피" to "#BEDF22"
+    )
+
 }
