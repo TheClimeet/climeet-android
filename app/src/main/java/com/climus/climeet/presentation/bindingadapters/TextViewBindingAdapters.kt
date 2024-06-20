@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColorInt
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
 import com.climus.climeet.R
 import com.climus.climeet.presentation.ui.InputState
 import java.lang.Math.round
@@ -113,13 +114,30 @@ fun selectTimeColor(tv: TextView, state: Boolean) {
 
 @BindingAdapter("followState")
 fun setFollowState(tv: TextView, isFollowing: Boolean) {
-    if (!isFollowing) {
-        tv.setBackgroundResource(R.drawable.btn_following)
-        tv.setTextColor(Color.BLACK)
-        tv.text = tv.context.getString(R.string.gym_profile_following)
-    } else {
+    if (isFollowing) {
         tv.setBackgroundResource(R.drawable.btn_follow)
         tv.setTextColor(Color.WHITE)
         tv.text = tv.context.getString(R.string.gym_profile_follow)
+    } else {
+        tv.setBackgroundResource(R.drawable.btn_following)
+        tv.setTextColor(Color.BLACK)
+        tv.text = tv.context.getString(R.string.gym_profile_following)
+    }
+}
+
+@BindingAdapter("followLive")
+fun setFollowLive(tv: TextView, isFollowing: LiveData<Boolean>?) {
+    isFollowing?.let { liveData ->
+        liveData.observeForever { isFollower ->
+            if (isFollower) {
+                tv.setBackgroundResource(R.drawable.btn_follow)
+                tv.setTextColor(Color.WHITE)
+                tv.text = tv.context.getString(R.string.gym_profile_follow)
+            } else {
+                tv.setBackgroundResource(R.drawable.btn_following)
+                tv.setTextColor(Color.BLACK)
+                tv.text = tv.context.getString(R.string.gym_profile_following)
+            }
+        }
     }
 }

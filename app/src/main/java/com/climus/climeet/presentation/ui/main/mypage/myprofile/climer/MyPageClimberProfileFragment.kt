@@ -38,6 +38,7 @@ class MyPageClimberProfileFragment :
 
         setupTabLayout()
         initEventObserve()
+        initStateObserve()
     }
 
     override fun onResume() {
@@ -61,6 +62,17 @@ class MyPageClimberProfileFragment :
             viewModel.event.collect{
                 when(it){
                     is MyPageClimberProfileEvent.NavigateToEditClimberProfile -> findNavController().toEditPage()
+                }
+            }
+        }
+    }
+
+    private fun initStateObserve() {
+        repeatOnStarted {
+            viewModel.showSnackbar.collect { state ->
+                if (state) {
+                    showCustomSnackBar(binding.snackGuide, "프로필 수정이 완료되었어요!") // 원하는 메세지로 수정
+                    viewModel.setSnackBarState(false)
                 }
             }
         }
