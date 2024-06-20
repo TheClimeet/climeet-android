@@ -20,8 +20,7 @@ import com.google.android.material.snackbar.Snackbar
 
 class SetLevelBottomSheet(
     context: Context,
-    private val viewModel: MyPageAdminRouteFindingViewModel,
-    private val parentView: View
+    private val viewModel: MyPageAdminRouteFindingViewModel
 ) : BottomSheetDialog(context) {
 
     private lateinit var binding: DialogSetLevelBottomSheetBinding
@@ -39,6 +38,7 @@ class SetLevelBottomSheet(
         binding = DialogSetLevelBottomSheetBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setLevelPicker()
+        checkIfLevelAlreadySelected()
     }
 
     private fun setLevelPicker() {
