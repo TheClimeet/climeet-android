@@ -15,8 +15,10 @@ import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
 import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
+import com.climus.climeet.data.model.response.ClimbedGym
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetAnnouncementResponse
+import com.climus.climeet.data.model.response.GetClimberPrivacySettingResponse
 import com.climus.climeet.data.model.response.GetClimberProfileStatisticsResponse
 import com.climus.climeet.data.model.response.GetClimberProfileTargetGymStatisticsResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
@@ -27,7 +29,6 @@ import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
-import com.climus.climeet.data.model.response.GetUserClimbedListResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
 import com.climus.climeet.data.model.response.GymLevelBestClimberResponse
@@ -52,6 +53,7 @@ import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
+import com.climus.climeet.data.model.response.userShortsSortType
 import com.climus.climeet.data.model.response.UserShortsVisibilityType
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
@@ -123,6 +125,10 @@ interface MainRepository {
 
     suspend fun getHomeGyms(): BaseState<List<UserHomeGymSimpleResponse>>
 
+    suspend fun getClimberPrivacySetting(
+        @Query("climberId") climberId: Int
+    ): BaseState<GetClimberPrivacySettingResponse>
+
     suspend fun getClimberSearchingList(
         @Query("page") page: Int,
         @Query("size") size: Int,
@@ -136,11 +142,11 @@ interface MainRepository {
 
     suspend fun followUser(
         followingUserId: Long
-    ): BaseState<String>
+    ): BaseState<ResponseBody>
 
     suspend fun unfollowUser(
         followingUserId: Long
-    ): BaseState<String>
+    ): BaseState<ResponseBody>
 
     suspend fun followGym(
         gymId: Long
@@ -265,10 +271,6 @@ interface MainRepository {
 
     suspend fun getMyPageProfile(): BaseState<MyPageProfileResponse>
 
-    suspend fun getClimberProfilePrivacyState(
-        climberId: Long,
-    ): BaseState<MyPageClimberProfilePrivacyResponse>
-
     suspend fun editHomeGymPrivacy(): BaseState<ResponseBody>
     suspend fun editAvgCompletePrivacy(): BaseState<ResponseBody>
     suspend fun editAvgCompleteLevelPrivacy(): BaseState<ResponseBody>
@@ -331,10 +333,8 @@ interface MainRepository {
     ): BaseState<GetClimberProfileTargetGymStatisticsResponse>
 
     suspend fun getUserClimbedGymList(
-        userId: Int,
-        year: Int,
-        month: Int
-    ): BaseState<GetUserClimbedListResponse>
+        userId: Int
+    ): BaseState<List<ClimbedGym>>
 
     suspend fun getMyStatsTargetGymMonth(
         gymId: Long,
@@ -342,10 +342,16 @@ interface MainRepository {
         month: Int
     ): BaseState<GetMyStatsTargetGymMonthResponse>
 
+    suspend fun getMyClimbedGymList(
+        year: Int,
+        month: Int
+    ): BaseState<List<ClimbedGym>>
+
     suspend fun getUserShorts(
         uploaderId: Long,
         page: Int,
-        size: Int
+        size: Int,
+        sortType: userShortsSortType
     ): BaseState<ShortsListResponse>
 
     suspend fun getMyShorts(

@@ -49,7 +49,7 @@ class MyPageClimberProfileViewModel @Inject constructor(
 
     private fun getProfilePrivacy() {
         viewModelScope.launch {
-            repository.getClimberProfilePrivacyState(climberId).let {
+            repository.getClimberPrivacySetting(climberId.toInt()).let {
                 when (it) {
                     is BaseState.Success -> {
                         _uiState.update { state ->
