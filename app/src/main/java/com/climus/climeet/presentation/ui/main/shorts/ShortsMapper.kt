@@ -35,7 +35,7 @@ fun ShortsItem.toShortsThumbnailUiData(
 
     return ShortsThumbnailUiData(
         shortsId = shortsId,
-        thumbnailImg = thumbnailImageUrl,
+        thumbnailImg = thumbnailImageUrl ?: "https://climeet-production-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpeg",
         gymName = gymName,
         originLevelColor = shortsDetailInfo.gymDifficultyColor,
         climeetLevelColor = climeetLevelColor,
@@ -54,7 +54,7 @@ fun ShortsItem.toShortsUiData(): ShortsUiData {
     return ShortsUiData(
         isManager = isManager,
         shortsId = shortsId,
-        thumbnailImg = thumbnailImageUrl,
+        thumbnailImg = thumbnailImageUrl ?: "https://climeet-production-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpeg",
         gymId = shortsDetailInfo.gymId,
         gymName = gymName,
         climeetLevelColor = climeetLevelColor,
@@ -64,7 +64,7 @@ fun ShortsItem.toShortsUiData(): ShortsUiData {
         videoUrl = shortsDetailInfo.videoUrl,
         profileImgUrl = shortsDetailInfo.userShortsSimpleInfo.profileImgUrl,
         userName = shortsDetailInfo.userShortsSimpleInfo.profileName,
-        description = shortsDetailInfo.description,
+        description = shortsDetailInfo.description ?: "",
         sectorId = shortsDetailInfo.sectorId,
         sectorName = shortsDetailInfo.sectorName,
         sectorImgUrl = shortsDetailInfo.routeImageUrl,

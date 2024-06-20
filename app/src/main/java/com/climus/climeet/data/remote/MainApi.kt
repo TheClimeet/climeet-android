@@ -12,8 +12,10 @@ import com.climus.climeet.data.model.response.BestLevelCimberSimpleResponse
 import com.climus.climeet.data.model.response.BestRecordGymDetailInfoResponse
 import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
+import com.climus.climeet.data.model.response.ClimbedGym
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
 import com.climus.climeet.data.model.response.GetAnnouncementResponse
+import com.climus.climeet.data.model.response.GetClimberPrivacySettingResponse
 import com.climus.climeet.data.model.response.GetClimberProfileStatisticsResponse
 import com.climus.climeet.data.model.response.GetClimberProfileTargetGymStatisticsResponse
 import com.climus.climeet.data.model.response.GetGymFilteringKeyResponse
@@ -24,7 +26,6 @@ import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
-import com.climus.climeet.data.model.response.GetUserClimbedListResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
 import com.climus.climeet.data.model.response.GymLevelBestClimberResponse
@@ -48,6 +49,8 @@ import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.data.model.response.UserProfileInfoResponse
+import com.climus.climeet.data.model.response.userShortsSortType
+import com.climus.climeet.data.model.response.UserShortsVisibilityType
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -96,12 +99,12 @@ interface MainApi {
     @POST("/follow-relationship")
     suspend fun followUser(
         @Query("followingUserId") userId: Long
-    ): Response<String>
+    ): Response<ResponseBody>
 
     @DELETE("/follow-relationship")
     suspend fun unfollowUser(
         @Query("followingUserId") userId: Long
-    ): Response<String>
+    ): Response<ResponseBody>
 
     @POST("/follow-relationship/gym")
     suspend fun followGym(
@@ -112,6 +115,11 @@ interface MainApi {
     suspend fun unfollowGym(
         @Query("gymId") gymId: Long
     ): Response<ResponseBody>
+
+    @GET("/api/climber/privacy-setting")
+    suspend fun getClimberPrivacySetting(
+        @Query("climberId") climberId: Int
+    ): Response<GetClimberPrivacySettingResponse>
 
     @GET("/api/climber/search")
     suspend fun getClimberSearchingList(
@@ -280,6 +288,12 @@ interface MainApi {
         @Query("month") month: Int
     ): Response<GetMyStatsTargetGymMonthResponse>
 
+    @GET("/api/climbing-records/users/months/list")
+    suspend fun getMyClimbedGymList(
+        @Query("year") year: Int,
+        @Query("month") month: Int
+    ): Response<List<ClimbedGym>>
+
     @GET("/api/gyms/{gymId}/review")
     suspend fun getGymReview(
         @Path("gymId") gymID: Long,
@@ -351,22 +365,22 @@ interface MainApi {
         @Path("gymId") gymId: Long
     ): Response<GetClimberProfileTargetGymStatisticsResponse>
 
-    @GET("/api/climbing-records/users/{userId}/months/list")
+    @GET("/api/climbing-records/users/{userId}/list")
     suspend fun getUserClimbedGymList(
         @Path("userId") userId: Int,
-        @Query("year") year: Int,
-        @Query("month") month: Int
-    ): Response<GetUserClimbedListResponse>
+    ): Response<List<ClimbedGym>>
 
     @GET("/api/shorts/uploader/{uploaderId}")
     suspend fun getUserShorts(
         @Path("uploaderId") uploaderId: Long,
         @Query("page") page: Int,
-        @Query("size") size: Int
+        @Query("size") size: Int,
+        @Query("sortType") sortType: userShortsSortType
     ): Response<ShortsListResponse>
 
     @GET("/api/shorts/my-shorts")
     suspend fun getMyShorts(
+        @Query("shortsVisibility") shortsVisibility: UserShortsVisibilityType,
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Response<ShortsListResponse>
@@ -384,4 +398,23 @@ interface MainApi {
     @GET("/api/boards")
     suspend fun getAnnouncement(): Response<GetAnnouncementResponse>
 
+    @PATCH("/api/climber/homegym-privacy-setting")
+    suspend fun editHomeGymPrivacy(): Response<ResponseBody>
+
+    @PATCH("/api/climber/averageCompletionRate-privacy-setting")
+    suspend fun editAvgCompletePrivacy(): Response<ResponseBody>
+
+    @PATCH("/api/climber/averageCompletionLevel-privacy-setting")
+    suspend fun editAvgCompleteLevelPrivacy(): Response<ResponseBody>
+
+    @Multipart
+    @PATCH("/api/profile-image")
+    suspend fun updateUserProfileImage(
+        @Part image: MultipartBody.Part
+    ): Response<ResponseBody>
+
+    @PATCH("/api/profile-name")
+    suspend fun updateUserName(
+        @Query("name") name: String
+    ): Response<ResponseBody>
 }

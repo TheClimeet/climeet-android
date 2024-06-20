@@ -3,8 +3,10 @@ package com.climus.climeet.presentation.ui.main
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -20,8 +22,14 @@ import androidx.navigation.ui.setupWithNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.ActivityMainBinding
 import com.climus.climeet.presentation.base.BaseActivity
+import com.climus.climeet.presentation.customview.SelectImageMethodDialog
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.editprofile.ClimberEditProfileForm
+import com.climus.climeet.presentation.ui.saveCameraImage
+import com.climus.climeet.presentation.ui.toMultiPartImage
 import com.climus.climeet.presentation.ui.toVideoThumbnail
-import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION
+import com.climus.climeet.presentation.util.Constants.CAMERA_PERMISSION
+import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION_IMAGE
+import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION_VIDEO
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,6 +54,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             )
         }
 
+    private val cameraPermissionList = arrayOf(Manifest.permission.CAMERA)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -64,7 +74,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         binding.mainBnv.apply {
             setupWithNavController(navController)
             setOnItemSelectedListener { item ->
-                NavigationUI.onNavDestinationSelected(item,navController)
+                NavigationUI.onNavDestinationSelected(item, navController)
                 navController.popBackStack(item.itemId, inclusive = false)
                 true
             }
@@ -98,20 +108,25 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
-                    is MainEvent.GoToGalleryForVideo -> onCheckStoragePermissions()
+                    is MainEvent.GoToGalleryForVideo -> onCheckVideoPermissions()
+                    is MainEvent.GoToSetProfileImage -> showMethodSelectionDialog(it.context)
                     is MainEvent.ShowToastMessage -> showToastMessage(it.msg)
                     is MainEvent.ChangeStatusBarBlack -> {
-                        window.statusBarColor = ContextCompat.getColor(this@MainActivity,R.color.black)
+                        window.statusBarColor =
+                            ContextCompat.getColor(this@MainActivity, R.color.black)
                     }
+
                     is MainEvent.ChangeStatusBarBackground -> {
-                        window.statusBarColor = ContextCompat.getColor(this@MainActivity,R.color.cm_background)
+                        window.statusBarColor =
+                            ContextCompat.getColor(this@MainActivity, R.color.cm_background)
                     }
                 }
             }
         }
     }
 
-    private fun onCheckStoragePermissions() {
+    // 비디오만 보여주는 권한 확인
+    private fun onCheckVideoPermissions() {
         neededPermissionList = mutableListOf()
 
         storagePermissionList.forEach { permission ->
@@ -126,28 +141,96 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             ActivityCompat.requestPermissions(
                 this,
                 neededPermissionList.toTypedArray(),
-                STORAGE_PERMISSION
+                STORAGE_PERMISSION_VIDEO
             )
         } else {
             openGalleryForVideo()
         }
     }
 
+    // 사진 권한 확인
+    private fun onCheckImagePermissions() {
+        neededPermissionList = mutableListOf()
+
+        storagePermissionList.forEach { permission ->
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) neededPermissionList.add(permission)
+        }
+
+        if (neededPermissionList.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                this,
+                neededPermissionList.toTypedArray(),
+                STORAGE_PERMISSION_IMAGE
+            )
+        } else {
+            openGalleryForImage()
+        }
+    }
+
+    // 카메라 권한
+    private fun onCheckCameraPermissions() {
+        neededPermissionList = mutableListOf()
+
+        cameraPermissionList.forEach { permission ->
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) neededPermissionList.add(permission)
+        }
+
+        if (neededPermissionList.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                this,
+                neededPermissionList.toTypedArray(),
+                CAMERA_PERMISSION
+            )
+        } else {
+            openCamera()
+        }
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == STORAGE_PERMISSION) {
-            neededPermissionList.forEach {
-                if (ContextCompat.checkSelfPermission(
-                        this,
-                        it
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) return
+        when (requestCode) {
+            STORAGE_PERMISSION_VIDEO -> {
+                neededPermissionList.forEach {
+                    if (ContextCompat.checkSelfPermission(
+                            this,
+                            it
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) return
+                }
+                openGalleryForVideo()
             }
-            openGalleryForVideo()
+            STORAGE_PERMISSION_IMAGE -> {
+                neededPermissionList.forEach {
+                    if (ContextCompat.checkSelfPermission(
+                            this,
+                            it
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) return
+                }
+                openGalleryForImage()
+            }
+            CAMERA_PERMISSION -> {
+                neededPermissionList.forEach {
+                    if (ContextCompat.checkSelfPermission(
+                            this,
+                            it
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) return
+                }
+                openCamera()
+            }
         }
     }
 
@@ -156,6 +239,28 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryIntent.type = "video/*"
         galleryLauncher.launch(galleryIntent)
+    }
+
+    private fun openGalleryForImage() {
+        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        imageLauncher.launch(galleryIntent)
+    }
+
+    private fun openCamera() {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraLauncher.launch(cameraIntent)
+    }
+
+    private fun showMethodSelectionDialog(context: Context) {
+        // 갤러리랑 카메라 중 선택할 수 있는 diaog
+        val dialog = SelectImageMethodDialog(context) { mode ->
+            if (mode == 0) {
+                onCheckCameraPermissions()
+            } else {
+                onCheckImagePermissions()
+            }
+        }
+        dialog.show()
     }
 
     private val galleryLauncher =
@@ -176,6 +281,40 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
             } else if (result.resultCode == Activity.RESULT_CANCELED) {
                 navController.navigateUp()
+            }
+        }
+
+    private val imageLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val uri = result.data?.data
+
+                uri?.let {
+                    viewModel.setImageUri(it)
+
+                    it.toMultiPartImage(this)?.let { image ->
+                        ClimberEditProfileForm.setProfileImage(image)
+                    } ?: run {
+                        showToastMessage("이미지 파일 변환 실패")
+                    }
+                }
+            }
+        }
+
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val bitmap = result.data?.extras?.get("data") as Bitmap
+                bitmap.saveCameraImage(this).let { uri ->
+                    uri?.let {
+                        viewModel.setImageUri(it)
+                    }
+                }
+                bitmap.toMultiPartImage(this)?.let { image ->
+                    ClimberEditProfileForm.setProfileImage(image)
+                } ?: run {
+                    showToastMessage("이미지 파일 변환 실패")
+                }
             }
         }
 }

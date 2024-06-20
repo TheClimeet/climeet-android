@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="svm"
+            type="com.climus.climeet.presentation.ui.main.global.climerprofile.viewpager.ClimberProfileInfoViewModel" />
+
+        <variable
+            name="mainvm"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.MyPageClimberProfileViewModel"/>
+
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.viewpager.MyPageClimberProfileInfoViewModel" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingBottom="150dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!--    홈짐    -->
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_homegym"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_homegym_label"
+                    style="@style/TextRegularBigBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:text="홈짐"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginTop="20dp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_homegym"
+                    style="@style/TextTiny"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/rect_mainfill_nostroke_8radius"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:onClick="@{() -> vm.showHomeGymBtns()}"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="5dp"
+                    android:text="@{mainvm.uiState.homeGymPublic ? `전체공개` : `나만보기`}"
+                    android:textColor="@color/black"
+                    android:visibility="@{vm.btnState.homeGym ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_homegym_label"
+                    tools:text="전체보기" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_home_homegym"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingEnd="20dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_homegym_label"
+                    app:list="@{vm.uiState.homeGymList}"
+                    tools:listitem="@layout/item_home_gym" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_homegym_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:orientation="vertical"
+                    android:visibility="@{vm.btnState.homeGym ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_homegym_label">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_homegym_public"
+                        style="@style/TextTiny"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@{mainvm.uiState.homeGymPublic ? @drawable/rect_mainfill_nostroke_top8radius : @drawable/rect_grey7fill_nostroke_top8radius}"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:onClick="@{() -> vm.setHomeGymState(true)}"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="5dp"
+                        android:text="전체공개"
+                        android:textColor="@{mainvm.uiState.homeGymPublic ? @color/black : @color/white}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_homegym_closed"
+                        style="@style/TextTiny"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@{mainvm.uiState.homeGymPublic ? @drawable/rect_grey7fill_nostroke_bottom8radius : @drawable/rect_mainfill_nostroke_bottom8radius}"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:onClick="@{() -> vm.setHomeGymState(false)}"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="5dp"
+                        android:text="나만보기"
+                        android:textColor="@{mainvm.uiState.homeGymPublic ? @color/white : @color/black}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/btn_homegym_public" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--    평균 완등률    -->
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_avg_complete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_homegym">
+
+                <TextView
+                    android:id="@+id/tv_avg_complete_title"
+                    style="@style/TextRegularBigBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="평균 완등률"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_avg_complete"
+                    style="@style/TextTiny"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/rect_mainfill_nostroke_8radius"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:onClick="@{() -> vm.showCompleteBtns()}"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="5dp"
+                    android:text="@{mainvm.uiState.avgCompletionRatePublic ? `전체공개` : `나만보기`}"
+                    android:textColor="@color/black"
+                    android:visibility="@{vm.btnState.avgComplete ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_avg_complete_title"
+                    tools:text="전체보기" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_avg_complete_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="82dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/rect_grey8fill_nostroke_10radius"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_avg_complete_title">
+
+                    <ProgressBar
+                        android:id="@+id/pb_avg_complete"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginTop="25dp"
+                        android:indeterminate="false"
+                        android:max="100"
+                        android:progress="@{svm.uiState.averageDoneProgress}"
+                        android:progressDrawable="@drawable/record_progrssbar_custom"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_attempt_count"
+                        style="@style/TextTiny"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="@{svm.uiState.percent}"
+                        app:layout_constraintEnd_toEndOf="@id/pb_avg_complete"
+                        app:layout_constraintTop_toBottomOf="@id/pb_avg_complete" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_avg_complete_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="15dp"
+                    android:orientation="vertical"
+                    android:visibility="@{vm.btnState.avgComplete ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_avg_complete_title">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_avg_complete_public"
+                        style="@style/TextTiny"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@{mainvm.uiState.avgCompletionRatePublic ? @drawable/rect_mainfill_nostroke_top8radius : @drawable/rect_grey7fill_nostroke_top8radius}"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:onClick="@{() -> vm.setAvgCompleteState(true)}"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="5dp"
+                        android:text="전체공개"
+                        android:textColor="@{mainvm.uiState.avgCompletionRatePublic ? @color/black : @color/white}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_avg_complete_closed"
+                        style="@style/TextTiny"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@{mainvm.uiState.avgCompletionRatePublic ? @drawable/rect_grey7fill_nostroke_bottom8radius : @drawable/rect_mainfill_nostroke_bottom8radius}"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:onClick="@{() -> vm.setAvgCompleteState(false)}"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="5dp"
+                        android:text="나만보기"
+                        android:textColor="@{mainvm.uiState.avgCompletionRatePublic ? @color/white : @color/black}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/btn_avg_complete_public" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--    평균 완등 레벨    -->
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/tv_complete_level"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_avg_complete">
+
+
+                <TextView
+                    android:id="@+id/tv_complete_level_title"
+                    style="@style/TextRegularBigBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="평균 완등 레벨"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_complete_level"
+                    style="@style/TextTiny"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/rect_mainfill_nostroke_8radius"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:onClick="@{() -> vm.showCompleteLevelBtns()}"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="5dp"
+                    android:text="@{mainvm.uiState.avgCompletionLevelPublic ? `전체공개` : `나만보기`}"
+                    android:textColor="@color/black"
+                    android:visibility="@{vm.btnState.avgCompleteLevel ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_complete_level_title"
+                    tools:text="전체보기" />
+
+                <LinearLayout
+                    android:id="@+id/layout_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:onClick="@{()->vm.showPopupWindow()}"
+                    app:layout_constraintStart_toStartOf="@id/tv_complete_level_title"
+                    app:layout_constraintTop_toBottomOf="@id/tv_complete_level_title">
+
+                    <ImageView
+                        android:id="@+id/iv_toggle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_down" />
+
+                    <TextView
+                        android:id="@+id/tv_standard"
+                        style="@style/TextMediumSemiBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:gravity="center"
+                        android:text="@{svm.selectedGymName}"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <com.climus.climeet.presentation.customview.stickchart.StickChartView
+                    android:id="@+id/view_stickchart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="40dp"
+                    android:paddingBottom="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_toggle" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_complete_level_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="15dp"
+                    android:orientation="vertical"
+                    android:visibility="@{vm.btnState.avgCompleteLevel ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_complete_level_title">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_complete_level_public"
+                        style="@style/TextTiny"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@{mainvm.uiState.avgCompletionLevelPublic ? @drawable/rect_mainfill_nostroke_top8radius : @drawable/rect_grey7fill_nostroke_top8radius}"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:onClick="@{() -> vm.setAvgCompleteLevelState(true)}"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="5dp"
+                        android:text="전체공개"
+                        android:textColor="@{mainvm.uiState.avgCompletionLevelPublic ? @color/black : @color/white}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_complete_level_closed"
+                        style="@style/TextTiny"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@{mainvm.uiState.avgCompletionLevelPublic ? @drawable/rect_grey7fill_nostroke_bottom8radius : @drawable/rect_mainfill_nostroke_bottom8radius}"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:onClick="@{() -> vm.setAvgCompleteLevelState(false)}"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="5dp"
+                        android:text="나만보기"
+                        android:textColor="@{mainvm.uiState.avgCompletionLevelPublic ? @color/white : @color/black}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/btn_complete_level_public" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

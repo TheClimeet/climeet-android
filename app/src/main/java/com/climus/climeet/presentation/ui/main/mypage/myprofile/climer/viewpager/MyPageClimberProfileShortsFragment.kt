@@ -1,45 +1,43 @@
-package com.climus.climeet.presentation.ui.main.global.climerprofile.viewpager
+package com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.viewpager
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
-import com.climus.climeet.databinding.FragmentClimberShortsBinding
+import com.climus.climeet.data.model.response.UserShortsVisibilityType
+import com.climus.climeet.databinding.FragmentEditClimberShortsBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.climus.climeet.presentation.ui.main.global.climerprofile.ClimberProfileViewModel
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsThumbnailAdapter
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
 import com.climus.climeet.presentation.ui.toShortsPlayer
-import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@AndroidEntryPoint
-class ClimberProfileShortsFragment @Inject constructor(
+class MyPageClimberProfileShortsFragment @Inject constructor(
     private val userId: Long
-) :
-    BaseFragment<FragmentClimberShortsBinding>(R.layout.fragment_climber_shorts) {
+) : BaseFragment<FragmentEditClimberShortsBinding>(R.layout.fragment_edit_climber_shorts) {
 
     private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
-    private val parentViewModel: ClimberProfileViewModel by activityViewModels()
-
+    private val viewModel: MyPageClimberProfileShortsViewModel by viewModels()
     private var bottomScrollState = true
-    private var shortsPrivacy = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.svm = sharedViewModel
+        binding.vm = viewModel
         binding.rvShorts.adapter = ShortsThumbnailAdapter()
 
         sharedViewModel.initViewModel()
+        sharedViewModel.getMyShorts(ShortsOption.NEW_SORT, UserShortsVisibilityType.PUBLIC)
         addOnScrollListener()
+        initShortsEventObserve()
         initEventObserve()
         initStateObserve()
-        initParentStateObserve()
     }
 
     private fun addOnScrollListener() {
@@ -50,7 +48,8 @@ class ClimberProfileShortsFragment @Inject constructor(
 
                 if (bottomScrollState) {
                     bottomScrollState = false
-                    sharedViewModel.getUserShorts(ShortsOption.NEXT_PAGE, userId)
+                    val visibilityType = viewModel.uiState.value.nowState
+                    sharedViewModel.getMyShorts(ShortsOption.NEXT_PAGE, visibilityType)
                 }
             } else {
                 bottomScrollState = true
@@ -58,7 +57,7 @@ class ClimberProfileShortsFragment @Inject constructor(
         }
     }
 
-    private fun initEventObserve() {
+    private fun initShortsEventObserve() {
         repeatOnStarted {
             sharedViewModel.event.collect {
                 when (it) {
@@ -74,15 +73,21 @@ class ClimberProfileShortsFragment @Inject constructor(
         }
     }
 
+    private fun initEventObserve(){
+        repeatOnStarted {
+            viewModel.event.collect { event ->
+                when (event) {
+                    is MyPageClimberProfileShortsEvent.SetShortsVisibility -> resetShortsVisibility(event.state)
+                }
+            }
+        }
+    }
+
     private fun initStateObserve() {
         repeatOnStarted {
             sharedViewModel.uiState.collect {
-                if(shortsPrivacy) {
-                    if (it.shortsThumbnailList.isEmpty()) {
-                        binding.layoutNoItem.visibility = View.VISIBLE
-                    } else {
-                        binding.layoutNoItem.visibility = View.INVISIBLE
-                    }
+                if (it.shortsThumbnailList.isEmpty()) {
+                    binding.layoutNoItem.visibility = View.VISIBLE
                 } else {
                     binding.layoutNoItem.visibility = View.INVISIBLE
                 }
@@ -90,20 +95,8 @@ class ClimberProfileShortsFragment @Inject constructor(
         }
     }
 
-    private fun initParentStateObserve() {
-        repeatOnStarted {
-            parentViewModel.climberPrivacySetting.collect {
-                shortsPrivacy = it.shortsPublic
-                if(parentViewModel.climberPrivacySetting.value.shortsPublic) {
-                    binding.layoutPrivacy.visibility = View.GONE
-                    binding.btnFilterToggle.visibility = View.VISIBLE
-                    sharedViewModel.getUserShorts(ShortsOption.NEW_SORT, userId)
-                } else {
-                    binding.layoutPrivacy.visibility = View.VISIBLE
-                    binding.btnFilterToggle.visibility = View.GONE
-                }
-            }
-        }
+    private fun resetShortsVisibility(type: UserShortsVisibilityType){
+        sharedViewModel.initViewModel()
+        sharedViewModel.getMyShorts(ShortsOption.NEW_SORT, type)
     }
-
 }

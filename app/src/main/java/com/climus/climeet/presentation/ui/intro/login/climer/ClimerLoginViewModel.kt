@@ -93,7 +93,7 @@ class ClimerLoginViewModel @Inject constructor(
     fun testLogin() {
         viewModelScope.launch {
             authRepository.putAccessToken(Constants.TEST_CLIMER_TOKEN)
-            authRepository.putLoginMode("ADMIN")
+            authRepository.putLoginMode("CLIMER")
             _event.emit(ClimerLoginEvent.GoToMainActivity)
         }
     }
