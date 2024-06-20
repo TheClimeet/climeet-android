@@ -45,6 +45,9 @@ class MyPageClimberProfileInfoFragment @Inject constructor(
         sharedViewModel.setUserId(userId)
         viewModel.setUserId(userId)
 
+        sharedViewModel.getStatistics()
+        sharedViewModel.getUserHomeGyms()
+
         initStateObserve()
         initEventObserver()
     }
