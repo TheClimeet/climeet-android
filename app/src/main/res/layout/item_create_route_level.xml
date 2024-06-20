@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLevelItem" />
+
     </data>
 
     <TextView
@@ -15,6 +19,8 @@
         android:layout_marginEnd="10dp"
         android:background="@drawable/oval_grey8fill_nostroke"
         android:gravity="center"
+        app:textHexColor="@{item.colorHex}"
+        android:text="@{item.colorName}"
         android:textAlignment="center"
         tools:text="하양" />
 </layout>

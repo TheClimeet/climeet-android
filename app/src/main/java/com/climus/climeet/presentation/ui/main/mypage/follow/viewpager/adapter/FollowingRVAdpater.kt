@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.databinding.ItemFollowingBinding
-import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowingUiData
-import com.climus.climeet.presentation.ui.main.mypage.follow.FollowClimber
+import com.climus.climeet.presentation.ui.main.mypage.follow.model.FollowClimber
 
 
 class FollowingRVAdapter(private val followingList: List<UserFollowSimpleResponse>) : RecyclerView.Adapter<FollowingRVAdapter.ViewHolder>(){

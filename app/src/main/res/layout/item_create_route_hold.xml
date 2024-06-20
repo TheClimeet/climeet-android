@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiHoldItem" />
+
     </data>
 
     <ImageView

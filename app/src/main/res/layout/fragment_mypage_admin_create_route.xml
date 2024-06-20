@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.createroute.MyPageAdminCreateRouteViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,124 +59,157 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/dv_header"
+        <ScrollView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:dividerColor="@color/white"
-            app:dividerThickness="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_toolbar" />
-
-        <ImageView
-            android:id="@+id/iv_route"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/test"
-            app:layout_constraintDimensionRatio="1:1.5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dv_header"
-            tools:src="@drawable/test" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_sector"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:clipToPadding="false"
-            android:orientation="horizontal"
-            android:paddingHorizontal="16dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:paddingBottom="200dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dv_header"
-            tools:listitem="@layout/item_create_route_sector" />
+            app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/view_route_filter"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginHorizontal="40dp"
-            android:layout_marginVertical="50dp"
-            android:backgroundTint="@android:color/transparent"
-            app:cardCornerRadius="30dp"
-            app:layout_constraintBottom_toBottomOf="@id/iv_route"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_sector"
-            app:strokeColor="@color/cm_grey7"
-            app:strokeWidth="10dp">
-
-            <TextView
-                android:id="@+id/tv_"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|end"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="24dp"
-                android:background="@drawable/rect_grey9fill_nostroke_8radius"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="3dp"
-                android:text="루트 생성 완료"
-                android:textColor="@color/cm_grey4"
-                android:textSize="12dp"
-                android:textStyle="bold" />
-
-            <View
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_gravity="bottom"
-                android:background="@color/cm_grey9" />
+                android:nestedScrollingEnabled="true"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_level_color"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|start"
-                android:layout_marginStart="30dp"
-                android:layout_marginBottom="24dp"
-                android:text="--"
-                android:textColor="@color/cm_grey7"
-                android:textSize="30dp"
-                android:textStyle="bold" />
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/dv_header"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:dividerColor="@color/white"
+                    app:dividerThickness="2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/iv_stone"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="30dp"
-                android:layout_marginBottom="24dp"
-                android:src="@drawable/ic_white_hold" />
+                <ImageView
+                    android:id="@+id/iv_route"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="1:1.5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dv_header"
+                    tools:src="@drawable/test" />
 
-        </com.google.android.material.card.MaterialCardView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_sector"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dv_header"
+                    app:list="@{vm.uiState.sectorList}"
+                    tools:listitem="@layout/item_create_route_sector" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_level"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_route_filter"
-            tools:listitem="@layout/item_create_route_level" />
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/view_route_filter"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="40dp"
+                    android:layout_marginVertical="50dp"
+                    android:backgroundTint="@android:color/transparent"
+                    app:cardCornerRadius="30dp"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_route"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rv_sector"
+                    app:strokeColor="@{vm.uiState.selectedLevelText.empty ? @color/cm_grey7 : vm.uiState.selectedLevelColor}"
+                    app:strokeWidth="10dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_hold"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_level"
-            tools:listitem="@layout/item_create_route_hold" />
+                    <TextView
+                        android:id="@+id/btn_create_route"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|end"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:background="@drawable/rect_grey9fill_nostroke_8radius"
+                        android:onClick="@{() -> vm.createRoute()}"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="3dp"
+                        android:text="루트 생성 완료"
+                        android:textColor="@color/cm_grey4"
+                        android:textSize="12dp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_gravity="bottom"
+                        android:background="@color/cm_grey9" />
+
+                    <TextView
+                        android:id="@+id/tv_level_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|start"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginBottom="24dp"
+                        android:text="@{vm.uiState.selectedLevelText.empty ? `--` : vm.uiState.selectedLevelText}"
+                        android:textColor="@{vm.uiState.selectedLevelText.empty ? @color/cm_grey7 : vm.uiState.selectedLevelColor}"
+                        android:textSize="30dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/iv_stone"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="bottom|end"
+                        android:layout_marginEnd="30dp"
+                        android:layout_marginBottom="24dp" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view_route_filter"
+                    app:list="@{vm.uiState.levelList}"
+                    tools:listitem="@layout/item_create_route_level" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_hold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rv_level"
+                    app:list="@{vm.uiState.holdList}"
+                    tools:listitem="@layout/item_create_route_hold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_route_chip"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rv_hold"
+                    app:list="@{vm.uiState.chipList}"
+                    tools:listitem="@layout/item_route_image" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
