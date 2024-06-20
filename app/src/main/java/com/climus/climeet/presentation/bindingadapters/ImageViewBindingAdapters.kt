@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.bindingadapters
 
+import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
@@ -46,4 +47,9 @@ fun bindCompleteStaet(iv: ImageView, state: Boolean){
 @BindingAdapter("animatedAlpha")
 fun ImageView.setAnimatedParams(alpha: LiveData<Float>) {
     this.alpha = alpha.value ?: 1f
+}
+
+@BindingAdapter("isVisible")
+fun bindIsVisible(view: View, isVisible: Boolean) {
+    view.visibility = if (isVisible) View.VISIBLE else View.GONE
 }

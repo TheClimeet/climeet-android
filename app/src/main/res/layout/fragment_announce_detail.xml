@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.main.mypage.announce.AnnounceDetailViewModel" />
@@ -197,21 +199,43 @@
                         android:orientation="horizontal"
                         android:paddingEnd="20dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintBottom_toTopOf="@id/iv_like"
+                        app:layout_constraintBottom_toTopOf="@+id/layout_like"
                         app:layout_constraintTop_toBottomOf="@+id/tv_contents"
                         tools:listitem="@layout/item_announcement_image" />
 
-                    <ImageView
-                        android:id="@+id/iv_like"
-                        android:layout_width="20dp"
-                        android:layout_height="18dp"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_like"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="25dp"
-                        android:src="@drawable/img_good"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/tv_contents"
-                        app:layout_constraintTop_toBottomOf="@+id/rv_image"
-                        app:tint="@color/cm_grey6" />
+                        app:layout_constraintTop_toBottomOf="@+id/rv_image">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_like_off"
+                            android:layout_width="15dp"
+                            android:layout_height="16dp"
+                            android:onClick="@{() -> vm.setLike()}"
+                            android:src="@drawable/img_good"
+                            app:isVisible="@{!vm.uiState.likeState}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_like_on"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{() -> vm.setLike()}"
+                            android:src="@drawable/ic_like_on"
+                            app:isVisible="@{vm.uiState.likeState}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                     <TextView
                         android:id="@+id/tv_like"
@@ -220,11 +244,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:text="좋아요"
-                        android:textColor="@color/cm_grey6"
+                        android:textColor="@{vm.uiState.likeState? @color/cm_main : @color/white}"
                         android:textSize="15sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/iv_like"
-                        app:layout_constraintStart_toEndOf="@+id/iv_like"
-                        app:layout_constraintTop_toTopOf="@+id/iv_like" />
+                        app:layout_constraintBottom_toBottomOf="@+id/layout_like"
+                        app:layout_constraintStart_toEndOf="@+id/layout_like"
+                        app:layout_constraintTop_toTopOf="@+id/layout_like" />
 
                     <TextView
                         android:id="@+id/tv_like_count"
@@ -233,11 +257,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="6dp"
                         android:text="@{vm.uiState.likeCount}"
-                        android:textColor="@color/cm_grey6"
+                        android:textColor="@{vm.uiState.likeState? @color/cm_main : @color/white}"
                         android:textSize="15sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/iv_like"
+                        app:layout_constraintBottom_toBottomOf="@+id/layout_like"
                         app:layout_constraintStart_toEndOf="@+id/tv_like"
-                        app:layout_constraintTop_toTopOf="@+id/iv_like"
+                        app:layout_constraintTop_toTopOf="@+id/layout_like"
                         tools:text="36" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

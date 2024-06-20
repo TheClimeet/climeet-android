@@ -32,6 +32,7 @@ data class AnnounceDetailUiData(
     val content: String = "",
     val likeCount: String = "",
     val imageList: List<String>? = emptyList(),
+    val likeState: Boolean = false,
 )
 
 sealed class AnnouncementDetailEvent {
@@ -77,6 +78,31 @@ class AnnounceDetailViewModel @Inject constructor(val repository: MainRepository
                         Log.d("API", it.msg)
                     }
                 }
+            }
+
+            // todo: 좋아요 여부 가져와 반영하기
+        }
+    }
+
+    fun setLike() {
+        // todo : 좋아요 상태 변경 api 구현
+        _uiState.update { state ->
+            state.copy(
+                likeState = !uiState.value.likeState
+            )
+        }
+
+        if (uiState.value.likeState) {
+            _uiState.update { state ->
+                state.copy(
+                    likeCount = (uiState.value.likeCount.toInt() + 1).toString()
+                )
+            }
+        } else {
+            _uiState.update { state ->
+                state.copy(
+                    likeCount = (uiState.value.likeCount.toInt() - 1).toString()
+                )
             }
         }
     }
