@@ -48,5 +48,6 @@ class CreateRouteChipViewHolder(private val binding: ItemCreateRouteChipBinding)
 
     fun bind(item: UiRouteChipData) {
         binding.item = item
+        binding.route.setHoldImage(item.holdImg)
     }
 }
