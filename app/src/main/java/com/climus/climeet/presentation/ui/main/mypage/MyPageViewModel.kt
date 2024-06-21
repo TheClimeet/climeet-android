@@ -30,7 +30,6 @@ sealed class MyPageEvent {
     data object NavigateToAccount : MyPageEvent()
     data object NavigateToAlarm : MyPageEvent()
     data object NavigateToAnnounce : MyPageEvent()
-    data object NavigateToCheerUp : MyPageEvent()
     data object NavigateToFollow : MyPageEvent()
     data object NavigateToAdminMyProfile : MyPageEvent()
     data object NavigateToClimerMyProfile : MyPageEvent()
@@ -97,12 +96,6 @@ class MyPageViewModel @Inject constructor(
     fun navigateToAnnounce() {
         viewModelScope.launch {
             _event.emit(MyPageEvent.NavigateToAnnounce)
-        }
-    }
-
-    fun navigateToCheerUp() {
-        viewModelScope.launch {
-            _event.emit(MyPageEvent.NavigateToCheerUp)
         }
     }
 

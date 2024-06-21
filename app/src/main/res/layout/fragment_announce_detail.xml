@@ -1,162 +1,271 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.mypage.announce.AnnounceDetailViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".presentation.ui.main.mypage.announce.AnnounceDetailFragment">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_announce"
-            style="@style/TextLargeBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="공지사항"
-            android:textSize="20sp"
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="20dp"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/layout_scrollview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent">
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:background="#3d3d3d"
-            app:layout_constraintTop_toBottomOf="@+id/tv_announce" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/tv_announce_box"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rect_grey8fill_nostroke_5radius"
-            app:layout_constraintTop_toBottomOf="@+id/view"
-            tools:layout_editor_absoluteX="20dp">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_announce_profile"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/ic_logo"
-                app:layout_constraintStart_toStartOf="@+id/tv_announce_box"
-                app:layout_constraintTop_toBottomOf="@+id/textView26" />
-
-            <TextView
-                android:id="@+id/textView24"
-                style="@style/TextLargeBold"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="15dp"
-                android:text="안녕하세요 여러분!"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_announce_profile"
-                app:layout_constraintStart_toEndOf="@+id/iv_announce_profile"
-                android:layout_marginStart="10dp"
-                app:layout_constraintTop_toTopOf="@+id/iv_announce_profile">
+                android:layout_height="match_parent"
+                tools:context=".presentation.ui.main.mypage.announce.AnnounceDetailFragment">
 
                 <TextView
-                    android:id="@+id/textView25"
-                    style="@style/TextLargeBold"
+                    android:id="@+id/tv_announce"
+                    style="@style/TextMediumBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="클밋 공식 계정"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="30dp"
+                    android:text="공지사항"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/textView27"
-                    style="@style/TextRegular"
-                    android:layout_width="wrap_content"
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/cm_grey8"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_announce" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/tv_announce_box"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="팔로워 25,883|팔로잉 11"
-                    android:textColor="@color/white"
-                    android:textSize="10sp" />
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="20dp"
+                    android:background="@drawable/rect_grey8fill_nostroke_5radius"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view"
+                    tools:layout_editor_absoluteX="20dp">
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv_title"
+                        style="@style/TextMediumBold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginTop="25dp"
+                        android:text="@{vm.uiState.title}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="안녕하세요 여러분!" />
 
-            <TextView
-                android:id="@+id/textView26"
-                style="@style/TextRegular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="2024. 02. 12 10:13"
-                android:textColor="@color/white"
-                android:textSize="10sp"
-                app:layout_constraintStart_toStartOf="@+id/textView24"
-                app:layout_constraintTop_toBottomOf="@+id/textView24" />
+                    <TextView
+                        android:id="@+id/tv_date"
+                        style="@style/TextTiny"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="@{vm.uiState.createdAt}"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        app:layout_constraintStart_toStartOf="@+id/tv_title"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                        tools:text="2024. 02. 12 10:13" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_announce_profile"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="15dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_date"
+                        app:profileImgUrl="@{vm.uiState.profileImageUrl}" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv_announce_profile"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/iv_announce_profile"
+                        app:layout_constraintTop_toTopOf="@+id/iv_announce_profile">
+
+                        <TextView
+                            android:id="@+id/tv_name"
+                            style="@style/TextRegularBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="@{vm.uiState.profileName}"
+                            tools:text="클밋 공식 계정" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/TextTiny"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="팔로워"
+                                android:textColor="@color/white"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/tv_follower"
+                                style="@style/TextTiny"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{vm.uiState.followerCount}"
+                                android:textColor="@color/white"
+                                android:textSize="10sp"
+                                tools:text="25,883" />
+
+                            <TextView
+                                style="@style/TextTiny"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text=" | 팔로잉"
+                                android:textColor="@color/white"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/tv_following"
+                                style="@style/TextTiny"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="5dp"
+                                android:text="@{vm.uiState.followingCount}"
+                                android:textColor="@color/white"
+                                android:textSize="10sp"
+                                tools:text="11" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/white"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_announce_profile" />
+
+                    <TextView
+                        android:id="@+id/tv_contents"
+                        style="@style/TextRegular"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginTop="10dp"
+                        android:lineSpacingExtra="5dp"
+                        android:text="@{vm.uiState.content}"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/view2"
+                        tools:text="드디어 클밋이 세상에 출시하게 되었습니다. \n클밋은 클라이머를 위한 루트 파인딩 어플이에요. \n모두가 즐겁게 클라이밍을 즐길 수 있도록, \n클밋이 앞으로도 만들어 나가겠습니다!!!\n\n\n감사합니다 ㅎㅎ\n클밋 드림" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:paddingEnd="20dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintBottom_toTopOf="@+id/layout_like"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_contents"
+                        tools:listitem="@layout/item_announcement_image" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_like"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="25dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/tv_contents"
+                        app:layout_constraintTop_toBottomOf="@+id/rv_image">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_like_off"
+                            android:layout_width="15dp"
+                            android:layout_height="16dp"
+                            android:onClick="@{() -> vm.setLike()}"
+                            android:src="@drawable/img_good"
+                            app:isVisible="@{!vm.uiState.likeState}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_like_on"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{() -> vm.setLike()}"
+                            android:src="@drawable/ic_like_on"
+                            app:isVisible="@{vm.uiState.likeState}"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+                    <TextView
+                        android:id="@+id/tv_like"
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="좋아요"
+                        android:textColor="@{vm.uiState.likeState? @color/cm_main : @color/white}"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/layout_like"
+                        app:layout_constraintStart_toEndOf="@+id/layout_like"
+                        app:layout_constraintTop_toTopOf="@+id/layout_like" />
 
-            <View
-                android:id="@+id/view2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginHorizontal="15dp"
-                android:background="#ffffff"
-                app:layout_constraintTop_toBottomOf="@+id/iv_announce_profile"
-                />
+                    <TextView
+                        android:id="@+id/tv_like_count"
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="@{vm.uiState.likeCount}"
+                        android:textColor="@{vm.uiState.likeState? @color/cm_main : @color/white}"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/layout_like"
+                        app:layout_constraintStart_toEndOf="@+id/tv_like"
+                        app:layout_constraintTop_toTopOf="@+id/layout_like"
+                        tools:text="36" />
 
-            <TextView
-                android:id="@+id/textView28"
-                style="@style/TextRegular"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginTop="10dp"
-                android:text="안녕하세요 여러분! 드디어 클밋이 세상에 출시하게 되었습니다. 클밋은 클라이머를 위한 루트 파인딩 어플이에요. 모두가 즐겁게 클라이밍을 즐길 수 있도록, 클밋이 앞으로도 만들어 나가겠습니다!!!\n\n\n감사합니다 ㅎㅎ\n클밋 드림"
-                android:textColor="@color/white"
-                android:lineSpacingExtra="5dp"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view2" />
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="28dp"
-                android:layout_height="15dp"
-                android:src="@drawable/img_good"
-                android:layout_marginVertical="10dp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_announce_box"
-                app:layout_constraintStart_toStartOf="@+id/textView28"
-                app:layout_constraintTop_toBottomOf="@+id/textView28" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3"
-                android:textColor="@color/white"
-                android:layout_marginStart="2dp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-                app:layout_constraintStart_toEndOf="@+id/imageView4"
-                app:layout_constraintTop_toTopOf="@+id/imageView4" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -3,9 +3,9 @@ package com.climus.climeet.presentation.ui.main.global
 import com.climus.climeet.R
 import com.climus.climeet.data.model.response.ClimberDetailInfoItem
 import com.climus.climeet.data.model.response.DifficultyItem
+import com.climus.climeet.data.model.response.GetAnnouncementResponse
 import com.climus.climeet.data.model.response.GymListToFollowItem
 import com.climus.climeet.data.model.response.RouteItem
-import com.climus.climeet.data.model.response.SearchAvailableGymItem
 import com.climus.climeet.data.model.response.SectorItem
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserFollowerInfoResponse
@@ -17,6 +17,7 @@ import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFo
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.RouteUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.GymLevelUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SectorNameUiData
+import com.climus.climeet.presentation.ui.main.mypage.announce.model.AnnouncementUiData
 import com.climus.climeet.presentation.util.Constants
 
 fun SectorItem.toSectorNameUiData(
@@ -148,4 +149,14 @@ fun UserHomeGymSimpleResponse.toProfileHomeGymUiData(
     name = gymName,
     followerString = "팔로워 $followerCount",
     onClickListener = onClickListener
+)
+
+fun GetAnnouncementResponse.toAnnouncementUiData() = AnnouncementUiData(
+    boardId = boardId,
+    createdAt = createdAt,
+    likeCount = likeCount,
+    title = title,
+    content = content,
+    profileImageUrl = profileImageUrl,
+    image = image
 )

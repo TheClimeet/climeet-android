@@ -63,9 +63,6 @@
             android:id="@+id/action_myPage_fragment_to_myPageFollowFragment"
             app:destination="@id/myPageFollowFragment" />
         <action
-            android:id="@+id/action_myPage_fragment_to_myPageCheerUpFragment"
-            app:destination="@id/myPageCheerUpFragment" />
-        <action
             android:id="@+id/action_myPage_fragment_to_myPageClimerMyProfileFragment"
             app:destination="@id/myPageClimerMyProfileFragment" />
         <action
@@ -268,10 +265,6 @@
             android:id="@+id/action_myPageAnnounceFragment_to_announceDetailFragment"
             app:destination="@id/announceDetailFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/myPageCheerUpFragment"
-        android:name="com.climus.climeet.presentation.ui.main.mypage.cheerup.MyPageCheerUpFragment"
-        android:label="MyPageCheerUpFragment" />
     <fragment
         android:id="@+id/myPageFollowFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.follow.MyPageFollowFragment"
