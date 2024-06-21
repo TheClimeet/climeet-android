@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 sealed class SelectDateBottomEvent {
     data object CloseFragment : SelectDateBottomEvent()
     data object UpdateIsToday : SelectDateBottomEvent()
-    data object SetDate : SelectDateBottomEvent()
 }
 
 class SelectDateBottomSheetViewModel : ViewModel() {
@@ -25,12 +24,6 @@ class SelectDateBottomSheetViewModel : ViewModel() {
     fun closeFragment() {
         viewModelScope.launch {
             _event.emit(SelectDateBottomEvent.CloseFragment)
-        }
-    }
-
-    fun setDate() {
-        viewModelScope.launch {
-            _event.emit(SelectDateBottomEvent.SetDate)
         }
     }
 
