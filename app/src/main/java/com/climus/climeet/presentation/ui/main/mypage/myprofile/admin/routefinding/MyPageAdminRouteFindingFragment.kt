@@ -2,7 +2,9 @@ package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefind
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMyPageAdminRouteFindingBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -18,7 +20,7 @@ class MyPageAdminRouteFindingFragment :
     BaseFragment<FragmentMyPageAdminRouteFindingBinding>(R.layout.fragment_my_page_admin_route_finding) {
 
     private val dateViewModel: SelectDateBottomSheetViewModel by viewModels()
-    private val viewModel: MyPageAdminRouteFindingViewModel by viewModels()
+    private val viewModel: MyPageAdminRouteFindingViewModel by activityViewModels()
     private lateinit var lvAdapter: RouteFindingLevelAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,23 +61,24 @@ class MyPageAdminRouteFindingFragment :
 
     private fun initStateObserve() {
         repeatOnStarted {
-            viewModel.uiState.collect { state ->
-                lvAdapter.submitList(state.selectedLevelColor)
-            }
+            // app:list 해줬는데 왜 submitList 한건지?
+//            viewModel.uiState.collect { state ->
+//                lvAdapter.submitList(state.levelList)
+//            }
         }
         repeatOnStarted {
-            viewModel.selectedColor.collect {
+            viewModel.selectedLevel.collect {
                 val isCompletable = !viewModel.isColorAlreadySelected()
                 if (isCompletable) {
-                    binding.tvExplain.text = "${viewModel.selectedColor.value.name} 레벨은 이미 등록되어 있어요"
+                    binding.tvExplain.text = "${viewModel.selectedLevel.value.colorName} 레벨은 이미 등록되어 있어요"
                     binding.tvExplain.setTextColor(resources.getColor(R.color.cm_red))
                 } else {
                     binding.tvExplain.text = ""
                     binding.tvExplain.setTextColor(resources.getColor(R.color.cm_main))
                 }
-                if(it.name == "-") {
+                if (it.colorName == "-") {
                     val adapter = LevelColorAdapter(viewModel)
-                    adapter.submitList(viewModel.colorList)
+//                    adapter.submitList(viewModel.colorList)
                     binding.rvLevelColor.adapter = adapter
                 }
             }
@@ -88,5 +91,10 @@ class MyPageAdminRouteFindingFragment :
 
         lvAdapter = RouteFindingLevelAdapter(viewModel)
         binding.rvRouteFindingLevel.adapter = lvAdapter
+    }
+
+    private fun NavController.toCreateRoute(){
+        val action = MyPageAdminRouteFindingFragmentDirections.actionMyPageAdminRouteFindingFragmentToMyPageAdminSetRouteFragment()
+        navigate(action)
     }
 }

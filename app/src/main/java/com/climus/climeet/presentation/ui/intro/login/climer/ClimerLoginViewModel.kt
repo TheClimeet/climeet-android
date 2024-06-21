@@ -7,7 +7,6 @@ import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.AuthRequest
 import com.climus.climeet.data.repository.AuthRepository
 import com.climus.climeet.data.repository.IntroRepository
-import com.climus.climeet.presentation.util.Constants
 import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -87,14 +86,6 @@ class ClimerLoginViewModel @Inject constructor(
     fun startNaverLogin() {
         viewModelScope.launch {
             _event.emit(ClimerLoginEvent.StartNaverLogin)
-        }
-    }
-
-    fun testLogin() {
-        viewModelScope.launch {
-            authRepository.putAccessToken(Constants.TEST_CLIMER_TOKEN)
-            authRepository.putLoginMode("CLIMER")
-            _event.emit(ClimerLoginEvent.GoToMainActivity)
         }
     }
 }

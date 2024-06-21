@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLevelItem" />
+
+    </data>
+
+    <TextView
+        android:id="@+id/tv_level"
+        style="@style/TextRegularSemiBold"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/oval_grey8fill_nostroke"
+        android:gravity="center"
+        app:textHexColor="@{item.colorHex}"
+        android:text="@{item.colorName}"
+        android:textAlignment="center"
+        tools:text="하양" />
+</layout>

@@ -41,7 +41,7 @@ class App : Application(){
         sharedPreferences =
             applicationContext.getSharedPreferences("APP", MODE_PRIVATE)
         initSocialLogin()
-        //getFCMToken()
+        getFCMToken()
     }
 
     private fun initSocialLogin(){
@@ -59,7 +59,6 @@ class App : Application(){
         FirebaseApp.initializeApp(this@App)
         CoroutineScope(Dispatchers.Main).launch {
             fcmToken = async { MyFirebaseMessagingService().getFirebaseToken() }.await()
-            Log.d(TAG, "fcmToken : $fcmToken")
         }
     }
 
