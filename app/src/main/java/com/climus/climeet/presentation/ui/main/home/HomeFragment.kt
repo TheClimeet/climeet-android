@@ -34,6 +34,7 @@ import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
 import com.climus.climeet.presentation.ui.toGymProfile
+import com.climus.climeet.presentation.ui.toRouteFinding
 import com.climus.climeet.presentation.ui.toSearchProfile
 import com.climus.climeet.presentation.ui.toShortsPlayer
 import com.climus.climeet.presentation.util.Constants.X_MODE
@@ -68,6 +69,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         sharedViewModel.initViewModel()
         sharedViewModel.getShorts(ShortsOption.NEW_SORT)
+
+        binding.textView4.setOnClickListener {
+            findNavController().toRouteFinding()
+        }
     }
 
     private fun initShortsObserve() {
