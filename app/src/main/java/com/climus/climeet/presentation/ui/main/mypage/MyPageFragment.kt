@@ -101,7 +101,7 @@ class MyPageFragment: BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypa
     }
 
     private fun NavController.toAdminMyProfile(){
-        val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageAdminMyProfileFragment()
+        val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageAdminMyProfileFragment(viewModel.uiState.value.userId)
         navigate(action)
     }
 
