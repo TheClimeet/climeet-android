@@ -96,30 +96,13 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/rect_grey7fill_nostroke_32radius"
-                android:hint="@{vm.userNickname}"
+                android:hint="이름"
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="12dp"
-                android:text="@={vm.nickname}"
                 android:textColorHint="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_profile" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_id_check"
-                style="@style/TextTiny"
-                android:layout_width="80dp"
-                android:layout_height="0dp"
-                android:layout_marginVertical="7dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/selector_duplicate_btn"
-                android:enabled="@{vm.nickAvailable? true : false}"
-                android:onClick="@{()->vm.isNickNameDuplicated()}"
-                android:text="중복 확인"
-                android:textColor="@color/selector_duplicate_btn_text"
-                app:layout_constraintBottom_toBottomOf="@id/et_nick"
-                app:layout_constraintEnd_toEndOf="@id/et_nick"
-                app:layout_constraintTop_toTopOf="@id/et_nick" />
 
             <TextView
                 android:id="@+id/tv_text_warning"
@@ -128,8 +111,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="5dp"
-                app:helperMessage="@{vm.uiState.nickState}"
+                app:helperMessage="@{vm.uiState.nameState}"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.6"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_nick" />
 
