@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.intro.signup.admin.background.SetAdminBackgroundViewModel" />
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.editprofile.MyPageAdminProfileEditBackgroundViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,6 +19,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.8" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/white"
+            app:layout_constraintTop_toTopOf="@id/tool_guide" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_top"

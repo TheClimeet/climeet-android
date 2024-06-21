@@ -13,7 +13,7 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.editprofile.MyPageClimberProfileEditViewModel" />
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.editprofile.MyPageAdminProfileEditViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

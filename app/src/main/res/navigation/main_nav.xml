@@ -349,6 +349,9 @@
         <action
             android:id="@+id/action_myPageAdminProfileEditBackgroundFragment_to_myPageAdminProfileEditFragment"
             app:destination="@id/myPageAdminProfileEditFragment" />
+        <action
+            android:id="@+id/action_myPageAdminProfileEditBackgroundFragment_to_myPageAdminMyProfileFragment"
+            app:destination="@id/myPageAdminMyProfileFragment" />
     </fragment>
 
 

@@ -35,11 +35,13 @@ class MyPageAdminMyProfileFragment: BaseFragment<FragmentMypageAdminMyprofileBin
         binding.vm = viewModel
 
         initEventObserve()
+        initStateObserve()
         initCragInfo()
         initViewPager()
         initClickListener()
 
         sharedViewModel.getGymProfileInfo()
+        viewModel.setGymId(gymId)
     }
 
     private fun initEventObserve(){
@@ -47,6 +49,17 @@ class MyPageAdminMyProfileFragment: BaseFragment<FragmentMypageAdminMyprofileBin
             viewModel.event.collect{
                 when(it){
                     MyPageAdminProfileEvent.NavigateToEditAdminProfile -> findNavController().toEditPage()
+                }
+            }
+        }
+    }
+
+    private fun initStateObserve() {
+        repeatOnStarted {
+            viewModel.showSnackbar.collect { state ->
+                if (state) {
+                    showCustomSnackBar(binding.snackGuide, "클라이밍 암장 이름 변경이 요청되었어요.\n 이름이 변경되면 알려드릴게요!")
+                    viewModel.setSnackBarState(false)
                 }
             }
         }
