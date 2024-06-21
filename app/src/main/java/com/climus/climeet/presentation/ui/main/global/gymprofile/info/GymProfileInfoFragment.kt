@@ -147,6 +147,7 @@ class GymProfileInfoFragment :
             viewModel.event.collect {
                 when (it) {
                     is GymProfileInfoEvent.NavigateToGymReviewBottomSheetFragment -> findNavController().toGymReviewBottomSheetFragment()
+                    else -> {}
                 }
             }
         }

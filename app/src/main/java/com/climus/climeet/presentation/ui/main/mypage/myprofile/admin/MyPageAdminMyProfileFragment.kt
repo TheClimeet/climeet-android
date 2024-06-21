@@ -15,17 +15,21 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMypageAdminMyprofileBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileViewModel
-import com.climus.climeet.presentation.ui.main.global.gymprofile.adapter.GymTabAdapter
+import com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymProfileInfoEvent
+import com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymProfileInfoViewModel
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.adapter.MyPageAdminProfileVPAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MyPageAdminMyProfileFragment: BaseFragment<FragmentMypageAdminMyprofileBinding>(R.layout.fragment_mypage_admin_myprofile) {
+class MyPageAdminMyProfileFragment :
+    BaseFragment<FragmentMypageAdminMyprofileBinding>(R.layout.fragment_mypage_admin_myprofile) {
 
     private val sharedViewModel: GymProfileViewModel by activityViewModels()
+    val infoViewModel: GymProfileInfoViewModel by activityViewModels()
     private val viewModel: MyPageAdminMyProfileViewModel by activityViewModels()
-    private var adapter : GymTabAdapter? = null
+    private var adapter: MyPageAdminProfileVPAdapter? = null
 
-    private val args :MyPageAdminMyProfileFragmentArgs by navArgs()
+    private val args: MyPageAdminMyProfileFragmentArgs by navArgs()
     private val gymId by lazy { args.gymId }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,6 +39,7 @@ class MyPageAdminMyProfileFragment: BaseFragment<FragmentMypageAdminMyprofileBin
         binding.vm = viewModel
 
         initEventObserve()
+        initInfoEventObserve()
         initStateObserve()
         initCragInfo()
         initViewPager()
@@ -44,11 +49,23 @@ class MyPageAdminMyProfileFragment: BaseFragment<FragmentMypageAdminMyprofileBin
         viewModel.setGymId(gymId)
     }
 
-    private fun initEventObserve(){
+    private fun initEventObserve() {
         repeatOnStarted {
-            viewModel.event.collect{
-                when(it){
+            viewModel.event.collect {
+                when (it) {
                     MyPageAdminProfileEvent.NavigateToEditAdminProfile -> findNavController().toEditPage()
+                }
+            }
+        }
+    }
+
+    private fun initInfoEventObserve() {
+        repeatOnStarted {
+            infoViewModel.event.collect {
+                when (it) {
+                    GymProfileInfoEvent.NavigateToEditService -> findNavController().toEditServiceFragment()
+                    GymProfileInfoEvent.NavigateToGymReviewFromMyPage -> findNavController().toGymReviewBottomSheet()
+                    else -> {}
                 }
             }
         }
@@ -58,7 +75,10 @@ class MyPageAdminMyProfileFragment: BaseFragment<FragmentMypageAdminMyprofileBin
         repeatOnStarted {
             viewModel.showSnackbar.collect { state ->
                 if (state) {
-                    showCustomSnackBar(binding.snackGuide, "클라이밍 암장 이름 변경이 요청되었어요.\n 이름이 변경되면 알려드릴게요!")
+                    showCustomSnackBar(
+                        binding.snackGuide,
+                        "클라이밍 암장 이름 변경이 요청되었어요.\n 이름이 변경되면 알려드릴게요!"
+                    )
                     viewModel.setSnackBarState(false)
                 }
             }
@@ -70,7 +90,7 @@ class MyPageAdminMyProfileFragment: BaseFragment<FragmentMypageAdminMyprofileBin
     }
 
     private fun initViewPager() {
-        adapter = GymTabAdapter(this)
+        adapter = MyPageAdminProfileVPAdapter(this, gymId)
         binding.vpTabDetail.adapter = adapter
 
         val tabMenu = arrayListOf("커뮤니티", "루트", "정보")
@@ -118,11 +138,31 @@ class MyPageAdminMyProfileFragment: BaseFragment<FragmentMypageAdminMyprofileBin
         })
     }
 
-    private fun NavController.toEditPage(){
+    private fun NavController.toEditPage() {
         val name = sharedViewModel.uiState.value.gymName
         val profile = sharedViewModel.uiState.value.gymProfileImageUrl
         val background = sharedViewModel.uiState.value.gymBackGroundImageUrl
-        val action = MyPageAdminMyProfileFragmentDirections.actionMyPageAdminMyProfileFragmentToMyPageAdminProfileEditBackgroundFragment(name, profile, background)
+        val action =
+            MyPageAdminMyProfileFragmentDirections.actionMyPageAdminMyProfileFragmentToMyPageAdminProfileEditBackgroundFragment(
+                name,
+                profile,
+                background
+            )
+        navigate(action)
+    }
+
+
+    private fun NavController.toEditServiceFragment() {
+        val action =
+            MyPageAdminMyProfileFragmentDirections.actionMyPageAdminMyProfileFragmentToMyPageAdminProfileEditServiceFragment(
+                gymId
+            )
+        navigate(action)
+    }
+
+    private fun NavController.toGymReviewBottomSheet() {
+        val action =
+            MyPageAdminMyProfileFragmentDirections.actionMyPageAdminMyProfileFragmentToGymReviewBottomSheetFragment()
         navigate(action)
     }
 }

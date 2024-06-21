@@ -43,6 +43,8 @@ data class GymProfileTabInfoUiState(
 
 sealed class GymProfileInfoEvent {
     data object NavigateToGymReviewBottomSheetFragment : GymProfileInfoEvent()
+    data object NavigateToGymReviewFromMyPage : GymProfileInfoEvent()
+    data object NavigateToEditService : GymProfileInfoEvent()
 }
 
 @HiltViewModel
@@ -194,6 +196,22 @@ class GymProfileInfoViewModel @Inject constructor(
         viewModelScope.launch {
             _event.emit(
                 GymProfileInfoEvent.NavigateToGymReviewBottomSheetFragment
+            )
+        }
+    }
+
+    fun navigateToEditService() {
+        viewModelScope.launch {
+            _event.emit(
+                GymProfileInfoEvent.NavigateToEditService
+            )
+        }
+    }
+
+    fun navigateToReviewFromMyPage() {
+        viewModelScope.launch {
+            _event.emit(
+                GymProfileInfoEvent.NavigateToGymReviewFromMyPage
             )
         }
     }

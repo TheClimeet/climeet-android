@@ -11,6 +11,9 @@
             name="svm"
             type="com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymProfileInfoViewModel" />
 
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.info.MyPageAdminProfileInfoViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,14 +53,15 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatImageButton
+                    <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="15dp"
-                        android:src="@drawable/ic_edit"
-                        android:background="@color/transparent"
+                        android:background="@drawable/ic_edit"
+                        android:onClick="@{() -> svm.navigateToEditService()}"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="@id/tv_service"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_service"/>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_type"
@@ -558,7 +562,7 @@
                             android:background="@drawable/rect_nofill_mainstroke_8radius"
                             android:drawableStart="@drawable/ic_plus_mainfill"
                             android:drawablePadding="5dp"
-                            android:onClick="@{() -> svm.navigateToGymReviewBottomSheetFragment()}"
+                            android:onClick="@{() -> svm.navigateToReviewFromMyPage()}"
                             android:paddingStart="15dp"
                             android:paddingEnd="10dp"
                             android:text="리뷰 남기기"

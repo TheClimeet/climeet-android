@@ -9,7 +9,7 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.intro.signup.admin.service.SetAdminServiceViewModel" />
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.info.MyPageAdminProfileEditServiceViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -120,7 +120,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="40dp"
             android:background="@android:color/transparent"
-            android:onClick="@{() -> vm.navigateToNext()}"
+            android:onClick="@{() -> vm.navigateToProfile()}"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_next_on"
             android:visibility="@{vm.isNextButtonEnabled? View.VISIBLE : View.INVISIBLE }"
