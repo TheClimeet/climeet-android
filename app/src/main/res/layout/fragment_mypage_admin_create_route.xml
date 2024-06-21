@@ -13,7 +13,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/cm_grey9">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_toolbar"
@@ -70,8 +71,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:nestedScrollingEnabled="true"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="true">
 
                 <com.google.android.material.divider.MaterialDivider
                     android:id="@+id/dv_header"
@@ -194,18 +195,42 @@
                     app:list="@{vm.uiState.holdList}"
                     tools:listitem="@layout/item_create_route_hold" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_route_chip"
+                <HorizontalScrollView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
+                    android:clipToPadding="false"
+                    android:paddingHorizontal="20dp"
+                    android:layout_marginTop="20dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rv_hold"
-                    app:list="@{vm.uiState.chipList}"
-                    tools:listitem="@layout/item_route_image" />
+                    app:layout_constraintTop_toBottomOf="@id/rv_hold">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="start">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_route_chip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            app:list="@{vm.uiState.chipList}"
+                            tools:listitem="@layout/item_route_image" />
+
+                        <ImageView
+                            android:id="@+id/btn_create_route_bottom"
+                            android:layout_width="63dp"
+                            android:layout_height="78dp"
+                            android:layout_toRightOf="@id/rv_route_chip"
+                            android:layout_marginStart="6dp"
+                            android:onClick="@{() -> vm.createRoute()}"
+                            android:src="@drawable/ic_plus_routechip"/>
+
+                    </RelativeLayout>
+
+                </HorizontalScrollView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
