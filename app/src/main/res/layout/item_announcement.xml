@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.mypage.announce.MyPageAnnounceViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/tv_announce_box"
@@ -17,21 +24,20 @@
             android:id="@+id/iv_announce_profile"
             android:layout_width="55dp"
             android:layout_height="55dp"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/ic_logo"
             app:layout_constraintStart_toStartOf="@+id/tv_announce_box"
             app:layout_constraintTop_toTopOf="@+id/tv_announce_box" />
 
         <TextView
-            android:id="@+id/tv_announcement_title"
-            style="@style/TextLargeBold"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_announcement_name"
+            style="@style/TextRegularBold"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginHorizontal="10dp"
             android:text="클밋 공식 계정"
-            android:textColor="@color/white"
-            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/iv_image"
             app:layout_constraintStart_toEndOf="@+id/iv_announce_profile"
             app:layout_constraintTop_toTopOf="@+id/iv_announce_profile" />
 
@@ -44,56 +50,65 @@
             android:text="2024. 02. 12"
             android:textColor="@color/white"
             android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@+id/tv_announcement_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_announcement_title" />
+            app:layout_constraintStart_toStartOf="@+id/tv_announcement_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_announcement_name" />
 
         <TextView
-            android:id="@+id/tv_announcement_summary"
+            android:id="@+id/tv_announcement_title"
             style="@style/TextRegular"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="안녕하세요 여러분!"
-            android:maxHeight="20dp"
+            android:layout_marginEnd="10dp"
             android:ellipsize="end"
+            android:maxLines="1"
             android:singleLine="true"
-            android:textColor="@color/white"
+            android:text="안녕하세요 여러분!"
             android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/imageFilterView"
-            app:layout_constraintStart_toStartOf="@+id/tv_announcement_title"
+            app:layout_constraintEnd_toStartOf="@+id/cv_image"
+            app:layout_constraintStart_toStartOf="@+id/tv_announcement_name"
             app:layout_constraintTop_toBottomOf="@+id/tv_created_date" />
 
-        <ImageView
-            android:id="@+id/imageFilterView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="10dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/img_announce"
+            app:cardCornerRadius="5dp"
+            app:contentPadding="0dp"
             app:layout_constraintEnd_toEndOf="@+id/tv_announce_box"
-            app:layout_constraintTop_toTopOf="@+id/tv_announcement_title" />
+            app:layout_constraintTop_toTopOf="@+id/tv_announcement_name">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_announce" />
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/tv_announcement_contents"
-            style="@style/TextRegular"
+            style="@style/TextTiny"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:maxHeight="50dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginEnd="5dp"
-            android:text="안녕하세요 여러분! 드디어 클밋이 세상에 출시하게 되었습..."
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toStartOf="@+id/imageFilterView"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="안녕하세요 여러분! 드디어 클밋이 세상에 출시하게 되었습니다. \n클밋은 클라이머를 위한 루트 파인딩 어플이에요."
+            app:layout_constraintEnd_toStartOf="@+id/cv_image"
             app:layout_constraintStart_toStartOf="@+id/tv_announcement_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_announcement_summary" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_announcement_title" />
 
         <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="28dp"
+            android:id="@+id/iv_like"
+            android:layout_width="20dp"
             android:layout_height="15dp"
-            android:layout_marginVertical="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
             android:src="@drawable/img_good"
             app:layout_constraintBottom_toBottomOf="@+id/tv_announce_box"
             app:layout_constraintStart_toStartOf="@+id/tv_announcement_contents"
@@ -101,14 +116,15 @@
 
         <TextView
             android:id="@+id/tv_announcement_like_count"
+            style="@style/TextRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:text="3"
-            android:textColor="@color/white"
-            android:layout_marginStart="2dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-            app:layout_constraintStart_toEndOf="@+id/imageView4"
-            app:layout_constraintTop_toTopOf="@+id/imageView4" />
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_like"
+            app:layout_constraintStart_toEndOf="@+id/iv_like"
+            app:layout_constraintTop_toTopOf="@+id/iv_like" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

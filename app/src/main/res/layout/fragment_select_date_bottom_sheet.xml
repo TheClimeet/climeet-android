@@ -137,7 +137,6 @@
                 android:layout_weight="1"
                 android:background="@drawable/rect_mainfill_nostroke_5radius"
                 android:gravity="center"
-                android:onClick="@{()->vm.setDate()}"
                 android:text="확인"
                 android:textColor="@color/black"
                 android:textSize="18sp" />

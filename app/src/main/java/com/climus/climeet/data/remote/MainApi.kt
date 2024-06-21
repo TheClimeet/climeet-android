@@ -14,6 +14,7 @@ import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimbedGym
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
+import com.climus.climeet.data.model.response.GetAnnouncementDetailResponse
 import com.climus.climeet.data.model.response.GetAnnouncementResponse
 import com.climus.climeet.data.model.response.GetClimberPrivacySettingResponse
 import com.climus.climeet.data.model.response.GetClimberProfileStatisticsResponse
@@ -395,8 +396,13 @@ interface MainApi {
         @Path("userId") userId: Long
     ): Response<GetUserInfoResponse>
 
-    @GET("/api/boards")
-    suspend fun getAnnouncement(): Response<GetAnnouncementResponse>
+    @GET("/boards")
+    suspend fun getAnnouncement(): Response<List<GetAnnouncementResponse>>
+
+    @GET("/boards/{boardId}")
+    suspend fun getAnnouncementDetail(
+        @Path("boardId") boardId: Long
+    ): Response<GetAnnouncementDetailResponse>
 
     @PATCH("/api/climber/homegym-privacy-setting")
     suspend fun editHomeGymPrivacy(): Response<ResponseBody>

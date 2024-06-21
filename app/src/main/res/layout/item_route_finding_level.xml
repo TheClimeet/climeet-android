@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="lc"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.LevelColor" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="9dp">
+
+        <TextView
+            android:id="@+id/tv_selected_level"
+            style="@style/TextTiny"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/oval_silver2fill_nostroke"
+            android:gravity="center"
+            android:text="@{lc.color.name}"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:textHexColor="@{lc.color.color}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

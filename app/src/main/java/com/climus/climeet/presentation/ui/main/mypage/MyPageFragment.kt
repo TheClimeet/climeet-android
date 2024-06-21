@@ -34,7 +34,6 @@ class MyPageFragment: BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypa
                     is MyPageEvent.NavigateToAccount -> findNavController().toAccount()
                     is MyPageEvent.NavigateToAlarm -> findNavController().toAlarm()
                     is MyPageEvent.NavigateToAnnounce -> findNavController().toAnnounce()
-                    is MyPageEvent.NavigateToCheerUp -> findNavController().toCheerUp()
                     is MyPageEvent.NavigateToFollow -> findNavController().toFollow()
                     is MyPageEvent.NavigateToAdminMyProfile -> findNavController().toAdminMyProfile()
                     is MyPageEvent.NavigateToClimerMyProfile -> findNavController().toClimerMyProfile()
@@ -90,18 +89,13 @@ class MyPageFragment: BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypa
         navigate(action)
     }
 
-    private fun NavController.toCheerUp(){
-        val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageCheerUpFragment()
-        navigate(action)
-    }
-
     private fun NavController.toFollow(){
         val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageFollowFragment()
         navigate(action)
     }
 
     private fun NavController.toAdminMyProfile(){
-        val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageAdminMyProfileFragment()
+        val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageAdminMyProfileFragment(viewModel.uiState.value.userId)
         navigate(action)
     }
 

@@ -17,6 +17,7 @@ import com.climus.climeet.data.model.response.BestRouteDetailInfoResponse
 import com.climus.climeet.data.model.response.BestTimeClimberSimpleResponse
 import com.climus.climeet.data.model.response.ClimbedGym
 import com.climus.climeet.data.model.response.ClimberDetailInfoResponse
+import com.climus.climeet.data.model.response.GetAnnouncementDetailResponse
 import com.climus.climeet.data.model.response.GetAnnouncementResponse
 import com.climus.climeet.data.model.response.GetClimberPrivacySettingResponse
 import com.climus.climeet.data.model.response.GetClimberProfileStatisticsResponse
@@ -368,7 +369,9 @@ interface MainRepository {
         userId: Long
     ): BaseState<GetUserInfoResponse>
 
+    suspend fun getAnnouncement(): BaseState<List<GetAnnouncementResponse>>
 
-    suspend fun getAnnouncement(): BaseState<GetAnnouncementResponse>
-
+    suspend fun getAnnouncementDetail(
+        boardId: Long
+    ): BaseState<GetAnnouncementDetailResponse>
 }
