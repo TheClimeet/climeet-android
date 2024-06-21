@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.mypage.follow
+package com.climus.climeet.presentation.ui.main.mypage.follow.model
 
 
 data class FollowClimber(
