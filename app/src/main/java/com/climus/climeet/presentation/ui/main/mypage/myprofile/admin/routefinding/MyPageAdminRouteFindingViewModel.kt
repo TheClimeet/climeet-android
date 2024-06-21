@@ -1,6 +1,8 @@
 package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.LevelColor
@@ -48,6 +50,8 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
 
     val selectedLevel = MutableStateFlow("레벨 설정")
 
+    val isCompletable = MutableLiveData(true)
+
     fun setSelectedDate(updateDate: LocalDate) {
         selectedDate.update { updateDate }
         selectedDateText.update {
@@ -80,6 +84,12 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     fun resetSelectedColorAndLevel() {
         selectedColor.update { RouteColor() }
         selectedLevel.update { "레벨 설정" }
+    }
+
+    fun isColorAlreadySelected(): Boolean {
+        val isComplete = !_uiState.value.selectedLevelColor.any { it.color.name == selectedColor.value.name }
+        isCompletable.value = isComplete
+        return isComplete
     }
 
     fun noUse(dateDate: LocalDate) {}

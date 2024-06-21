@@ -251,13 +251,14 @@
                             android:layout_width="65dp"
                             android:layout_height="30dp"
                             android:layout_marginTop="30dp"
-                            android:background="@drawable/rect_mainfill_nostroke_8radius"
+                            android:background="@{vm.isCompletable() ? @drawable/rect_mainfill_nostroke_8radius : @drawable/rect_silver2fill_nostroke_8radius}"
                             android:onClick="@{()->vm.addLevelColor()}"
                             android:paddingHorizontal="16dp"
                             android:paddingTop="5.5dp"
                             android:paddingBottom="6.5dp"
                             android:text="@string/route_finding_add_level_complete"
-                            android:textColor="@color/black"
+                            android:textColor="@{vm.isCompletable() ? @color/black : @color/cm_grey5}"
+                            android:enabled="@{vm.isCompletable()}"
                             app:layout_constraintEnd_toEndOf="@id/layout_set_level"
                             app:layout_constraintTop_toBottomOf="@id/layout_set_level" />
 

@@ -63,11 +63,28 @@ class MyPageAdminRouteFindingFragment :
                 lvAdapter.submitList(state.selectedLevelColor)
             }
         }
+        repeatOnStarted {
+            viewModel.selectedColor.collect {
+                val isCompletable = !viewModel.isColorAlreadySelected()
+                if (isCompletable) {
+                    binding.tvExplain.text = "${viewModel.selectedColor.value.name} 레벨은 이미 등록되어 있어요"
+                    binding.tvExplain.setTextColor(resources.getColor(R.color.cm_red))
+                } else {
+                    binding.tvExplain.text = ""
+                    binding.tvExplain.setTextColor(resources.getColor(R.color.cm_main))
+                }
+                if(it.name == "-") {
+                    val adapter = LevelColorAdapter(viewModel)
+                    adapter.submitList(viewModel.colorList)
+                    binding.rvLevelColor.adapter = adapter
+                }
+            }
+        }
     }
 
     private fun setRV() {
-        val adapter = LevelColorAdapter(viewModel)
-        binding.rvLevelColor.adapter = adapter
+//        val adapter = LevelColorAdapter(viewModel)
+//        binding.rvLevelColor.adapter = adapter
 
         lvAdapter = RouteFindingLevelAdapter(viewModel)
         binding.rvRouteFindingLevel.adapter = lvAdapter
