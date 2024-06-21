@@ -7,12 +7,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.databinding.ItemRouteFindingLevelColorBinding
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLevelItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.MyPageAdminRouteFindingViewModel
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.RouteColor
 
 class LevelColorAdapter(
     private val viewModel: MyPageAdminRouteFindingViewModel
-) : ListAdapter<RouteColor, LevelColorAdapter.ViewHolder>(DiffCallback()) {
+) : ListAdapter<UiLevelItem, LevelColorAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemRouteFindingLevelColorBinding.inflate(
@@ -27,35 +28,35 @@ class LevelColorAdapter(
         holder.bind(getItem(position))
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<RouteColor>() {
-        override fun areItemsTheSame(oldItem: RouteColor, newItem: RouteColor): Boolean =
-            oldItem.color == newItem.color
+    class DiffCallback : DiffUtil.ItemCallback<UiLevelItem>() {
+        override fun areItemsTheSame(oldItem: UiLevelItem, newItem: UiLevelItem): Boolean =
+            oldItem.colorName == newItem.colorName
 
-        override fun areContentsTheSame(oldItem: RouteColor, newItem: RouteColor): Boolean =
+        override fun areContentsTheSame(oldItem: UiLevelItem, newItem: UiLevelItem): Boolean =
             oldItem == newItem
     }
 
     inner class ViewHolder(private val binding: ItemRouteFindingLevelColorBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(routeColor: RouteColor) {
+        fun bind(routeColor: UiLevelItem) {
             binding.rc = routeColor
             binding.executePendingBindings()
             updateSelection(routeColor)
 
             itemView.setOnClickListener {
-                viewModel.selectColor(routeColor)
+                viewModel.selectColor(RouteColor(routeColor.colorName, routeColor.colorHex))
                 notifyDataSetChanged()
             }
         }
 
-        private fun updateSelection(routeColor: RouteColor) {
-            if(routeColor.name == viewModel.selectedColor.value.name) {
+        private fun updateSelection(routeColor: UiLevelItem) {
+            if(routeColor.colorName == viewModel.selectedLevel.value.colorName) {
                 binding.circleOutside.visibility = View.VISIBLE
             } else {
                 binding.circleOutside.visibility = View.GONE
             }
 
-            if(routeColor.name == "컴피") {
+            if(routeColor.colorName == "컴피") {
                 binding.tvColorName.text = "C"
             } else {
                 binding.tvColorName.text = ""

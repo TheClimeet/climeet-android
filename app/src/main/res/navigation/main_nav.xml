@@ -454,12 +454,16 @@
         android:label="GymReviewBottomSheetFragment"/>
     <fragment
         android:id="@+id/myPageAdminSetRouteFragment"
-        android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.createroute.MyPageAdminCreateRouteFragment"
+        android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.createroute.MyPageAdminCreateRouteFragment"
         android:label="MyPageAdminSetRouteFragment" />
     <fragment
         android:id="@+id/myPageAdminRouteFindingFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.MyPageAdminRouteFindingFragment"
-        android:label="MyPageAdminRouteFindingFragment" />
+        android:label="MyPageAdminRouteFindingFragment" >
+        <action
+            android:id="@+id/action_myPageAdminRouteFindingFragment_to_myPageAdminSetRouteFragment"
+            app:destination="@id/myPageAdminSetRouteFragment" />
+    </fragment>
 
     <action
         android:id="@+id/globalActionTomyPageAdminRouteFindingFragment"

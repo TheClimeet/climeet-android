@@ -140,7 +140,7 @@
                         app:layout_constraintBottom_toBottomOf="@+id/tv_add_level"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:list="@{vm.uiState.selectedLevelColor}"
+                        app:list="@{vm.uiState.levelList}"
                         tools:itemCount="3"
                         tools:listitem="@layout/item_route_finding_level" />
 
@@ -178,11 +178,11 @@
                             android:layout_marginTop="24dp"
                             android:background="@drawable/oval_silver2fill_nostroke"
                             android:gravity="center"
-                            android:text="@{vm.selectedColor.name}"
+                            android:text="@{vm.selectedLevel.colorName}"
                             android:textSize="18sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:textHexColor="@{vm.selectedColor.color}" />
+                            app:textHexColor="@{vm.selectedLevel.colorHex}" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_level_color"
@@ -219,7 +219,7 @@
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{vm.selectedLevel}"
+                                android:text="@{vm.selectedLevel.climeetLevel}"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />

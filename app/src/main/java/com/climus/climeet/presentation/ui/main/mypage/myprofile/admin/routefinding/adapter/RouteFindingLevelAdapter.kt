@@ -41,7 +41,7 @@ class RouteFindingLevelAdapter(
             binding.lc = levelColor
             binding.root.setOnClickListener {
                 viewModel.selectLevel(levelColor.level)
-                viewModel.selectColor(RouteColor(levelColor.color.name, levelColor.color.color))
+                viewModel.selectColor(levelColor.color)
             }
         }
 

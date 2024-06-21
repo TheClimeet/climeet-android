@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.createroute.MyPageAdminCreateRouteViewModel" />
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.MyPageAdminRouteFindingViewModel" />
 
     </data>
 
@@ -122,7 +122,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rv_sector"
-                    app:strokeColor="@{vm.uiState.selectedLevelText.empty ? @color/cm_grey7 : vm.uiState.selectedLevelColor}"
+                    app:strokeColor="@{vm.createRouteUiState.selectedLevelText.empty ? @color/cm_grey7 : vm.createRouteUiState.selectedLevelColor}"
                     app:strokeWidth="10dp">
 
                     <TextView
@@ -154,8 +154,8 @@
                         android:layout_gravity="bottom|start"
                         android:layout_marginStart="30dp"
                         android:layout_marginBottom="24dp"
-                        android:text="@{vm.uiState.selectedLevelText.empty ? `--` : vm.uiState.selectedLevelText}"
-                        android:textColor="@{vm.uiState.selectedLevelText.empty ? @color/cm_grey7 : vm.uiState.selectedLevelColor}"
+                        android:text="@{vm.createRouteUiState.selectedLevelText.empty ? `--` : vm.createRouteUiState.selectedLevelText}"
+                        android:textColor="@{vm.createRouteUiState.selectedLevelText.empty ? @color/cm_grey7 : vm.createRouteUiState.selectedLevelColor}"
                         android:textSize="30dp"
                         android:textStyle="bold" />
 
