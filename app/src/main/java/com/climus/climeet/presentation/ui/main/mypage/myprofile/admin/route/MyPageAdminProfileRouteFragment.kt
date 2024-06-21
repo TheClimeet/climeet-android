@@ -1,9 +1,126 @@
 package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.route
 
+import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMypageAdminProfileRouteBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheet
+import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheetViewModel
+import com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileData
+import com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileViewModel
+import com.climus.climeet.presentation.ui.main.global.gymprofile.route.GymProfileRouteEvent
+import com.climus.climeet.presentation.ui.main.global.gymprofile.route.GymProfileRouteViewModel
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLevelAdapter
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
+import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.SectorNameAdapter
+import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsThumbnailAdapter
+import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
+import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
+import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
+import com.climus.climeet.presentation.ui.toShortsPlayer
 
 class MyPageAdminProfileRouteFragment: BaseFragment<FragmentMypageAdminProfileRouteBinding>(R.layout.fragment_mypage_admin_profile_route) {
+    private val parentViewModel: GymProfileViewModel by activityViewModels()
+    private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
+    private val dateViewModel: SelectDateBottomSheetViewModel by activityViewModels()
+    private val viewModel: GymProfileRouteViewModel by activityViewModels()
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.svm = sharedViewModel
+        binding.vm = viewModel
+
+        setRouteTab()
+        setRecyclerView()
+        initEventObserve()
+        initShortsEventObserve()
+        addOnScrollListener()
+
+        viewModel.selectedDate.observe(viewLifecycleOwner, Observer { date ->
+            viewModel.setDate()
+        })
+    }
+
+    private fun setRouteTab() {
+        parentViewModel.gymId.observe(viewLifecycleOwner, Observer { id ->
+
+            sharedViewModel.setCurFilter(id)
+            sharedViewModel.getShorts(ShortsOption.NEW_SORT)
+
+            viewModel.setCragInfo(id, parentViewModel.uiState.value.gymName)
+        })
+    }
+
+    private fun addOnScrollListener() {
+
+        binding.layoutScrollview.setOnScrollChangeListener { v, _, scrollY, _, _ ->
+            if (scrollY == binding.layoutScrollview.getChildAt(0).measuredHeight - v.measuredHeight) {
+                sharedViewModel.getShorts(ShortsOption.NEXT_PAGE)
+            }
+        }
+    }
+
+    private fun setRecyclerView() {
+        binding.rvShortsThumbnail.adapter = ShortsThumbnailAdapter()
+        binding.rvSectorName.adapter = SectorNameAdapter()
+        binding.rvSectorLevel.adapter = GymLevelAdapter()
+        binding.rvSectorImage.adapter = RouteImageAdapter()
+        binding.rvSectorName.itemAnimator = null
+        binding.rvSectorLevel.itemAnimator = null
+        binding.rvSectorImage.itemAnimator = null
+    }
+
+    private fun initEventObserve() {
+        repeatOnStarted {
+            viewModel.event.collect { event ->
+                when (event) {
+                    is GymProfileRouteEvent.ShowDatePicker -> {
+                        SelectDateBottomSheet(
+                            requireContext(),
+                            dateViewModel,
+                            GymProfileData.selectedDate,
+                            GymProfileData::setSelectedDate
+                        ) { date ->
+                            viewModel.setSelectedDate(date)
+                        }.show()
+                    }
+
+                    is GymProfileRouteEvent.deleteFilter -> {
+                        sharedViewModel.gymProfileDelete.value = true
+                        sharedViewModel.deleteFilter()
+                    }
+
+                    is GymProfileRouteEvent.ApplyFilter -> {
+                        sharedViewModel.applyFilter(event.filter)
+                    }
+
+                    is GymProfileRouteEvent.ShowToastMessage -> {
+                        showToastMessage(event.msg)
+                    }
+
+                    else -> {}
+                }
+            }
+        }
+    }
+
+    private fun initShortsEventObserve() {
+        repeatOnStarted {
+            sharedViewModel.event.collect {
+                when (it) {
+                    is ShortsPlayerEvent.ShowToastMessage -> showToastMessage(it.msg)
+                    is ShortsPlayerEvent.NavigateToShortsPlayer -> findNavController().toShortsPlayer(
+                        it.shortsId,
+                        it.position
+                    )
+                    else -> {}
+                }
+            }
+        }
+    }
 }

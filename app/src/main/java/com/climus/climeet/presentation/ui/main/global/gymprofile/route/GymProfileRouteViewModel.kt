@@ -42,19 +42,20 @@ data class GymProfileSelectSectorUiState(
     val selectedSector: SectorNameUiData = SectorNameUiData {},
     val selectedLevel: GymLevelUiData = GymLevelUiData {},
     val selectedRoute: RouteUiData = RouteUiData {},
-    val selectedFilter: SelectedFilter = SelectedFilter()
+    val selectedFilter: SelectedFilter = SelectedFilter(),
 )
 
 sealed class GymProfileRouteEvent {
     data object ShowDatePicker : GymProfileRouteEvent()
-    data object deleteFilter: GymProfileRouteEvent()
+    data object deleteFilter : GymProfileRouteEvent()
+    data object NavigateToRouteFinding : GymProfileRouteEvent()
     data class ApplyFilter(val filter: SelectedFilter) : GymProfileRouteEvent()
     data class ShowToastMessage(val msg: String) : GymProfileRouteEvent()
 }
 
 @HiltViewModel
 class GymProfileRouteViewModel @Inject constructor(
-    private val repository: MainRepository
+    private val repository: MainRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(GymProfileSelectSectorUiState())
@@ -155,7 +156,7 @@ class GymProfileRouteViewModel @Inject constructor(
     fun selectFloor(floor: Int) {
         _uiState.update { state ->
             state.copy(
-                secondFloorBtnState =if (floor == 2) FloorBtnState.FloorSelected else FloorBtnState.FloorUnSelected,
+                secondFloorBtnState = if (floor == 2) FloorBtnState.FloorSelected else FloorBtnState.FloorUnSelected,
                 firstFloorBtnState = if (floor == 1) FloorBtnState.FloorSelected else FloorBtnState.FloorUnSelected,
                 curFloor = floor,
                 sectorNameList = sectorNameList.filter {
@@ -309,6 +310,12 @@ class GymProfileRouteViewModel @Inject constructor(
     fun showDatePicker() {
         viewModelScope.launch {
             _event.emit(GymProfileRouteEvent.ShowDatePicker)
+        }
+    }
+
+    fun navigateToRouteFinding() {
+        viewModelScope.launch {
+            _event.emit(GymProfileRouteEvent.NavigateToRouteFinding)
         }
     }
 }

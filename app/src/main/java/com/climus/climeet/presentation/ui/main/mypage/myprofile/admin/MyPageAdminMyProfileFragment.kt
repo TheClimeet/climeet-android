@@ -11,12 +11,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.climus.climeet.MainNavDirections
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMypageAdminMyprofileBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileViewModel
 import com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymProfileInfoEvent
 import com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymProfileInfoViewModel
+import com.climus.climeet.presentation.ui.main.global.gymprofile.route.GymProfileRouteEvent
+import com.climus.climeet.presentation.ui.main.global.gymprofile.route.GymProfileRouteViewModel
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.adapter.MyPageAdminProfileVPAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -25,7 +28,8 @@ class MyPageAdminMyProfileFragment :
     BaseFragment<FragmentMypageAdminMyprofileBinding>(R.layout.fragment_mypage_admin_myprofile) {
 
     private val sharedViewModel: GymProfileViewModel by activityViewModels()
-    val infoViewModel: GymProfileInfoViewModel by activityViewModels()
+    private val infoViewModel: GymProfileInfoViewModel by activityViewModels()
+    private val routeViewModel: GymProfileRouteViewModel by activityViewModels()
     private val viewModel: MyPageAdminMyProfileViewModel by activityViewModels()
     private var adapter: MyPageAdminProfileVPAdapter? = null
 
@@ -40,6 +44,7 @@ class MyPageAdminMyProfileFragment :
 
         initEventObserve()
         initInfoEventObserve()
+        initRouteEventObserve()
         initStateObserve()
         initCragInfo()
         initViewPager()
@@ -59,12 +64,25 @@ class MyPageAdminMyProfileFragment :
         }
     }
 
+    // 정보탭
     private fun initInfoEventObserve() {
         repeatOnStarted {
             infoViewModel.event.collect {
                 when (it) {
                     GymProfileInfoEvent.NavigateToEditService -> findNavController().toEditServiceFragment()
                     GymProfileInfoEvent.NavigateToGymReviewFromMyPage -> findNavController().toGymReviewBottomSheet()
+                    else -> {}
+                }
+            }
+        }
+    }
+
+    // 루트탭
+    private fun initRouteEventObserve() {
+        repeatOnStarted {
+            routeViewModel.event.collect{
+                when(it){
+                    is GymProfileRouteEvent.NavigateToRouteFinding -> findNavController().toGymRouteFinding()
                     else -> {}
                 }
             }
@@ -163,6 +181,11 @@ class MyPageAdminMyProfileFragment :
     private fun NavController.toGymReviewBottomSheet() {
         val action =
             MyPageAdminMyProfileFragmentDirections.actionMyPageAdminMyProfileFragmentToGymReviewBottomSheetFragment()
+        navigate(action)
+    }
+
+    private fun NavController.toGymRouteFinding() {
+        val action = MainNavDirections.globalActionTomyPageAdminRouteFindingFragment()
         navigate(action)
     }
 }

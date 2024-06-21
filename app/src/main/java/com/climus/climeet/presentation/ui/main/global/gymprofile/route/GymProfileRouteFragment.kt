@@ -3,7 +3,6 @@ package com.climus.climeet.presentation.ui.main.global.gymprofile.route
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
@@ -16,7 +15,6 @@ import com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileViewM
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLevelAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.SectorNameAdapter
-import com.climus.climeet.presentation.ui.main.record.model.CreateRecordData
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsThumbnailAdapter
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
@@ -30,8 +28,8 @@ class GymProfileRouteFragment :
 
     private val parentViewModel: GymProfileViewModel by activityViewModels()
     private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
-    private val dateViewModel: SelectDateBottomSheetViewModel by viewModels()
-    private val viewModel: GymProfileRouteViewModel by viewModels()
+    private val dateViewModel: SelectDateBottomSheetViewModel by activityViewModels()
+    private val viewModel: GymProfileRouteViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -106,6 +104,8 @@ class GymProfileRouteFragment :
                     is GymProfileRouteEvent.ShowToastMessage -> {
                         showToastMessage(event.msg)
                     }
+
+                    else -> {}
                 }
             }
         }
