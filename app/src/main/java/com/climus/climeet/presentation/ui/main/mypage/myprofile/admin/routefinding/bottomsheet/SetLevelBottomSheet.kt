@@ -49,7 +49,7 @@ class SetLevelBottomSheet(
         levelPicker.maxValue = levelsArray.size - 1
         levelPicker.displayedValues = levelsArray
 
-        val currentIndex = LevelColorData.LEVELS.indexOf(viewModel.selectedLevel.value).takeIf { it != -1 } ?: 0
+        val currentIndex = LevelColorData.LEVELS.indexOf(viewModel.selectedLevel.value.climeetLevel).takeIf { it != -1 } ?: 0
         levelPicker.value = currentIndex
 
         selectedLevel = levelsArray[currentIndex]
@@ -81,7 +81,7 @@ class SetLevelBottomSheet(
 
     private fun checkIfLevelAlreadySelected() {
         val isLevelAlreadySelected =
-            viewModel.uiState.value.selectedLevelColor.any { it.level == selectedLevel }
+            viewModel.uiState.value.levelList.any { it.climeetLevel == selectedLevel }
         if (isLevelAlreadySelected) {
             binding.tvOk.isEnabled = false
             binding.tvOk.setBackgroundResource(R.drawable.rect_silverfill_nostroke_5radius)

@@ -24,6 +24,11 @@ internal fun Uri.toMultiPart(context: Context): MultipartBody.Part? {
     }
 }
 
+internal fun generateFileName(): String {
+    val timestamp = System.currentTimeMillis()
+    return "image_$timestamp.jpg"
+}
+
 // 절대경로 변환
 private fun getRealPathFromUri(uri: Uri, context: Context): String? {
     return try {

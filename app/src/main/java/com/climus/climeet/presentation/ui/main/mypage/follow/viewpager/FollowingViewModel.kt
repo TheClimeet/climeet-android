@@ -4,17 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
-import com.climus.climeet.data.model.response.UserFollowSimpleResponse
-import com.climus.climeet.data.model.response.UserFollowingInfoResponse
-import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
-import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
-import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.data.repository.MainRepository
-import com.climus.climeet.presentation.ui.main.global.searchprofile.SearchProfileEvent
 import com.climus.climeet.presentation.ui.main.global.searchprofile.model.SearchProfileUiData
 import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowingUiData
 import com.climus.climeet.presentation.ui.main.global.toUserFollowingUiData
-import com.climus.climeet.presentation.ui.main.mypage.follow.FollowClimber
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

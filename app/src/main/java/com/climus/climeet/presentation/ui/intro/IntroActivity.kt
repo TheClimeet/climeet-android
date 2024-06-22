@@ -97,8 +97,6 @@ class IntroActivity : BaseActivity<ActivityIntroBinding>(ActivityIntroBinding::i
                 Permission.ALARM -> confirmAction?.let { it() }
             }
         }
-
-
     }
 
     private fun requestPermission(type: Permission) {

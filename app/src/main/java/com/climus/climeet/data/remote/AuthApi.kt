@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface AuthApi {
 
-    @POST("refresh-token")
+    @POST("/api/refresh-token")
     suspend fun refreshToken(
         @Query("refreshToken") refreshToken: String
     ): Response<RefreshTokenResponse>
