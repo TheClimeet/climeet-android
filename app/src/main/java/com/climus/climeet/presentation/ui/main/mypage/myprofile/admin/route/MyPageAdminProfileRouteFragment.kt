@@ -17,6 +17,7 @@ import com.climus.climeet.presentation.ui.main.global.gymprofile.route.GymProfil
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLevelAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.SectorNameAdapter
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.MyPageAdminMyProfileViewModel
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsThumbnailAdapter
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
@@ -24,35 +25,38 @@ import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewMod
 import com.climus.climeet.presentation.ui.toShortsPlayer
 
 class MyPageAdminProfileRouteFragment: BaseFragment<FragmentMypageAdminProfileRouteBinding>(R.layout.fragment_mypage_admin_profile_route) {
-    private val parentViewModel: GymProfileViewModel by activityViewModels()
-    private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
+
+    private val gymViewModel: GymProfileViewModel by activityViewModels()
+    private val shortsViewModel: ShortsPlayerViewModel by activityViewModels()
     private val dateViewModel: SelectDateBottomSheetViewModel by activityViewModels()
-    private val viewModel: GymProfileRouteViewModel by activityViewModels()
+    private val routeViewModel: GymProfileRouteViewModel by activityViewModels()
+    private val parentViewModel: MyPageAdminMyProfileViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.svm = sharedViewModel
-        binding.vm = viewModel
+        binding.svm = shortsViewModel
+        binding.rvm = routeViewModel
+        binding.vm = parentViewModel
 
         setRouteTab()
         setRecyclerView()
-        initEventObserve()
+        initRouteEventObserve()
         initShortsEventObserve()
         addOnScrollListener()
 
-        viewModel.selectedDate.observe(viewLifecycleOwner, Observer { date ->
-            viewModel.setDate()
+        routeViewModel.selectedDate.observe(viewLifecycleOwner, Observer { date ->
+            routeViewModel.setDate()
         })
     }
 
     private fun setRouteTab() {
-        parentViewModel.gymId.observe(viewLifecycleOwner, Observer { id ->
+        gymViewModel.gymId.observe(viewLifecycleOwner, Observer { id ->
 
-            sharedViewModel.setCurFilter(id)
-            sharedViewModel.getShorts(ShortsOption.NEW_SORT)
+            shortsViewModel.setCurFilter(id)
+            shortsViewModel.getShorts(ShortsOption.NEW_SORT)
 
-            viewModel.setCragInfo(id, parentViewModel.uiState.value.gymName)
+            routeViewModel.setCragInfo(id, gymViewModel.uiState.value.gymName)
         })
     }
 
@@ -60,7 +64,7 @@ class MyPageAdminProfileRouteFragment: BaseFragment<FragmentMypageAdminProfileRo
 
         binding.layoutScrollview.setOnScrollChangeListener { v, _, scrollY, _, _ ->
             if (scrollY == binding.layoutScrollview.getChildAt(0).measuredHeight - v.measuredHeight) {
-                sharedViewModel.getShorts(ShortsOption.NEXT_PAGE)
+                shortsViewModel.getShorts(ShortsOption.NEXT_PAGE)
             }
         }
     }
@@ -75,9 +79,9 @@ class MyPageAdminProfileRouteFragment: BaseFragment<FragmentMypageAdminProfileRo
         binding.rvSectorImage.itemAnimator = null
     }
 
-    private fun initEventObserve() {
+    private fun initRouteEventObserve() {
         repeatOnStarted {
-            viewModel.event.collect { event ->
+            routeViewModel.event.collect { event ->
                 when (event) {
                     is GymProfileRouteEvent.ShowDatePicker -> {
                         SelectDateBottomSheet(
@@ -86,24 +90,22 @@ class MyPageAdminProfileRouteFragment: BaseFragment<FragmentMypageAdminProfileRo
                             GymProfileData.selectedDate,
                             GymProfileData::setSelectedDate
                         ) { date ->
-                            viewModel.setSelectedDate(date)
+                            routeViewModel.setSelectedDate(date)
                         }.show()
                     }
 
                     is GymProfileRouteEvent.deleteFilter -> {
-                        sharedViewModel.gymProfileDelete.value = true
-                        sharedViewModel.deleteFilter()
+                        shortsViewModel.gymProfileDelete.value = true
+                        shortsViewModel.deleteFilter()
                     }
 
                     is GymProfileRouteEvent.ApplyFilter -> {
-                        sharedViewModel.applyFilter(event.filter)
+                        shortsViewModel.applyFilter(event.filter)
                     }
 
                     is GymProfileRouteEvent.ShowToastMessage -> {
                         showToastMessage(event.msg)
                     }
-
-                    else -> {}
                 }
             }
         }
@@ -111,7 +113,7 @@ class MyPageAdminProfileRouteFragment: BaseFragment<FragmentMypageAdminProfileRo
 
     private fun initShortsEventObserve() {
         repeatOnStarted {
-            sharedViewModel.event.collect {
+            shortsViewModel.event.collect {
                 when (it) {
                     is ShortsPlayerEvent.ShowToastMessage -> showToastMessage(it.msg)
                     is ShortsPlayerEvent.NavigateToShortsPlayer -> findNavController().toShortsPlayer(

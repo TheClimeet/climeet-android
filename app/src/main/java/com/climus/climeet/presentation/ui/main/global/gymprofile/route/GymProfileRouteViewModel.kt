@@ -48,7 +48,6 @@ data class GymProfileSelectSectorUiState(
 sealed class GymProfileRouteEvent {
     data object ShowDatePicker : GymProfileRouteEvent()
     data object deleteFilter : GymProfileRouteEvent()
-    data object NavigateToRouteFinding : GymProfileRouteEvent()
     data class ApplyFilter(val filter: SelectedFilter) : GymProfileRouteEvent()
     data class ShowToastMessage(val msg: String) : GymProfileRouteEvent()
 }
@@ -310,12 +309,6 @@ class GymProfileRouteViewModel @Inject constructor(
     fun showDatePicker() {
         viewModelScope.launch {
             _event.emit(GymProfileRouteEvent.ShowDatePicker)
-        }
-    }
-
-    fun navigateToRouteFinding() {
-        viewModelScope.launch {
-            _event.emit(GymProfileRouteEvent.NavigateToRouteFinding)
         }
     }
 }

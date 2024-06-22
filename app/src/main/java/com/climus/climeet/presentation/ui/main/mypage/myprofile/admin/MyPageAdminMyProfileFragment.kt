@@ -29,7 +29,6 @@ class MyPageAdminMyProfileFragment :
 
     private val sharedViewModel: GymProfileViewModel by activityViewModels()
     private val infoViewModel: GymProfileInfoViewModel by activityViewModels()
-    private val routeViewModel: GymProfileRouteViewModel by activityViewModels()
     private val viewModel: MyPageAdminMyProfileViewModel by activityViewModels()
     private var adapter: MyPageAdminProfileVPAdapter? = null
 
@@ -44,7 +43,6 @@ class MyPageAdminMyProfileFragment :
 
         initEventObserve()
         initInfoEventObserve()
-        initRouteEventObserve()
         initStateObserve()
         initCragInfo()
         initViewPager()
@@ -59,6 +57,7 @@ class MyPageAdminMyProfileFragment :
             viewModel.event.collect {
                 when (it) {
                     MyPageAdminProfileEvent.NavigateToEditAdminProfile -> findNavController().toEditPage()
+                    MyPageAdminProfileEvent.NavigateToRouteFinding -> findNavController().toGymRouteFinding()
                 }
             }
         }
@@ -71,18 +70,6 @@ class MyPageAdminMyProfileFragment :
                 when (it) {
                     GymProfileInfoEvent.NavigateToEditService -> findNavController().toEditServiceFragment()
                     GymProfileInfoEvent.NavigateToGymReviewFromMyPage -> findNavController().toGymReviewBottomSheet()
-                    else -> {}
-                }
-            }
-        }
-    }
-
-    // 루트탭
-    private fun initRouteEventObserve() {
-        repeatOnStarted {
-            routeViewModel.event.collect{
-                when(it){
-                    is GymProfileRouteEvent.NavigateToRouteFinding -> findNavController().toGymRouteFinding()
                     else -> {}
                 }
             }

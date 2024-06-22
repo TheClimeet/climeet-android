@@ -14,6 +14,7 @@ import javax.inject.Inject
 
 sealed class MyPageAdminProfileEvent {
     data object NavigateToEditAdminProfile : MyPageAdminProfileEvent()
+    data object NavigateToRouteFinding : MyPageAdminProfileEvent()
 }
 
 @HiltViewModel
@@ -42,6 +43,12 @@ class MyPageAdminMyProfileViewModel @Inject constructor(val repository: MainRepo
     fun navigateToEditPage() {
         viewModelScope.launch {
             _event.emit(MyPageAdminProfileEvent.NavigateToEditAdminProfile)
+        }
+    }
+
+    fun navigateToRouteFinding() {
+        viewModelScope.launch {
+            _event.emit(MyPageAdminProfileEvent.NavigateToRouteFinding)
         }
     }
 }
