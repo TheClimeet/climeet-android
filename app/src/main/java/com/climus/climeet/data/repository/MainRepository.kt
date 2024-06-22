@@ -361,6 +361,16 @@ interface MainRepository {
         size: Int
     ): BaseState<ShortsListResponse>
 
+    suspend fun getShortsLikedList(
+        page: Int,
+        size: Int
+    ): BaseState<ShortsListResponse>
+
+    suspend fun getShortsBookmarkedList(
+        page: Int,
+        size: Int
+    ): BaseState<ShortsListResponse>
+
     suspend fun getUserHomeGyms(
         userId: Long
     ): BaseState<List<UserHomeGymSimpleResponse>>

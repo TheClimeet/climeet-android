@@ -45,7 +45,7 @@ class MyPageClimberProfileShortsViewModel @Inject constructor() : ViewModel() {
     private val _btnState = MutableStateFlow(ClimberProfileShortsBtnState())
     val btnState: StateFlow<ClimberProfileShortsBtnState> = _btnState.asStateFlow()
 
-    // 버튼 클릭 시, 두 선택지 버튼 보이게 설정
+    // 버튼 클릭 시, 선택지 버튼 보이게 설정
     fun showShortsBtns() {
         _btnState.update { state ->
             state.copy(

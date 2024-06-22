@@ -1,12 +1,10 @@
 package com.climus.climeet.presentation.ui.main.mypage.myshorts.adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.climus.climeet.R
 import com.climus.climeet.databinding.ItemMypageShortsCommentBinding
 import com.climus.climeet.presentation.ui.main.mypage.myshorts.model.MyPageShortsCommentUiData
 import com.climus.climeet.presentation.ui.main.mypage.myshorts.viewpager.MyPageMyShortsCommentViewModel
@@ -48,8 +46,6 @@ class ShortsCommentViewHolder(
             // todo: 뷰모델 -> 해당 숏츠 댓글로 이동
 
         }
-
-        Log.d("shorts", "프로필 : ${item.profileImage}")
 
         if (item.profileImage != null) {
             Glide.with(binding.root.context)

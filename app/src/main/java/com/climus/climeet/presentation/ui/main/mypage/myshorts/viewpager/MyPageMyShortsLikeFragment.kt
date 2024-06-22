@@ -15,10 +15,8 @@ import com.climus.climeet.presentation.ui.toShortsPlayer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyPageMyShortsLikeFragment(
-    // todo: userId 넘겨받아야 할수도 (api 안 나와서 모르겠음)
-    private val userId: Long = 75,
-) : BaseFragment<FragmentMypageMyshortsLikeBinding>(R.layout.fragment_mypage_myshorts_like) {
+class MyPageMyShortsLikeFragment() :
+    BaseFragment<FragmentMypageMyshortsLikeBinding>(R.layout.fragment_mypage_myshorts_like) {
 
     private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
 
@@ -32,12 +30,19 @@ class MyPageMyShortsLikeFragment(
         binding.rvShorts.adapter = ShortsThumbnailAdapter()
 
         sharedViewModel.initViewModel()
-        // todo: api 나오면 수정
-        sharedViewModel.getUserShorts(ShortsOption.NEW_SORT, userId)
+        sharedViewModel.getLikedShorts(ShortsOption.NEW_SORT)
+
 
         addOnScrollListener()
         initShortsEventObserve()
         initStateObserve()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        sharedViewModel.initViewModel()
+        sharedViewModel.getLikedShorts(ShortsOption.NEW_SORT)
     }
 
     private fun addOnScrollListener() {
@@ -48,8 +53,7 @@ class MyPageMyShortsLikeFragment(
 
                 if (bottomScrollState) {
                     bottomScrollState = false
-                    // todo: api 나오면 수정
-                    sharedViewModel.getUserShorts(ShortsOption.NEXT_PAGE, userId)
+                    sharedViewModel.getLikedShorts(ShortsOption.NEXT_PAGE)
                 }
             } else {
                 bottomScrollState = true

@@ -15,10 +15,8 @@ import com.climus.climeet.presentation.ui.toShortsPlayer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyPageMyShortsSaveFragment(
-    // todo: userId 넘겨받아야 할수도 (api 안 나와서 모르겠음)
-    private val userId: Long = 75,
-) : BaseFragment<FragmentMypageMyshortsSaveBinding>(R.layout.fragment_mypage_myshorts_save) {
+class MyPageMyShortsSaveFragment() :
+    BaseFragment<FragmentMypageMyshortsSaveBinding>(R.layout.fragment_mypage_myshorts_save) {
 
     private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
 
@@ -32,12 +30,18 @@ class MyPageMyShortsSaveFragment(
         binding.rvShorts.adapter = ShortsThumbnailAdapter()
 
         sharedViewModel.initViewModel()
-        // todo: api 나오면 수정
-        sharedViewModel.getUserShorts(ShortsOption.NEW_SORT, userId)
+        sharedViewModel.getBookmarkedShorts(ShortsOption.NEW_SORT)
 
         addOnScrollListener()
         initShortsEventObserve()
         initStateObserve()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        sharedViewModel.initViewModel()
+        sharedViewModel.getBookmarkedShorts(ShortsOption.NEW_SORT)
     }
 
     private fun addOnScrollListener() {
@@ -48,8 +52,7 @@ class MyPageMyShortsSaveFragment(
 
                 if (bottomScrollState) {
                     bottomScrollState = false
-                    // todo : api 나오면 그거로 연결
-                    sharedViewModel.getUserShorts(ShortsOption.NEXT_PAGE, userId)
+                    sharedViewModel.getBookmarkedShorts(ShortsOption.NEXT_PAGE)
                 }
             } else {
                 bottomScrollState = true

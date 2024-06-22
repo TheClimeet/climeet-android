@@ -430,6 +430,14 @@ class MainRepositoryImpl @Inject constructor(
         size: Int
     ): BaseState<ShortsListResponse> = runRemote { api.getMyShorts(shortsVisibility, page, size) }
 
+    override suspend fun getShortsLikedList(page: Int, size: Int): BaseState<ShortsListResponse> =
+        runRemote { api.getShortsLikedList(page, size) }
+
+    override suspend fun getShortsBookmarkedList(
+        page: Int,
+        size: Int,
+    ): BaseState<ShortsListResponse> = runRemote { api.getShortsBookmarkedList(page, size) }
+
     override suspend fun getMyClimbedGymList(
         year: Int,
         month: Int

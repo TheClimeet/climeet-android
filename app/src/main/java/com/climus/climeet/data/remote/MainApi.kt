@@ -386,6 +386,18 @@ interface MainApi {
         @Query("size") size: Int
     ): Response<ShortsListResponse>
 
+    @GET("/api/shorts/user/liked")
+    suspend fun getShortsLikedList(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<ShortsListResponse>
+
+    @GET("/api/shorts/user/bookmarked")
+    suspend fun getShortsBookmarkedList(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<ShortsListResponse>
+
     @GET("/api/home/homegyms/{userId}")
     suspend fun getUserHomeGyms(
         @Path("userId") userId: Long

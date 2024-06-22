@@ -5,7 +5,6 @@ import android.view.View
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMypageFollowBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.climus.climeet.presentation.ui.main.home.viewpager.best.RankingVPAdapter
 import com.climus.climeet.presentation.ui.main.mypage.follow.viewpager.FollowVPAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
