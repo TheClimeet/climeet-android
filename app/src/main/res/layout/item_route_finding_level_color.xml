@@ -6,7 +6,7 @@
 
         <variable
             name="rc"
-            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLevelItem" />
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.RouteColor" />
 
     </data>
 
@@ -36,7 +36,7 @@
             android:layout_margin="3dp"
             android:gravity="center"
             android:textColor="@color/black"
-            app:dynamicOvalBackground="@{rc.colorHex}" />
+            app:dynamicOvalBackground="@{rc.color}" />
 
     </FrameLayout>
 </layout>

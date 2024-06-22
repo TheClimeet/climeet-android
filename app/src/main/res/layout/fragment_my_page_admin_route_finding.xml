@@ -140,6 +140,7 @@
                         app:layout_constraintBottom_toBottomOf="@+id/tv_add_level"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0"
                         app:list="@{vm.uiState.levelList}"
                         tools:itemCount="3"
                         tools:listitem="@layout/item_route_finding_level" />

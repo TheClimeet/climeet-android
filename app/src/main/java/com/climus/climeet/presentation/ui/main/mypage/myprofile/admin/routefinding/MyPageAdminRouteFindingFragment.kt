@@ -60,12 +60,12 @@ class MyPageAdminRouteFindingFragment :
     }
 
     private fun initStateObserve() {
-        repeatOnStarted {
-            // app:list 해줬는데 왜 submitList 한건지?
+//        repeatOnStarted {
+//             app:list 해줬는데 왜 submitList 한건지?
 //            viewModel.uiState.collect { state ->
 //                lvAdapter.submitList(state.levelList)
 //            }
-        }
+//        }
         repeatOnStarted {
             viewModel.selectedLevel.collect {
                 val isCompletable = !viewModel.isColorAlreadySelected()

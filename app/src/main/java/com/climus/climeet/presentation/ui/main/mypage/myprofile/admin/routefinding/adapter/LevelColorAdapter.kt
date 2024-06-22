@@ -13,7 +13,7 @@ import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefindi
 
 class LevelColorAdapter(
     private val viewModel: MyPageAdminRouteFindingViewModel
-) : ListAdapter<UiLevelItem, LevelColorAdapter.ViewHolder>(DiffCallback()) {
+) : ListAdapter<RouteColor, LevelColorAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemRouteFindingLevelColorBinding.inflate(
@@ -28,35 +28,35 @@ class LevelColorAdapter(
         holder.bind(getItem(position))
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<UiLevelItem>() {
-        override fun areItemsTheSame(oldItem: UiLevelItem, newItem: UiLevelItem): Boolean =
-            oldItem.colorName == newItem.colorName
+    class DiffCallback : DiffUtil.ItemCallback<RouteColor>() {
+        override fun areItemsTheSame(oldItem: RouteColor, newItem: RouteColor): Boolean =
+            oldItem.name == newItem.name
 
-        override fun areContentsTheSame(oldItem: UiLevelItem, newItem: UiLevelItem): Boolean =
+        override fun areContentsTheSame(oldItem: RouteColor, newItem: RouteColor): Boolean =
             oldItem == newItem
     }
 
     inner class ViewHolder(private val binding: ItemRouteFindingLevelColorBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(routeColor: UiLevelItem) {
+        fun bind(routeColor: RouteColor) {
             binding.rc = routeColor
             binding.executePendingBindings()
             updateSelection(routeColor)
 
             itemView.setOnClickListener {
-                viewModel.selectColor(RouteColor(routeColor.colorName, routeColor.colorHex))
+                viewModel.selectColor(routeColor)
                 notifyDataSetChanged()
             }
         }
 
-        private fun updateSelection(routeColor: UiLevelItem) {
-            if(routeColor.colorName == viewModel.selectedLevel.value.colorName) {
+        private fun updateSelection(routeColor: RouteColor) {
+            if(routeColor.name == viewModel.selectedLevel.value.colorName) {
                 binding.circleOutside.visibility = View.VISIBLE
             } else {
                 binding.circleOutside.visibility = View.GONE
             }
 
-            if(routeColor.colorName == "컴피") {
+            if(routeColor.name == "컴피") {
                 binding.tvColorName.text = "C"
             } else {
                 binding.tvColorName.text = ""
