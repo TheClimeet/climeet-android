@@ -63,6 +63,10 @@ class GymProfileRouteViewModel @Inject constructor(
     private val _event = MutableSharedFlow<GymProfileRouteEvent>()
     val event: SharedFlow<GymProfileRouteEvent> = _event.asSharedFlow()
 
+    private val _isDataLoaded = MutableStateFlow(false)
+    val isDataLoaded: StateFlow<Boolean> = _isDataLoaded.asStateFlow()
+
+
     private var sectorNameList = listOf<SectorNameUiData>()
     private var gymLevelList = listOf<GymLevelUiData>()
 
@@ -140,11 +144,14 @@ class GymProfileRouteViewModel @Inject constructor(
                             }
                         }
 
+                        _isDataLoaded.value = true
+
                         setFloorInfo(1)
                     }
 
                     is BaseState.Error -> {
                         _event.emit(GymProfileRouteEvent.ShowToastMessage(it.msg))
+                        _isDataLoaded.value = false
                     }
                 }
             }
