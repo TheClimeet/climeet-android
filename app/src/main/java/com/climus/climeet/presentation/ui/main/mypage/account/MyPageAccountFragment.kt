@@ -20,6 +20,7 @@ import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroActivity
 import com.climus.climeet.service.TimerService
 import com.climus.climeet.presentation.ui.intro.IntroViewModel
+import com.climus.climeet.presentation.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -88,7 +89,7 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
     }
 
     private fun setUpInitialSetting() {
-        isManger = viewModel.checkUserType()
+        isManger = viewModel.checkUserMode()
 
         if(isManger) {
             binding.icVerified.visibility = View.VISIBLE
@@ -97,7 +98,13 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
         } else {
             binding.icVerified.visibility = View.GONE
             binding.mypageWhoami.text="클라이머로 만났어요"
-            binding.btnCompleteLogin.text="카카오 로그인 연동 완료"
+
+            val loginType = viewModel.checkLoginType()
+            if (loginType == Constants.KAKAO) {
+                binding.btnCompleteLogin.text="카카오 로그인 연동 완료"
+            } else {
+                binding.btnCompleteLogin.text="네이버 로그인 연동 완료"
+            }
         }
     }
 
@@ -122,8 +129,10 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
                 .clear()
                 .apply()
 
+            viewModel.deleteLoginType()
+
             // 스톱워치 서비스 중단 후 로그아웃
-            var intent = Intent(context, TimerService::class.java)
+            val intent = Intent(context, TimerService::class.java)
             if (TimerService.serviceRunning.value != null) {
                 context?.stopService(intent)
             }
