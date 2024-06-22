@@ -22,6 +22,7 @@ class MyPageAdminRouteFindingFragment :
     private val dateViewModel: SelectDateBottomSheetViewModel by viewModels()
     private val viewModel: MyPageAdminRouteFindingViewModel by activityViewModels()
     private lateinit var lvAdapter: RouteFindingLevelAdapter
+    private lateinit var adapter: LevelColorAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,12 +61,6 @@ class MyPageAdminRouteFindingFragment :
     }
 
     private fun initStateObserve() {
-//        repeatOnStarted {
-//             app:list 해줬는데 왜 submitList 한건지?
-//            viewModel.uiState.collect { state ->
-//                lvAdapter.submitList(state.levelList)
-//            }
-//        }
         repeatOnStarted {
             viewModel.selectedLevel.collect {
                 val isCompletable = !viewModel.isColorAlreadySelected()
@@ -76,18 +71,14 @@ class MyPageAdminRouteFindingFragment :
                     binding.tvExplain.text = ""
                     binding.tvExplain.setTextColor(resources.getColor(R.color.cm_main))
                 }
-                if (it.colorName == "-") {
-                    val adapter = LevelColorAdapter(viewModel)
-//                    adapter.submitList(viewModel.colorList)
-                    binding.rvLevelColor.adapter = adapter
-                }
+                adapter.notifyDataSetChanged()
             }
         }
     }
 
     private fun setRV() {
-//        val adapter = LevelColorAdapter(viewModel)
-//        binding.rvLevelColor.adapter = adapter
+        adapter = LevelColorAdapter(viewModel)
+        binding.rvLevelColor.adapter = adapter
 
         lvAdapter = RouteFindingLevelAdapter(viewModel)
         binding.rvRouteFindingLevel.adapter = lvAdapter
