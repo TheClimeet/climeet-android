@@ -68,10 +68,21 @@ class MyPageAdminRouteFindingFragment :
                     binding.tvExplain.text = "${viewModel.selectedLevel.value.colorName} 레벨은 이미 등록되어 있어요"
                     binding.tvExplain.setTextColor(resources.getColor(R.color.cm_red))
                 } else {
-                    binding.tvExplain.text = ""
                     binding.tvExplain.setTextColor(resources.getColor(R.color.cm_main))
+                    if (it.climeetLevel == "C" && it.colorName == "컴피") {
+                        binding.layoutSetLevel.isClickable = false
+                        binding.tvExplain.text = "컴피티션 레벨은 C에 고정되어 있어요"
+                    } else {
+                        binding.layoutSetLevel.isClickable = true
+                        binding.tvExplain.text = ""
+                    }
+                    if(it.colorName == "-") {
+                        binding.tvExplain.text = "컴피티션 레벨은 C에 고정되어 있어요"
+                    }
                 }
-                adapter.notifyDataSetChanged()
+                binding.rvLevelColor.post {
+                    adapter.notifyDataSetChanged()
+                }
             }
         }
     }
