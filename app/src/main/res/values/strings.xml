@@ -47,5 +47,6 @@
     <string name="route_finding_add_level">"레벨 추가"</string>
     <string name="route_finding_set_level">"레벨 설정"</string>
     <string name="route_finding_add_level_complete">"확인"</string>
+    <string name="route_finding_add_level_cancel">"취소"</string>
 
 </resources>
