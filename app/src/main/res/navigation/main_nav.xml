@@ -268,7 +268,11 @@
     <fragment
         android:id="@+id/myPageFollowFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.follow.MyPageFollowFragment"
-        android:label="MyPageFollowFragment" />
+        android:label="MyPageFollowFragment" >
+        <argument
+            app:argType="long"
+            android:name="userId"/>
+    </fragment>
     <fragment
         android:id="@+id/myPageAdminMyProfileFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.MyPageAdminMyProfileFragment"

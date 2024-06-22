@@ -18,14 +18,15 @@ import com.climus.climeet.data.model.response.UserProfileInfoResponse
 import com.climus.climeet.databinding.FragmentMypageAccountBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.IntroActivity
-import com.climus.climeet.service.TimerService
 import com.climus.climeet.presentation.ui.intro.IntroViewModel
 import com.climus.climeet.presentation.util.Constants
+import com.climus.climeet.service.TimerService
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout.fragment_mypage_account) {
+class MyPageAccountFragment :
+    BaseFragment<FragmentMypageAccountBinding>(R.layout.fragment_mypage_account) {
 
     private val viewModel: MyPageAccountViewModel by viewModels()
     private val parentViewModel: IntroViewModel by activityViewModels()
@@ -50,7 +51,7 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
             viewModel.let { vm ->
                 vm.uiState.collect { uiState ->
                     userProfile = uiState.myProfile
-                    if(userProfile != null) {
+                    if (userProfile != null) {
                         binding.tvMypageNickname.text = userProfile!!.userName
                         Glide.with(binding.root.context)
                             .load(userProfile!!.profileImgUrl)
@@ -91,19 +92,19 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
     private fun setUpInitialSetting() {
         isManger = viewModel.checkUserMode()
 
-        if(isManger) {
+        if (isManger) {
             binding.icVerified.visibility = View.VISIBLE
-            binding.mypageWhoami.text="암장 관리자로 만났어요"
-            binding.btnCompleteLogin.text="로그인 연동 완료"
+            binding.mypageWhoami.text = "암장 관리자로 만났어요"
+            binding.btnCompleteLogin.text = "로그인 연동 완료"
         } else {
             binding.icVerified.visibility = View.GONE
-            binding.mypageWhoami.text="클라이머로 만났어요"
+            binding.mypageWhoami.text = "클라이머로 만났어요"
 
             val loginType = viewModel.checkLoginType()
             if (loginType == Constants.KAKAO) {
-                binding.btnCompleteLogin.text="카카오 로그인 연동 완료"
+                binding.btnCompleteLogin.text = "카카오 로그인 연동 완료"
             } else {
-                binding.btnCompleteLogin.text="네이버 로그인 연동 완료"
+                binding.btnCompleteLogin.text = "네이버 로그인 연동 완료"
             }
         }
     }
@@ -154,13 +155,14 @@ class MyPageAccountFragment: BaseFragment<FragmentMypageAccountBinding>(R.layout
         alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val cancelBtn = alertDialog.findViewById<AppCompatButton>(R.id.btn_dialog_withdraw_cancel)
-        val logoutBtn = alertDialog.findViewById<AppCompatButton>(R.id.btn_dialog_withdraw)
+        val withdrawBtn = alertDialog.findViewById<AppCompatButton>(R.id.btn_dialog_withdraw)
 
         cancelBtn!!.setOnClickListener {
             alertDialog.dismiss()
         }
 
-        logoutBtn!!.setOnClickListener {
+        withdrawBtn!!.setOnClickListener {
+            // todo : 관리자, 유저(카카오, 네이버) 탈퇴 구현
             alertDialog.dismiss()
         }
     }

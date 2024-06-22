@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.main.mypage.follow
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMypageFollowBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -12,15 +13,18 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MyPageFollowFragment: BaseFragment<FragmentMypageFollowBinding>(R.layout.fragment_mypage_follow) {
 
+
+    private val args :MyPageFollowFragmentArgs by navArgs()
+    private val userId by lazy { args.userId }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupTabLayout()
-
     }
 
     private fun setupTabLayout() {
-        val followAdapter = FollowVPAdapter(this)
+        val followAdapter = FollowVPAdapter(this, userId)
         binding.vpFollowFollower.adapter = followAdapter
 
         val tabMenu = arrayListOf(" 팔로워 ", " 팔로잉 ")

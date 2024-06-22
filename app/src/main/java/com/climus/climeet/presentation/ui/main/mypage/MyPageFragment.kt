@@ -90,7 +90,7 @@ class MyPageFragment: BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypa
     }
 
     private fun NavController.toFollow(){
-        val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageFollowFragment()
+        val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageFollowFragment(viewModel.uiState.value.userId)
         navigate(action)
     }
 
