@@ -88,6 +88,16 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:profileImgUrl="@{vm.profileImage}" />
 
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:visibility="@{vm.imageUploaded? View.GONE : View.VISIBLE}"
+                app:layout_constraintBottom_toBottomOf="@id/iv_profile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/iv_profile" />
+
             <EditText
                 android:id="@+id/et_nick"
                 style="@style/TextSmall"
