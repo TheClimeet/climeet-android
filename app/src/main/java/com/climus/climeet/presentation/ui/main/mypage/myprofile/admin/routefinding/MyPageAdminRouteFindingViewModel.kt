@@ -226,10 +226,14 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     }
 
     fun addLevelColor() {
-
         _uiState.update { state ->
+            val updatedList = state.levelList + selectedLevel.value
+            val sortedList = updatedList.filter { it.colorName != "컴피" }
+                .sortedBy { colorOrder.indexOf(it.colorName to it.colorHex) } +
+                    updatedList.filter { it.colorName == "컴피" }
+
             state.copy(
-                levelList = uiState.value.levelList + selectedLevel.value
+                levelList = sortedList
             )
         }
 
@@ -275,6 +279,22 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
             DayOfWeek.FRIDAY to "금",
             DayOfWeek.SATURDAY to "토",
             DayOfWeek.SUNDAY to "일"
+        )
+        private val colorOrder = listOf(
+            "검정" to "#000000",
+            "회색" to "#8B8B8B",
+            "갈색" to "#6E4C41",
+            "핑크" to "#FF74E9",
+            "보라" to "#A259FF",
+            "남색" to "#393FD6",
+            "파랑" to "#0094FF",
+            "하늘" to "#74D5FF",
+            "초록" to "#63B75D",
+            "노랑" to "#FDDA16",
+            "주황" to "#FF9000",
+            "빨강" to "#F34040",
+            "하양" to "#FFFFFF",
+            "컴피" to "#BEDF22"
         )
     }
 
