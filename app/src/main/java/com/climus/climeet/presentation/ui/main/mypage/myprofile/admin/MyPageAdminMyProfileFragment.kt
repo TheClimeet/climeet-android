@@ -28,7 +28,6 @@ class MyPageAdminMyProfileFragment :
     BaseFragment<FragmentMypageAdminMyprofileBinding>(R.layout.fragment_mypage_admin_myprofile) {
 
     private val sharedViewModel: GymProfileViewModel by activityViewModels()
-    private val infoViewModel: GymProfileInfoViewModel by activityViewModels()
     private val viewModel: MyPageAdminMyProfileViewModel by activityViewModels()
     private var adapter: MyPageAdminProfileVPAdapter? = null
 
@@ -42,7 +41,6 @@ class MyPageAdminMyProfileFragment :
         binding.vm = viewModel
 
         initEventObserve()
-        initInfoEventObserve()
         initStateObserve()
         initCragInfo()
         initViewPager()
@@ -58,19 +56,8 @@ class MyPageAdminMyProfileFragment :
                 when (it) {
                     MyPageAdminProfileEvent.NavigateToEditAdminProfile -> findNavController().toEditPage()
                     MyPageAdminProfileEvent.NavigateToRouteFinding -> findNavController().toGymRouteFinding()
-                }
-            }
-        }
-    }
-
-    // 정보탭
-    private fun initInfoEventObserve() {
-        repeatOnStarted {
-            infoViewModel.event.collect {
-                when (it) {
-                    GymProfileInfoEvent.NavigateToEditService -> findNavController().toEditServiceFragment()
-                    GymProfileInfoEvent.NavigateToGymReviewFromMyPage -> findNavController().toGymReviewBottomSheet()
-                    else -> {}
+                    MyPageAdminProfileEvent.NavigateToEditService -> findNavController().toEditServiceFragment()
+                    MyPageAdminProfileEvent.NavigateToGymReviewFromMyPage -> findNavController().toGymReviewBottomSheet()
                 }
             }
         }

@@ -13,12 +13,13 @@ import com.climus.climeet.presentation.ui.main.global.gymprofile.adapter.GymServ
 import com.climus.climeet.presentation.ui.main.global.gymprofile.adapter.GymTimeAdapter
 import com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymProfileInfoViewModel
 import com.climus.climeet.presentation.ui.main.global.gymprofile.model.GymReview
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.MyPageAdminMyProfileViewModel
 
 class MyPageAdminProfileInfoFragment(val gymId: Long) :
     BaseFragment<FragmentMypageAdminProfileInfoBinding>(R.layout.fragment_mypage_admin_profile_info) {
 
     val sharedViewModel: GymProfileInfoViewModel by activityViewModels()
-    val viewModel: MyPageAdminProfileInfoViewModel by viewModels()
+    val viewModel: MyPageAdminMyProfileViewModel by activityViewModels()
 
     private var timeAdapter: GymTimeAdapter? = null
     private var serviceAdapter: GymServiceAdapter? = null
@@ -29,6 +30,7 @@ class MyPageAdminProfileInfoFragment(val gymId: Long) :
         super.onViewCreated(view, savedInstanceState)
 
         binding.svm = sharedViewModel
+        binding.vm = viewModel
 
         initStateObserve()
         setAdapters()

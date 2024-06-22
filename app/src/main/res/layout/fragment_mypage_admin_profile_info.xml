@@ -13,7 +13,7 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.info.MyPageAdminProfileInfoViewModel" />
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.MyPageAdminMyProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="15dp"
                         android:background="@drawable/ic_edit"
-                        android:onClick="@{() -> svm.navigateToEditService()}"
+                        android:onClick="@{() -> vm.navigateToEditService()}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/tv_service"
                         app:layout_constraintBottom_toBottomOf="@id/tv_service"/>
@@ -562,7 +562,7 @@
                             android:background="@drawable/rect_nofill_mainstroke_8radius"
                             android:drawableStart="@drawable/ic_plus_mainfill"
                             android:drawablePadding="5dp"
-                            android:onClick="@{() -> svm.navigateToReviewFromMyPage()}"
+                            android:onClick="@{() -> vm.navigateToReviewFromMyPage()}"
                             android:paddingStart="15dp"
                             android:paddingEnd="10dp"
                             android:text="리뷰 남기기"
