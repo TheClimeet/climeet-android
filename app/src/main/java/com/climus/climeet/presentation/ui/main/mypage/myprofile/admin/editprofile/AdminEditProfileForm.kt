@@ -10,6 +10,8 @@ object AdminEditProfileForm {
     private lateinit var backgroundImg: MultipartBody.Part
     private lateinit var profileImg: MultipartBody.Part
 
+    private var nameUpdated = false
+
     private val _profileUriState = MutableStateFlow("")
     val profileUriState: StateFlow<String> = _profileUriState
 
@@ -32,6 +34,10 @@ object AdminEditProfileForm {
                 "타입=${image.body.contentType()}, 크기=${image.body.contentLength()}")
     }
 
+    fun setNameUpdatedState(state: Boolean) {
+        nameUpdated = state
+    }
+
     fun getProfileImagePath(): MultipartBody.Part {
         return profileImg
     }
@@ -40,8 +46,13 @@ object AdminEditProfileForm {
         return backgroundImg
     }
 
+    fun getNameUpdatedState(): Boolean {
+        return nameUpdated
+    }
+
     fun resetState() {
         _profileUriState.value = ""
         _backgroundUriState.value = ""
+        nameUpdated = false
     }
 }

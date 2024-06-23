@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -42,6 +43,7 @@ class MyPageAdminProfileEditViewModel @Inject constructor(
     val event: SharedFlow<AdminProfileEditEvent> = _event.asSharedFlow()
 
     val loading = MutableStateFlow(false)
+    val nextAvailable = MutableStateFlow(false)
 
     val newName = MutableStateFlow("")
     private val backgroundUpdated = MutableStateFlow(false)
@@ -53,10 +55,12 @@ class MyPageAdminProfileEditViewModel @Inject constructor(
 
     init {
         imageObserve()
+        nameObserve()
     }
 
     fun initState(state: Boolean, name: String, profile: String) {
         backgroundUpdated.value = state
+        nextAvailable.value = state
         profileImage = profile
         gymName = name
     }
@@ -65,7 +69,18 @@ class MyPageAdminProfileEditViewModel @Inject constructor(
         AdminEditProfileForm.profileUriState.onEach { uri ->
             if (uri.isNotBlank()) {
                 profileUpdated.value = true
+                nextAvailable.value = true
                 profileImageToChange = AdminEditProfileForm.getProfileImagePath()
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun nameObserve() {
+        newName.onEach {
+            if (it.isNotBlank()) {
+                nextAvailable.value = true
+            } else {
+                nextAvailable.value = backgroundUpdated.value || profileUpdated.value
             }
         }.launchIn(viewModelScope)
     }
@@ -103,7 +118,8 @@ class MyPageAdminProfileEditViewModel @Inject constructor(
 
             // todo : 암장 이름
             if(newName.value != gymName && newName.value.isNotEmpty()){
-                Log.d("admin", "수정된 암장 이름 : $newName")
+                Log.d("mypage_admin", "수정된 암장 이름 : $newName")
+                AdminEditProfileForm.setNameUpdatedState(true)
             }
 
             AdminEditProfileForm.resetState()

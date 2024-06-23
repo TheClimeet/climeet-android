@@ -127,6 +127,17 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <ImageButton
+                android:id="@+id/btn_next_unselect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_next_off"
+                android:visibility="@{vm.nextAvailable ? View.INVISIBLE : View.VISIBLE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ImageButton
                 android:id="@+id/btn_next_select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -134,6 +145,7 @@
                 android:onClick="@{() -> vm.navigateToProfile()}"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_next_on"
+                android:visibility="@{vm.nextAvailable ? View.VISIBLE : View.INVISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

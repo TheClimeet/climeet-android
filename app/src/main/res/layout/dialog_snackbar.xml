@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/rect_whitefill_nostroke_12radius"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="16dp">
+        android:paddingVertical="12dp">
 
         <ImageView
             android:id="@+id/iv_check"

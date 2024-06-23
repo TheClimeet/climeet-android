@@ -17,6 +17,7 @@ import com.climus.climeet.databinding.FragmentMypageAdminMyprofileBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileViewModel
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.adapter.MyPageAdminProfileVPAdapter
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.editprofile.AdminEditProfileForm
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -63,10 +64,14 @@ class MyPageAdminMyProfileFragment :
         repeatOnStarted {
             viewModel.showSnackbar.collect { state ->
                 if (state) {
-                    showCustomSnackBar(
-                        binding.snackGuide,
-                        "클라이밍 암장 이름 변경이 요청되었어요.\n이름이 변경되면 알려드릴게요!"
-                    )
+                    if(AdminEditProfileForm.getNameUpdatedState()){
+                        showCustomSnackBar(
+                            binding.snackGuide,
+                            "클라이밍 암장 이름 변경이 요청되었어요.\n이름이 변경되면 알려드릴게요!"
+                        )
+                    } else {
+                        showCustomSnackBar(binding.snackGuide, "프로필 수정이 완료되었어요!")
+                    }
                     viewModel.setSnackBarState(false)
                 }
             }
