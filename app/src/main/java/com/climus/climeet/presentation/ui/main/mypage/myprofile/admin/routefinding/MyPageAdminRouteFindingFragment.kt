@@ -62,6 +62,15 @@ class MyPageAdminRouteFindingFragment :
 
     private fun initStateObserve() {
         repeatOnStarted {
+            viewModel.uiState.collect { state ->
+                val isCompletable = !viewModel.isColorAlreadySelected()
+                if (isCompletable) {
+                    binding.tvExplain.text = "${viewModel.selectedLevel.value.colorName} 레벨은 이미 등록되어 있어요"
+                    binding.tvExplain.setTextColor(resources.getColor(R.color.cm_red))
+                }
+            }
+        }
+        repeatOnStarted {
             viewModel.selectedLevel.collect {
                 val isCompletable = !viewModel.isColorAlreadySelected()
                 if (isCompletable) {
@@ -83,6 +92,11 @@ class MyPageAdminRouteFindingFragment :
                 binding.rvLevelColor.post {
                     adapter.notifyDataSetChanged()
                 }
+            }
+        }
+        repeatOnStarted {
+            viewModel.modifingLevel.collect {
+
             }
         }
     }

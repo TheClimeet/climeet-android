@@ -47,8 +47,6 @@ class LevelColorAdapter(
                 viewModel.selectColor(routeColor)
                 if (routeColor.name == "컴피") {
                     viewModel.selectLevel("C")
-                } else {
-                    viewModel.selectLevel("레벨 설정")
                 }
                 notifyDataSetChanged()
             }

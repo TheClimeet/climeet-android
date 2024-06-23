@@ -41,8 +41,10 @@ class RouteFindingLevelAdapter(
         fun bind(item: UiLevelItem) {
             binding.item = item
             binding.root.setOnClickListener {
+                viewModel.updateModifingLevel(item)
                 viewModel.selectLevel(item.climeetLevel)
                 viewModel.selectColor(RouteColor(item.colorName, item.colorHex))
+                viewModel.updateIsLevelAdd(false)
             }
         }
 

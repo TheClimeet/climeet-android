@@ -188,18 +188,19 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     val selectedDateText =
         MutableStateFlow("${initDate.year}년 ${initDate.monthValue}월 ${initDate.dayOfMonth}일 (${dayOfWeekMap[initDate.dayOfWeek]})")
     val selectedDate = MutableStateFlow(initDate)
-
-    val selectedLevel = MutableStateFlow(
-        UiLevelItem(
-            climeetLevel = "레벨 설정",
-            colorHex = "#FFFFFF",
-            colorName = "-",
-            setLevelListener = ::empty
-        )
+    val defaultItem = UiLevelItem(
+        climeetLevel = "레벨 설정",
+        colorHex = "#FFFFFF",
+        colorName = "-",
+        setLevelListener = ::empty
     )
+
+    val selectedLevel = MutableStateFlow(defaultItem)
+    val modifingLevel = MutableStateFlow(defaultItem)
 
     val colorList = LevelColorData.COLORS
     val isCompletable = MutableLiveData(true)
+    val isLevelAdd = MutableLiveData(true)
 
     fun setSelectedDate(updateDate: LocalDate) {
         selectedDate.update { updateDate }
@@ -225,7 +226,14 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         }
     }
 
+    fun updateIsLevelAdd(isAdd: Boolean) {
+        isLevelAdd.postValue(isAdd)
+    }
+
     fun addLevelColor() {
+        modifingLevel.update {
+            selectedLevel.value
+        }
         _uiState.update { state ->
             val updatedList = state.levelList + selectedLevel.value
             val sortedList = updatedList.filter { it.colorName != "컴피" }
@@ -236,22 +244,33 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
                 levelList = sortedList
             )
         }
+        updateIsLevelAdd(false)
+    }
 
+    fun modifyLevel() {
+        updateIsLevelAdd(true)
+    }
+
+    fun deleteLevel() {
+
+        resetSelectedColorAndLevel()
+    }
+
+    fun updateModifingLevel(item: UiLevelItem) {
+        modifingLevel.update { item }
     }
 
     fun resetSelectedColorAndLevel() {
-        selectedLevel.update {
-            it.copy(
-                climeetLevel = "레벨 설정",
-                colorHex = "#FFFFFF",
-                colorName = "-",
-                setLevelListener = ::empty
-            )
-        }
+        selectedLevel.update { defaultItem }
+        updateModifingLevel(defaultItem)
+        updateIsLevelAdd(true)
     }
 
     fun isColorAlreadySelected(): Boolean {
-        val isComplete = !_uiState.value.levelList.any { it.colorName == selectedLevel.value.colorName }
+        val isComplete =
+            !_uiState.value.levelList.any {
+                it.colorName == selectedLevel.value.colorName
+            } || modifingLevel.value.colorName == selectedLevel.value.colorName
         isCompletable.value = isComplete
         return isComplete
     }

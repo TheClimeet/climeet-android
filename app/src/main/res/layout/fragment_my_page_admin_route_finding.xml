@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.MyPageAdminRouteFindingViewModel" />
@@ -253,13 +255,14 @@
                             android:layout_height="30dp"
                             android:layout_marginTop="30dp"
                             android:background="@{vm.isCompletable() ? @drawable/rect_mainfill_nostroke_8radius : @drawable/rect_silver2fill_nostroke_8radius}"
+                            android:enabled="@{vm.isCompletable()}"
                             android:onClick="@{()->vm.addLevelColor()}"
                             android:paddingHorizontal="16dp"
                             android:paddingTop="5.5dp"
                             android:paddingBottom="6.5dp"
                             android:text="@string/route_finding_add_level_complete"
                             android:textColor="@{vm.isCompletable() ? @color/black : @color/cm_grey5}"
-                            android:enabled="@{vm.isCompletable()}"
+                            android:visibility="@{vm.isLevelAdd() ? View.VISIBLE : View.GONE}"
                             app:layout_constraintEnd_toEndOf="@id/layout_set_level"
                             app:layout_constraintTop_toBottomOf="@id/layout_set_level" />
 
@@ -276,8 +279,44 @@
                             android:paddingBottom="6.5dp"
                             android:text="@string/route_finding_add_level_cancel"
                             android:textColor="@color/black"
+                            android:visibility="@{vm.isLevelAdd() ? View.VISIBLE : View.GONE}"
                             app:layout_constraintEnd_toStartOf="@id/btn_add_level_complete"
                             app:layout_constraintTop_toTopOf="@id/btn_add_level_complete" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_add_level_modify"
+                            style="@style/TextSmall"
+                            android:layout_width="65dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="30dp"
+                            android:background="@{vm.isCompletable() ? @drawable/rect_mainfill_nostroke_8radius : @drawable/rect_silver2fill_nostroke_8radius}"
+                            android:enabled="@{vm.isCompletable()}"
+                            android:onClick="@{()->vm.modifyLevel()}"
+                            android:paddingHorizontal="16dp"
+                            android:paddingTop="5.5dp"
+                            android:paddingBottom="6.5dp"
+                            android:text="@string/route_finding_add_level_modify"
+                            android:textColor="@{vm.isCompletable() ? @color/black : @color/cm_grey5}"
+                            android:visibility="@{vm.isLevelAdd() ? View.GONE : View.VISIBLE}"
+                            app:layout_constraintEnd_toEndOf="@id/layout_set_level"
+                            app:layout_constraintTop_toBottomOf="@id/layout_set_level" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_add_level_delete"
+                            style="@style/TextSmall"
+                            android:layout_width="65dp"
+                            android:layout_height="30dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@drawable/rect_silver2fill_nostroke_8radius"
+                            android:onClick="@{()->vm.deleteLevel()}"
+                            android:paddingHorizontal="16dp"
+                            android:paddingTop="5.5dp"
+                            android:paddingBottom="6.5dp"
+                            android:text="@string/route_finding_add_level_delete"
+                            android:textColor="@color/black"
+                            android:visibility="@{vm.isLevelAdd() ? View.GONE : View.VISIBLE}"
+                            app:layout_constraintEnd_toStartOf="@id/btn_add_level_modify"
+                            app:layout_constraintTop_toTopOf="@id/btn_add_level_modify" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
