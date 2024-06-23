@@ -17,7 +17,7 @@
 
         <variable
             name="vm"
-            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.MyPageAdminMyProfileViewModel" />
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.MyPageAdminMyProfileViewModel"/>
 
     </data>
 
@@ -64,7 +64,6 @@
                         android:layout_marginStart="10dp"
                         android:background="@drawable/ic_edit"
                         android:onClick="@{()->vm.navigateToRouteFinding()}"
-                        android:visibility="@{rvm.isDataLoaded ? View.VISIBLE : View.GONE}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tv_title"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -137,48 +136,15 @@
                             app:layout_constraintTop_toTopOf="@+id/view_background" />
 
                         <TextView
-                            android:id="@+id/tv_1"
                             style="@style/TextTiny"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
-                            android:text="암장 설정이 아직 완료되지 않았어요"
+                            android:text="암장 설정이 아직 완료되지 않았어요\n 암장 설정을 완료해주세요"
                             android:textColor="@color/cm_textgrey"
                             app:layout_constraintEnd_toEndOf="@+id/view_background"
                             app:layout_constraintStart_toStartOf="@+id/view_background"
                             app:layout_constraintTop_toBottomOf="@+id/appCompatImageView" />
-
-                        <TextView
-                            android:id="@+id/tv_2"
-                            style="@style/TextTinyBold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="@{()->vm.navigateToRouteFinding()}"
-                            android:text="여기"
-                            android:textColor="@color/cm_textgrey"
-                            app:layout_constraintEnd_toStartOf="@+id/tv_3"
-                            app:layout_constraintHorizontal_chainStyle="packed"
-                            app:layout_constraintStart_toStartOf="@+id/view_background"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_1" />
-
-                        <TextView
-                            android:id="@+id/tv_3"
-                            style="@style/TextTiny"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="를 눌러 암장 설정을 완료해주세요"
-                            android:textColor="@color/cm_textgrey"
-                            app:layout_constraintEnd_toEndOf="@+id/view_background"
-                            app:layout_constraintStart_toEndOf="@+id/tv_2"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_1" />
-
-                        <View
-                            android:layout_width="21dp"
-                            android:layout_height="0.5dp"
-                            android:layout_marginTop="-2dp"
-                            android:background="@color/cm_textgrey"
-                            app:layout_constraintStart_toStartOf="@+id/tv_2"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_2" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
