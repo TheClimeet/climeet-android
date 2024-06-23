@@ -248,11 +248,26 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     }
 
     fun modifyLevel() {
-        updateIsLevelAdd(true)
+        _uiState.update { state ->
+            val updatedList = state.levelList.map { level ->
+                if (level.colorHex == modifingLevel.value.colorHex) {
+                    selectedLevel.value
+                } else {
+                    level
+                }
+            }
+            updateModifingLevel(selectedLevel.value)
+            state.copy(levelList = updatedList)
+        }
     }
 
     fun deleteLevel() {
-
+        _uiState.update { state ->
+            val updatedList = state.levelList.filterNot { level ->
+                level.colorHex == modifingLevel.value.colorHex
+            }
+            state.copy(levelList = updatedList)
+        }
         resetSelectedColorAndLevel()
     }
 
