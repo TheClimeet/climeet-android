@@ -9,6 +9,7 @@ import com.climus.climeet.data.model.request.AddShortsCommentRequest
 import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
+import com.climus.climeet.data.model.request.GymServiceUpdateRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
@@ -479,5 +480,8 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun updateAdminBackgroundImage(image: MultipartBody.Part): BaseState<ResponseBody> =
         runRemote { api.updateAdminBackgroundImage(image) }
+
+    override suspend fun updateGymService(body: GymServiceUpdateRequest): BaseState<ResponseBody> =
+        runRemote { api.updateGymService(body) }
 
 }

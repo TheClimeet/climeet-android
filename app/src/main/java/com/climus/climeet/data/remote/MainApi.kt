@@ -4,6 +4,7 @@ import com.climus.climeet.data.model.request.AddShortsCommentRequest
 import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
+import com.climus.climeet.data.model.request.GymServiceUpdateRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
@@ -435,4 +436,9 @@ interface MainApi {
     suspend fun updateUserName(
         @Query("name") name: String
     ): Response<ResponseBody>
+
+    @PATCH("/api/gyms/service")
+    suspend fun updateGymService(
+        @Body params: GymServiceUpdateRequest
+    ) : Response<ResponseBody>
 }

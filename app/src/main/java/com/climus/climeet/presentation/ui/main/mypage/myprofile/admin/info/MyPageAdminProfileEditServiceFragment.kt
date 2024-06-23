@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.info
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.ServiceUiData
 import com.climus.climeet.presentation.ui.intro.signup.admin.service.OnServiceClickListener
 import com.climus.climeet.presentation.ui.intro.signup.admin.service.ServiceRVAdapter
+import com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymProfileInfoViewModel
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.MyPageAdminMyProfileFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,6 +24,7 @@ class MyPageAdminProfileEditServiceFragment :
     BaseFragment<FragmentMypageAdminProfileEditServiceBinding>(R.layout.fragment_mypage_admin_profile_edit_service),
     OnServiceClickListener {
 
+    val sharedViewModel: GymProfileInfoViewModel by activityViewModels()
     val viewModel: MyPageAdminProfileEditServiceViewModel by viewModels()
 
     private val args: MyPageAdminMyProfileFragmentArgs by navArgs()
@@ -45,7 +48,9 @@ class MyPageAdminProfileEditServiceFragment :
 
         binding.vm = viewModel
 
-        // 초기 데이터를 뷰 모델에 설정
+        // gymServiceList 가져와 serviceList 업데이트
+        updateServiceListSelectedState()
+
         viewModel.setInitialServices(serviceList)
 
         initRecyclerview()
@@ -57,12 +62,22 @@ class MyPageAdminProfileEditServiceFragment :
         serviceRVAdapter.notifyItemChanged(position)
     }
 
+    private fun updateServiceListSelectedState() {
+        val gymServiceList = sharedViewModel.uiState.value.gymServiceList ?: return
+        for (service in serviceList) {
+            if (gymServiceList.any { it.name.replace("_", " ") == service.title }) {
+                service.isSelected = true
+            }
+        }
+    }
+
     private fun initEventObserve() {
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
                     is EditAdminServiceEvent.NavigateToBack -> findNavController().navigateUp()
                     is EditAdminServiceEvent.NavigateToProfile -> findNavController().toMyPageAdminProfile()
+                    is EditAdminServiceEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }

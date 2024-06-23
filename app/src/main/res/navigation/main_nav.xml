@@ -314,7 +314,9 @@
             app:argType="long"/>
         <action
             android:id="@+id/action_myPageAdminProfileEditServiceFragment_to_myPageAdminMyProfileFragment"
-            app:destination="@id/myPageAdminMyProfileFragment" />
+            app:destination="@id/myPageAdminMyProfileFragment"
+            app:popUpTo="@id/myPageAdminMyProfileFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/myPageAdminProfileEditFragment"

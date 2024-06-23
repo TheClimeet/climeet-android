@@ -7,6 +7,7 @@ import com.climus.climeet.data.model.request.AddShortsCommentRequest
 import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
+import com.climus.climeet.data.model.request.GymServiceUpdateRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
@@ -290,6 +291,10 @@ interface MainRepository {
 
     suspend fun updateAdminBackgroundImage(
         image: MultipartBody.Part
+    ): BaseState<ResponseBody>
+
+    suspend fun updateGymService(
+        body: GymServiceUpdateRequest,
     ): BaseState<ResponseBody>
 
 
