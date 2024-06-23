@@ -29,6 +29,7 @@ import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
+import com.climus.climeet.data.model.response.GetMyShortsCommentsResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
@@ -288,6 +289,11 @@ interface MainRepository {
     suspend fun updateNotification(
         body: NotificationUpdateRequest
     ): BaseState<ResponseBody>
+
+    suspend fun getMyShortsComments(
+        page: Int,
+        size: Int
+    ): BaseState<GetMyShortsCommentsResponse>
 
     // -------- RoomDB ClimbingRecordDao 암장 정보 ----------
     fun insert(climbingRecordData: ClimbingRecordData)

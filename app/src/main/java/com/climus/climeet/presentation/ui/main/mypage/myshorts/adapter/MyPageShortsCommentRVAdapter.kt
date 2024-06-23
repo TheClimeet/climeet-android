@@ -53,18 +53,9 @@ class ShortsCommentViewHolder(
                 .into(binding.cvImage)
         }
 
-        binding.tvComment.text = item.contents
-        binding.tvDate.text = formatDate(item.createdAt)
+        binding.tvComment.text = item.content
+        binding.tvDate.text = item.createdAt
     }
-
-    private fun formatDate(isoDateString: String): String {
-        val isoFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-        val date = isoFormatter.parse(isoDateString)
-
-        val targetFormat = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault())
-        return targetFormat.format(date)
-    }
-
 }
 
 

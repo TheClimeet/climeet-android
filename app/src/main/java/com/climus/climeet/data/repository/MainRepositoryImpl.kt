@@ -31,6 +31,7 @@ import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
+import com.climus.climeet.data.model.response.GetMyShortsCommentsResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
@@ -485,5 +486,10 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun updateNotification(body: NotificationUpdateRequest): BaseState<ResponseBody> =
         runRemote { api.updateNotification(body) }
+
+    override suspend fun getMyShortsComments(
+        page: Int,
+        size: Int,
+    ): BaseState<GetMyShortsCommentsResponse> = runRemote { api.getMyShortsComments(page, size) }
 
 }

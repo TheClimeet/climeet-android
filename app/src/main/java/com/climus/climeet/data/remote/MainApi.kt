@@ -26,6 +26,7 @@ import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
+import com.climus.climeet.data.model.response.GetMyShortsCommentsResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
@@ -441,4 +442,10 @@ interface MainApi {
     suspend fun updateNotification(
         @Body params: NotificationUpdateRequest
     ): Response<ResponseBody>
+
+    @GET("/api/shorts/user/comments")
+    suspend fun getMyShortsComments(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ):Response<GetMyShortsCommentsResponse>
 }
