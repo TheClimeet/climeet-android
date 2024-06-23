@@ -9,6 +9,7 @@ import com.climus.climeet.data.model.request.AddShortsCommentRequest
 import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
+import com.climus.climeet.data.model.request.NotificationUpdateRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
@@ -481,5 +482,8 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun updateUserName(name: String): BaseState<ResponseBody> =
         runRemote { api.updateUserName(name) }
+
+    override suspend fun updateNotification(body: NotificationUpdateRequest): BaseState<ResponseBody> =
+        runRemote { api.updateNotification(body) }
 
 }

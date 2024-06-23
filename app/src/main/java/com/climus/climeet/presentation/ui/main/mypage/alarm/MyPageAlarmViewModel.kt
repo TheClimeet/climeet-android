@@ -3,10 +3,15 @@ package com.climus.climeet.presentation.ui.main.mypage.alarm
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.request.NotificationUpdateRequest
 import com.climus.climeet.data.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -19,11 +24,19 @@ data class AlarmSettingSwitchState(
     val appPush: Boolean = false,
 )
 
+sealed class UpdateAlarmEvent {
+    data class ShowToastMessage(val msg: String) : UpdateAlarmEvent()
+}
+
 @HiltViewModel
-class MyPageAlarmViewModel @Inject constructor(repository: MainRepository) : ViewModel() {
+class MyPageAlarmViewModel @Inject constructor(val repository: MainRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AlarmSettingSwitchState())
     val uiState: StateFlow<AlarmSettingSwitchState> = _uiState.asStateFlow()
+
+    private val _event = MutableSharedFlow<UpdateAlarmEvent>()
+    val event: SharedFlow<UpdateAlarmEvent> = _event.asSharedFlow()
+
 
     init {
         fetchSwitchStatesFromServer()
@@ -51,7 +64,6 @@ class MyPageAlarmViewModel @Inject constructor(repository: MainRepository) : Vie
             )
         }
         Log.d("alarm", "팔로워 : ${uiState.value.follower}")
-        // todo : 수정 api 호출
     }
 
     fun setLikeSwitchState(isChecked: Boolean) {
@@ -61,7 +73,6 @@ class MyPageAlarmViewModel @Inject constructor(repository: MainRepository) : Vie
             )
         }
         Log.d("alarm", "좋아요 : ${uiState.value.like}")
-        // todo : 수정 api 호출
     }
 
     fun setCommentSwitchState(isChecked: Boolean) {
@@ -71,7 +82,6 @@ class MyPageAlarmViewModel @Inject constructor(repository: MainRepository) : Vie
             )
         }
         Log.d("alarm", "댓글 : ${uiState.value.comment}")
-        // todo : 수정 api 호출
     }
 
     fun setAppPushSwitchState(isChecked: Boolean) {
@@ -81,7 +91,28 @@ class MyPageAlarmViewModel @Inject constructor(repository: MainRepository) : Vie
             )
         }
         Log.d("alarm", "앱푸시 : ${uiState.value.appPush}")
-        // todo : 앱 푸시 알림은 어떻게 설정?
+    }
+
+    fun updateAlarmState() {
+        viewModelScope.launch {
+            val request = NotificationUpdateRequest(
+                isAllowFollowNotification = uiState.value.follower,
+                isAllowLikeNotification = uiState.value.like,
+                isAllowCommentNotification = uiState.value.comment,
+                isAllowAdNotification = uiState.value.appPush
+            )
+            repository.updateNotification(request).let {
+                when(it){
+                    is BaseState.Success -> {
+                        Log.d("mypage_alarm", "알림 설정 업데이트")
+                    }
+
+                    is BaseState.Error -> {
+                        _event.emit(UpdateAlarmEvent.ShowToastMessage(it.msg))
+                    }
+                }
+            }
+        }
     }
 
 }

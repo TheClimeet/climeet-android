@@ -4,6 +4,7 @@ import com.climus.climeet.data.model.request.AddShortsCommentRequest
 import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
+import com.climus.climeet.data.model.request.NotificationUpdateRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
@@ -434,5 +435,10 @@ interface MainApi {
     @PATCH("/api/profile-name")
     suspend fun updateUserName(
         @Query("name") name: String
+    ): Response<ResponseBody>
+
+    @PATCH("/api/users/notifications")
+    suspend fun updateNotification(
+        @Body params: NotificationUpdateRequest
     ): Response<ResponseBody>
 }
