@@ -3,6 +3,8 @@ package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.editprofi
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.InputState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -25,10 +27,13 @@ data class SetAdminNickUiState(
 sealed class AdminProfileEditEvent{
     data object NavigateToBack : AdminProfileEditEvent()
     data object NavigateToProfile : AdminProfileEditEvent()
+    data class ShowToastMessage(val msg: String) : AdminProfileEditEvent()
 }
 
 @HiltViewModel
-class MyPageAdminProfileEditViewModel @Inject constructor() : ViewModel() {
+class MyPageAdminProfileEditViewModel @Inject constructor(
+    private val repository: MainRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SetAdminNickUiState())
     val uiState: StateFlow<SetAdminNickUiState> = _uiState.asStateFlow()
@@ -61,7 +66,6 @@ class MyPageAdminProfileEditViewModel @Inject constructor() : ViewModel() {
             if (uri.isNotBlank()) {
                 profileUpdated.value = true
                 profileImageToChange = AdminEditProfileForm.getProfileImagePath()
-                Log.d("mypage", "배경 이미지 업데이트 : $profileImageToChange")
             }
         }.launchIn(viewModelScope)
     }
@@ -70,17 +74,36 @@ class MyPageAdminProfileEditViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch{
             // todo : 배경
             if (backgroundUpdated.value){
-
+                val image = AdminEditProfileForm.getBackgroundPath()
+                repository.updateAdminBackgroundImage(image).let {
+                    when (it) {
+                        is BaseState.Success -> {
+                            Log.d("mypage_admin", "배경 수정")
+                        }
+                        is BaseState.Error -> {
+                            _event.emit(AdminProfileEditEvent.ShowToastMessage(it.msg))
+                        }
+                    }
+                }
             }
 
             // todo : 프로필
             if (profileUpdated.value){
-
+                repository.updateAdminProfileImage(profileImageToChange).let {
+                    when (it) {
+                        is BaseState.Success -> {
+                            Log.d("mypage_admin", "프로필 이미지 수정")
+                        }
+                        is BaseState.Error -> {
+                            _event.emit(AdminProfileEditEvent.ShowToastMessage(it.msg))
+                        }
+                    }
+                }
             }
 
             // todo : 암장 이름
             if(newName.value != gymName && newName.value.isNotEmpty()){
-                Log.d("admin", "암장 이름 : $newName")
+                Log.d("admin", "수정된 암장 이름 : $newName")
             }
 
             AdminEditProfileForm.resetState()

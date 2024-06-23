@@ -284,6 +284,14 @@ interface MainRepository {
         name: String,
     ): BaseState<ResponseBody>
 
+    suspend fun updateAdminProfileImage(
+        image: MultipartBody.Part
+    ): BaseState<ResponseBody>
+
+    suspend fun updateAdminBackgroundImage(
+        image: MultipartBody.Part
+    ): BaseState<ResponseBody>
+
 
     // -------- RoomDB ClimbingRecordDao 암장 정보 ----------
     fun insert(climbingRecordData: ClimbingRecordData)

@@ -419,6 +419,18 @@ interface MainApi {
         @Part image: MultipartBody.Part
     ): Response<ResponseBody>
 
+    @Multipart
+    @PATCH("/api/gyms/profile-image")
+    suspend fun updateAdminProfileImage(
+        @Part image: MultipartBody.Part
+    ): Response<ResponseBody>
+
+    @Multipart
+    @PATCH("/api/gyms/background-image")
+    suspend fun updateAdminBackgroundImage(
+        @Part image: MultipartBody.Part
+    ): Response<ResponseBody>
+
     @PATCH("/api/profile-name")
     suspend fun updateUserName(
         @Query("name") name: String

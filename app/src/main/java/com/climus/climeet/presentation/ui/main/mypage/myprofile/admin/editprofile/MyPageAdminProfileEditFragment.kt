@@ -58,6 +58,7 @@ class MyPageAdminProfileEditFragment :
                         parentViewModel.setSnackBarState(true)
                         findNavController().toMyPageAdminProfile()
                     }
+                    is AdminProfileEditEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }
