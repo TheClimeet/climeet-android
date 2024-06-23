@@ -23,7 +23,7 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.ActivityMainBinding
 import com.climus.climeet.presentation.base.BaseActivity
 import com.climus.climeet.presentation.customview.SelectImageMethodDialog
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.editprofile.ClimberEditProfileForm
+import com.climus.climeet.presentation.ui.main.mypage.CameraImageForm
 import com.climus.climeet.presentation.ui.saveCameraImage
 import com.climus.climeet.presentation.ui.toMultiPartImage
 import com.climus.climeet.presentation.ui.toVideoThumbnail
@@ -291,29 +291,27 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
                 uri?.let {
                     viewModel.setImageUri(it)
-
-                    it.toMultiPartImage(this)?.let { image ->
-                        ClimberEditProfileForm.setProfileImage(image)
-                    } ?: run {
-                        showToastMessage("이미지 파일 변환 실패")
-                    }
                 }
+                viewModel.cameraImage.value = false
             }
         }
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
+
+                viewModel.cameraImage.value = true
                 val bitmap = result.data?.extras?.get("data") as Bitmap
+
+                bitmap.toMultiPartImage(this)?.let { image ->
+                    CameraImageForm.setImage(image)
+                } ?: run {
+                    showToastMessage("카메라 이미지 파일 변환 실패")
+                }
                 bitmap.saveCameraImage(this).let { uri ->
                     uri?.let {
                         viewModel.setImageUri(it)
                     }
-                }
-                bitmap.toMultiPartImage(this)?.let { image ->
-                    ClimberEditProfileForm.setProfileImage(image)
-                } ?: run {
-                    showToastMessage("이미지 파일 변환 실패")
                 }
             }
         }

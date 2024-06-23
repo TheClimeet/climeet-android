@@ -1,18 +1,21 @@
 package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.editprofile
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.presentation.ui.InputState
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.editprofile.EditClimberProfileEvent
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.editprofile.SetClimberNickUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 data class SetAdminNickUiState(
@@ -33,20 +36,56 @@ class MyPageAdminProfileEditViewModel @Inject constructor() : ViewModel() {
     private val _event = MutableSharedFlow<AdminProfileEditEvent>()
     val event: SharedFlow<AdminProfileEditEvent> = _event.asSharedFlow()
 
-    // 이미지 관리
-    private val imageUpdated = MutableStateFlow(false)
-    var profileImage = ""
+    val loading = MutableStateFlow(false)
 
-    val nextAvailable = MutableStateFlow(false)
+    val newName = MutableStateFlow("")
+    private val backgroundUpdated = MutableStateFlow(false)
+    private val profileUpdated = MutableStateFlow(false)
+    private lateinit var profileImageToChange : MultipartBody.Part
+
+    var profileImage = ""
+    var gymName = ""
 
     init {
-        viewModelScope.launch{
-            nextAvailable.value = true
-        }
+        imageObserve()
     }
 
+    fun initState(state: Boolean, name: String, profile: String) {
+        backgroundUpdated.value = state
+        profileImage = profile
+        gymName = name
+    }
 
+    private fun imageObserve(){
+        AdminEditProfileForm.profileUriState.onEach { uri ->
+            if (uri.isNotBlank()) {
+                profileUpdated.value = true
+                profileImageToChange = AdminEditProfileForm.getProfileImagePath()
+                Log.d("mypage", "배경 이미지 업데이트 : $profileImageToChange")
+            }
+        }.launchIn(viewModelScope)
+    }
 
+    private fun updateGymProfile(){
+        viewModelScope.launch{
+            // todo : 배경
+            if (backgroundUpdated.value){
+
+            }
+
+            // todo : 프로필
+            if (profileUpdated.value){
+
+            }
+
+            // todo : 암장 이름
+            if(newName.value != gymName && newName.value.isNotEmpty()){
+                Log.d("admin", "암장 이름 : $newName")
+            }
+
+            AdminEditProfileForm.resetState()
+        }
+    }
 
     fun navigateToBack() {
         viewModelScope.launch {
@@ -55,8 +94,11 @@ class MyPageAdminProfileEditViewModel @Inject constructor() : ViewModel() {
     }
 
     fun navigateToProfile() {
-        // todo : 배경, 닉네임, 프사 변경된 것 반영
+        updateGymProfile()
         viewModelScope.launch {
+            loading.value = true
+            delay(2000)
+            loading.value = false
             _event.emit(AdminProfileEditEvent.NavigateToProfile)
         }
     }

@@ -321,14 +321,25 @@
         android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.editprofile.MyPageAdminProfileEditFragment"
         android:label="MyPageAdminProfileEditFragment">
         <argument
+            android:name="backgroundState"
+            app:argType="boolean"/>
+        <argument
             android:name="gymName"
             app:argType="string"/>
         <argument
             android:name="gymProfile"
             app:argType="string"/>
+        <argument
+            android:name="gymBackground"
+            app:argType="string"/>
         <action
             android:id="@+id/action_myPageAdminProfileEditFragment_to_myPageAdminMyProfileFragment"
-            app:destination="@id/myPageAdminMyProfileFragment" />
+            app:destination="@id/myPageAdminMyProfileFragment"
+            app:popUpTo="@id/myPageAdminMyProfileFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_myPageAdminProfileEditFragment_to_myPageAdminProfileEditBackgroundFragment"
+            app:destination="@id/myPageAdminProfileEditBackgroundFragment" />
     </fragment>
     <fragment
         android:id="@+id/myPageAdminProfileEditBackgroundFragment"
@@ -350,7 +361,9 @@
             app:destination="@id/myPageAdminProfileEditFragment" />
         <action
             android:id="@+id/action_myPageAdminProfileEditBackgroundFragment_to_myPageAdminMyProfileFragment"
-            app:destination="@id/myPageAdminMyProfileFragment" />
+            app:destination="@id/myPageAdminMyProfileFragment"
+            app:popUpTo="@id/myPageAdminMyProfileFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
 

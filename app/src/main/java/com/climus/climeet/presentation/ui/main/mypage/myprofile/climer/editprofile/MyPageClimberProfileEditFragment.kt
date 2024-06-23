@@ -13,7 +13,9 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMypageClimberProfileEditBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.MainViewModel
+import com.climus.climeet.presentation.ui.main.mypage.CameraImageForm
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.MyPageClimberProfileViewModel
+import com.climus.climeet.presentation.ui.toMultiPartImage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,6 +56,7 @@ class MyPageClimberProfileEditFragment :
                         idViewModel.setSnackBarState(true)
                         findNavController().toMyPageClimberProfile()
                     }
+
                     is EditClimberProfileEvent.NavigateToBack -> findNavController().toMyPageClimberProfile()
                     is EditClimberProfileEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
@@ -75,6 +78,19 @@ class MyPageClimberProfileEditFragment :
             .load(uri)
             .circleCrop() // 기본 이미지
             .into(binding.ivProfile)
+
+        if (mainViewModel.cameraImage.value) {
+            // 촬영된 이미지
+            val image = CameraImageForm.getImagePath()
+            ClimberEditProfileForm.setProfileImage(image)
+        } else {
+            // 갤러리 이미지
+            uri.toMultiPartImage(requireContext())?.let { image ->
+                ClimberEditProfileForm.setProfileImage(image)
+            } ?: run {
+                showToastMessage("이미지 파일 변환 실패")
+            }
+        }
     }
 
     private fun setOnClickListener() {
@@ -84,7 +100,10 @@ class MyPageClimberProfileEditFragment :
     }
 
     private fun NavController.toMyPageClimberProfile() {
-        val action = MyPageClimberProfileEditFragmentDirections.actionMyPageClimberProfileEditFragmetnToMyPageClimberProfileFragment(climberId)
+        val action =
+            MyPageClimberProfileEditFragmentDirections.actionMyPageClimberProfileEditFragmetnToMyPageClimberProfileFragment(
+                climberId
+            )
         navigate(action)
     }
 

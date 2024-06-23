@@ -96,7 +96,8 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/rect_grey7fill_nostroke_32radius"
-                android:hint="이름"
+                android:hint="@{vm.gymName}"
+                android:text="@={vm.newName}"
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="12dp"
                 android:textColorHint="@color/white"
@@ -104,18 +105,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_profile" />
 
-            <TextView
-                android:id="@+id/tv_text_warning"
-                style="@style/TextRegular"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="5dp"
-                app:helperMessage="@{vm.uiState.nameState}"
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:visibility="@{vm.loading? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@id/iv_profile"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.6"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_nick" />
+                app:layout_constraintTop_toTopOf="@id/iv_profile" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -129,17 +127,6 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <ImageButton
-                android:id="@+id/btn_next_unselect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_next_off"
-                android:visibility="@{vm.nextAvailable ? View.INVISIBLE : View.VISIBLE}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <ImageButton
                 android:id="@+id/btn_next_select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -147,7 +134,6 @@
                 android:onClick="@{() -> vm.navigateToProfile()}"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_next_on"
-                android:visibility="@{vm.nextAvailable ? View.VISIBLE : View.INVISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

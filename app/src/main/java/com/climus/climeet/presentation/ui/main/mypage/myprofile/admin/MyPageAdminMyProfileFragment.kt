@@ -16,10 +16,6 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMypageAdminMyprofileBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileViewModel
-import com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymProfileInfoEvent
-import com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymProfileInfoViewModel
-import com.climus.climeet.presentation.ui.main.global.gymprofile.route.GymProfileRouteEvent
-import com.climus.climeet.presentation.ui.main.global.gymprofile.route.GymProfileRouteViewModel
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.adapter.MyPageAdminProfileVPAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator

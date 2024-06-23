@@ -53,3 +53,13 @@ fun ImageView.setAnimatedParams(alpha: LiveData<Float>) {
 fun bindIsVisible(view: View, isVisible: Boolean) {
     view.visibility = if (isVisible) View.VISIBLE else View.GONE
 }
+
+@BindingAdapter("backgroundImgUri")
+fun bindBackgroundImg(imageView: ImageView, imageUrl: String?) {
+    if (!imageUrl.isNullOrEmpty()) {
+        Glide.with(imageView.context)
+            .load(imageUrl)
+            .error(R.drawable.img_gym_background)
+            .into(imageView)
+    }
+}

@@ -1,7 +1,10 @@
 package com.climus.climeet.presentation.ui.main
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
+import android.provider.ContactsContract.Data
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.app.App
@@ -9,16 +12,21 @@ import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.FcmTokenRequest
 import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.editprofile.ClimberEditProfileForm
+import com.climus.climeet.presentation.ui.toMultiPartImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import javax.inject.Inject
 
-sealed class MainEvent{
-    data object GoToGalleryForVideo: MainEvent()
+sealed class MainEvent {
+    data object GoToGalleryForVideo : MainEvent()
     data class GoToSetProfileImage(val context: Context) : MainEvent()
     data class ShowToastMessage(val msg: String) : MainEvent()
     data object ChangeStatusBarBlack : MainEvent()
@@ -28,8 +36,8 @@ sealed class MainEvent{
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val introRepository: IntroRepository,
-    private val repository: MainRepository
-): ViewModel() {
+    private val repository: MainRepository,
+) : ViewModel() {
 
     private val _event = MutableSharedFlow<MainEvent>()
     val event: SharedFlow<MainEvent> = _event.asSharedFlow()
@@ -40,22 +48,24 @@ class MainViewModel @Inject constructor(
     private val _imageUri = MutableSharedFlow<Uri>()
     val imageUri: SharedFlow<Uri> = _imageUri.asSharedFlow()
 
+    val cameraImage = MutableStateFlow(false)
+
     private val _shortsThumbnail = MutableSharedFlow<String>()
     val shortsThumbnail: SharedFlow<String> = _shortsThumbnail.asSharedFlow()
 
-    fun goToGalleryForVideo(){
+    fun goToGalleryForVideo() {
         viewModelScope.launch {
             _event.emit(MainEvent.GoToGalleryForVideo)
         }
     }
 
-    fun goToSetProfileImage(context: Context){
+    fun goToSetProfileImage(context: Context) {
         viewModelScope.launch {
             _event.emit(MainEvent.GoToSetProfileImage(context))
         }
     }
 
-    fun setVideoUri(uri: Uri){
+    fun setVideoUri(uri: Uri) {
         viewModelScope.launch {
             _videoUri.emit(uri)
         }
@@ -72,7 +82,7 @@ class MainViewModel @Inject constructor(
             repository.uploadFile(file).let {
                 when (it) {
                     is BaseState.Success -> {
-                        when(type){
+                        when (type) {
                             DataType.SHORTS_THUMBNAIL -> _shortsThumbnail.emit(it.body.imgUrl)
                         }
                     }
@@ -83,24 +93,26 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun changeStatusBarBlack(){
+    fun changeStatusBarBlack() {
         viewModelScope.launch {
             _event.emit(MainEvent.ChangeStatusBarBlack)
         }
     }
 
-    fun changeStatusBarBackground(){
+    fun changeStatusBarBackground() {
         viewModelScope.launch {
             _event.emit(MainEvent.ChangeStatusBarBackground)
         }
     }
 
-    fun patchFcmToken(){
+    fun patchFcmToken() {
         viewModelScope.launch {
-            introRepository.patchFcmToken(FcmTokenRequest(
-                App.fcmToken
-            )).let{
-                when(it){
+            introRepository.patchFcmToken(
+                FcmTokenRequest(
+                    App.fcmToken
+                )
+            ).let {
+                when (it) {
                     is BaseState.Success -> {
 
                     }
@@ -114,6 +126,6 @@ class MainViewModel @Inject constructor(
     }
 }
 
-enum class DataType{
+enum class DataType {
     SHORTS_THUMBNAIL
 }
