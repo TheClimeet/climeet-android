@@ -553,24 +553,6 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_review_rate" />
 
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/btn_create_review"
-                            style="@style/TextSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/rect_nofill_mainstroke_8radius"
-                            android:drawableStart="@drawable/ic_plus_mainfill"
-                            android:drawablePadding="5dp"
-                            android:onClick="@{() -> vm.navigateToReviewFromMyPage()}"
-                            android:paddingStart="15dp"
-                            android:paddingEnd="10dp"
-                            android:text="리뷰 남기기"
-                            android:textColor="@color/cm_main"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/star_point" />
-
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_review"
                             android:layout_width="0dp"
@@ -584,7 +566,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/btn_create_review"
+                            app:layout_constraintTop_toBottomOf="@id/star_point"
                             tools:itemCount="3"
                             tools:listitem="@layout/item_profile_review" />
 
@@ -597,7 +579,7 @@
                             android:visibility="gone"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/btn_create_review">
+                            app:layout_constraintTop_toBottomOf="@id/star_point">
 
                             <ImageView
                                 android:id="@+id/iv_no_review"

@@ -119,12 +119,6 @@ class MyPageAdminProfileInfoFragment(val gymId: Long) :
                     binding.layoutEmptyReview.visibility = View.GONE
                     reviewAdapter?.setList(combinedReviewList)
                 }
-
-                if (it.myGymReview == null) {
-                    binding.btnCreateReview.text = "리뷰 남기기"
-                } else {
-                    binding.btnCreateReview.text = "리뷰 수정하기"
-                }
             }
         }
     }
