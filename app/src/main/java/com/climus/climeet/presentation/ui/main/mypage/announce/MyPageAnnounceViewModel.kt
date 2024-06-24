@@ -7,6 +7,7 @@ import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.global.toAnnouncementUiData
 import com.climus.climeet.presentation.ui.main.mypage.announce.model.AnnouncementUiData
+import com.climus.climeet.presentation.ui.main.mypage.myshorts.viewpager.MyPageMyShortsCommentEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,6 +27,7 @@ data class AnnounceUiData(
 
 sealed class MyPageAnnounceEvent {
     data class NavigateToAnnounceDetail(val boardId: Long) : MyPageAnnounceEvent()
+    data class ShowToastMessage(val msg: String) : MyPageAnnounceEvent()
 }
 
 @HiltViewModel
@@ -55,8 +57,7 @@ class MyPageAnnounceViewModel @Inject constructor(val repository: MainRepository
                     }
 
                     is BaseState.Error -> {
-                        it.msg // 서버 에러 메시지
-                        Log.d("API", it.msg)
+                        _event.emit(MyPageAnnounceEvent.ShowToastMessage(it.msg))
                     }
                 }
             }

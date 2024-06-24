@@ -10,6 +10,7 @@ import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.GymServiceUpdateRequest
+import com.climus.climeet.data.model.request.NotificationUpdateRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
@@ -31,7 +32,9 @@ import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
+import com.climus.climeet.data.model.response.GetMyShortsCommentsResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
+import com.climus.climeet.data.model.response.GetNotificationStatesResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
@@ -431,6 +434,14 @@ class MainRepositoryImpl @Inject constructor(
         size: Int
     ): BaseState<ShortsListResponse> = runRemote { api.getMyShorts(shortsVisibility, page, size) }
 
+    override suspend fun getShortsLikedList(page: Int, size: Int): BaseState<ShortsListResponse> =
+        runRemote { api.getShortsLikedList(page, size) }
+
+    override suspend fun getShortsBookmarkedList(
+        page: Int,
+        size: Int,
+    ): BaseState<ShortsListResponse> = runRemote { api.getShortsBookmarkedList(page, size) }
+
     override suspend fun getMyClimbedGymList(
         year: Int,
         month: Int
@@ -449,6 +460,15 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun getAnnouncementDetail(boardId: Long): BaseState<GetAnnouncementDetailResponse> =
         runRemote { api.getAnnouncementDetail(boardId) }
+
+    override suspend fun updateAnnouncementLike(boardId: Long): BaseState<ResponseBody> =
+        runRemote { api.updateAnnouncementLike(boardId) }
+
+    override suspend fun updateAnnouncementUnlike(boardId: Long): BaseState<ResponseBody> =
+        runRemote { api.updateAnnouncementUnlike(boardId) }
+
+    override suspend fun getAdminGymId(): BaseState<Long> =
+        runRemote { api.getAdminGymId() }
 
     override suspend fun getUserShorts(
         uploaderId: Long,
@@ -483,5 +503,16 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun updateGymService(body: GymServiceUpdateRequest): BaseState<ResponseBody> =
         runRemote { api.updateGymService(body) }
+
+    override suspend fun getNotificationStates(): BaseState<GetNotificationStatesResponse> =
+        runRemote { api.getNotificationStates() }
+
+    override suspend fun updateNotification(body: NotificationUpdateRequest): BaseState<ResponseBody> =
+        runRemote { api.updateNotification(body) }
+
+    override suspend fun getMyShortsComments(
+        page: Int,
+        size: Int,
+    ): BaseState<GetMyShortsCommentsResponse> = runRemote { api.getMyShortsComments(page, size) }
 
 }

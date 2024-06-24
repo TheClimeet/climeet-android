@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.main.mypage.myshorts.viewpager
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.mypage.myshorts.model.MyPageShortsCommentUiData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,11 +18,12 @@ import javax.inject.Inject
 
 // todo: api 나요면 수정
 data class ShortsCommentUiData(
-    val commentList : List<MyPageShortsCommentUiData> = emptyList()
+    val commentList: List<MyPageShortsCommentUiData> = emptyList(),
 )
 
 sealed class MyPageMyShortsCommentEvent {
     data class NavigateToShortsComment(val boardId: Long) : MyPageMyShortsCommentEvent()
+    data class ShowToastMessage(val msg: String) : MyPageMyShortsCommentEvent()
 }
 
 @HiltViewModel
@@ -34,38 +36,38 @@ class MyPageMyShortsCommentViewModel @Inject constructor(val repository: MainRep
     private val _event = MutableSharedFlow<MyPageMyShortsCommentEvent>()
     val event: SharedFlow<MyPageMyShortsCommentEvent> = _event.asSharedFlow()
 
-    fun getComment() {
+    var currentPage = 0
+    private var hasNextPage = true
+
+    fun getComment(page: Int) {
+        if (!hasNextPage) return
+
         viewModelScope.launch {
-            // todo: api 연결해 ShortsCommentUiData에 넣기
+            repository.getMyShortsComments(page, 15).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        val comments = it.body.result.map { comment ->
+                            MyPageShortsCommentUiData(
+                                shortsId = comment.commentId,
+                                content = comment.content,
+                                profileImage = comment.profileImageUrl,
+                                createdAt = comment.createdDate
+                            )
+                        }
+                        _uiState.update { currentUiState ->
+                            ShortsCommentUiData(
+                                commentList = currentUiState.commentList + comments
+                            )
+                        }
+                        currentPage = it.body.page
+                        hasNextPage = it.body.hasNext
+                    }
 
-            // 더미 데이터
-            val comments = listOf(
-                MyPageShortsCommentUiData(
-                    shortsId = 30,
-                    contents = "움직임이 예술이네요",
-                    profileImage = "https://climeet-production-bucket.s3.ap-northeast-2.amazonaws.com/e27898c9-d5e1-46eb-82df-f53c0ce1e4e1.jpg",
-                    createdAt = "2024-06-20T12:00:00Z"
-                ),
-                MyPageShortsCommentUiData(
-                    shortsId = 26,
-                    contents = "클라이밍 몇넌 하셨어요?",
-                    profileImage = null,
-                    createdAt = "2024-06-20T12:00:00Z"
-                ),
-                MyPageShortsCommentUiData(
-                    shortsId = 12,
-                    contents = "다음에 같이 운동해요!",
-                    profileImage = "https://climeet-production-bucket.s3.ap-northeast-2.amazonaws.com/e27898c9-d5e1-46eb-82df-f53c0ce1e4e1.jpg",
-                    createdAt = "2024-06-20T12:00:00Z"
-                )
-            )
-
-            _uiState.update { state ->
-                state.copy(
-                    commentList = comments
-                )
+                    is BaseState.Error -> {
+                        _event.emit(MyPageMyShortsCommentEvent.ShowToastMessage(it.msg))
+                    }
+                }
             }
         }
     }
-
 }

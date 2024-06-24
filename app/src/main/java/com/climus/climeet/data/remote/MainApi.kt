@@ -5,6 +5,7 @@ import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.GymServiceUpdateRequest
+import com.climus.climeet.data.model.request.NotificationUpdateRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
@@ -26,7 +27,9 @@ import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
+import com.climus.climeet.data.model.response.GetMyShortsCommentsResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
+import com.climus.climeet.data.model.response.GetNotificationStatesResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
@@ -387,6 +390,18 @@ interface MainApi {
         @Query("size") size: Int
     ): Response<ShortsListResponse>
 
+    @GET("/api/shorts/user/liked")
+    suspend fun getShortsLikedList(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<ShortsListResponse>
+
+    @GET("/api/shorts/user/bookmarked")
+    suspend fun getShortsBookmarkedList(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<ShortsListResponse>
+
     @GET("/api/home/homegyms/{userId}")
     suspend fun getUserHomeGyms(
         @Path("userId") userId: Long
@@ -404,6 +419,16 @@ interface MainApi {
     suspend fun getAnnouncementDetail(
         @Path("boardId") boardId: Long
     ): Response<GetAnnouncementDetailResponse>
+
+    @PATCH("/boards/{boardId}/like")
+    suspend fun updateAnnouncementLike(
+        @Path("boardId") boardId: Long
+    ): Response<ResponseBody>
+
+    @PATCH("/boards/{boardId}/unlike")
+    suspend fun updateAnnouncementUnlike(
+        @Path("boardId") boardId: Long
+    ): Response<ResponseBody>
 
     @PATCH("/api/climber/homegym-privacy-setting")
     suspend fun editHomeGymPrivacy(): Response<ResponseBody>
@@ -436,6 +461,23 @@ interface MainApi {
     suspend fun updateUserName(
         @Query("name") name: String
     ): Response<ResponseBody>
+
+    @GET("/api/users/notifications")
+    suspend fun getNotificationStates(): Response<GetNotificationStatesResponse>
+
+    @PATCH("/api/users/notifications")
+    suspend fun updateNotification(
+        @Body params: NotificationUpdateRequest
+    ): Response<ResponseBody>
+
+    @GET("/api/shorts/user/comments")
+    suspend fun getMyShortsComments(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Response<GetMyShortsCommentsResponse>
+
+    @GET("/api/manager/gym-id")
+    suspend fun getAdminGymId(): Response<Long>
 
     @PATCH("/api/gyms/service")
     suspend fun updateGymService(

@@ -3,6 +3,7 @@ package com.climus.climeet.presentation.ui.intro.login.climer
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.climus.climeet.data.config.DataStoreManager
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.AuthRequest
 import com.climus.climeet.data.repository.AuthRepository
@@ -27,7 +28,8 @@ sealed class ClimerLoginEvent {
 @HiltViewModel
 class ClimerLoginViewModel @Inject constructor(
     private val repository: IntroRepository,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val dataStoreManager: DataStoreManager,
 ) : ViewModel() {
 
     private val _event = MutableSharedFlow<ClimerLoginEvent>()
@@ -47,6 +49,7 @@ class ClimerLoginViewModel @Inject constructor(
                                     authRepository.putRefreshToken(data)
                                 }
                                 authRepository.putLoginMode("CLIMER")
+                                dataStoreManager.putLoginType(type)
                                 _event.emit(ClimerLoginEvent.GoToMainActivity)
                             }
 

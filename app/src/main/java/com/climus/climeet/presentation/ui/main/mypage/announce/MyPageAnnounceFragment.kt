@@ -41,6 +41,7 @@ class MyPageAnnounceFragment: BaseFragment<FragmentMypageAnnounceBinding>(R.layo
             viewModel.event.collect {
                 when (it) {
                     is MyPageAnnounceEvent.NavigateToAnnounceDetail -> navigateToAnnounceDetail(it.boardId)
+                    is MyPageAnnounceEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }

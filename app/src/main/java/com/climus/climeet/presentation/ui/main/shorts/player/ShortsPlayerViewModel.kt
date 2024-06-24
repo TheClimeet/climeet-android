@@ -60,6 +60,9 @@ class ShortsPlayerViewModel @Inject constructor(
     private val _userSortType = MutableStateFlow(userShortsSortType.POPULAR)
     val userSortType: StateFlow<userShortsSortType> = _userSortType
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
     val gymProfileDelete = MutableStateFlow(false)
 
     var userId = 0
@@ -251,6 +254,86 @@ class ShortsPlayerViewModel @Inject constructor(
                 }
             }
 
+        }
+    }
+
+    fun getLikedShorts(option: ShortsOption) {
+
+        viewModelScope.launch {
+            _isLoading.value = true
+
+            if (uiState.value.hasNext) {
+                repository.getShortsLikedList(uiState.value.page, 10).let {
+                    when (it) {
+                        is BaseState.Success -> {
+
+                            val shortsThumbnailUiData = it.body.result.map { data ->
+                                data.toShortsThumbnailUiData(
+                                    ::navigateToShortsPlayer
+                                )
+                            }
+
+                            val shortsUiData = it.body.result.map { data ->
+                                data.toShortsUiData()
+                            }
+
+                            _uiState.update { state ->
+                                state.copy(
+                                    page = uiState.value.page + 1,
+                                    hasNext = it.body.hasNext,
+                                    shortsThumbnailList = if (option == ShortsOption.NEXT_PAGE) uiState.value.shortsThumbnailList + shortsThumbnailUiData else shortsThumbnailUiData,
+                                    shortsList = if (option == ShortsOption.NEXT_PAGE) uiState.value.shortsList + shortsUiData else shortsUiData
+                                )
+                            }
+                        }
+
+                        is BaseState.Error -> {
+                            _event.emit(ShortsPlayerEvent.ShowToastMessage(it.msg))
+                        }
+                    }
+                }
+            }
+            _isLoading.value = false
+        }
+    }
+
+    fun getBookmarkedShorts(option: ShortsOption) {
+
+        viewModelScope.launch {
+            _isLoading.value = true
+
+            if (uiState.value.hasNext) {
+                repository.getShortsBookmarkedList(uiState.value.page, 10).let {
+                    when (it) {
+                        is BaseState.Success -> {
+
+                            val shortsThumbnailUiData = it.body.result.map { data ->
+                                data.toShortsThumbnailUiData(
+                                    ::navigateToShortsPlayer
+                                )
+                            }
+
+                            val shortsUiData = it.body.result.map { data ->
+                                data.toShortsUiData()
+                            }
+
+                            _uiState.update { state ->
+                                state.copy(
+                                    page = uiState.value.page + 1,
+                                    hasNext = it.body.hasNext,
+                                    shortsThumbnailList = if (option == ShortsOption.NEXT_PAGE) uiState.value.shortsThumbnailList + shortsThumbnailUiData else shortsThumbnailUiData,
+                                    shortsList = if (option == ShortsOption.NEXT_PAGE) uiState.value.shortsList + shortsUiData else shortsUiData
+                                )
+                            }
+                        }
+
+                        is BaseState.Error -> {
+                            _event.emit(ShortsPlayerEvent.ShowToastMessage(it.msg))
+                        }
+                    }
+                }
+            }
+            _isLoading.value = false
         }
     }
 

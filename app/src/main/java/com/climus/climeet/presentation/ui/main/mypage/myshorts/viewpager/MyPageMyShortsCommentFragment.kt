@@ -3,6 +3,7 @@ package com.climus.climeet.presentation.ui.main.mypage.myshorts.viewpager
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMypageMyshortsCommentBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -24,9 +25,25 @@ class MyPageMyShortsCommentFragment :
         binding.rvComments.adapter = adapter
         binding.vm = viewModel
 
-        viewModel.getComment()
+        initRecyclerView()
         initEventObserve()
         initStateObserve()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getComment(0)
+    }
+
+    private fun initRecyclerView() {
+        binding.rvComments.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!recyclerView.canScrollVertically(1)) {
+                    viewModel.getComment(viewModel.currentPage + 1)
+                }
+            }
+        })
     }
 
     private fun initEventObserve() {
@@ -34,6 +51,7 @@ class MyPageMyShortsCommentFragment :
             viewModel.event.collect {
                 when (it) {
                     is MyPageMyShortsCommentEvent.NavigateToShortsComment -> navigateToShorts()
+                    is MyPageMyShortsCommentEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }

@@ -39,13 +39,22 @@ class MyPageAccountViewModel @Inject constructor(
     private val _event = MutableSharedFlow<MyPageAccountEvent>()
     val event: SharedFlow<MyPageAccountEvent> = _event.asSharedFlow()
 
+    private var userMode: String? = null
     private var userType: String? = null
 
-    fun checkUserType(): Boolean {
+    // 유저, 관리자 구분
+    fun checkUserMode(): Boolean {
         viewModelScope.launch {
-            userType = dataStoreManager.getLoginMode()
+            userMode = dataStoreManager.getLoginMode()
         }
-        return userType == "ADMIN"
+        return userMode == "ADMIN"
+    }
+
+    fun checkLoginType(): String? {
+        viewModelScope.launch {
+            userType = dataStoreManager.getLoginType()
+        }
+        return userType
     }
 
     fun getUserProfile() {
@@ -66,6 +75,12 @@ class MyPageAccountViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun deleteLoginType() {
+        viewModelScope.launch {
+            dataStoreManager.deleteLoginType()
         }
     }
 
