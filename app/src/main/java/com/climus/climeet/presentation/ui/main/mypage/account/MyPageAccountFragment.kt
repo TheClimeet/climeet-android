@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
@@ -21,6 +22,10 @@ import com.climus.climeet.presentation.ui.intro.IntroActivity
 import com.climus.climeet.presentation.ui.intro.IntroViewModel
 import com.climus.climeet.presentation.util.Constants
 import com.climus.climeet.service.TimerService
+import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
+import com.navercorp.nid.oauth.OAuthLoginCallback
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -162,8 +167,62 @@ class MyPageAccountFragment :
         }
 
         withdrawBtn!!.setOnClickListener {
-            // todo : 관리자, 유저(카카오, 네이버) 탈퇴 구현
+            isManger = viewModel.checkUserMode()
+
+            if (isManger) {
+                // todo : 관리자 탈퇴 api 연동
+            } else {
+                // todo : 유저 탈퇴 api 연동
+
+                val loginType = viewModel.checkLoginType()
+                if (loginType == Constants.KAKAO) {
+                    Log.d("withdraw", "카카오 탈퇴")
+                    kakaoWithdraw()
+                } else {
+                    Log.d("withdraw", "네이버 탈퇴")
+                    naverWithdraw()
+                }
+            }
             alertDialog.dismiss()
+
+            // back stack 지우기
+            val withdrawIntent = Intent(requireContext(), IntroActivity::class.java)
+            withdrawIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(withdrawIntent)
+            activity?.finish()
+        }
+    }
+
+    // 네이버 연결 해제
+    private fun naverWithdraw() {
+        NidOAuthLogin().callDeleteTokenApi(requireContext(), object : OAuthLoginCallback {
+            override fun onSuccess() {
+                //서버에서 토큰 삭제에 성공한 상태
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+                // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태
+                // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업 없음
+                Log.d("withdraw", "errorCode: ${NaverIdLoginSDK.getLastErrorCode().code}")
+                Log.d("withdraw", "errorDesc: ${NaverIdLoginSDK.getLastErrorDescription()}")
+            }
+
+            override fun onError(errorCode: Int, message: String) {
+                // 서버에서 토큰 삭제에 실패했어도 클라이언트에 있는 토큰은 삭제되어 로그아웃된 상태
+                // 클라이언트에 토큰 정보가 없기 때문에 추가로 처리할 수 있는 작업은 없음
+                onFailure(errorCode, message)
+            }
+        })
+    }
+
+    // 카카오 연결 해제
+    private fun kakaoWithdraw() {
+        UserApiClient.instance.unlink { error ->
+            if (error != null) {
+                Log.e("withdraw", "연결 끊기 실패", error)
+            } else {
+                Log.i("withdraw", "연결 끊기 성공. SDK에서 토큰 삭제 됨")
+            }
         }
     }
 }
