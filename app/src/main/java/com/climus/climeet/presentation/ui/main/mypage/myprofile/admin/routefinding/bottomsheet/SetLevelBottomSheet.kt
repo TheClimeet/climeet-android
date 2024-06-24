@@ -82,11 +82,18 @@ class SetLevelBottomSheet(
     private fun checkIfLevelAlreadySelected() {
         val isLevelAlreadySelected =
             viewModel.uiState.value.levelList.any { it.climeetLevel == selectedLevel }
+        val isLevelIsNotMine = viewModel.modifingLevel.value.climeetLevel != selectedLevel
         if (isLevelAlreadySelected) {
-            binding.tvOk.isEnabled = false
-            binding.tvOk.setBackgroundResource(R.drawable.rect_silverfill_nostroke_5radius)
-            binding.tvOk.setTextColor(ContextCompat.getColor(context, R.color.white))
-            showCustomSnackbar("$selectedLevel 레벨은 이미 설정되어 있어요!")
+            if(isLevelIsNotMine) {
+                binding.tvOk.isEnabled = false
+                binding.tvOk.setBackgroundResource(R.drawable.rect_silverfill_nostroke_5radius)
+                binding.tvOk.setTextColor(ContextCompat.getColor(context, R.color.white))
+                showCustomSnackbar("$selectedLevel 레벨은 이미 설정되어 있어요!")
+            } else {
+                binding.tvOk.isEnabled = true
+                binding.tvOk.setBackgroundResource(R.drawable.rect_mainfill_nostroke_5radius)
+                binding.tvOk.setTextColor(ContextCompat.getColor(context, R.color.black))
+            }
         } else {
             binding.tvOk.isEnabled = true
             binding.tvOk.setBackgroundResource(R.drawable.rect_mainfill_nostroke_5radius)

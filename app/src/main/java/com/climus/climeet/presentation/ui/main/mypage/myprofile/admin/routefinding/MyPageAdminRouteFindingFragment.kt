@@ -94,11 +94,6 @@ class MyPageAdminRouteFindingFragment :
                 }
             }
         }
-        repeatOnStarted {
-            viewModel.modifingLevel.collect {
-
-            }
-        }
     }
 
     private fun setRV() {
