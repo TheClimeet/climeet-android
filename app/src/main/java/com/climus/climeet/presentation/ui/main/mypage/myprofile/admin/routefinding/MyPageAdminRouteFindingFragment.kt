@@ -65,8 +65,10 @@ class MyPageAdminRouteFindingFragment :
             viewModel.uiState.collect { state ->
                 val isCompletable = !viewModel.isColorAlreadySelected()
                 if (isCompletable) {
-                    binding.tvExplain.text = "${viewModel.selectedLevel.value.colorName} 레벨은 이미 등록되어 있어요"
-                    binding.tvExplain.setTextColor(resources.getColor(R.color.cm_red))
+                    setTvExplain()
+                }
+                binding.rvRouteFindingLevel.post{
+                    lvAdapter.notifyDataSetChanged()
                 }
             }
         }
@@ -74,8 +76,7 @@ class MyPageAdminRouteFindingFragment :
             viewModel.selectedLevel.collect {
                 val isCompletable = !viewModel.isColorAlreadySelected()
                 if (isCompletable) {
-                    binding.tvExplain.text = "${viewModel.selectedLevel.value.colorName} 레벨은 이미 등록되어 있어요"
-                    binding.tvExplain.setTextColor(resources.getColor(R.color.cm_red))
+                    setTvExplain()
                 } else {
                     binding.tvExplain.setTextColor(resources.getColor(R.color.cm_main))
                     if (it.climeetLevel == "C" && it.colorName == "컴피") {
@@ -85,8 +86,9 @@ class MyPageAdminRouteFindingFragment :
                         binding.layoutSetLevel.isClickable = true
                         binding.tvExplain.text = ""
                     }
-                    if(it.colorName == "-") {
+                    if(it.colorName == "-" || it.climeetLevel == "레벨 설정") {
                         binding.tvExplain.text = "컴피티션 레벨은 C에 고정되어 있어요"
+                        viewModel.isCompletable.postValue(false)
                     }
                 }
                 binding.rvLevelColor.post {
@@ -94,6 +96,11 @@ class MyPageAdminRouteFindingFragment :
                 }
             }
         }
+    }
+
+    private fun setTvExplain() {
+        binding.tvExplain.text = "${viewModel.selectedLevel.value.colorName} 레벨은 이미 등록되어 있어요"
+        binding.tvExplain.setTextColor(resources.getColor(R.color.cm_red))
     }
 
     private fun setRV() {

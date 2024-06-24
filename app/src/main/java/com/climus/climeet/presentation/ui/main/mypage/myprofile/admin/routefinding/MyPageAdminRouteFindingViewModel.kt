@@ -236,9 +236,9 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         }
         _uiState.update { state ->
             val updatedList = state.levelList + selectedLevel.value
-            val sortedList = updatedList.filter { it.colorName != "컴피" }
-                .sortedBy { colorOrder.indexOf(it.colorName to it.colorHex) } +
-                    updatedList.filter { it.colorName == "컴피" }
+            val sortedList = updatedList.filter { it.climeetLevel != "C" }
+                .sortedBy { LevelColorData.LEVELS.indexOf(it.climeetLevel) } +
+                    updatedList.filter { it.climeetLevel == "C" }
 
             state.copy(
                 levelList = sortedList
