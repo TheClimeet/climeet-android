@@ -37,6 +37,7 @@ data class AnnounceDetailUiData(
 
 sealed class AnnouncementDetailEvent {
     data class SetRVAdapter(val imageList: List<String>) : AnnouncementDetailEvent()
+    data class ShowToastMessage(val msg: String) : AnnouncementDetailEvent()
 }
 
 @HiltViewModel
@@ -64,7 +65,8 @@ class AnnounceDetailViewModel @Inject constructor(val repository: MainRepository
                                 followingCount = it.body.followingCount.toString(),
                                 content = it.body.content,
                                 likeCount = it.body.likeCount.toString(),
-                                imageList = it.body.imageList
+                                imageList = it.body.imageList,
+                                likeState = it.body.likeStatus
                             )
                         }
                         uiState.value.imageList?.let {
@@ -74,18 +76,14 @@ class AnnounceDetailViewModel @Inject constructor(val repository: MainRepository
                     }
 
                     is BaseState.Error -> {
-                        it.msg // 서버 에러 메시지
-                        Log.d("API", it.msg)
+                        _event.emit(AnnouncementDetailEvent.ShowToastMessage(it.msg))
                     }
                 }
             }
-
-            // todo: 좋아요 여부 가져와 반영하기
         }
     }
 
     fun setLike() {
-        // todo : 좋아요 상태 변경 api 구현
         _uiState.update { state ->
             state.copy(
                 likeState = !uiState.value.likeState
@@ -98,11 +96,43 @@ class AnnounceDetailViewModel @Inject constructor(val repository: MainRepository
                     likeCount = (uiState.value.likeCount.toInt() + 1).toString()
                 )
             }
+            updateLike(true)
         } else {
             _uiState.update { state ->
                 state.copy(
                     likeCount = (uiState.value.likeCount.toInt() - 1).toString()
                 )
+            }
+            updateLike(false)
+        }
+    }
+
+    private fun updateLike(status: Boolean) {
+        viewModelScope.launch {
+            if (status) {
+                repository.updateAnnouncementLike(uiState.value.boardId).let {
+                    when (it) {
+                        is BaseState.Success -> {
+                            Log.d("mypage", "공지 졸아요")
+                        }
+
+                        is BaseState.Error -> {
+                            _event.emit(AnnouncementDetailEvent.ShowToastMessage(it.msg))
+                        }
+                    }
+                }
+            } else{
+                repository.updateAnnouncementUnlike(uiState.value.boardId).let {
+                    when (it) {
+                        is BaseState.Success -> {
+                            Log.d("mypage", "공지 졸아요 취소")
+                        }
+
+                        is BaseState.Error -> {
+                            _event.emit(AnnouncementDetailEvent.ShowToastMessage(it.msg))
+                        }
+                    }
+                }
             }
         }
     }
