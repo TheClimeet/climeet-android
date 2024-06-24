@@ -27,17 +27,17 @@ class MyPageFragment: BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypa
         viewModel.getProfileInfo()
     }
 
-    private fun initEventObserve(){
+    private fun initEventObserve() {
         repeatOnStarted {
-            viewModel.event.collect{
-                when(it){
+            viewModel.event.collect {
+                when (it) {
                     is MyPageEvent.NavigateToAccount -> findNavController().toAccount()
                     is MyPageEvent.NavigateToAlarm -> findNavController().toAlarm()
                     is MyPageEvent.NavigateToAnnounce -> findNavController().toAnnounce()
                     is MyPageEvent.NavigateToFollow -> findNavController().toFollow()
-                    is MyPageEvent.NavigateToAdminMyProfile -> findNavController().toAdminMyProfile()
+                    is MyPageEvent.NavigateToAdminMyProfile -> findNavController().toAdminMyProfile(it.gymId)
                     is MyPageEvent.NavigateToClimerMyProfile -> findNavController().toClimerMyProfile()
-                    is MyPageEvent.NavigateToMyShorts-> findNavController().toMyShorts()
+                    is MyPageEvent.NavigateToMyShorts -> findNavController().toMyShorts()
                     is MyPageEvent.NavigateToPolicy -> findNavController().toPolicy()
                     is MyPageEvent.NavigateToSendOpinion -> findNavController().toSendOpinion()
                     is MyPageEvent.Logout -> {
@@ -94,8 +94,8 @@ class MyPageFragment: BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypa
         navigate(action)
     }
 
-    private fun NavController.toAdminMyProfile(){
-        val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageAdminMyProfileFragment(viewModel.uiState.value.userId)
+    private fun NavController.toAdminMyProfile(gymId: Long){
+        val action = MyPageFragmentDirections.actionMyPageFragmentToMyPageAdminMyProfileFragment(gymId)
         navigate(action)
     }
 

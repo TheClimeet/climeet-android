@@ -461,5 +461,8 @@ interface MainApi {
     suspend fun getMyShortsComments(
         @Query("page") page: Int,
         @Query("size") size: Int
-    ):Response<GetMyShortsCommentsResponse>
+    ): Response<GetMyShortsCommentsResponse>
+
+    @GET("/api/manager/gym-id")
+    suspend fun getAdminGymId(): Response<Long>
 }

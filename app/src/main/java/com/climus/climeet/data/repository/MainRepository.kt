@@ -405,4 +405,6 @@ interface MainRepository {
     suspend fun updateAnnouncementUnlike(
         boardId: Long
     ): BaseState<ResponseBody>
+
+    suspend fun getAdminGymId(): BaseState<Long>
 }
