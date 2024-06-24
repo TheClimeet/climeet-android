@@ -44,11 +44,15 @@
     <string name="route_finding_title">"루트 파인딩"</string>
     <string name="route_finding_update_date">"업데이트 날짜"</string>
     <string name="route_finding_level_manage">"레벨 관리"</string>
+    <string name="route_finding_gym_image">"암장 도면"</string>
     <string name="route_finding_add_level">"레벨 추가"</string>
     <string name="route_finding_set_level">"레벨 설정"</string>
     <string name="route_finding_add_level_complete">"확인"</string>
     <string name="route_finding_add_level_cancel">"취소"</string>
     <string name="route_finding_add_level_modify">"수정"</string>
     <string name="route_finding_add_level_delete">"삭제"</string>
+    <string name="route_finding_first_floor">"1층"</string>
+    <string name="route_finding_second_floor">"2층"</string>
+    <string name="plus">"+"</string>
 
 </resources>

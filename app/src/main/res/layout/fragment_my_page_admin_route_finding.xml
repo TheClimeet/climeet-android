@@ -261,7 +261,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
-                            android:text="컴피티션 레벨은 C에 고정되어 있어요"
                             android:textColor="@color/cm_main"
                             app:layout_constraintStart_toStartOf="@id/layout_set_level"
                             app:layout_constraintTop_toBottomOf="@id/layout_set_level" />
@@ -335,6 +334,84 @@
                             android:visibility="@{vm.isLevelAdd() ? View.GONE : View.VISIBLE}"
                             app:layout_constraintEnd_toStartOf="@id/btn_add_level_modify"
                             app:layout_constraintTop_toTopOf="@id/btn_add_level_modify" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/tv_gym_image"
+                    style="@style/TextRegularBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="43dp"
+                    android:text="@string/route_finding_gym_image"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_level_manage" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_gym_image"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_gym_image">
+
+                    <TextView
+                        android:id="@+id/btn_first_floor"
+                        style="@style/TextSmall"
+                        android:layout_width="54dp"
+                        android:layout_height="30dp"
+                        android:gravity="center"
+                        android:text="@string/route_finding_first_floor"
+                        android:background="@drawable/rect_grey8fill_nostroke_5radius"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/btn_second_floor"
+                        style="@style/TextSmall"
+                        android:layout_width="54dp"
+                        android:layout_height="30dp"
+                        android:gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/plus"
+                        android:background="@drawable/rect_grey8fill_nostroke_5radius"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/btn_first_floor"/>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_add_gym_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/rect_grey8fill_nostroke_5radius"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="15dp"
+                        app:layout_constraintTop_toBottomOf="@id/btn_first_floor">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_add_gym_iamge"
+                            android:layout_width="match_parent"
+                            android:layout_height="141dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_add_image_background"
+                            android:background="@drawable/rect_silver2fill_nostroke_5radius"
+                            android:clipToOutline="true"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/tv_image_explain"
+                            style="@style/TextTiny"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="암장 도면 사진을 넣어주세요"
+                            android:textColor="@color/cm_main"
+                            app:layout_constraintStart_toStartOf="@id/iv_add_gym_iamge"
+                            app:layout_constraintTop_toBottomOf="@id/iv_add_gym_iamge" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
