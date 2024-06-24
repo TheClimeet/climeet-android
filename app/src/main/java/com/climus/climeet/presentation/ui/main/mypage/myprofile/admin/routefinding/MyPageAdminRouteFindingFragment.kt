@@ -68,7 +68,7 @@ class MyPageAdminRouteFindingFragment :
                     setTvExplain()
                 }
                 binding.rvRouteFindingLevel.post{
-                    lvAdapter.notifyDataSetChanged()
+                    lvAdapter.submitList(state.levelList)
                 }
             }
         }
@@ -82,6 +82,7 @@ class MyPageAdminRouteFindingFragment :
                     if (it.climeetLevel == "C" && it.colorName == "컴피") {
                         binding.layoutSetLevel.isClickable = false
                         binding.tvExplain.text = "컴피티션 레벨은 C에 고정되어 있어요"
+                        viewModel.isCompletable.postValue(true)
                     } else {
                         binding.layoutSetLevel.isClickable = true
                         binding.tvExplain.text = ""
