@@ -43,16 +43,24 @@ class MyPageAlarmViewModel @Inject constructor(val repository: MainRepository) :
     }
 
     private fun fetchSwitchStatesFromServer() {
-        // todo : 알림 상태 가져오는 api 연결
-        // 더미 데이터
         viewModelScope.launch {
-            _uiState.update { state ->
-                state.copy(
-                    follower = true,
-                    like = false,
-                    comment = true,
-                    appPush = false
-                )
+            repository.getNotificationStates().let {
+                when(it){
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                follower = it.body.isAllowFollowNotification,
+                                like = it.body.isAllowLikeNotification,
+                                comment = it.body.isAllowCommentNotification,
+                                appPush = it.body.isAllowAdNotification
+                            )
+                        }
+                    }
+
+                    is BaseState.Error -> {
+                        _event.emit(UpdateAlarmEvent.ShowToastMessage(it.msg))
+                    }
+                }
             }
         }
     }

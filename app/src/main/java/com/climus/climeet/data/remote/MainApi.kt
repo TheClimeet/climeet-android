@@ -28,6 +28,7 @@ import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetMyShortsCommentsResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
+import com.climus.climeet.data.model.response.GetNotificationStatesResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
@@ -418,6 +419,16 @@ interface MainApi {
         @Path("boardId") boardId: Long
     ): Response<GetAnnouncementDetailResponse>
 
+    @PATCH("/boards/{boardId}/like")
+    suspend fun updateAnnouncementLike(
+        @Path("boardId") boardId: Long
+    ): Response<ResponseBody>
+
+    @PATCH("/boards/{boardId}/unlike")
+    suspend fun updateAnnouncementUnlike(
+        @Path("boardId") boardId: Long
+    ): Response<ResponseBody>
+
     @PATCH("/api/climber/homegym-privacy-setting")
     suspend fun editHomeGymPrivacy(): Response<ResponseBody>
 
@@ -437,6 +448,9 @@ interface MainApi {
     suspend fun updateUserName(
         @Query("name") name: String
     ): Response<ResponseBody>
+
+    @GET("/api/users/notifications")
+    suspend fun getNotificationStates(): Response<GetNotificationStatesResponse>
 
     @PATCH("/api/users/notifications")
     suspend fun updateNotification(

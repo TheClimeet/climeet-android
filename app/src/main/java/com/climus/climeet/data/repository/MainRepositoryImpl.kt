@@ -33,6 +33,7 @@ import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetMyShortsCommentsResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
+import com.climus.climeet.data.model.response.GetNotificationStatesResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
@@ -459,6 +460,12 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun getAnnouncementDetail(boardId: Long): BaseState<GetAnnouncementDetailResponse> =
         runRemote { api.getAnnouncementDetail(boardId) }
 
+    override suspend fun updateAnnouncementLike(boardId: Long): BaseState<ResponseBody> =
+        runRemote { api.updateAnnouncementLike(boardId) }
+
+    override suspend fun updateAnnouncementUnlike(boardId: Long): BaseState<ResponseBody> =
+        runRemote { api.updateAnnouncementUnlike(boardId) }
+
     override suspend fun getUserShorts(
         uploaderId: Long,
         page: Int,
@@ -483,6 +490,9 @@ class MainRepositoryImpl @Inject constructor(
 
     override suspend fun updateUserName(name: String): BaseState<ResponseBody> =
         runRemote { api.updateUserName(name) }
+
+    override suspend fun getNotificationStates(): BaseState<GetNotificationStatesResponse> =
+        runRemote { api.getNotificationStates() }
 
     override suspend fun updateNotification(body: NotificationUpdateRequest): BaseState<ResponseBody> =
         runRemote { api.updateNotification(body) }

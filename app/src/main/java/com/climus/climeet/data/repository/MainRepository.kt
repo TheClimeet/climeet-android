@@ -31,6 +31,7 @@ import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetMyShortsCommentsResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
+import com.climus.climeet.data.model.response.GetNotificationStatesResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
@@ -286,6 +287,8 @@ interface MainRepository {
         name: String,
     ): BaseState<ResponseBody>
 
+    suspend fun getNotificationStates(): BaseState<GetNotificationStatesResponse>
+
     suspend fun updateNotification(
         body: NotificationUpdateRequest
     ): BaseState<ResponseBody>
@@ -394,4 +397,12 @@ interface MainRepository {
     suspend fun getAnnouncementDetail(
         boardId: Long
     ): BaseState<GetAnnouncementDetailResponse>
+
+    suspend fun updateAnnouncementLike(
+        boardId: Long
+    ): BaseState<ResponseBody>
+
+    suspend fun updateAnnouncementUnlike(
+        boardId: Long
+    ): BaseState<ResponseBody>
 }
