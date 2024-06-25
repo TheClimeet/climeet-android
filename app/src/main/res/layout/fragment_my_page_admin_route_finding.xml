@@ -449,6 +449,139 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
+                    <TextView
+                        android:id="@+id/tv_sector_manage"
+                        style="@style/TextRegularBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="43dp"
+                        android:text="@string/route_finding_sector_manage"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/layout_add_gym_image" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_sector_manage"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_sector_manage">
+
+                        <HorizontalScrollView
+                            android:id="@+id/hsv_route_finding_sector"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fillViewport="true"
+                            android:scrollbars="none"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <LinearLayout
+                                android:id="@+id/layout_route_finding_add_sector"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/rv_route_finding_sector"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:nestedScrollingEnabled="false"
+                                    android:orientation="horizontal"
+                                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                    app:layout_constraintBottom_toBottomOf="@+id/tv_add_level"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintVertical_bias="1.0"
+                                    tools:itemCount="3"
+                                    tools:listitem="@layout/item_route_finding_sector" />
+
+                                <TextView
+                                    android:id="@+id/tv_add_sector"
+                                    style="@style/TextSmall"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rect_grey8fill_nostroke_5radius"
+                                    android:drawablePadding="3dp"
+                                    android:onClick="@{()->vm.resetSelectedColorAndLevel()}"
+                                    android:paddingVertical="6dp"
+                                    android:paddingStart="13dp"
+                                    android:paddingEnd="16dp"
+                                    android:text="@string/route_finding_add_sector"
+                                    app:drawableStartCompat="@drawable/ic_add_white_14"
+                                    app:layout_constraintStart_toEndOf="@+id/rv_route_finding_level"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </LinearLayout>
+                        </HorizontalScrollView>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/layout_add_sector"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:background="@drawable/rect_grey8fill_nostroke_5radius"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="15dp"
+                            app:layout_constraintTop_toBottomOf="@id/hsv_route_finding_sector">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/iv_add_sector_iamge"
+                                android:layout_width="match_parent"
+                                android:layout_height="141dp"
+                                android:background="@drawable/rect_silver2fill_nostroke_5radius"
+                                android:clipToOutline="true"
+                                android:onClick="@{()->vm.goToGallery()}"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/ic_add_image_background"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_sector_explain"
+                                style="@style/TextTiny"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="@string/route_finding_sector_explain"
+                                android:textColor="@color/cm_main"
+                                app:layout_constraintStart_toStartOf="@id/iv_add_sector_iamge"
+                                app:layout_constraintTop_toBottomOf="@id/iv_add_sector_iamge" />
+                            
+                            <EditText
+                                android:id="@+id/et_sector_name"
+                                style="@style/TextSmall"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_marginEnd="10dp"
+                                android:paddingHorizontal="16dp"
+                                android:background="@drawable/rect_silver2fill_nostroke_999radius"
+                                android:hint="@string/route_finding_sector_edittext"
+                                android:textColorHint="@color/cm_grey5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/btn_sector_complete"
+                                app:layout_constraintTop_toTopOf="@id/btn_sector_complete"
+                                app:layout_constraintBottom_toBottomOf="@id/btn_sector_complete"/>
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/btn_sector_complete"
+                                style="@style/TextSmall"
+                                android:layout_width="65dp"
+                                android:layout_height="30dp"
+                                android:layout_marginTop="20dp"
+                                android:background="@drawable/rect_mainfill_nostroke_8radius"
+                                android:paddingHorizontal="16dp"
+                                android:paddingTop="5.5dp"
+                                android:paddingBottom="6.5dp"
+                                android:text="@string/route_finding_add_level_complete"
+                                android:textColor="@color/black"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/tv_sector_explain" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
