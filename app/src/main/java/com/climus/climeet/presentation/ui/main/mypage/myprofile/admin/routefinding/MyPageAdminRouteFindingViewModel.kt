@@ -197,15 +197,15 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     val selectedDateText =
         MutableStateFlow("${initDate.year}년 ${initDate.monthValue}월 ${initDate.dayOfMonth}일 (${dayOfWeekMap[initDate.dayOfWeek]})")
     val selectedDate = MutableStateFlow(initDate)
-    private val defaultItem = UiLevelItem(
+    private val defaultLevelItem = UiLevelItem(
         climeetLevel = "레벨 설정",
         colorHex = "#FFFFFF",
         colorName = "-",
         setLevelListener = ::empty
     )
 
-    val selectedLevel = MutableStateFlow(defaultItem)
-    val modifingLevel = MutableStateFlow(defaultItem)
+    val selectedLevel = MutableStateFlow(defaultLevelItem)
+    val modifingLevel = MutableStateFlow(defaultLevelItem)
 
     val colorList = LevelColorData.COLORS
     val isCompletable = MutableLiveData(true)
@@ -213,6 +213,10 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
 
     val selectedFloor = MutableStateFlow(1)
     val isSecondFloorExist = MutableLiveData(false)
+
+    private val defaultSectorItem = UiSectorItem("", "", false, ::setSector)
+    val selectedSector = MutableStateFlow(defaultSectorItem)
+    val selectedImageType = MutableStateFlow(DataType.GYM)
 
     fun setSelectedDate(updateDate: LocalDate) {
         selectedDate.update { updateDate }
@@ -288,8 +292,8 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     }
 
     fun resetSelectedColorAndLevel() {
-        selectedLevel.update { defaultItem }
-        updateModifingLevel(defaultItem)
+        selectedLevel.update { defaultLevelItem }
+        updateModifingLevel(defaultLevelItem)
         updateIsLevelAdd(true)
     }
 
@@ -303,21 +307,31 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     }
 
     fun updateImg(uri: String) {
-        _uiState.update { state ->
-            val updatedLayoutList = state.layoutList.toMutableList()
-            val selectedFloor = selectedFloor.value
+        if(selectedImageType.value == DataType.GYM) {
+            _uiState.update { state ->
+                val updatedLayoutList = state.layoutList.toMutableList()
+                val selectedFloor = selectedFloor.value
 
-            updatedLayoutList[selectedFloor - 1] = updatedLayoutList[selectedFloor - 1].copy(gymImg = uri)
+                updatedLayoutList[selectedFloor - 1] =
+                    updatedLayoutList[selectedFloor - 1].copy(gymImg = uri)
 
-            state.copy(
-                layoutList = updatedLayoutList
-            )
+                state.copy(
+                    layoutList = updatedLayoutList
+                )
+            }
+        } else {
+            selectedSector.update {
+                it.copy (
+                    sectorImg = uri
+                )
+            }
         }
+
     }
 
     fun selectFloor(floor: Int) {
         selectedFloor.update { floor }
-        val uri = uiState.value.layoutList[floor-1].gymImg.toUri()
+        val uri = uiState.value.layoutList[floor - 1].gymImg.toUri()
 
         viewModelScope.launch {
             _event.emit(MyPageAdminRouteFindingEvent.ShowLayoutImg(uri))
@@ -349,7 +363,12 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         }
     }
 
-    fun goToGallery() {
+    fun goToGallery(type: Int) {
+        if (type == 0) {
+            selectedImageType.value = DataType.GYM
+        } else {
+            selectedImageType.value = DataType.SECTOR
+        }
         viewModelScope.launch {
             _event.emit(MyPageAdminRouteFindingEvent.GoToGallery)
         }
@@ -383,4 +402,8 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         )
     }
 
+}
+
+enum class DataType {
+    GYM, SECTOR
 }

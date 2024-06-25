@@ -2,8 +2,8 @@ package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefind
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -13,8 +13,6 @@ import com.climus.climeet.databinding.FragmentMyPageAdminRouteFindingBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheet
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheetViewModel
-import com.climus.climeet.presentation.ui.intro.IntroViewModel
-import com.climus.climeet.presentation.ui.intro.UrlType
 import com.climus.climeet.presentation.ui.main.MainViewModel
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.LevelColorAdapter
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.RouteFindingLevelAdapter
@@ -70,7 +68,10 @@ class MyPageAdminRouteFindingFragment :
                         )
                     }
 
-                    is MyPageAdminRouteFindingEvent.ShowLayoutImg -> setImage(it.uri)
+                    is MyPageAdminRouteFindingEvent.ShowLayoutImg -> setImage(
+                        it.uri,
+                        binding.ivAddGymIamge
+                    )
                 }
             }
         }
@@ -138,8 +139,12 @@ class MyPageAdminRouteFindingFragment :
     private fun initParentImageObserve() {
         repeatOnStarted {
             parentViewModel.imageUri.collect {
+                if(viewModel.selectedImageType.value == DataType.GYM) {
+                    setImage(it, binding.ivAddGymIamge)
+                } else {
+                    setImage(it, binding.ivAddSectorIamge)
+                }
                 viewModel.updateImg(it.toString())
-                setImage(it)
             }
         }
     }
@@ -157,11 +162,11 @@ class MyPageAdminRouteFindingFragment :
         binding.rvRouteFindingLevel.adapter = lvAdapter
     }
 
-    private fun setImage(uri: Uri) {
+    private fun setImage(uri: Uri, ivIamge: AppCompatImageView) {
         Glide.with(this)
             .load(uri)
             .placeholder(R.drawable.ic_add_image_background)
-            .into(binding.ivAddGymIamge)
+            .into(ivIamge)
     }
 
     private fun NavController.toCreateRoute() {

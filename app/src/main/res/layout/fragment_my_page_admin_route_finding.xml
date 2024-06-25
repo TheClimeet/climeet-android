@@ -415,7 +415,7 @@
                             android:layout_height="141dp"
                             android:background="@drawable/rect_silver2fill_nostroke_5radius"
                             android:clipToOutline="true"
-                            android:onClick="@{()->vm.goToGallery()}"
+                            android:onClick="@{()->vm.goToGallery(0)}"
                             android:scaleType="centerCrop"
                             android:src="@drawable/ic_add_image_background"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -532,7 +532,7 @@
                                 android:layout_height="141dp"
                                 android:background="@drawable/rect_silver2fill_nostroke_5radius"
                                 android:clipToOutline="true"
-                                android:onClick="@{()->vm.goToGallery()}"
+                                android:onClick="@{()->vm.goToGallery(1)}"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/ic_add_image_background"
                                 app:layout_constraintTop_toTopOf="parent" />
