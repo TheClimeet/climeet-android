@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -18,6 +19,7 @@ import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefindi
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.RouteFindingLevelAdapter
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.bottomsheet.SetLevelBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.update
 
 @AndroidEntryPoint
 class MyPageAdminRouteFindingFragment :
@@ -38,6 +40,7 @@ class MyPageAdminRouteFindingFragment :
         initEventObserve()
         initStateObserve()
         initParentImageObserve()
+        addSectorList()
     }
 
     private fun initEventObserve() {
@@ -88,9 +91,9 @@ class MyPageAdminRouteFindingFragment :
                     lvAdapter.submitList(state.levelList)
                 }
 
-                if(state.layoutList[viewModel.selectedFloor.value - 1].gymImg == "") {
+                if (state.layoutList[viewModel.selectedFloor.value - 1].gymImg == "") {
                     binding.tvImageExplain.visibility = View.VISIBLE
-                }else{
+                } else {
                     binding.tvImageExplain.visibility = View.GONE
                 }
             }
@@ -122,14 +125,14 @@ class MyPageAdminRouteFindingFragment :
         }
         repeatOnStarted {
             viewModel.selectedFloor.collect {
-                if(it == 2) {
+                if (it == 2) {
                     binding.btnDeleteSecondFloor.visibility = View.VISIBLE
                 } else {
                     binding.btnDeleteSecondFloor.visibility = View.GONE
                 }
-                if(viewModel.uiState.value.layoutList[it - 1].gymImg == "") {
+                if (viewModel.uiState.value.layoutList[it - 1].gymImg == "") {
                     binding.tvImageExplain.visibility = View.VISIBLE
-                }else{
+                } else {
                     binding.tvImageExplain.visibility = View.GONE
                 }
             }
@@ -139,13 +142,26 @@ class MyPageAdminRouteFindingFragment :
     private fun initParentImageObserve() {
         repeatOnStarted {
             parentViewModel.imageUri.collect {
-                if(viewModel.selectedImageType.value == DataType.GYM) {
+                if (viewModel.selectedImageType.value == DataType.GYM) {
                     setImage(it, binding.ivAddGymIamge)
                 } else {
                     setImage(it, binding.ivAddSectorIamge)
                 }
                 viewModel.updateImg(it.toString())
             }
+        }
+    }
+
+    private fun addSectorList() {
+        binding.btnSectorComplete.setOnClickListener {
+            viewModel.selectedSector.update {
+                it.copy(
+                    sectorName = binding.etSectorName.text.toString()
+                )
+            }
+            viewModel.addSector()
+            binding.etSectorName.setText("")
+            setImage("".toUri(), binding.ivAddSectorIamge)
         }
     }
 

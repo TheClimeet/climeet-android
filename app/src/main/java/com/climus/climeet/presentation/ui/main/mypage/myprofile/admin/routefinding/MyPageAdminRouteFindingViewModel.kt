@@ -307,7 +307,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     }
 
     fun updateImg(uri: String) {
-        if(selectedImageType.value == DataType.GYM) {
+        if (selectedImageType.value == DataType.GYM) {
             _uiState.update { state ->
                 val updatedLayoutList = state.layoutList.toMutableList()
                 val selectedFloor = selectedFloor.value
@@ -321,7 +321,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
             }
         } else {
             selectedSector.update {
-                it.copy (
+                it.copy(
                     sectorImg = uri
                 )
             }
@@ -347,6 +347,16 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         isSecondFloorExist.postValue(false)
         updateImg("")
         selectFloor(1)
+    }
+
+    fun addSector() {
+        _uiState.update { state ->
+            val updatedList = state.sectorList + selectedSector.value
+            state.copy(
+                sectorList = updatedList
+            )
+        }
+        selectedSector.update { defaultSectorItem }
     }
 
     fun noUse(dateDate: LocalDate) {}
