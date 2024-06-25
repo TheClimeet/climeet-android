@@ -16,9 +16,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import okhttp3.MultipartBody
 import javax.inject.Inject
 
 data class SetAdminNickUiState(
@@ -48,7 +46,7 @@ class MyPageAdminProfileEditViewModel @Inject constructor(
     val newName = MutableStateFlow("")
     private val backgroundUpdated = MutableStateFlow(false)
     private val profileUpdated = MutableStateFlow(false)
-    private lateinit var profileImageToChange : MultipartBody.Part
+    private var profileImageToChange = ""
 
     var profileImage = ""
     var gymName = ""

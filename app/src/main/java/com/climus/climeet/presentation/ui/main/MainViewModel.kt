@@ -1,26 +1,21 @@
 package com.climus.climeet.presentation.ui.main
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.net.Uri
-import android.provider.ContactsContract.Data
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.app.App
+import com.climus.climeet.data.config.DataStoreManager
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.FcmTokenRequest
 import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.data.repository.MainRepository
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.editprofile.ClimberEditProfileForm
-import com.climus.climeet.presentation.ui.toMultiPartImage
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.editprofile.AdminEditProfileForm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -37,6 +32,7 @@ sealed class MainEvent {
 class MainViewModel @Inject constructor(
     private val introRepository: IntroRepository,
     private val repository: MainRepository,
+    private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
 
     private val _event = MutableSharedFlow<MainEvent>()
@@ -52,6 +48,15 @@ class MainViewModel @Inject constructor(
 
     private val _shortsThumbnail = MutableSharedFlow<String>()
     val shortsThumbnail: SharedFlow<String> = _shortsThumbnail.asSharedFlow()
+
+    private var userMode: String? = null
+
+    fun checkUserMode(): Boolean {
+        viewModelScope.launch {
+            userMode = dataStoreManager.getLoginMode()
+        }
+        return userMode == "ADMIN"
+    }
 
     fun goToGalleryForVideo() {
         viewModelScope.launch {
@@ -84,6 +89,8 @@ class MainViewModel @Inject constructor(
                     is BaseState.Success -> {
                         when (type) {
                             DataType.SHORTS_THUMBNAIL -> _shortsThumbnail.emit(it.body.imgUrl)
+                            DataType.ADMIN_PROFILE_IMAGE -> AdminEditProfileForm.setProfileImage(it.body.imgUrl)
+                            DataType.ADMIN_BACKGROUND_IMAGE -> AdminEditProfileForm.setBackgroundImage(it.body.imgUrl)
                         }
                     }
 
@@ -127,5 +134,5 @@ class MainViewModel @Inject constructor(
 }
 
 enum class DataType {
-    SHORTS_THUMBNAIL
+    SHORTS_THUMBNAIL, ADMIN_PROFILE_IMAGE, ADMIN_BACKGROUND_IMAGE
 }

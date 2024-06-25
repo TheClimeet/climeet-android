@@ -289,11 +289,11 @@ interface MainRepository {
     ): BaseState<ResponseBody>
 
     suspend fun updateAdminProfileImage(
-        image: MultipartBody.Part
+        body: String
     ): BaseState<ResponseBody>
 
     suspend fun updateAdminBackgroundImage(
-        image: MultipartBody.Part
+        body: String
     ): BaseState<ResponseBody>
 
     suspend fun updateGymService(

@@ -43,8 +43,13 @@ class MyPageAdminMyProfileFragment :
         initViewPager()
         initClickListener()
 
-        sharedViewModel.getGymProfileInfo()
         viewModel.setGymId(gymId)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 상단 정보 설정
+        sharedViewModel.getGymProfileInfo()
     }
 
     private fun initEventObserve() {

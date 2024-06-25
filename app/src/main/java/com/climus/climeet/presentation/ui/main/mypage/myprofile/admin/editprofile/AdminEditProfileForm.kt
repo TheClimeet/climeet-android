@@ -3,12 +3,11 @@ package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.editprofi
 import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import okhttp3.MultipartBody
 
 object AdminEditProfileForm {
 
-    private lateinit var backgroundImg: MultipartBody.Part
-    private lateinit var profileImg: MultipartBody.Part
+    private lateinit var backgroundImg: String
+    private lateinit var profileImg: String
 
     private var nameUpdated = false
 
@@ -18,31 +17,29 @@ object AdminEditProfileForm {
     private val _backgroundUriState = MutableStateFlow("")
     val backgroundUriState: StateFlow<String> = _backgroundUriState
 
-    fun setProfileImage(image: MultipartBody.Part) {
+    fun setProfileImage(image: String) {
         profileImg = image
-        _profileUriState.value = image.toString()
+        _profileUriState.value = image
 
-        Log.d("form", "프로필 이미지 파일 저장 : 이름=${image.headers?.get("Content-Disposition")}, " +
-                "타입=${image.body.contentType()}, 크기=${image.body.contentLength()}")
+        Log.d("form", "프로필 이미지 uri 저장 : $image")
     }
 
-    fun setBackgroundImage(image: MultipartBody.Part) {
+    fun setBackgroundImage(image: String) {
         backgroundImg = image
-        _backgroundUriState.value = image.toString()
+        _backgroundUriState.value = image
 
-        Log.d("form", "배경 이미지 파일 저장 : 이름=${image.headers?.get("Content-Disposition")}, " +
-                "타입=${image.body.contentType()}, 크기=${image.body.contentLength()}")
+        Log.d("form", "배경 이미지 uri 저장 : $image")
     }
 
     fun setNameUpdatedState(state: Boolean) {
         nameUpdated = state
     }
 
-    fun getProfileImagePath(): MultipartBody.Part {
+    fun getProfileImagePath(): String {
         return profileImg
     }
 
-    fun getBackgroundPath(): MultipartBody.Part {
+    fun getBackgroundPath(): String {
         return backgroundImg
     }
 

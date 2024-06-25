@@ -27,7 +27,7 @@ class MyPageAdminProfileEditBackgroundViewModel @Inject constructor() : ViewMode
 
     var backgroundImg = ""
     val imageUpdated = MutableStateFlow(false)
-    private lateinit var imageToChange : MultipartBody.Part
+    private var imageToChange =""
 
     init {
         imageObserve()
@@ -42,7 +42,6 @@ class MyPageAdminProfileEditBackgroundViewModel @Inject constructor() : ViewMode
             if (uri.isNotBlank()) {
                 imageUpdated.value = true
                 imageToChange = AdminEditProfileForm.getBackgroundPath()
-                Log.d("mypage", "배경 이미지 업데이트 : $imageToChange")
             }
         }.launchIn(viewModelScope)
     }

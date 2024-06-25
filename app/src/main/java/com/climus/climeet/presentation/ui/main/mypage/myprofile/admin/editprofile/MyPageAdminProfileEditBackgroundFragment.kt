@@ -12,10 +12,11 @@ import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMypageAdminProfileBackgroundEditBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.main.DataType
 import com.climus.climeet.presentation.ui.main.MainViewModel
 import com.climus.climeet.presentation.ui.main.mypage.CameraImageForm
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.MyPageAdminMyProfileViewModel
-import com.climus.climeet.presentation.ui.toMultiPartImage
+import com.climus.climeet.presentation.ui.toMultiPart
 
 class MyPageAdminProfileEditBackgroundFragment :
     BaseFragment<FragmentMypageAdminProfileBackgroundEditBinding>(R.layout.fragment_mypage_admin_profile_background_edit) {
@@ -75,11 +76,11 @@ class MyPageAdminProfileEditBackgroundFragment :
         if (mainViewModel.cameraImage.value) {
             // 촬영된 이미지
             val image = CameraImageForm.getImagePath()
-            AdminEditProfileForm.setBackgroundImage(image)
+            mainViewModel.fileToUrl(image, DataType.ADMIN_BACKGROUND_IMAGE)
         } else {
             // 갤러리 이미지
-            uri.toMultiPartImage(requireContext())?.let { image ->
-                AdminEditProfileForm.setBackgroundImage(image)
+            uri.toMultiPart(requireContext())?.let { image ->
+               mainViewModel.fileToUrl(image, DataType.ADMIN_BACKGROUND_IMAGE)
             } ?: run {
                 showToastMessage("이미지 파일 변환 실패")
             }

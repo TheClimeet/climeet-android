@@ -495,11 +495,11 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun updateUserName(name: String): BaseState<ResponseBody> =
         runRemote { api.updateUserName(name) }
 
-    override suspend fun updateAdminProfileImage(image: MultipartBody.Part): BaseState<ResponseBody> =
-        runRemote { api.updateAdminProfileImage(image) }
+    override suspend fun updateAdminProfileImage(body: String): BaseState<ResponseBody> =
+        runRemote { api.updateAdminProfileImage(body) }
 
-    override suspend fun updateAdminBackgroundImage(image: MultipartBody.Part): BaseState<ResponseBody> =
-        runRemote { api.updateAdminBackgroundImage(image) }
+    override suspend fun updateAdminBackgroundImage(body: String): BaseState<ResponseBody> =
+        runRemote { api.updateAdminBackgroundImage(body) }
 
     override suspend fun updateGymService(body: GymServiceUpdateRequest): BaseState<ResponseBody> =
         runRemote { api.updateGymService(body) }

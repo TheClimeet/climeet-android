@@ -12,10 +12,11 @@ import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMypageAdminProfileEditBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.main.DataType
 import com.climus.climeet.presentation.ui.main.MainViewModel
 import com.climus.climeet.presentation.ui.main.mypage.CameraImageForm
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.MyPageAdminMyProfileViewModel
-import com.climus.climeet.presentation.ui.toMultiPartImage
+import com.climus.climeet.presentation.ui.toMultiPart
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -86,13 +87,12 @@ class MyPageAdminProfileEditFragment :
             .into(binding.ivProfile)
 
         if (mainViewModel.cameraImage.value) {
-            // 촬영된 이미지
             val image = CameraImageForm.getImagePath()
-            AdminEditProfileForm.setProfileImage(image)
+            mainViewModel.fileToUrl(image, DataType.ADMIN_PROFILE_IMAGE)
         } else {
             // 갤러리 이미지
-            uri.toMultiPartImage(requireContext())?.let { image ->
-                AdminEditProfileForm.setProfileImage(image)
+            uri.toMultiPart(requireContext())?.let { image ->
+                mainViewModel.fileToUrl(image, DataType.ADMIN_PROFILE_IMAGE)
             } ?: run {
                 showToastMessage("이미지 파일 변환 실패")
             }
