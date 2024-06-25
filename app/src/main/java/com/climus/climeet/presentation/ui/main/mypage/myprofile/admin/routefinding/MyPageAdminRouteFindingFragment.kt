@@ -119,12 +119,26 @@ class MyPageAdminRouteFindingFragment :
                 }
             }
         }
+        repeatOnStarted {
+            viewModel.selectedFloor.collect {
+                if(it == 2) {
+                    binding.btnDeleteSecondFloor.visibility = View.VISIBLE
+                } else {
+                    binding.btnDeleteSecondFloor.visibility = View.GONE
+                }
+                if(viewModel.uiState.value.layoutList[it - 1].gymImg == "") {
+                    binding.tvImageExplain.visibility = View.VISIBLE
+                }else{
+                    binding.tvImageExplain.visibility = View.GONE
+                }
+            }
+        }
     }
 
     private fun initParentImageObserve() {
         repeatOnStarted {
             parentViewModel.imageUri.collect {
-                viewModel.updateImg(it)
+                viewModel.updateImg(it.toString())
                 setImage(it)
             }
         }

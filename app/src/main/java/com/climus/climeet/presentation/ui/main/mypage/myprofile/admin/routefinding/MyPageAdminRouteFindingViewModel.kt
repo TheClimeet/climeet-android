@@ -302,12 +302,12 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         return isComplete
     }
 
-    fun updateImg(uri: Uri) {
+    fun updateImg(uri: String) {
         _uiState.update { state ->
             val updatedLayoutList = state.layoutList.toMutableList()
             val selectedFloor = selectedFloor.value
 
-            updatedLayoutList[selectedFloor - 1] = updatedLayoutList[selectedFloor - 1].copy(gymImg = uri.toString())
+            updatedLayoutList[selectedFloor - 1] = updatedLayoutList[selectedFloor - 1].copy(gymImg = uri)
 
             state.copy(
                 layoutList = updatedLayoutList
@@ -322,6 +322,17 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         viewModelScope.launch {
             _event.emit(MyPageAdminRouteFindingEvent.ShowLayoutImg(uri))
         }
+    }
+
+    fun addSecondFloor() {
+        isSecondFloorExist.postValue(true)
+        selectFloor(2)
+    }
+
+    fun deleteSecondFloor() {
+        isSecondFloorExist.postValue(false)
+        updateImg("")
+        selectFloor(1)
     }
 
     fun noUse(dateDate: LocalDate) {}
