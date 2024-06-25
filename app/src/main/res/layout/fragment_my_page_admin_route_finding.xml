@@ -132,7 +132,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_level_manage">
-                    
+
                     <HorizontalScrollView
                         android:id="@+id/hsv_route_finding_level"
                         android:layout_width="match_parent"
@@ -151,8 +151,8 @@
                                 android:id="@+id/rv_route_finding_level"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
                                 android:nestedScrollingEnabled="false"
+                                android:orientation="horizontal"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                                 app:layout_constraintBottom_toBottomOf="@+id/tv_add_level"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -364,23 +364,25 @@
                         style="@style/TextSmall"
                         android:layout_width="54dp"
                         android:layout_height="30dp"
+                        android:background="@drawable/rect_grey8fill_nostroke_5radius"
                         android:gravity="center"
                         android:text="@string/route_finding_first_floor"
-                        android:background="@drawable/rect_grey8fill_nostroke_5radius"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
+                        android:onClick="@{()->vm.selectFloor(1)}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/btn_second_floor"
                         style="@style/TextSmall"
                         android:layout_width="54dp"
                         android:layout_height="30dp"
-                        android:gravity="center"
                         android:layout_marginStart="10dp"
-                        android:text="@string/plus"
                         android:background="@drawable/rect_grey8fill_nostroke_5radius"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/btn_first_floor"/>
+                        android:gravity="center"
+                        android:text="@string/plus"
+                        android:onClick="@{()->vm.selectFloor(2)}"
+                        app:layout_constraintStart_toEndOf="@+id/btn_first_floor"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_add_gym_image"
@@ -396,11 +398,12 @@
                             android:id="@+id/iv_add_gym_iamge"
                             android:layout_width="match_parent"
                             android:layout_height="141dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ic_add_image_background"
                             android:background="@drawable/rect_silver2fill_nostroke_5radius"
                             android:clipToOutline="true"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            android:onClick="@{()->vm.goToGallery()}"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_add_image_background"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/tv_image_explain"

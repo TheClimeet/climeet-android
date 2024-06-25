@@ -1,15 +1,21 @@
 package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding
 
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
+import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMyPageAdminRouteFindingBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheet
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheetViewModel
+import com.climus.climeet.presentation.ui.intro.IntroViewModel
+import com.climus.climeet.presentation.ui.intro.UrlType
+import com.climus.climeet.presentation.ui.main.MainViewModel
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.LevelColorAdapter
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.RouteFindingLevelAdapter
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.bottomsheet.SetLevelBottomSheet
@@ -19,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MyPageAdminRouteFindingFragment :
     BaseFragment<FragmentMyPageAdminRouteFindingBinding>(R.layout.fragment_my_page_admin_route_finding) {
 
+    private val parentViewModel: MainViewModel by activityViewModels()
     private val dateViewModel: SelectDateBottomSheetViewModel by viewModels()
     private val viewModel: MyPageAdminRouteFindingViewModel by activityViewModels()
     private lateinit var lvAdapter: RouteFindingLevelAdapter
@@ -32,6 +39,7 @@ class MyPageAdminRouteFindingFragment :
         setRV()
         initEventObserve()
         initStateObserve()
+        initParentImageObserve()
     }
 
     private fun initEventObserve() {
@@ -55,6 +63,14 @@ class MyPageAdminRouteFindingFragment :
                             viewModel
                         ).show()
                     }
+
+                    MyPageAdminRouteFindingEvent.GoToGallery -> context?.let { itsContext ->
+                        parentViewModel.goToSetProfileImage(
+                            itsContext
+                        )
+                    }
+
+                    is MyPageAdminRouteFindingEvent.ShowLayoutImg -> setImage(it.uri)
                 }
             }
         }
@@ -67,8 +83,14 @@ class MyPageAdminRouteFindingFragment :
                 if (isCompletable) {
                     setTvExplain()
                 }
-                binding.rvRouteFindingLevel.post{
+                binding.rvRouteFindingLevel.post {
                     lvAdapter.submitList(state.levelList)
+                }
+
+                if(state.layoutList[viewModel.selectedFloor.value - 1].gymImg == "") {
+                    binding.tvImageExplain.visibility = View.VISIBLE
+                }else{
+                    binding.tvImageExplain.visibility = View.GONE
                 }
             }
         }
@@ -87,7 +109,7 @@ class MyPageAdminRouteFindingFragment :
                         binding.layoutSetLevel.isClickable = true
                         binding.tvExplain.text = ""
                     }
-                    if(it.colorName == "-" || it.climeetLevel == "레벨 설정") {
+                    if (it.colorName == "-" || it.climeetLevel == "레벨 설정") {
                         binding.tvExplain.text = "컴피티션 레벨은 C에 고정되어 있어요"
                         viewModel.isCompletable.postValue(false)
                     }
@@ -95,6 +117,15 @@ class MyPageAdminRouteFindingFragment :
                 binding.rvLevelColor.post {
                     adapter.notifyDataSetChanged()
                 }
+            }
+        }
+    }
+
+    private fun initParentImageObserve() {
+        repeatOnStarted {
+            parentViewModel.imageUri.collect {
+                viewModel.updateImg(it)
+                setImage(it)
             }
         }
     }
@@ -112,8 +143,16 @@ class MyPageAdminRouteFindingFragment :
         binding.rvRouteFindingLevel.adapter = lvAdapter
     }
 
-    private fun NavController.toCreateRoute(){
-        val action = MyPageAdminRouteFindingFragmentDirections.actionMyPageAdminRouteFindingFragmentToMyPageAdminSetRouteFragment()
+    private fun setImage(uri: Uri) {
+        Glide.with(this)
+            .load(uri)
+            .placeholder(R.drawable.ic_add_image_background)
+            .into(binding.ivAddGymIamge)
+    }
+
+    private fun NavController.toCreateRoute() {
+        val action =
+            MyPageAdminRouteFindingFragmentDirections.actionMyPageAdminRouteFindingFragmentToMyPageAdminSetRouteFragment()
         navigate(action)
     }
 }

@@ -1,6 +1,9 @@
 package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding
 
+import android.net.Uri
+import android.util.Log
 import androidx.core.graphics.toColorInt
+import androidx.core.net.toUri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +11,7 @@ import com.climus.climeet.R
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiHoldItem
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLayoutItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLevelItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiRouteChipData
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiSectorItem
@@ -43,6 +47,9 @@ sealed class CreateRouteEvent {
 
 data class MyPageAdminRouteFindingUiState(
     val levelList: List<UiLevelItem> = emptyList(),
+    val layoutList: List<UiLayoutItem> = listOf(
+        UiLayoutItem(1, ""), UiLayoutItem(2, "")
+    ),
     val sectorList: List<UiSectorItem> = emptyList(),
     val holdList: List<UiHoldItem> = emptyList(),
     val chipList: List<UiRouteChipData> = emptyList(),
@@ -51,6 +58,8 @@ data class MyPageAdminRouteFindingUiState(
 sealed class MyPageAdminRouteFindingEvent {
     data object ShowDatePicker : MyPageAdminRouteFindingEvent()
     data object ShowSetLevel : MyPageAdminRouteFindingEvent()
+    data object GoToGallery : MyPageAdminRouteFindingEvent()
+    data class ShowLayoutImg(val uri: Uri) : MyPageAdminRouteFindingEvent()
 }
 
 @HiltViewModel
@@ -188,7 +197,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     val selectedDateText =
         MutableStateFlow("${initDate.year}년 ${initDate.monthValue}월 ${initDate.dayOfMonth}일 (${dayOfWeekMap[initDate.dayOfWeek]})")
     val selectedDate = MutableStateFlow(initDate)
-    val defaultItem = UiLevelItem(
+    private val defaultItem = UiLevelItem(
         climeetLevel = "레벨 설정",
         colorHex = "#FFFFFF",
         colorName = "-",
@@ -201,6 +210,9 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     val colorList = LevelColorData.COLORS
     val isCompletable = MutableLiveData(true)
     val isLevelAdd = MutableLiveData(true)
+
+    val selectedFloor = MutableStateFlow(1)
+    val isSecondFloorExist = MutableLiveData(false)
 
     fun setSelectedDate(updateDate: LocalDate) {
         selectedDate.update { updateDate }
@@ -290,6 +302,28 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         return isComplete
     }
 
+    fun updateImg(uri: Uri) {
+        _uiState.update { state ->
+            val updatedLayoutList = state.layoutList.toMutableList()
+            val selectedFloor = selectedFloor.value
+
+            updatedLayoutList[selectedFloor - 1] = updatedLayoutList[selectedFloor - 1].copy(gymImg = uri.toString())
+
+            state.copy(
+                layoutList = updatedLayoutList
+            )
+        }
+    }
+
+    fun selectFloor(floor: Int) {
+        selectedFloor.update { floor }
+        val uri = uiState.value.layoutList[floor-1].gymImg.toUri()
+
+        viewModelScope.launch {
+            _event.emit(MyPageAdminRouteFindingEvent.ShowLayoutImg(uri))
+        }
+    }
+
     fun noUse(dateDate: LocalDate) {}
 
     fun showDatePicker() {
@@ -301,6 +335,12 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     fun showSetLevel() {
         viewModelScope.launch {
             _event.emit(MyPageAdminRouteFindingEvent.ShowSetLevel)
+        }
+    }
+
+    fun goToGallery() {
+        viewModelScope.launch {
+            _event.emit(MyPageAdminRouteFindingEvent.GoToGallery)
         }
     }
 
