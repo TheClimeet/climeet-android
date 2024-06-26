@@ -4,8 +4,8 @@
 
     <data>
         <variable
-            name="lc"
-            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.LevelColor" />
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLevelItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,11 +20,11 @@
             android:layout_height="30dp"
             android:background="@drawable/oval_silver2fill_nostroke"
             android:gravity="center"
-            android:text="@{lc.color.name}"
+            android:text="@{item.colorName}"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:textHexColor="@{lc.color.color}" />
+            app:textHexColor="@{item.colorHex}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

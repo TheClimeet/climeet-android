@@ -1,6 +1,8 @@
 package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding
 
+import android.net.Uri
 import androidx.core.graphics.toColorInt
+import androidx.core.net.toUri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +10,7 @@ import com.climus.climeet.R
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiHoldItem
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLayoutItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLevelItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiRouteChipData
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiSectorItem
@@ -43,6 +46,9 @@ sealed class CreateRouteEvent {
 
 data class MyPageAdminRouteFindingUiState(
     val levelList: List<UiLevelItem> = emptyList(),
+    val layoutList: List<UiLayoutItem> = listOf(
+        UiLayoutItem(1, ""), UiLayoutItem(2, "")
+    ),
     val sectorList: List<UiSectorItem> = emptyList(),
     val holdList: List<UiHoldItem> = emptyList(),
     val chipList: List<UiRouteChipData> = emptyList(),
@@ -51,6 +57,10 @@ data class MyPageAdminRouteFindingUiState(
 sealed class MyPageAdminRouteFindingEvent {
     data object ShowDatePicker : MyPageAdminRouteFindingEvent()
     data object ShowSetLevel : MyPageAdminRouteFindingEvent()
+    data object GoToGallery : MyPageAdminRouteFindingEvent()
+    data object GoToCreateRoute : MyPageAdminRouteFindingEvent()
+    data object NavigateToBack : MyPageAdminRouteFindingEvent()
+    data class ShowLayoutImg(val uri: Uri) : MyPageAdminRouteFindingEvent()
 }
 
 @HiltViewModel
@@ -97,24 +107,6 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
                     UiHoldItem(R.drawable.ic_grey_hold, ::setHoldImage),
                     UiHoldItem(R.drawable.ic_pink_hold, ::setHoldImage),
                     UiHoldItem(R.drawable.ic_black_hold, ::setHoldImage),
-                ),
-                levelList = listOf(
-                    UiLevelItem(
-                        "하양", "#FFFFFF", "V1", ::setLevelColor
-                    ), UiLevelItem(
-                        "빨강", "#F34040", "V1", ::setLevelColor
-                    ), UiLevelItem(
-                        "주황", "#FF9000", "V1", ::setLevelColor
-                    ), UiLevelItem(
-                        "노랑", "#FDDA16", "V1", ::setLevelColor
-                    ), UiLevelItem(
-                        "초록", "#63B75D", "V1", ::setLevelColor
-                    )
-                ),
-                sectorList = listOf(
-                    UiSectorItem("PEEK1", Constants.TEST_IMG, true, ::setSector),
-                    UiSectorItem("PEEK2", Constants.TEST_IMG, false, ::setSector),
-                    UiSectorItem("PEEK3", Constants.TEST_IMG, false, ::setSector),
                 )
             )
         }
@@ -188,18 +180,27 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     val selectedDateText =
         MutableStateFlow("${initDate.year}년 ${initDate.monthValue}월 ${initDate.dayOfMonth}일 (${dayOfWeekMap[initDate.dayOfWeek]})")
     val selectedDate = MutableStateFlow(initDate)
-
-    val selectedLevel = MutableStateFlow(
-        UiLevelItem(
-            climeetLevel = "레벨 설정",
-            colorHex = "#FFFFFF",
-            colorName = "-",
-            setLevelListener = ::empty
-        )
+    private val defaultLevelItem = UiLevelItem(
+        climeetLevel = "레벨 설정",
+        colorHex = "#FFFFFF",
+        colorName = "-",
+        setLevelListener = ::setLevelColor
     )
+
+    val selectedLevel = MutableStateFlow(defaultLevelItem)
+    val modifyingLevel = MutableStateFlow(defaultLevelItem)
 
     val colorList = LevelColorData.COLORS
     val isCompletable = MutableLiveData(true)
+    val isLevelAdd = MutableLiveData(true)
+
+    val selectedFloor = MutableStateFlow(1)
+    val isSecondFloorExist = MutableLiveData(false)
+
+    val defaultSectorItem = UiSectorItem("", "", false, ::setSector)
+    val selectedSector = MutableStateFlow(defaultSectorItem)
+    val selectedImageType = MutableStateFlow(DataType.GYM)
+    val modifyingSector = MutableStateFlow(defaultSectorItem)
 
     fun setSelectedDate(updateDate: LocalDate) {
         selectedDate.update { updateDate }
@@ -225,31 +226,140 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         }
     }
 
-    fun addLevelColor() {
+    fun updateIsLevelAdd(isAdd: Boolean) {
+        isLevelAdd.postValue(isAdd)
+    }
 
+    fun addLevelColor() {
+        modifyingLevel.update {
+            selectedLevel.value
+        }
         _uiState.update { state ->
+            val updatedList = state.levelList + selectedLevel.value
+            val sortedList = updatedList.filter { it.climeetLevel != "C" }
+                .sortedBy { LevelColorData.LEVELS.indexOf(it.climeetLevel) } +
+                    updatedList.filter { it.climeetLevel == "C" }
+
             state.copy(
-                levelList = uiState.value.levelList + selectedLevel.value
+                levelList = sortedList
             )
         }
+        updateIsLevelAdd(false)
+    }
 
+    fun modifyLevel() {
+        _uiState.update { state ->
+            val updatedList = state.levelList.map { level ->
+                if (level.colorHex == modifyingLevel.value.colorHex) {
+                    selectedLevel.value
+                } else {
+                    level
+                }
+            }
+            updateModifingLevel(selectedLevel.value)
+            state.copy(levelList = updatedList)
+        }
+    }
+
+    fun deleteLevel() {
+        _uiState.update { state ->
+            val updatedList = state.levelList.filterNot { level ->
+                level.colorHex == modifyingLevel.value.colorHex
+            }
+            state.copy(levelList = updatedList)
+        }
+        resetSelectedColorAndLevel()
+    }
+
+    fun updateModifingLevel(item: UiLevelItem) {
+        modifyingLevel.update { item }
     }
 
     fun resetSelectedColorAndLevel() {
-        selectedLevel.update {
-            it.copy(
-                climeetLevel = "레벨 설정",
-                colorHex = "#FFFFFF",
-                colorName = "-",
-                setLevelListener = ::empty
-            )
-        }
+        selectedLevel.update { defaultLevelItem }
+        updateModifingLevel(defaultLevelItem)
+        updateIsLevelAdd(true)
     }
 
     fun isColorAlreadySelected(): Boolean {
-        val isComplete = !_uiState.value.levelList.any { it.colorName == selectedLevel.value.colorName }
+        val isComplete =
+            !_uiState.value.levelList.any {
+                it.colorName == selectedLevel.value.colorName
+            } || modifyingLevel.value.colorName == selectedLevel.value.colorName
         isCompletable.value = isComplete
         return isComplete
+    }
+
+    fun updateImg(uri: String) {
+        if (selectedImageType.value == DataType.GYM) {
+            _uiState.update { state ->
+                val updatedLayoutList = state.layoutList.toMutableList()
+                val selectedFloor = selectedFloor.value
+
+                updatedLayoutList[selectedFloor - 1] =
+                    updatedLayoutList[selectedFloor - 1].copy(gymImg = uri)
+
+                state.copy(
+                    layoutList = updatedLayoutList
+                )
+            }
+        } else {
+            selectedSector.update {
+                it.copy(
+                    sectorImg = uri
+                )
+            }
+        }
+
+    }
+
+    fun selectFloor(floor: Int) {
+        selectedFloor.update { floor }
+        val uri = uiState.value.layoutList[floor - 1].gymImg.toUri()
+
+        viewModelScope.launch {
+            _event.emit(MyPageAdminRouteFindingEvent.ShowLayoutImg(uri))
+        }
+    }
+
+    fun addSecondFloor() {
+        isSecondFloorExist.postValue(true)
+        selectFloor(2)
+    }
+
+    fun deleteSecondFloor() {
+        isSecondFloorExist.postValue(false)
+        updateImg("")
+        selectFloor(1)
+    }
+
+    fun addSector() {
+        _uiState.update { state ->
+            val updatedList = state.sectorList + selectedSector.value
+            state.copy(
+                sectorList = updatedList
+            )
+        }
+        selectedSector.update { defaultSectorItem }
+    }
+
+    fun modifySector() {
+        _uiState.update { state ->
+            val updatedList = state.sectorList.map { sector ->
+                if (sector.sectorName == modifyingSector.value.sectorName) {
+                    selectedSector.value
+                } else {
+                    sector
+                }
+            }
+            state.copy(sectorList = updatedList)
+        }
+        resetSector()
+    }
+
+    fun resetSector() {
+        selectedSector.update { defaultSectorItem }
+        modifyingSector.update { defaultSectorItem }
     }
 
     fun noUse(dateDate: LocalDate) {}
@@ -266,6 +376,29 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         }
     }
 
+    fun goToGallery(type: Int) {
+        if (type == 0) {
+            selectedImageType.value = DataType.GYM
+        } else {
+            selectedImageType.value = DataType.SECTOR
+        }
+        viewModelScope.launch {
+            _event.emit(MyPageAdminRouteFindingEvent.GoToGallery)
+        }
+    }
+
+    fun goToCreateRoute() {
+        viewModelScope.launch {
+            _event.emit(MyPageAdminRouteFindingEvent.GoToCreateRoute)
+        }
+    }
+
+    fun navigateToBack() {
+        viewModelScope.launch {
+            _event.emit(MyPageAdminRouteFindingEvent.NavigateToBack)
+        }
+    }
+
     companion object {
         private val dayOfWeekMap = mapOf(
             DayOfWeek.MONDAY to "월",
@@ -276,6 +409,26 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
             DayOfWeek.SATURDAY to "토",
             DayOfWeek.SUNDAY to "일"
         )
+        private val colorOrder = listOf(
+            "검정" to "#000000",
+            "회색" to "#8B8B8B",
+            "갈색" to "#6E4C41",
+            "핑크" to "#FF74E9",
+            "보라" to "#A259FF",
+            "남색" to "#393FD6",
+            "파랑" to "#0094FF",
+            "하늘" to "#74D5FF",
+            "초록" to "#63B75D",
+            "노랑" to "#FDDA16",
+            "주황" to "#FF9000",
+            "빨강" to "#F34040",
+            "하양" to "#FFFFFF",
+            "컴피" to "#BEDF22"
+        )
     }
 
+}
+
+enum class DataType {
+    GYM, SECTOR
 }
