@@ -12,8 +12,12 @@
             type="com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel" />
 
         <variable
-            name="vm"
+            name="rvm"
             type="com.climus.climeet.presentation.ui.main.global.gymprofile.route.GymProfileRouteViewModel" />
+
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.MyPageAdminMyProfileViewModel" />
 
     </data>
 
@@ -58,11 +62,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:src="@drawable/ic_edit"
-                        android:background="@color/transparent"
+                        android:background="@drawable/ic_edit"
+                        android:onClick="@{()->vm.navigateToRouteFinding()}"
+                        android:visibility="@{rvm.isDataLoaded ? View.VISIBLE : View.GONE}"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tv_title"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <!--    날짜 선택    -->
                     <TextView
@@ -71,8 +76,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="10dp"
-                        android:onClick="@{()->vm.showDatePicker()}"
-                        android:text="@{vm.datePickText}"
+                        android:onClick="@{()->rvm.showDatePicker()}"
+                        android:text="@{rvm.datePickText}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/iv_date_toggle"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -81,7 +86,7 @@
                         android:id="@+id/iv_date_toggle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="@{()->vm.showDatePicker()}"
+                        android:onClick="@{()->rvm.showDatePicker()}"
                         android:src="@drawable/ic_gym_profile_toggle"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -92,190 +97,281 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_route"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:paddingBottom="20dp"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layout_header">
 
+                    <!--  루트 없을 때  -->
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/layout_main"
+                        android:id="@+id/layout_no_route"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="@{rvm.isDataLoaded ? View.GONE : View.VISIBLE}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <View
+                            android:id="@+id/view_background"
+                            android:layout_width="match_parent"
+                            android:layout_height="170dp"
+                            android:layout_marginHorizontal="30dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/rect_grey8fill_nostroke_5radius"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/appCompatImageView"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="30dp"
+                            android:src="@drawable/ic_no_shorts"
+                            app:layout_constraintEnd_toEndOf="@+id/view_background"
+                            app:layout_constraintStart_toStartOf="@+id/view_background"
+                            app:layout_constraintTop_toTopOf="@+id/view_background" />
+
+                        <TextView
+                            android:id="@+id/tv_1"
+                            style="@style/TextTiny"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="암장 설정이 아직 완료되지 않았어요"
+                            android:textColor="@color/cm_textgrey"
+                            app:layout_constraintEnd_toEndOf="@+id/view_background"
+                            app:layout_constraintStart_toStartOf="@+id/view_background"
+                            app:layout_constraintTop_toBottomOf="@+id/appCompatImageView" />
+
+                        <TextView
+                            android:id="@+id/tv_2"
+                            style="@style/TextTinyBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{()->vm.navigateToRouteFinding()}"
+                            android:text="여기"
+                            android:textColor="@color/cm_textgrey"
+                            app:layout_constraintEnd_toStartOf="@+id/tv_3"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintStart_toStartOf="@+id/view_background"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_1" />
+
+                        <TextView
+                            android:id="@+id/tv_3"
+                            style="@style/TextTiny"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="를 눌러 암장 설정을 완료해주세요"
+                            android:textColor="@color/cm_textgrey"
+                            app:layout_constraintEnd_toEndOf="@+id/view_background"
+                            app:layout_constraintStart_toEndOf="@+id/tv_2"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_1" />
+
+                        <View
+                            android:layout_width="21dp"
+                            android:layout_height="0.5dp"
+                            android:layout_marginTop="-2dp"
+                            android:background="@color/cm_textgrey"
+                            app:layout_constraintStart_toStartOf="@+id/tv_2"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_2" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!--  루트 있을 때  -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_with_route"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="25dp"
-                        android:layout_marginTop="20dp"
-                        android:background="@drawable/rect_grey8fill_nostroke_10radius"
-                        android:paddingVertical="20dp"
+                        android:visibility="@{rvm.isDataLoaded ? View.VISIBLE : View.GONE}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/layout_toggle_button"
-                            android:layout_width="0dp"
+                            android:id="@+id/layout_main"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="12dp"
-                            android:background="@drawable/rect_silver2fill_nostroke_20radius"
-                            android:paddingHorizontal="4dp"
-                            android:paddingVertical="3dp"
-                            android:visibility="@{vm.uiState.singleFloor? View.GONE : View.VISIBLE}"
+                            android:layout_marginHorizontal="25dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/rect_grey8fill_nostroke_10radius"
+                            android:paddingVertical="20dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/guidline_toggle_button"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_percent="0.5" />
-
-                            <androidx.appcompat.widget.AppCompatButton
-                                android:id="@+id/btn_floor_one"
-                                style="@style/TextRegularSemiBold"
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/layout_toggle_button"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="12dp"
                                 android:background="@drawable/rect_silver2fill_nostroke_20radius"
-                                android:minHeight="0dp"
-                                android:onClick="@{() -> vm.selectFloor(1)}"
-                                android:outlineProvider="none"
-                                android:paddingVertical="5dp"
-                                android:text="1층"
-                                android:textColor="@color/white"
-                                app:floorBtnState="@{vm.uiState.firstFloorBtnState}"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="@id/guidline_toggle_button"
+                                android:paddingHorizontal="4dp"
+                                android:paddingVertical="3dp"
+                                android:visibility="@{rvm.uiState.singleFloor? View.GONE : View.VISIBLE}"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent">
 
-                            <androidx.appcompat.widget.AppCompatButton
-                                android:id="@+id/btn_floor_two"
-                                style="@style/TextRegularSemiBold"
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guidline_toggle_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.5" />
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/btn_floor_one"
+                                    style="@style/TextRegularSemiBold"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rect_silver2fill_nostroke_20radius"
+                                    android:minHeight="0dp"
+                                    android:onClick="@{() -> rvm.selectFloor(1)}"
+                                    android:outlineProvider="none"
+                                    android:paddingVertical="5dp"
+                                    android:text="1층"
+                                    android:textColor="@color/white"
+                                    app:floorBtnState="@{rvm.uiState.firstFloorBtnState}"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="@id/guidline_toggle_button"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <androidx.appcompat.widget.AppCompatButton
+                                    android:id="@+id/btn_floor_two"
+                                    style="@style/TextRegularSemiBold"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rect_mainfill_nostroke_20radius"
+                                    android:minHeight="0dp"
+                                    android:onClick="@{() ->  rvm.selectFloor(2)}"
+                                    android:outlineProvider="none"
+                                    android:paddingVertical="5dp"
+                                    android:text="2층"
+                                    android:textColor="@color/black"
+                                    app:floorBtnState="@{rvm.uiState.secondFloorBtnState}"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@id/guidline_toggle_button"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/iv_sector"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_marginHorizontal="12dp"
+                                android:layout_marginTop="16dp"
+                                android:scaleType="centerCrop"
+                                app:imgUrl="@{rvm.uiState.layoutImg}"
+                                app:layout_constraintDimensionRatio="2.3:1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/layout_toggle_button"
+                                app:shapeAppearanceOverlay="@style/All10RadiusImageView"
+                                tools:src="@drawable/test" />
+
+                            <com.climus.climeet.presentation.customview.ScrollBlockRecyclerView
+                                android:id="@+id/rv_sector_name"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/rect_mainfill_nostroke_20radius"
-                                android:minHeight="0dp"
-                                android:onClick="@{() ->  vm.selectFloor(2)}"
-                                android:outlineProvider="none"
-                                android:paddingVertical="5dp"
-                                android:text="2층"
-                                android:textColor="@color/black"
-                                app:floorBtnState="@{vm.uiState.secondFloorBtnState}"
-                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:layout_marginHorizontal="12dp"
+                                android:clipToPadding="false"
+                                android:nestedScrollingEnabled="true"
+                                android:orientation="horizontal"
+                                android:paddingTop="8dp"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toEndOf="@id/guidline_toggle_button"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/iv_sector"
+                                app:list="@{rvm.uiState.sectorNameList}"
+                                tools:listitem="@layout/item_sector_name" />
+
+                            <com.climus.climeet.presentation.customview.ScrollBlockRecyclerView
+                                android:id="@+id/rv_sector_level"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="12dp"
+                                android:clipToPadding="false"
+                                android:nestedScrollingEnabled="true"
+                                android:orientation="horizontal"
+                                android:paddingTop="8dp"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/rv_sector_name"
+                                app:list="@{rvm.uiState.gymLevelList}"
+                                tools:listitem="@layout/item_gym_level" />
+
+                            <com.climus.climeet.presentation.customview.ScrollBlockRecyclerView
+                                android:id="@+id/rv_sector_image"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="12dp"
+                                android:clipToPadding="false"
+                                android:nestedScrollingEnabled="true"
+                                android:orientation="horizontal"
+                                android:paddingVertical="16dp"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/rv_sector_level"
+                                app:list="@{rvm.uiState.routeList}"
+                                tools:listitem="@layout/item_route_image" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/iv_sector"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_marginHorizontal="12dp"
-                            android:layout_marginTop="16dp"
-                            android:scaleType="centerCrop"
-                            app:imgUrl="@{vm.uiState.layoutImg}"
-                            app:layout_constraintDimensionRatio="2.3:1"
+                        <com.climus.climeet.presentation.customview.RouteView
+                            android:id="@+id/select_sector"
+                            android:layout_width="100dp"
+                            android:layout_height="124dp"
+                            android:layout_marginTop="20dp"
+                            android:visibility="@{rvm.uiState.selectedRoute.sectorId == -1 ? View.GONE : View.VISIBLE}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/layout_toggle_button"
-                            app:shapeAppearanceOverlay="@style/All10RadiusImageView"
-                            tools:src="@drawable/test" />
+                            app:layout_constraintTop_toBottomOf="@id/layout_main"
+                            app:routeImgUrl="@{rvm.uiState.selectedRoute.routeImg}"
+                            app:routeLevelColor="@{rvm.uiState.selectedRoute.gymLevelColor}"
+                            app:routeLevelName="@{rvm.uiState.selectedRoute.gymLevelName}" />
 
-                        <com.climus.climeet.presentation.customview.ScrollBlockRecyclerView
-                            android:id="@+id/rv_sector_name"
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_cancel"
+                            style="@style/TextMediumBold"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="12dp"
-                            android:clipToPadding="false"
-                            android:nestedScrollingEnabled="true"
-                            android:orientation="horizontal"
-                            android:paddingTop="8dp"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="25dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:background="@drawable/rect_silver2fill_nostroke_8radius"
+                            android:onClick="@{() -> rvm.clearSelectedRoute()}"
+                            android:text="취소"
+                            android:textColor="@color/white"
+                            app:layout_constraintEnd_toStartOf="@id/btn_accept"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/iv_sector"
-                            app:list="@{vm.uiState.sectorNameList}"
-                            tools:listitem="@layout/item_sector_name" />
+                            app:layout_constraintTop_toBottomOf="@id/select_sector" />
 
-                        <com.climus.climeet.presentation.customview.ScrollBlockRecyclerView
-                            android:id="@+id/rv_sector_level"
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btn_accept"
+                            style="@style/TextMediumBold"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="12dp"
-                            android:clipToPadding="false"
-                            android:nestedScrollingEnabled="true"
-                            android:orientation="horizontal"
-                            android:paddingTop="8dp"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="25dp"
+                            android:background="@drawable/rect_mainfill_nostroke_8radius"
+                            android:onClick="@{() -> rvm.applySectorFilter()}"
+                            android:text="적용하기"
+                            android:textColor="@color/black"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/rv_sector_name"
-                            app:list="@{vm.uiState.gymLevelList}"
-                            tools:listitem="@layout/item_gym_level" />
-
-                        <com.climus.climeet.presentation.customview.ScrollBlockRecyclerView
-                            android:id="@+id/rv_sector_image"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="12dp"
-                            android:clipToPadding="false"
-                            android:nestedScrollingEnabled="true"
-                            android:orientation="horizontal"
-                            android:paddingVertical="16dp"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/rv_sector_level"
-                            app:list="@{vm.uiState.routeList}"
-                            tools:listitem="@layout/item_route_image" />
+                            app:layout_constraintStart_toEndOf="@id/btn_cancel"
+                            app:layout_constraintTop_toBottomOf="@id/select_sector" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <com.climus.climeet.presentation.customview.RouteView
-                        android:id="@+id/select_sector"
-                        android:layout_width="100dp"
-                        android:layout_height="124dp"
-                        android:layout_marginTop="20dp"
-                        android:visibility="@{vm.uiState.selectedRoute.sectorId == -1 ? View.GONE : View.VISIBLE}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/layout_main"
-                        app:routeImgUrl="@{vm.uiState.selectedRoute.routeImg}"
-                        app:routeLevelColor="@{vm.uiState.selectedRoute.gymLevelColor}"
-                        app:routeLevelName="@{vm.uiState.selectedRoute.gymLevelName}" />
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btn_cancel"
-                        style="@style/TextMediumBold"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="@drawable/rect_silver2fill_nostroke_8radius"
-                        android:onClick="@{() -> vm.clearSelectedRoute()}"
-                        android:text="취소"
-                        android:textColor="@color/white"
-                        app:layout_constraintEnd_toStartOf="@id/btn_accept"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/select_sector" />
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btn_accept"
-                        style="@style/TextMediumBold"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="25dp"
-                        android:background="@drawable/rect_mainfill_nostroke_8radius"
-                        android:onClick="@{() -> vm.applySectorFilter()}"
-                        android:text="적용하기"
-                        android:textColor="@color/black"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/btn_cancel"
-                        app:layout_constraintTop_toBottomOf="@id/select_sector" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -308,8 +404,8 @@
                             style="@style/TextSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxWidth="100dp"
                             android:ellipsize="end"
+                            android:maxWidth="100dp"
                             android:singleLine="true"
                             android:text="@{svm.uiState.curFilter.cragName}"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -334,10 +430,10 @@
                             style="@style/TextSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxWidth="100dp"
-                            android:ellipsize="end"
-                            android:singleLine="true"
                             android:layout_marginStart="8dp"
+                            android:ellipsize="end"
+                            android:maxWidth="100dp"
+                            android:singleLine="true"
                             android:text="@{svm.uiState.curFilter.sectorName}"
                             android:visibility="@{svm.uiState.curFilter.sectorName.empty? View.GONE : View.VISIBLE}"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -362,10 +458,10 @@
                             style="@style/TextSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxWidth="80dp"
-                            android:ellipsize="end"
-                            android:singleLine="true"
                             android:layout_marginStart="8dp"
+                            android:ellipsize="end"
+                            android:maxWidth="80dp"
+                            android:singleLine="true"
                             android:text="@{svm.uiState.curFilter.gymLevelName}"
                             android:visibility="@{svm.uiState.curFilter.gymLevelName.empty? View.GONE : View.VISIBLE}"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -378,7 +474,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:background="@android:color/transparent"
-                            android:onClick="@{() -> vm.clearSelectedRoute()}"
+                            android:onClick="@{() -> rvm.clearSelectedRoute()}"
                             android:paddingHorizontal="15dp"
                             android:src="@drawable/ic_main_exit"
                             app:layout_constraintBottom_toBottomOf="parent"

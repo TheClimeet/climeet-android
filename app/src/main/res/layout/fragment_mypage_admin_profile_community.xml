@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="svm"
+            type="com.climus.climeet.presentation.ui.main.global.gymprofile.community.GymProfileCommunityViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

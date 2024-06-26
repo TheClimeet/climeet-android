@@ -3,7 +3,7 @@ package com.climus.climeet.presentation.ui.main.mypage
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MyPageFragment: BaseFragment<FragmentMypageBinding>(R.layout.fragment_mypage) {
 
-    private val viewModel: MyPageViewModel by viewModels()
+    private val viewModel: MyPageViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

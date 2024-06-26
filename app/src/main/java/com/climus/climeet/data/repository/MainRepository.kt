@@ -7,6 +7,7 @@ import com.climus.climeet.data.model.request.AddShortsCommentRequest
 import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
+import com.climus.climeet.data.model.request.GymServiceUpdateRequest
 import com.climus.climeet.data.model.request.NotificationUpdateRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
@@ -285,6 +286,18 @@ interface MainRepository {
 
     suspend fun updateUserName(
         name: String,
+    ): BaseState<ResponseBody>
+
+    suspend fun updateAdminProfileImage(
+        body: String
+    ): BaseState<ResponseBody>
+
+    suspend fun updateAdminBackgroundImage(
+        body: String
+    ): BaseState<ResponseBody>
+
+    suspend fun updateGymService(
+        body: GymServiceUpdateRequest,
     ): BaseState<ResponseBody>
 
     suspend fun getNotificationStates(): BaseState<GetNotificationStatesResponse>

@@ -11,6 +11,9 @@
             name="svm"
             type="com.climus.climeet.presentation.ui.main.global.gymprofile.info.GymProfileInfoViewModel" />
 
+        <variable
+            name="vm"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.MyPageAdminMyProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -50,14 +53,15 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatImageButton
+                    <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="15dp"
-                        android:src="@drawable/ic_edit"
-                        android:background="@color/transparent"
+                        android:background="@drawable/ic_edit"
+                        android:onClick="@{() -> vm.navigateToEditService()}"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="@id/tv_service"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_service"/>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_type"
@@ -549,24 +553,6 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_review_rate" />
 
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/btn_create_review"
-                            style="@style/TextSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:layout_marginTop="10dp"
-                            android:background="@drawable/rect_nofill_mainstroke_8radius"
-                            android:drawableStart="@drawable/ic_plus_mainfill"
-                            android:drawablePadding="5dp"
-                            android:onClick="@{() -> svm.navigateToGymReviewBottomSheetFragment()}"
-                            android:paddingStart="15dp"
-                            android:paddingEnd="10dp"
-                            android:text="리뷰 남기기"
-                            android:textColor="@color/cm_main"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/star_point" />
-
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_review"
                             android:layout_width="0dp"
@@ -580,7 +566,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/btn_create_review"
+                            app:layout_constraintTop_toBottomOf="@id/star_point"
                             tools:itemCount="3"
                             tools:listitem="@layout/item_profile_review" />
 
@@ -593,7 +579,7 @@
                             android:visibility="gone"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/btn_create_review">
+                            app:layout_constraintTop_toBottomOf="@id/star_point">
 
                             <ImageView
                                 android:id="@+id/iv_no_review"

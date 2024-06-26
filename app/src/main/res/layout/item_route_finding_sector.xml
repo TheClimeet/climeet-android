@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiSectorItem" />
+
+    </data>
+
+    <TextView
+        android:id="@+id/tv_sector"
+        style="@style/TextSmallBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="9dp"
+        android:background="@drawable/rect_grey8fill_nostroke_5radius"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="6dp"
+        android:text="@{item.sectorName}"
+        android:textColor="@color/white"
+        tools:text="PEAK 1" />
+
+</layout>

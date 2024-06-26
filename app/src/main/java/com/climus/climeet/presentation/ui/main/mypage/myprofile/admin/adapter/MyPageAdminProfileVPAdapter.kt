@@ -6,7 +6,7 @@ import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.community.
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.info.MyPageAdminProfileInfoFragment
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.route.MyPageAdminProfileRouteFragment
 
-class MyPageAdminProfileVPAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+class MyPageAdminProfileVPAdapter(fragment: Fragment, val gymId: Long) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount(): Int = 3
 
@@ -14,7 +14,7 @@ class MyPageAdminProfileVPAdapter(fragment: Fragment) : FragmentStateAdapter(fra
         return when (position) {
             0 -> MyPageAdminProfileCommunityFragment()
             1 -> MyPageAdminProfileRouteFragment()
-            else -> MyPageAdminProfileInfoFragment()
+            else -> MyPageAdminProfileInfoFragment(gymId)
         }
     }
 }

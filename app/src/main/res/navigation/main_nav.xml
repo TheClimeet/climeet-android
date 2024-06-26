@@ -286,6 +286,12 @@
         <action
             android:id="@+id/action_myPageAdminMyProfileFragment_to_myPageAdminProfileEditBackgroundFragment"
             app:destination="@id/myPageAdminProfileEditBackgroundFragment" />
+        <action
+            android:id="@+id/action_myPageAdminMyProfileFragment_to_myPageAdminProfileEditServiceFragment"
+            app:destination="@id/myPageAdminProfileEditServiceFragment" />
+        <action
+            android:id="@+id/action_myPageAdminMyProfileFragment_to_gymReviewBottomSheetFragment"
+            app:destination="@id/gymReviewBottomSheetFragment" />
     </fragment>
 
     <fragment
@@ -299,34 +305,47 @@
         android:label="MyPageAdminProfileRouteFragment">
     </fragment>
     <fragment
-        android:id="@+id/myPAgeAdminProfileInfoFragment"
+        android:id="@+id/myPageAdminProfileInfoFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.info.MyPageAdminProfileInfoFragment"
         android:label="MyPageAdminProfileInfoFragment">
-        <action
-            android:id="@+id/action_myPAgeAdminProfileInfoFragment_to_myPageAdminProfileEditServiceFragment"
-            app:destination="@id/myPageAdminProfileEditServiceFragment" />
     </fragment>
     <fragment
         android:id="@+id/myPageAdminProfileEditServiceFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.info.MyPageAdminProfileEditServiceFragment"
         android:label="MyPageAdminProfileEditServiceFragment">
+        <argument
+            android:name="gymId"
+            app:argType="long"/>
         <action
-            android:id="@+id/action_myPageAdminProfileEditServiceFragment_to_myPAgeAdminProfileInfoFragment"
-            app:destination="@id/myPAgeAdminProfileInfoFragment" />
+            android:id="@+id/action_myPageAdminProfileEditServiceFragment_to_myPageAdminMyProfileFragment"
+            app:destination="@id/myPageAdminMyProfileFragment"
+            app:popUpTo="@id/myPageAdminMyProfileFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/myPageAdminProfileEditFragment"
         android:name="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.editprofile.MyPageAdminProfileEditFragment"
         android:label="MyPageAdminProfileEditFragment">
         <argument
+            android:name="backgroundState"
+            app:argType="boolean"/>
+        <argument
             android:name="gymName"
             app:argType="string"/>
         <argument
             android:name="gymProfile"
             app:argType="string"/>
+        <argument
+            android:name="gymBackground"
+            app:argType="string"/>
         <action
             android:id="@+id/action_myPageAdminProfileEditFragment_to_myPageAdminMyProfileFragment"
-            app:destination="@id/myPageAdminMyProfileFragment" />
+            app:destination="@id/myPageAdminMyProfileFragment"
+            app:popUpTo="@id/myPageAdminMyProfileFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_myPageAdminProfileEditFragment_to_myPageAdminProfileEditBackgroundFragment"
+            app:destination="@id/myPageAdminProfileEditBackgroundFragment" />
     </fragment>
     <fragment
         android:id="@+id/myPageAdminProfileEditBackgroundFragment"
@@ -348,7 +367,9 @@
             app:destination="@id/myPageAdminProfileEditFragment" />
         <action
             android:id="@+id/action_myPageAdminProfileEditBackgroundFragment_to_myPageAdminMyProfileFragment"
-            app:destination="@id/myPageAdminMyProfileFragment" />
+            app:destination="@id/myPageAdminMyProfileFragment"
+            app:popUpTo="@id/myPageAdminMyProfileFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
 

@@ -9,6 +9,7 @@ import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.InputState
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.editprofile.ClimberEditProfileForm.getProfileImagePath
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -55,6 +56,7 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
     private val imageUpdated = MutableStateFlow(false)
     var profileImage = ""
     private lateinit var imageToChange : MultipartBody.Part
+    val imageUploaded = MutableStateFlow(true)
 
     val nextAvailable = MutableStateFlow(false)
 
@@ -152,7 +154,6 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
                 imageUpdated.value = true
                 nextAvailable.value = true
                 imageToChange = getProfileImagePath()
-                Log.d("mypage", "이미지 업데이트 : $imageToChange")
             }
         }.launchIn(viewModelScope)
     }
@@ -181,10 +182,12 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
                     when (it) {
                         is BaseState.Success -> {
                             Log.d("mypage_climber", "프로필 이미지 수정")
+                            delay(2000)
                         }
 
                         is BaseState.Error -> {
                             _event.emit(EditClimberProfileEvent.ShowToastMessage(it.msg))
+                            Log.d("mypage_climber", "프로필 이미지 수정 실패 : ${it.msg}")
                         }
                     }
                 }
@@ -202,6 +205,9 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
     fun navigateToProfile() {
         updateProfile()
         viewModelScope.launch {
+            imageUploaded.value = false
+            delay(2000)
+            imageUploaded.value = true
             _event.emit(EditClimberProfileEvent.NavigateToProfile)
         }
     }

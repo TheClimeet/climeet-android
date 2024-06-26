@@ -6,13 +6,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.databinding.ItemRouteFindingLevelBinding
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLevelItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.MyPageAdminRouteFindingViewModel
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.LevelColor
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.RouteColor
 
 class RouteFindingLevelAdapter(
     private val viewModel: MyPageAdminRouteFindingViewModel
-) : ListAdapter<LevelColor, RouteFindingLevelAdapter.ViewHolder>(DiffCallback()) {
+) : ListAdapter<UiLevelItem, RouteFindingLevelAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemRouteFindingLevelBinding.inflate(
@@ -27,21 +28,23 @@ class RouteFindingLevelAdapter(
         holder.bind(getItem(position))
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<LevelColor>() {
-        override fun areItemsTheSame(oldItem: LevelColor, newItem: LevelColor): Boolean =
-            oldItem.color == newItem.color
+    class DiffCallback : DiffUtil.ItemCallback<UiLevelItem>() {
+        override fun areItemsTheSame(oldItem: UiLevelItem, newItem: UiLevelItem): Boolean =
+            oldItem.colorName == newItem.colorName
 
-        override fun areContentsTheSame(oldItem: LevelColor, newItem: LevelColor): Boolean =
+        override fun areContentsTheSame(oldItem: UiLevelItem, newItem: UiLevelItem): Boolean =
             oldItem == newItem
     }
 
     inner class ViewHolder(private val binding: ItemRouteFindingLevelBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(levelColor: LevelColor) {
-            binding.lc = levelColor
+        fun bind(item: UiLevelItem) {
+            binding.item = item
             binding.root.setOnClickListener {
-                viewModel.selectLevel(levelColor.level)
-                viewModel.selectColor(levelColor.color)
+                viewModel.updateModifingLevel(item)
+                viewModel.selectLevel(item.climeetLevel)
+                viewModel.selectColor(RouteColor(item.colorName, item.colorHex))
+                viewModel.updateIsLevelAdd(false)
             }
         }
 

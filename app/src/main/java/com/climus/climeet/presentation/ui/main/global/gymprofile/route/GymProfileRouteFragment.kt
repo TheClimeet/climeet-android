@@ -16,7 +16,6 @@ import com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileViewM
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLevelAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.SectorNameAdapter
-import com.climus.climeet.presentation.ui.main.record.model.CreateRecordData
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsThumbnailAdapter
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
@@ -30,7 +29,7 @@ class GymProfileRouteFragment :
 
     private val parentViewModel: GymProfileViewModel by activityViewModels()
     private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
-    private val dateViewModel: SelectDateBottomSheetViewModel by viewModels()
+    private val dateViewModel: SelectDateBottomSheetViewModel by activityViewModels()
     private val viewModel: GymProfileRouteViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
