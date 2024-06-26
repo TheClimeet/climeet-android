@@ -29,9 +29,6 @@ class MyPageMyShortsSaveFragment() :
         binding.svm = sharedViewModel
         binding.rvShorts.adapter = ShortsThumbnailAdapter()
 
-        sharedViewModel.initViewModel()
-        sharedViewModel.getBookmarkedShorts(ShortsOption.NEW_SORT)
-
         addOnScrollListener()
         initShortsEventObserve()
         initStateObserve()

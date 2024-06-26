@@ -2,18 +2,23 @@ package com.climus.climeet.presentation.ui.main.mypage.myshorts.viewpager
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMypageMyshortsCommentBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.mypage.myshorts.adapter.MyPageShortsCommentRVAdapter
+import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
+import com.climus.climeet.presentation.ui.toShortsPlayer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MyPageMyShortsCommentFragment :
     BaseFragment<FragmentMypageMyshortsCommentBinding>(R.layout.fragment_mypage_myshorts_comment) {
 
+    private val sharedViewModel: ShortsPlayerViewModel by activityViewModels()
     private val viewModel: MyPageMyShortsCommentViewModel by viewModels()
 
     private lateinit var adapter: MyPageShortsCommentRVAdapter
@@ -50,8 +55,13 @@ class MyPageMyShortsCommentFragment :
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
-                    is MyPageMyShortsCommentEvent.NavigateToShortsComment -> navigateToShorts()
                     is MyPageMyShortsCommentEvent.ShowToastMessage -> showToastMessage(it.msg)
+                    is MyPageMyShortsCommentEvent.NavigateToShortsPlayer -> {
+                        sharedViewModel.initViewModel()
+                        sharedViewModel.getShortsById(it.shortsId)
+
+                        findNavController().toShortsPlayer(it.shortsId, 0)
+                    }
                 }
             }
         }
@@ -69,9 +79,5 @@ class MyPageMyShortsCommentFragment :
                 }
             }
         }
-    }
-
-    private fun navigateToShorts() {
-        // todo : 해당 숏츠의 댓글창 열기
     }
 }

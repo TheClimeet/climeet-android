@@ -183,6 +183,43 @@ class ShortsPlayerViewModel @Inject constructor(
         }
     }
 
+    fun getShortsById(shortsId: Long) {
+
+        viewModelScope.launch {
+            repository.getShortsById(shortsId).let {
+                when (it) {
+                    is BaseState.Success -> {
+
+                        val shortsThumbnailUiData = it.body.result.map { data ->
+                            data.toShortsThumbnailUiData(
+                                ::navigateToShortsPlayer
+                            )
+                        }
+
+                        val shortsUiData = it.body.result.map { data ->
+                            data.toShortsUiData()
+                        }
+
+                        _uiState.update { state ->
+                            state.copy(
+                                page = uiState.value.page + 1,
+                                hasNext = false,
+                                shortsThumbnailList = shortsThumbnailUiData,
+                                shortsList = shortsUiData
+                            )
+                        }
+
+                        Log.d("shorts", "shortsUidata : $shortsUiData")
+                    }
+
+                    is BaseState.Error -> {
+                        _event.emit(ShortsPlayerEvent.ShowToastMessage(it.msg))
+                    }
+                }
+            }
+        }
+    }
+
     fun getMyShorts(option: ShortsOption, type: UserShortsVisibilityType) {
 
         viewModelScope.launch {
