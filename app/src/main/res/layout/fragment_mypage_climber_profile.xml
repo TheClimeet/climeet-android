@@ -9,7 +9,7 @@
 
         <variable
             name="svm"
-            type="com.climus.climeet.presentation.ui.main.global.climerprofile.ClimberProfileViewModel" />
+            type="com.climus.climeet.presentation.ui.main.mypage.MyPageViewModel" />
 
         <variable
             name="vm"
@@ -36,7 +36,7 @@
             android:src="@drawable/oval_lightgreyfill_nostroke_noradius"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:profileImgUrl="@{svm.uiState.userProfileImg}" />
+            app:profileImgUrl="@{svm.uiState.profileImgUrl}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout5"
@@ -82,17 +82,67 @@
                 app:layout_constraintStart_toEndOf="@id/tv_nickname"
                 app:layout_constraintTop_toTopOf="@id/tv_nickname" />
 
-            <TextView
-                style="@style/TextRegular"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_follow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@{svm.uiState.followingString}"
-                android:textColor="@color/white"
-                android:textSize="13sp"
+                android:layout_marginVertical="5dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_nickname"
-                tools:text="팔로워 25,883  |  팔로잉 11" />
+                app:layout_constraintTop_toBottomOf="@id/tv_nickname">
+
+                <TextView
+                    android:id="@+id/tv_follower"
+                    style="@style/TextTinyBig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="팔로워"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_follower_num"
+                    style="@style/TextTinyBig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintStart_toEndOf="@id/tv_follower"
+                    app:layout_constraintTop_toTopOf="@id/tv_follower"
+                    app:textFromInt="@{svm.uiState.followerCount}"
+                    tools:text="100" />
+
+                <ImageView
+                    android:id="@+id/iv_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:src="@drawable/ic_white_line"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tv_following"
+                    app:layout_constraintStart_toEndOf="@id/tv_follower_num"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_following"
+                    style="@style/TextTinyBig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="팔로잉"
+                    app:layout_constraintEnd_toStartOf="@id/tv_following_num"
+                    app:layout_constraintStart_toEndOf="@id/iv_bar"
+                    app:layout_constraintTop_toTopOf="@id/tv_follower" />
+
+                <TextView
+                    android:id="@+id/tv_following_num"
+                    style="@style/TextTinyBig"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintStart_toEndOf="@id/tv_following"
+                    app:layout_constraintTop_toTopOf="@id/tv_follower"
+                    app:textFromInt="@{svm.uiState.followingCount}"
+                    tools:text="20" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
