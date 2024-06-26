@@ -76,12 +76,12 @@ interface MainRepository {
     ): BaseState<SearchGymResponse>
 
     suspend fun getUserFollowing(
-        @Query("userId") userId: Long,
+        @Query("userId") userId: Long?,
         @Query("userCategory") userCategory: String
     ): BaseState<List<UserFollowingInfoResponse>>
 
     suspend fun getUserFollowers(
-        @Query("userId") userId: Long,
+        @Query("userId") userId: Long?,
         @Query("userCategory") userCategory: String
     ): BaseState<List<UserFollowerInfoResponse>>
 
@@ -366,6 +366,10 @@ interface MainRepository {
         page: Int,
         size: Int,
         sortType: userShortsSortType
+    ): BaseState<ShortsListResponse>
+
+    suspend fun getShortsById(
+        shortsId: Long
     ): BaseState<ShortsListResponse>
 
     suspend fun getMyShorts(

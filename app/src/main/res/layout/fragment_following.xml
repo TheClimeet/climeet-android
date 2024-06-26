@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
 
         <variable
@@ -19,10 +20,10 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_mode"
             style="@style/TextSmallSemiBold"
-            android:layout_marginTop="30dp"
             android:layout_width="155dp"
             android:layout_height="30dp"
             android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/rect_blackfill_nostroke_999radius"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +51,7 @@
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_follow_search_crags"
+            android:id="@+id/rv_gym_following"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
@@ -60,21 +61,21 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tl_mode"
-            tools:listitem="@layout/item_follow_crags" />
+            tools:listitem="@layout/item_mypage_following_crag" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_search_following"
+            android:id="@+id/rv_climber_following"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="vertical"
             android:layout_marginTop="20dp"
-            android:visibility="invisible"
+            android:orientation="vertical"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tl_mode"
             app:layout_constraintStart_toStartOf="parent"
-            tools:listitem="@layout/item_following" />
+            app:layout_constraintTop_toBottomOf="@+id/tl_mode"
+            tools:listitem="@layout/item_mypage_following_user" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

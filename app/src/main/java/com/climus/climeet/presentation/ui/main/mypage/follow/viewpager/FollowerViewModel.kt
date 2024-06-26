@@ -9,6 +9,9 @@ import com.climus.climeet.presentation.ui.main.global.searchprofile.model.Search
 import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowerUiData
 import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowingUiData
 import com.climus.climeet.presentation.ui.main.global.toUserFollowerUiData
+import com.climus.climeet.presentation.ui.main.global.toUserFollowingUiData
+import com.climus.climeet.presentation.ui.main.mypage.follow.model.FollowUiData
+import com.climus.climeet.presentation.ui.main.mypage.follow.model.FollowingUiData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,14 +24,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class FollowerUiState(
+    val isGym: Boolean = true,
     val profileList: List<SearchProfileUiData> = emptyList(),
-    val homegymList: List<UserFollowingUiData> = emptyList(),
-    val followerList: List<UserFollowerUiData> = emptyList(),
+    val gymFollowerList: List<FollowUiData> = emptyList(),
+    val climberFollowerList: List<FollowUiData> = emptyList(),
 )
 
 sealed class FollowerEvent {
-    data class NavigateToClimerProfile(val id: Long) : FollowerEvent()
-
+    data class NavigateToClimerProfile(val userId: Long) : FollowerEvent()
+    data class NavigateToGymProfile(val gymId: Long) : FollowerEvent()
 }
 
 @HiltViewModel
@@ -40,21 +44,36 @@ class FollowerViewModel @Inject constructor(private val repository: MainReposito
     private val _event = MutableSharedFlow<FollowerEvent>()
     val event: SharedFlow<FollowerEvent> = _event.asSharedFlow()
 
-    fun getUserFollowers(userId: Long, userCategory: String) {
+    fun getUserFollowers(userCategory: String) {
         viewModelScope.launch {
-            repository.getUserFollowers(userId, userCategory).let {
+            repository.getUserFollowers(null, userCategory).let {
                 when (it) {
                     is BaseState.Success -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                followerList = it.body.map { item ->
-                                    item.toUserFollowerUiData(
-                                        follow = ::follow,
-                                        unFollow = ::unfollow,
-                                        navigateToProfile = ::navigateToProfile
-                                    )
-                                },
-                            )
+
+                        if (userCategory == "Climber") {
+                            _uiState.update { state ->
+                                state.copy(
+                                    climberFollowerList = it.body.map { item ->
+                                        item.toUserFollowerUiData(
+                                            follow = ::follow,
+                                            unFollow = ::unfollow,
+                                            navigateToProfile = ::navigateToProfile
+                                        )
+                                    },
+                                )
+                            }
+                        } else {
+                            _uiState.update { state ->
+                                state.copy(
+                                    gymFollowerList = it.body.map { item ->
+                                        item.toUserFollowerUiData(
+                                            follow = ::follow,
+                                            unFollow = ::unfollow,
+                                            navigateToProfile = ::navigateToProfile
+                                        )
+                                    },
+                                )
+                            }
                         }
                     }
 
@@ -64,6 +83,14 @@ class FollowerViewModel @Inject constructor(private val repository: MainReposito
                     }
                 }
             }
+        }
+    }
+
+    fun changeMode(isGym: Boolean) {
+        _uiState.update { state ->
+            state.copy(
+                isGym = isGym,
+            )
         }
     }
 
@@ -132,7 +159,11 @@ class FollowerViewModel @Inject constructor(private val repository: MainReposito
 
     private fun navigateToProfile(id: Long) {
         viewModelScope.launch {
-            _event.emit(FollowerEvent.NavigateToClimerProfile(id))
+            if (uiState.value.isGym) {
+                _event.emit(FollowerEvent.NavigateToGymProfile(id))
+            } else {
+                _event.emit(FollowerEvent.NavigateToClimerProfile(id))
+            }
         }
     }
 }

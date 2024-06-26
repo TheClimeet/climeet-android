@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -12,26 +12,24 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView10"
-            style="@style/TextLargeBold"
+            android:id="@+id/tv_title"
+            style="@style/TextMediumBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
             android:text="팔로우"
-            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tb_mypage_follow"
-            style="@style/TextSmallSemiBold"
+            style="@style/TextRegularBigSemiBold"
             android:layout_width="match_parent"
             android:layout_height="33dp"
             android:layout_marginTop="40dp"
             android:background="@color/cm_background"
-            android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@+id/textView10"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
             app:tabBackground="@drawable/mypage_follow_tab"
             app:tabIndicatorColor="@color/cm_main"
             app:tabIndicatorFullWidth="true"

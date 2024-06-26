@@ -7,26 +7,25 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.climus.climeet.R
-import com.climus.climeet.databinding.ItemMypageFollowingCragBinding
-import com.climus.climeet.presentation.ui.main.mypage.follow.model.FollowingUiData
+import com.climus.climeet.databinding.ItemMypageFollowerUserBinding
+import com.climus.climeet.presentation.ui.main.mypage.follow.model.FollowUiData
 
-class FollowingGymRVAdapter(
-    private val followingGymList: List<FollowingUiData>,
-) : RecyclerView.Adapter<FollowingGymViewHolder>() {
+class FollowerClimberRVAdapter(private val followerClimberList: List<FollowUiData>) :
+    RecyclerView.Adapter<FollowerClimberViewHolder>() {
 
     private val followStatus = SparseBooleanArray()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowingGymViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowerClimberViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemMypageFollowingCragBinding.inflate(inflater, parent, false)
-        return FollowingGymViewHolder(binding)
+        val binding = ItemMypageFollowerUserBinding.inflate(inflater, parent, false)
+        return FollowerClimberViewHolder(binding)
     }
 
     override fun onBindViewHolder(
-        holder: FollowingGymViewHolder,
+        holder: FollowerClimberViewHolder,
         position: Int,
     ) {
-        holder.bind(followingGymList[position])
+        holder.bind(followerClimberList[position])
 
         val btnFollowing = holder.binding.btnFollowing
         val btnFollow = holder.binding.btnFollow
@@ -45,7 +44,7 @@ class FollowingGymRVAdapter(
             btnFollowing.visibility = View.GONE
             btnFollow.visibility = View.VISIBLE
             notifyItemChanged(position)
-            followingGymList[position].followerCount -= 1
+            followerClimberList[position].followerCount -= 1
         }
 
         btnFollow.setOnClickListener {
@@ -53,17 +52,17 @@ class FollowingGymRVAdapter(
             btnFollowing.visibility = View.VISIBLE
             btnFollow.visibility = View.GONE
             notifyItemChanged(position)
-            followingGymList[position].followerCount += 1
+            followerClimberList[position].followerCount += 1
         }
     }
 
-    override fun getItemCount(): Int = followingGymList.size
+    override fun getItemCount(): Int = followerClimberList.size
+
 }
 
-class FollowingGymViewHolder(val binding: ItemMypageFollowingCragBinding) :
+class FollowerClimberViewHolder(val binding: ItemMypageFollowerUserBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(data: FollowingUiData) {
-
+    fun bind(data: FollowUiData) {
         if (data.profileImageUrl != null) {
             Glide.with(binding.root.context)
                 .load(data.profileImageUrl)
