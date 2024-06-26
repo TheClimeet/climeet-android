@@ -46,17 +46,21 @@
     <string name="route_finding_level_manage">"레벨 관리"</string>
     <string name="route_finding_gym_image">"암장 도면"</string>
     <string name="route_finding_sector_manage">"섹터/벽면 관리"</string>
+    <string name="route_finding_route_manage">"루트 관리"</string>
     <string name="route_finding_add_level">"레벨 추가"</string>
     <string name="route_finding_set_level">"레벨 설정"</string>
     <string name="route_finding_add_sector">"섹터 추가"</string>
+    <string name="route_finding_add_route">"루트 추가"</string>
     <string name="route_finding_sector_explain">섹터 사진을 파노라마로 찍어 업로드 해주세요</string>
-    <string name="route_finding_add_level_complete">"확인"</string>
-    <string name="route_finding_add_level_cancel">"취소"</string>
-    <string name="route_finding_add_level_modify">"수정"</string>
-    <string name="route_finding_add_level_delete">"삭제"</string>
     <string name="route_finding_first_floor">"1층"</string>
     <string name="route_finding_second_floor">"2층"</string>
-    <string name="plus">"+"</string>
     <string name="route_finding_sector_edittext">섹터(벽면) 이름 입력</string>
+
+    <string name="complete">"확인"</string>
+    <string name="cancel">"취소"</string>
+    <string name="modify">"수정"</string>
+    <string name="delete">"삭제"</string>
+    <string name="plus">"+"</string>
+    <string name="route_finding_update_complete">업데이트 완료</string>
 
 </resources>
