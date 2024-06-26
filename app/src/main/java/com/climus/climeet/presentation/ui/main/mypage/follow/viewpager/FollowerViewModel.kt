@@ -125,7 +125,7 @@ class FollowerViewModel @Inject constructor(private val repository: MainReposito
         }
     }
 
-    private fun unfollow(id: Long) {
+    fun unfollow(id: Long) {
         viewModelScope.launch {
             repository.unfollowUser(id).let {
                 when (it) {
@@ -157,7 +157,7 @@ class FollowerViewModel @Inject constructor(private val repository: MainReposito
         }
     }
 
-    private fun navigateToProfile(id: Long) {
+    fun navigateToProfile(id: Long) {
         viewModelScope.launch {
             if (uiState.value.isGym) {
                 _event.emit(FollowerEvent.NavigateToGymProfile(id))

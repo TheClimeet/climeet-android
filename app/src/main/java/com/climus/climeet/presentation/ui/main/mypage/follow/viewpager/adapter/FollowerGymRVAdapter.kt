@@ -9,9 +9,11 @@ import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.ItemMypageFollowerCragBinding
 import com.climus.climeet.presentation.ui.main.mypage.follow.model.FollowUiData
+import com.climus.climeet.presentation.ui.main.mypage.follow.viewpager.FollowerViewModel
 
 class FollowerGymRVAdapter(
     private val followerGymList: List<FollowUiData>,
+    private val viewModel: FollowerViewModel
 ) : RecyclerView.Adapter<FollowerGymViewHolder>() {
 
     private val followStatus = SparseBooleanArray()
@@ -19,7 +21,7 @@ class FollowerGymRVAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowerGymViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemMypageFollowerCragBinding.inflate(inflater, parent, false)
-        return FollowerGymViewHolder(binding)
+        return FollowerGymViewHolder(binding, viewModel)
     }
 
     override fun onBindViewHolder(
@@ -46,6 +48,7 @@ class FollowerGymRVAdapter(
             btnFollow.visibility = View.VISIBLE
             notifyItemChanged(position)
             followerGymList[position].followerCount -= 1
+            viewModel.unfollow(followerGymList[position].userId)
         }
 
         btnFollow.setOnClickListener {
@@ -54,6 +57,7 @@ class FollowerGymRVAdapter(
             btnFollow.visibility = View.GONE
             notifyItemChanged(position)
             followerGymList[position].followerCount += 1
+            viewModel.follow(followerGymList[position].userId)
         }
     }
 
@@ -61,8 +65,10 @@ class FollowerGymRVAdapter(
 
 }
 
-class FollowerGymViewHolder(val binding: ItemMypageFollowerCragBinding) :
-    RecyclerView.ViewHolder(binding.root) {
+class FollowerGymViewHolder(
+    val binding: ItemMypageFollowerCragBinding,
+    val viewModel: FollowerViewModel
+) : RecyclerView.ViewHolder(binding.root) {
     fun bind(data: FollowUiData) {
 
         if (data.profileImageUrl != null) {
@@ -75,5 +81,9 @@ class FollowerGymViewHolder(val binding: ItemMypageFollowerCragBinding) :
         binding.tvName.text = data.userName
         binding.tvFollower.text = data.followerCount.toString()
         binding.tvFollowing.text = data.followingCount.toString()
+
+        binding.root.setOnClickListener{
+            viewModel.navigateToProfile(data.userId)
+        }
     }
 }

@@ -40,7 +40,7 @@ class FollowerFragment(val userId: Long) :
     }
 
     private fun setupGymFollowerList() {
-        val followingRVAdapter = FollowerGymRVAdapter(recyclerGym)
+        val followingRVAdapter = FollowerGymRVAdapter(recyclerGym, viewModel)
         setupRecyclerView(
             binding.rvGymFollower,
             followingRVAdapter,
@@ -49,7 +49,7 @@ class FollowerFragment(val userId: Long) :
     }
 
     private fun setupUserFollowerList() {
-        val followingRVAdapter = FollowerClimberRVAdapter(recyclerClimber)
+        val followingRVAdapter = FollowerClimberRVAdapter(recyclerClimber, viewModel)
         setupRecyclerView(
             binding.rvClimberFollower,
             followingRVAdapter,

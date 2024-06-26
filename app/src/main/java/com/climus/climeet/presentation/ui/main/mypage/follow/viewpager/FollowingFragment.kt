@@ -39,7 +39,7 @@ class FollowingFragment(val userId: Long) :
     }
 
     private fun setupFollowingList() {
-        val followingRVAdapter = FollowingClimberRVAdapter(recyclerClimber)
+        val followingRVAdapter = FollowingClimberRVAdapter(recyclerClimber, viewModel)
         setupRecyclerView(
             binding.rvClimberFollowing,
             followingRVAdapter,
@@ -48,7 +48,7 @@ class FollowingFragment(val userId: Long) :
     }
 
     private fun setupFollowingGymList() {
-        val followingRVAdapter = FollowingGymRVAdapter(recyclerGym)
+        val followingRVAdapter = FollowingGymRVAdapter(recyclerGym, viewModel)
         setupRecyclerView(
             binding.rvGymFollowing,
             followingRVAdapter,
@@ -115,14 +115,6 @@ class FollowingFragment(val userId: Long) :
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
         })
-    }
-
-    private fun navToGymProfile(gymId: Long) {
-        findNavController().toGymProfile(gymId)
-    }
-
-    private fun navToProfile(userId: Long) {
-        findNavController().toClimerProfile(userId)
     }
 
     private fun setupRecyclerView(

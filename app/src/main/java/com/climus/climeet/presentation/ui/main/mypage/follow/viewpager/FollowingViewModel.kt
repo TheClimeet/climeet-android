@@ -152,7 +152,7 @@ class FollowingViewModel @Inject constructor(private val repository: MainReposit
         }
     }
 
-    private fun unfollow(id: Long) {
+    fun unfollow(id: Long) {
         viewModelScope.launch {
 
             if (uiState.value.isGym) {
@@ -205,7 +205,7 @@ class FollowingViewModel @Inject constructor(private val repository: MainReposit
         }
     }
 
-    private fun navigateToProfile(id: Long) {
+    fun navigateToProfile(id: Long) {
         viewModelScope.launch {
             if (uiState.value.isGym) {
                 _event.emit(FollowingEvent.NavigateToGymProfile(id))

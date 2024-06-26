@@ -9,8 +9,12 @@ import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.ItemMypageFollowerUserBinding
 import com.climus.climeet.presentation.ui.main.mypage.follow.model.FollowUiData
+import com.climus.climeet.presentation.ui.main.mypage.follow.viewpager.FollowerViewModel
 
-class FollowerClimberRVAdapter(private val followerClimberList: List<FollowUiData>) :
+class FollowerClimberRVAdapter(
+    private val followerClimberList: List<FollowUiData>,
+    private val viewModel: FollowerViewModel
+) :
     RecyclerView.Adapter<FollowerClimberViewHolder>() {
 
     private val followStatus = SparseBooleanArray()
@@ -18,7 +22,7 @@ class FollowerClimberRVAdapter(private val followerClimberList: List<FollowUiDat
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowerClimberViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemMypageFollowerUserBinding.inflate(inflater, parent, false)
-        return FollowerClimberViewHolder(binding)
+        return FollowerClimberViewHolder(binding, viewModel)
     }
 
     override fun onBindViewHolder(
@@ -45,6 +49,7 @@ class FollowerClimberRVAdapter(private val followerClimberList: List<FollowUiDat
             btnFollow.visibility = View.VISIBLE
             notifyItemChanged(position)
             followerClimberList[position].followerCount -= 1
+            viewModel.unfollow(followerClimberList[position].userId)
         }
 
         btnFollow.setOnClickListener {
@@ -53,6 +58,7 @@ class FollowerClimberRVAdapter(private val followerClimberList: List<FollowUiDat
             btnFollow.visibility = View.GONE
             notifyItemChanged(position)
             followerClimberList[position].followerCount += 1
+            viewModel.follow(followerClimberList[position].userId)
         }
     }
 
@@ -60,7 +66,10 @@ class FollowerClimberRVAdapter(private val followerClimberList: List<FollowUiDat
 
 }
 
-class FollowerClimberViewHolder(val binding: ItemMypageFollowerUserBinding) :
+class FollowerClimberViewHolder(
+    val binding: ItemMypageFollowerUserBinding,
+    val viewModel: FollowerViewModel
+) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(data: FollowUiData) {
         if (data.profileImageUrl != null) {
@@ -73,5 +82,9 @@ class FollowerClimberViewHolder(val binding: ItemMypageFollowerUserBinding) :
         binding.tvName.text = data.userName
         binding.tvFollower.text = data.followerCount.toString()
         binding.tvFollowing.text = data.followingCount.toString()
+
+        binding.root.setOnClickListener{
+            viewModel.navigateToProfile(data.userId)
+        }
     }
 }

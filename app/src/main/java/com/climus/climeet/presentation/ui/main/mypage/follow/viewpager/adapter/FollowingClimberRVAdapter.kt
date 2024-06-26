@@ -10,9 +10,11 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.ItemMypageFollowingUserBinding
 import com.climus.climeet.presentation.ui.main.mypage.follow.model.FollowUiData
 import com.climus.climeet.presentation.ui.main.mypage.follow.model.FollowingUiData
+import com.climus.climeet.presentation.ui.main.mypage.follow.viewpager.FollowingViewModel
 
 class FollowingClimberRVAdapter(
-    private val followingClimberList: MutableList<FollowingUiData>
+    private val followingClimberList: MutableList<FollowingUiData>,
+    private val viewModel: FollowingViewModel
 ) : RecyclerView.Adapter<FollowingClimberViewHolder>() {
 
     private val followStatus =  mutableMapOf<Int, Boolean>()
@@ -20,7 +22,7 @@ class FollowingClimberRVAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowingClimberViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemMypageFollowingUserBinding.inflate(inflater, parent, false)
-        return FollowingClimberViewHolder(binding)
+        return FollowingClimberViewHolder(binding, viewModel)
     }
 
     override fun onBindViewHolder(holder: FollowingClimberViewHolder, position: Int) {
@@ -43,19 +45,24 @@ class FollowingClimberRVAdapter(
             followStatus.put(position, !isFollow)
             data.followerCount -= 1
             notifyItemChanged(position)
+            viewModel.unfollow(data.userId)
         }
 
         btnFollow.setOnClickListener {
             followStatus.put(position, !isFollow) // 토글
             data.followerCount += 1
             notifyItemChanged(position)
+            viewModel.follow(data.userId)
         }
     }
 
     override fun getItemCount(): Int = followingClimberList.size
 }
 
-class FollowingClimberViewHolder(val binding: ItemMypageFollowingUserBinding) :
+class FollowingClimberViewHolder(
+    val binding: ItemMypageFollowingUserBinding,
+    val viewModel: FollowingViewModel
+) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(data: FollowingUiData) {
 
@@ -69,5 +76,9 @@ class FollowingClimberViewHolder(val binding: ItemMypageFollowingUserBinding) :
         binding.tvName.text = data.userName
         binding.tvFollower.text = data.followerCount.toString()
         binding.tvFollowing.text = data.followingCount.toString()
+
+        binding.root.setOnClickListener{
+            viewModel.navigateToProfile(data.userId)
+        }
     }
 }
