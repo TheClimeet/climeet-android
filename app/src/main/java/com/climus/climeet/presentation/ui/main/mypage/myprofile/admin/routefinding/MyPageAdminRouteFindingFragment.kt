@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMyPageAdminRouteFindingBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.customview.WarningSnackBar
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheet
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheetViewModel
 import com.climus.climeet.presentation.ui.main.MainViewModel
@@ -165,9 +166,23 @@ class MyPageAdminRouteFindingFragment :
                     sectorName = binding.etSectorName.text.toString()
                 )
             }
-            viewModel.addSector()
-            binding.etSectorName.setText("")
-            setImage("".toUri(), binding.ivAddSectorIamge)
+            val sector = viewModel.selectedSector.value
+            when {
+                sector.sectorImg.isEmpty() && sector.sectorName.isEmpty() -> {
+                    showCustomSnackbar("섹터/벽면을 설정해주세요")
+                }
+                sector.sectorImg.isEmpty() -> {
+                    showCustomSnackbar("섹터/벽면의 사진을 넣어주세요")
+                }
+                sector.sectorName.isEmpty() -> {
+                    showCustomSnackbar("섹터/벽면의 이름을 입력해주세요")
+                }
+                else -> {
+                    viewModel.addSector()
+                    binding.etSectorName.setText("")
+                    setImage("".toUri(), binding.ivAddSectorIamge)
+                }
+            }
         }
     }
 
@@ -192,6 +207,13 @@ class MyPageAdminRouteFindingFragment :
             .load(uri)
             .placeholder(R.drawable.ic_add_image_background)
             .into(ivIamge)
+    }
+
+    private fun showCustomSnackbar(message: String) {
+        WarningSnackBar.make(binding.layoutAddSector).apply {
+            setText(message)
+            show()
+        }
     }
 
     private fun NavController.toCreateRoute() {
