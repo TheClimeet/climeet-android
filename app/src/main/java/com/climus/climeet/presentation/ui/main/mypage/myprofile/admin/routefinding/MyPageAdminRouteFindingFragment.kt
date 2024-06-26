@@ -44,7 +44,7 @@ class MyPageAdminRouteFindingFragment :
         initEventObserve()
         initStateObserve()
         initParentImageObserve()
-        addSectorList()
+        sectorClickListener()
     }
 
     private fun initEventObserve() {
@@ -164,7 +164,7 @@ class MyPageAdminRouteFindingFragment :
         }
     }
 
-    private fun addSectorList() {
+    private fun sectorClickListener() {
         binding.btnSectorComplete.setOnClickListener {
             viewModel.selectedSector.update {
                 it.copy(
@@ -191,6 +191,10 @@ class MyPageAdminRouteFindingFragment :
                     binding.etSectorName.setText("")
                 }
             }
+        }
+        binding.tvAddSector.setOnClickListener {
+            binding.etSectorName.setText("")
+            viewModel.resetSector()
         }
     }
 

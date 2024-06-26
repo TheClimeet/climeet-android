@@ -505,7 +505,6 @@
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/rect_grey8fill_nostroke_5radius"
                                     android:drawablePadding="3dp"
-                                    android:onClick="@{()->vm.resetSelectedColorAndLevel()}"
                                     android:paddingVertical="6dp"
                                     android:paddingStart="13dp"
                                     android:paddingEnd="16dp"

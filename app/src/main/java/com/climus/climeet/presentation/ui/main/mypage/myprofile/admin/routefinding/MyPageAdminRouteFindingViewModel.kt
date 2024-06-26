@@ -370,6 +370,10 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
             }
             state.copy(sectorList = updatedList)
         }
+        resetSector()
+    }
+
+    fun resetSector() {
         selectedSector.update { defaultSectorItem }
         modifyingSector.update { defaultSectorItem }
     }
