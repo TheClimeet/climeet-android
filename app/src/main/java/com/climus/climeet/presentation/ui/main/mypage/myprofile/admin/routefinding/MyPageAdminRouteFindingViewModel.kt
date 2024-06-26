@@ -58,6 +58,8 @@ sealed class MyPageAdminRouteFindingEvent {
     data object ShowDatePicker : MyPageAdminRouteFindingEvent()
     data object ShowSetLevel : MyPageAdminRouteFindingEvent()
     data object GoToGallery : MyPageAdminRouteFindingEvent()
+    data object GoToCreateRoute : MyPageAdminRouteFindingEvent()
+    data object NavigateToBack : MyPageAdminRouteFindingEvent()
     data class ShowLayoutImg(val uri: Uri) : MyPageAdminRouteFindingEvent()
 }
 
@@ -105,24 +107,6 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
                     UiHoldItem(R.drawable.ic_grey_hold, ::setHoldImage),
                     UiHoldItem(R.drawable.ic_pink_hold, ::setHoldImage),
                     UiHoldItem(R.drawable.ic_black_hold, ::setHoldImage),
-                ),
-                levelList = listOf(
-                    UiLevelItem(
-                        "하양", "#FFFFFF", "V1", ::setLevelColor
-                    ), UiLevelItem(
-                        "빨강", "#F34040", "V1", ::setLevelColor
-                    ), UiLevelItem(
-                        "주황", "#FF9000", "V1", ::setLevelColor
-                    ), UiLevelItem(
-                        "노랑", "#FDDA16", "V1", ::setLevelColor
-                    ), UiLevelItem(
-                        "초록", "#63B75D", "V1", ::setLevelColor
-                    )
-                ),
-                sectorList = listOf(
-                    UiSectorItem("PEEK1", Constants.TEST_IMG, true, ::setSector),
-                    UiSectorItem("PEEK2", Constants.TEST_IMG, false, ::setSector),
-                    UiSectorItem("PEEK3", Constants.TEST_IMG, false, ::setSector),
                 )
             )
         }
@@ -200,7 +184,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         climeetLevel = "레벨 설정",
         colorHex = "#FFFFFF",
         colorName = "-",
-        setLevelListener = ::empty
+        setLevelListener = ::setLevelColor
     )
 
     val selectedLevel = MutableStateFlow(defaultLevelItem)
@@ -400,6 +384,18 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         }
         viewModelScope.launch {
             _event.emit(MyPageAdminRouteFindingEvent.GoToGallery)
+        }
+    }
+
+    fun goToCreateRoute() {
+        viewModelScope.launch {
+            _event.emit(MyPageAdminRouteFindingEvent.GoToCreateRoute)
+        }
+    }
+
+    fun navigateToBack() {
+        viewModelScope.launch {
+            _event.emit(MyPageAdminRouteFindingEvent.NavigateToBack)
         }
     }
 

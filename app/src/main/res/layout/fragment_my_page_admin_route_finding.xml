@@ -37,6 +37,7 @@
                     android:background="@android:color/transparent"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_back"
+                    android:onClick="@{()->vm.navigateToBack()}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -620,6 +621,7 @@
                     android:paddingStart="13dp"
                     android:paddingEnd="16dp"
                     android:text="@string/route_finding_add_route"
+                    android:onClick="@{()->vm.goToCreateRoute()}"
                     app:drawableStartCompat="@drawable/ic_add_white_14"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/tv_route_manage"

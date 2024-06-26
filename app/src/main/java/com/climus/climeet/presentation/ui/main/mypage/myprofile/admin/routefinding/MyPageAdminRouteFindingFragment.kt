@@ -9,6 +9,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMyPageAdminRouteFindingBinding
@@ -79,6 +80,9 @@ class MyPageAdminRouteFindingFragment :
                         it.uri,
                         binding.ivAddGymIamge
                     )
+
+                    MyPageAdminRouteFindingEvent.GoToCreateRoute -> findNavController().toCreateRoute()
+                    MyPageAdminRouteFindingEvent.NavigateToBack -> findNavController().navigateUp()
                 }
             }
         }
