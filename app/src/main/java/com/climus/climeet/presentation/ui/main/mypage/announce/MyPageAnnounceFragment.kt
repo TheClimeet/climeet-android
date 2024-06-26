@@ -21,11 +21,15 @@ class MyPageAnnounceFragment: BaseFragment<FragmentMypageAnnounceBinding>(R.layo
         super.onViewCreated(view, savedInstanceState)
 
         itemAdapter = AnnouncementRVAdapter(viewModel)
-        viewModel.getAnnouncement()
 
         observeUiState()
         initEventObserve()
         setRecyclerView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAnnouncement()
     }
 
     private fun observeUiState() {
