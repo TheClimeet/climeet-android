@@ -5,14 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.climus.climeet.databinding.ItemCreateRouteSectorBinding
 import com.climus.climeet.databinding.ItemRouteFindingSectorBinding
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiSectorItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.MyPageAdminRouteFindingViewModel
+import kotlinx.coroutines.flow.update
 
 class RouteFindingSectorAdapter(
     private val viewModel: MyPageAdminRouteFindingViewModel
-) : ListAdapter<UiSectorItem, CreateRouteSectorViewHolder>(
+) : ListAdapter<UiSectorItem, RouteFindingSectorAdapter.RouteFindingSectorViewHolder>(
     diffCallback
 ) {
     companion object {
@@ -28,26 +28,28 @@ class RouteFindingSectorAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: CreateRouteSectorViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RouteFindingSectorViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CreateRouteSectorViewHolder =
-        CreateRouteSectorViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RouteFindingSectorViewHolder =
+        RouteFindingSectorViewHolder(
             ItemRouteFindingSectorBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent, false
             )
         )
-}
 
-class CreateRouteSectorViewHolder(private val binding: ItemRouteFindingSectorBinding) :
-    RecyclerView.ViewHolder(binding.root) {
+    inner class RouteFindingSectorViewHolder(private val binding: ItemRouteFindingSectorBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: UiSectorItem) {
-        binding.item = item
-        binding.root.setOnClickListener {
-            item.setSectorListener(item.sectorName, item.sectorImg)
+        fun bind(item: UiSectorItem) {
+            binding.item = item
+            binding.root.setOnClickListener {
+                viewModel.modifyingSector.update { item }
+                viewModel.selectedSector.update { item }
+            }
         }
     }
 }
+

@@ -1,7 +1,6 @@
 package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding
 
 import android.net.Uri
-import android.util.Log
 import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
 import androidx.lifecycle.MutableLiveData
@@ -205,7 +204,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     )
 
     val selectedLevel = MutableStateFlow(defaultLevelItem)
-    val modifingLevel = MutableStateFlow(defaultLevelItem)
+    val modifyingLevel = MutableStateFlow(defaultLevelItem)
 
     val colorList = LevelColorData.COLORS
     val isCompletable = MutableLiveData(true)
@@ -214,9 +213,10 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     val selectedFloor = MutableStateFlow(1)
     val isSecondFloorExist = MutableLiveData(false)
 
-    private val defaultSectorItem = UiSectorItem("", "", false, ::setSector)
+    val defaultSectorItem = UiSectorItem("", "", false, ::setSector)
     val selectedSector = MutableStateFlow(defaultSectorItem)
     val selectedImageType = MutableStateFlow(DataType.GYM)
+    val modifyingSector = MutableStateFlow(defaultSectorItem)
 
     fun setSelectedDate(updateDate: LocalDate) {
         selectedDate.update { updateDate }
@@ -247,7 +247,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     }
 
     fun addLevelColor() {
-        modifingLevel.update {
+        modifyingLevel.update {
             selectedLevel.value
         }
         _uiState.update { state ->
@@ -266,7 +266,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     fun modifyLevel() {
         _uiState.update { state ->
             val updatedList = state.levelList.map { level ->
-                if (level.colorHex == modifingLevel.value.colorHex) {
+                if (level.colorHex == modifyingLevel.value.colorHex) {
                     selectedLevel.value
                 } else {
                     level
@@ -280,7 +280,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     fun deleteLevel() {
         _uiState.update { state ->
             val updatedList = state.levelList.filterNot { level ->
-                level.colorHex == modifingLevel.value.colorHex
+                level.colorHex == modifyingLevel.value.colorHex
             }
             state.copy(levelList = updatedList)
         }
@@ -288,7 +288,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     }
 
     fun updateModifingLevel(item: UiLevelItem) {
-        modifingLevel.update { item }
+        modifyingLevel.update { item }
     }
 
     fun resetSelectedColorAndLevel() {
@@ -301,7 +301,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         val isComplete =
             !_uiState.value.levelList.any {
                 it.colorName == selectedLevel.value.colorName
-            } || modifingLevel.value.colorName == selectedLevel.value.colorName
+            } || modifyingLevel.value.colorName == selectedLevel.value.colorName
         isCompletable.value = isComplete
         return isComplete
     }
@@ -357,6 +357,21 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
             )
         }
         selectedSector.update { defaultSectorItem }
+    }
+
+    fun modifySector() {
+        _uiState.update { state ->
+            val updatedList = state.sectorList.map { sector ->
+                if (sector.sectorName == modifyingSector.value.sectorName) {
+                    selectedSector.value
+                } else {
+                    sector
+                }
+            }
+            state.copy(sectorList = updatedList)
+        }
+        selectedSector.update { defaultSectorItem }
+        modifyingSector.update { defaultSectorItem }
     }
 
     fun noUse(dateDate: LocalDate) {}

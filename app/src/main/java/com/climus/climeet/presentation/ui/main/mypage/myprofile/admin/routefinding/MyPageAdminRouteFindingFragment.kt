@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefind
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.net.toUri
@@ -144,6 +145,12 @@ class MyPageAdminRouteFindingFragment :
                 }
             }
         }
+        repeatOnStarted {
+            viewModel.selectedSector.collect {
+                setImage(it.sectorImg.toUri(), binding.ivAddSectorIamge)
+                binding.etSectorName.setText(it.sectorName)
+            }
+        }
     }
 
     private fun initParentImageObserve() {
@@ -151,8 +158,6 @@ class MyPageAdminRouteFindingFragment :
             parentViewModel.imageUri.collect {
                 if (viewModel.selectedImageType.value == DataType.GYM) {
                     setImage(it, binding.ivAddGymIamge)
-                } else {
-                    setImage(it, binding.ivAddSectorIamge)
                 }
                 viewModel.updateImg(it.toString())
             }
@@ -178,9 +183,12 @@ class MyPageAdminRouteFindingFragment :
                     showCustomSnackbar("섹터/벽면의 이름을 입력해주세요")
                 }
                 else -> {
-                    viewModel.addSector()
+                    if(viewModel.modifyingSector.value == viewModel.defaultSectorItem) {
+                        viewModel.addSector()
+                    } else {
+                        viewModel.modifySector()
+                    }
                     binding.etSectorName.setText("")
-                    setImage("".toUri(), binding.ivAddSectorIamge)
                 }
             }
         }
@@ -203,6 +211,7 @@ class MyPageAdminRouteFindingFragment :
     }
 
     private fun setImage(uri: Uri, ivIamge: AppCompatImageView) {
+        Log.d("tlqkf", "$ivIamge")
         Glide.with(this)
             .load(uri)
             .placeholder(R.drawable.ic_add_image_background)

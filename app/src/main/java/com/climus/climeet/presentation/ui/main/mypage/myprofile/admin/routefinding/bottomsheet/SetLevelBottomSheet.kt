@@ -1,22 +1,15 @@
 package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.bottomsheet
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Handler
 import android.os.Looper
-import android.provider.Settings
-import android.util.Log
-import android.view.View
 import androidx.core.content.ContextCompat
 import com.climus.climeet.R
 import com.climus.climeet.databinding.DialogSetLevelBottomSheetBinding
-import com.climus.climeet.presentation.customview.PermissionSnackBar
 import com.climus.climeet.presentation.customview.WarningSnackBar
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.MyPageAdminRouteFindingViewModel
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.LevelColorData
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.snackbar.Snackbar
 
 class SetLevelBottomSheet(
     context: Context,
@@ -82,7 +75,7 @@ class SetLevelBottomSheet(
     private fun checkIfLevelAlreadySelected() {
         val isLevelAlreadySelected =
             viewModel.uiState.value.levelList.any { it.climeetLevel == selectedLevel }
-        val isLevelIsNotMine = viewModel.modifingLevel.value.climeetLevel != selectedLevel
+        val isLevelIsNotMine = viewModel.modifyingLevel.value.climeetLevel != selectedLevel
         if (isLevelAlreadySelected) {
             if(isLevelIsNotMine) {
                 binding.tvOk.isEnabled = false
