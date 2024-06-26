@@ -17,6 +17,7 @@ import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomShe
 import com.climus.climeet.presentation.ui.main.MainViewModel
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.LevelColorAdapter
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.RouteFindingLevelAdapter
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.RouteFindingSectorAdapter
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.bottomsheet.SetLevelBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.update
@@ -30,6 +31,7 @@ class MyPageAdminRouteFindingFragment :
     private val viewModel: MyPageAdminRouteFindingViewModel by activityViewModels()
     private lateinit var lvAdapter: RouteFindingLevelAdapter
     private lateinit var adapter: LevelColorAdapter
+    private lateinit var sectorAdapter: RouteFindingSectorAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -89,6 +91,10 @@ class MyPageAdminRouteFindingFragment :
                 }
                 binding.rvRouteFindingLevel.post {
                     lvAdapter.submitList(state.levelList)
+                    lvAdapter.notifyDataSetChanged()
+                }
+                binding.rvRouteFindingSector.post {
+                    sectorAdapter.notifyDataSetChanged()
                 }
 
                 if (state.layoutList[viewModel.selectedFloor.value - 1].gymImg == "") {
@@ -176,6 +182,9 @@ class MyPageAdminRouteFindingFragment :
 
         lvAdapter = RouteFindingLevelAdapter(viewModel)
         binding.rvRouteFindingLevel.adapter = lvAdapter
+
+        sectorAdapter = RouteFindingSectorAdapter(viewModel)
+        binding.rvRouteFindingSector.adapter = sectorAdapter
     }
 
     private fun setImage(uri: Uri, ivIamge: AppCompatImageView) {

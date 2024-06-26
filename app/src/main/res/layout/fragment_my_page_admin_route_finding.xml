@@ -366,8 +366,8 @@
                         android:layout_height="30dp"
                         android:background="@drawable/rect_grey8fill_nostroke_5radius"
                         android:gravity="center"
-                        android:text="@string/route_finding_first_floor"
                         android:onClick="@{()->vm.selectFloor(1)}"
+                        android:text="@string/route_finding_first_floor"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -379,8 +379,8 @@
                         android:layout_marginStart="10dp"
                         android:background="@drawable/rect_grey8fill_nostroke_5radius"
                         android:gravity="center"
-                        android:text="@string/plus"
                         android:onClick="@{()->vm.addSecondFloor()}"
+                        android:text="@string/plus"
                         android:visibility="@{vm.isSecondFloorExist() ? View.GONE : View.VISIBLE}"
                         app:layout_constraintStart_toEndOf="@+id/btn_first_floor"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -393,8 +393,8 @@
                         android:layout_marginStart="10dp"
                         android:background="@drawable/rect_grey8fill_nostroke_5radius"
                         android:gravity="center"
-                        android:text="@string/route_finding_second_floor"
                         android:onClick="@{()->vm.selectFloor(2)}"
+                        android:text="@string/route_finding_second_floor"
                         android:visibility="@{vm.isSecondFloorExist() ? View.VISIBLE : View.GONE}"
                         app:layout_constraintStart_toEndOf="@+id/btn_first_floor"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -445,7 +445,7 @@
                             android:text="@string/route_finding_add_level_delete"
                             android:textColor="@color/black"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/iv_add_gym_iamge"/>
+                            app:layout_constraintTop_toBottomOf="@+id/iv_add_gym_iamge" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -494,6 +494,7 @@
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintVertical_bias="1.0"
+                                    app:list="@{vm.uiState.sectorList}"
                                     tools:itemCount="3"
                                     tools:listitem="@layout/item_route_finding_sector" />
 
@@ -547,21 +548,21 @@
                                 android:textColor="@color/cm_main"
                                 app:layout_constraintStart_toStartOf="@id/iv_add_sector_iamge"
                                 app:layout_constraintTop_toBottomOf="@id/iv_add_sector_iamge" />
-                            
+
                             <EditText
                                 android:id="@+id/et_sector_name"
                                 style="@style/TextSmall"
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
                                 android:layout_marginEnd="10dp"
-                                android:paddingHorizontal="16dp"
                                 android:background="@drawable/rect_silver2fill_nostroke_999radius"
                                 android:hint="@string/route_finding_sector_edittext"
+                                android:paddingHorizontal="16dp"
                                 android:textColorHint="@color/cm_grey5"
-                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="@id/btn_sector_complete"
                                 app:layout_constraintEnd_toStartOf="@id/btn_sector_complete"
-                                app:layout_constraintTop_toTopOf="@id/btn_sector_complete"
-                                app:layout_constraintBottom_toBottomOf="@id/btn_sector_complete"/>
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/btn_sector_complete" />
 
                             <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/btn_sector_complete"
