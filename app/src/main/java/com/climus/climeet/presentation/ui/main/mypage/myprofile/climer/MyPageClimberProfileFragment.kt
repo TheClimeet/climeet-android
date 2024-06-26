@@ -10,7 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMypageClimberProfileBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.climus.climeet.presentation.ui.main.global.climerprofile.ClimberProfileViewModel
+import com.climus.climeet.presentation.ui.main.mypage.MyPageViewModel
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.climer.viewpager.MyPageClimberProfileVPAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MyPageClimberProfileFragment :
     BaseFragment<FragmentMypageClimberProfileBinding>(R.layout.fragment_mypage_climber_profile) {
 
-    private val sharedViewModel: ClimberProfileViewModel by activityViewModels()
+    private val sharedViewModel: MyPageViewModel by activityViewModels()
     private val viewModel: MyPageClimberProfileViewModel by activityViewModels()
 
     private val args: MyPageClimberProfileFragmentArgs by navArgs()
@@ -33,7 +33,6 @@ class MyPageClimberProfileFragment :
 
         Log.d("mypage_climber", "현재 유저 id : $userId")
 
-        sharedViewModel.setUserId(userId)
         viewModel.setClimberId(userId)
 
         setupTabLayout()
@@ -44,7 +43,7 @@ class MyPageClimberProfileFragment :
     override fun onResume() {
         super.onResume()
         // 상단 정보 설정
-        sharedViewModel.setUserId(userId)
+        sharedViewModel.getProfileInfo()
     }
 
     private fun setupTabLayout() {
@@ -80,7 +79,7 @@ class MyPageClimberProfileFragment :
 
     private fun NavController.toEditPage(){
         val name = sharedViewModel.uiState.value.userName
-        val image = sharedViewModel.uiState.value.userProfileImg
+        val image = sharedViewModel.uiState.value.profileImgUrl
         val action = MyPageClimberProfileFragmentDirections.actionMyPageClimberProfileFragmentToMyPageClimberProfileEditFragment(name, image)
         navigate(action)
     }
