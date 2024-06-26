@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMyPageAdminRouteFindingBinding
 import com.climus.climeet.presentation.base.BaseFragment
@@ -222,6 +223,7 @@ class MyPageAdminRouteFindingFragment :
         Log.d("tlqkf", "$ivIamge")
         Glide.with(this)
             .load(uri)
+            .apply(RequestOptions().dontTransform())
             .placeholder(R.drawable.ic_add_image_background)
             .into(ivIamge)
     }
