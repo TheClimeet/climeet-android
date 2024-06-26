@@ -76,7 +76,7 @@ fun Bitmap.toMultiPart(context: Context): MultipartBody.Part? {
         val imageFile = File(filesDir, "image.jpg")
         val os = FileOutputStream(imageFile)
         compress(Bitmap.CompressFormat.JPEG, 100, os)
-        val requestFile = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+        val requestFile = imageFile.asRequestBody("image/jpg".toMediaTypeOrNull())
         MultipartBody.Part.createFormData("file", imageFile.name, requestFile)
     } catch (e: Exception) {
         null

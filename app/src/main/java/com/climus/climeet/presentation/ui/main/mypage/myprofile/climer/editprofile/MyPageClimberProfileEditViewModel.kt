@@ -154,7 +154,6 @@ class MyPageClimberProfileEditViewModel @Inject constructor(
                 imageUpdated.value = true
                 nextAvailable.value = true
                 imageToChange = getProfileImagePath()
-                Log.d("mypage", "이미지 업데이트 : $imageToChange")
             }
         }.launchIn(viewModelScope)
     }

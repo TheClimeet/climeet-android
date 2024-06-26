@@ -3,9 +3,11 @@ package com.climus.climeet.presentation.ui.main.mypage.alarm
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMypageAlarmBinding
 import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.editprofile.AdminProfileEditEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,6 +21,12 @@ class MyPageAlarmFragment: BaseFragment<FragmentMypageAlarmBinding>(R.layout.fra
         binding.vm = viewModel
 
         initSwitchCheckedListener()
+        initEventObserve()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.updateAlarmState()
     }
 
     private fun initSwitchCheckedListener(){
@@ -41,6 +49,16 @@ class MyPageAlarmFragment: BaseFragment<FragmentMypageAlarmBinding>(R.layout.fra
         binding.swAppPush.setOnCheckedChangeListener { compoundButton, isChecked ->
             if (compoundButton?.isPressed == true)
                 viewModel.setAppPushSwitchState(isChecked)
+        }
+    }
+
+    private fun initEventObserve() {
+        repeatOnStarted {
+            viewModel.event.collect {
+                when (it) {
+                    is UpdateAlarmEvent.ShowToastMessage -> showToastMessage(it.msg)
+                }
+            }
         }
     }
 }

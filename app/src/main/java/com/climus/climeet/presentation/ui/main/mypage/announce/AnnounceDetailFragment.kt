@@ -1,7 +1,6 @@
 package com.climus.climeet.presentation.ui.main.mypage.announce
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -35,6 +34,7 @@ class AnnounceDetailFragment :
             viewModel.event.collect {
                 when (it) {
                     is AnnouncementDetailEvent.SetRVAdapter -> initRVAdapter(it.imageList)
+                    is AnnouncementDetailEvent.ShowToastMessage -> showToastMessage(it.msg)
                 }
             }
         }

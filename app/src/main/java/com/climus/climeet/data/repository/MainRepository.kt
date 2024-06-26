@@ -7,6 +7,8 @@ import com.climus.climeet.data.model.request.AddShortsCommentRequest
 import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
+import com.climus.climeet.data.model.request.GymServiceUpdateRequest
+import com.climus.climeet.data.model.request.NotificationUpdateRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
@@ -28,7 +30,9 @@ import com.climus.climeet.data.model.response.GetGymProfileResponse
 import com.climus.climeet.data.model.response.GetGymProfileReviewResponse
 import com.climus.climeet.data.model.response.GetGymRouteInfoResponse
 import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
+import com.climus.climeet.data.model.response.GetMyShortsCommentsResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
+import com.climus.climeet.data.model.response.GetNotificationStatesResponse
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
@@ -284,6 +288,28 @@ interface MainRepository {
         name: String,
     ): BaseState<ResponseBody>
 
+    suspend fun updateAdminProfileImage(
+        body: String
+    ): BaseState<ResponseBody>
+
+    suspend fun updateAdminBackgroundImage(
+        body: String
+    ): BaseState<ResponseBody>
+
+    suspend fun updateGymService(
+        body: GymServiceUpdateRequest,
+    ): BaseState<ResponseBody>
+
+    suspend fun getNotificationStates(): BaseState<GetNotificationStatesResponse>
+
+    suspend fun updateNotification(
+        body: NotificationUpdateRequest
+    ): BaseState<ResponseBody>
+
+    suspend fun getMyShortsComments(
+        page: Int,
+        size: Int
+    ): BaseState<GetMyShortsCommentsResponse>
 
     // -------- RoomDB ClimbingRecordDao 암장 정보 ----------
     fun insert(climbingRecordData: ClimbingRecordData)
@@ -361,6 +387,16 @@ interface MainRepository {
         size: Int
     ): BaseState<ShortsListResponse>
 
+    suspend fun getShortsLikedList(
+        page: Int,
+        size: Int
+    ): BaseState<ShortsListResponse>
+
+    suspend fun getShortsBookmarkedList(
+        page: Int,
+        size: Int
+    ): BaseState<ShortsListResponse>
+
     suspend fun getUserHomeGyms(
         userId: Long
     ): BaseState<List<UserHomeGymSimpleResponse>>
@@ -374,4 +410,14 @@ interface MainRepository {
     suspend fun getAnnouncementDetail(
         boardId: Long
     ): BaseState<GetAnnouncementDetailResponse>
+
+    suspend fun updateAnnouncementLike(
+        boardId: Long
+    ): BaseState<ResponseBody>
+
+    suspend fun updateAnnouncementUnlike(
+        boardId: Long
+    ): BaseState<ResponseBody>
+
+    suspend fun getAdminGymId(): BaseState<Long>
 }

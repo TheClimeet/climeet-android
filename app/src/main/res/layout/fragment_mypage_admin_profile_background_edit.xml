@@ -4,6 +4,12 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="svm"
+            type="com.climus.climeet.presentation.ui.main.MainViewModel" />
+
         <variable
             name="vm"
             type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.editprofile.MyPageAdminProfileEditBackgroundViewModel" />
@@ -107,11 +113,12 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_explain_regular">
 
                 <ImageView
-                    android:id="@+id/iv_img_icon"
+                    android:id="@+id/iv_background"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_add_img" />
+                    android:src="@drawable/img_gym_background"
+                    app:backgroundImgUri="@{vm.backgroundImg}" />
             </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

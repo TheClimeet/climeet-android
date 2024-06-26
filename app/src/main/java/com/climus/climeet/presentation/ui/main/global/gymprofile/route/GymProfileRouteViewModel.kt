@@ -42,19 +42,19 @@ data class GymProfileSelectSectorUiState(
     val selectedSector: SectorNameUiData = SectorNameUiData {},
     val selectedLevel: GymLevelUiData = GymLevelUiData {},
     val selectedRoute: RouteUiData = RouteUiData {},
-    val selectedFilter: SelectedFilter = SelectedFilter()
+    val selectedFilter: SelectedFilter = SelectedFilter(),
 )
 
 sealed class GymProfileRouteEvent {
     data object ShowDatePicker : GymProfileRouteEvent()
-    data object deleteFilter: GymProfileRouteEvent()
+    data object deleteFilter : GymProfileRouteEvent()
     data class ApplyFilter(val filter: SelectedFilter) : GymProfileRouteEvent()
     data class ShowToastMessage(val msg: String) : GymProfileRouteEvent()
 }
 
 @HiltViewModel
 class GymProfileRouteViewModel @Inject constructor(
-    private val repository: MainRepository
+    private val repository: MainRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(GymProfileSelectSectorUiState())
@@ -62,6 +62,10 @@ class GymProfileRouteViewModel @Inject constructor(
 
     private val _event = MutableSharedFlow<GymProfileRouteEvent>()
     val event: SharedFlow<GymProfileRouteEvent> = _event.asSharedFlow()
+
+    private val _isDataLoaded = MutableStateFlow(false)
+    val isDataLoaded: StateFlow<Boolean> = _isDataLoaded.asStateFlow()
+
 
     private var sectorNameList = listOf<SectorNameUiData>()
     private var gymLevelList = listOf<GymLevelUiData>()
@@ -140,11 +144,14 @@ class GymProfileRouteViewModel @Inject constructor(
                             }
                         }
 
+                        _isDataLoaded.value = true
+
                         setFloorInfo(1)
                     }
 
                     is BaseState.Error -> {
                         _event.emit(GymProfileRouteEvent.ShowToastMessage(it.msg))
+                        _isDataLoaded.value = false
                     }
                 }
             }
@@ -155,7 +162,7 @@ class GymProfileRouteViewModel @Inject constructor(
     fun selectFloor(floor: Int) {
         _uiState.update { state ->
             state.copy(
-                secondFloorBtnState =if (floor == 2) FloorBtnState.FloorSelected else FloorBtnState.FloorUnSelected,
+                secondFloorBtnState = if (floor == 2) FloorBtnState.FloorSelected else FloorBtnState.FloorUnSelected,
                 firstFloorBtnState = if (floor == 1) FloorBtnState.FloorSelected else FloorBtnState.FloorUnSelected,
                 curFloor = floor,
                 sectorNameList = sectorNameList.filter {

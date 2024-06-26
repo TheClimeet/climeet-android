@@ -1,28 +1,16 @@
 package com.climus.climeet.presentation.ui.main.mypage.follow.viewpager
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
 import com.climus.climeet.app.App
-import com.climus.climeet.data.model.response.UserFollowSimpleResponse
-import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
-import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.databinding.FragmentFollowingBinding
-import com.climus.climeet.presentation.ui.main.global.searchprofile.SearchProfileEvent
+import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.ui.main.global.searchprofile.adapter.FollowingRVAdapter
 import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowingUiData
 import com.climus.climeet.presentation.ui.main.mypage.follow.viewpager.adapter.FollowGymRVAdapter
@@ -31,30 +19,15 @@ import com.climus.climeet.presentation.ui.toGymProfile
 import com.climus.climeet.presentation.util.Constants
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class FollowingFragment : Fragment() {
+class FollowingFragment(val userId: Long) :
+    BaseFragment<FragmentFollowingBinding>(R.layout.fragment_following) {
 
-    private lateinit var binding: FragmentFollowingBinding
-    private var recyclerClimber: List<UserFollowingUiData> = emptyList()
     private val viewModel: FollowingViewModel by viewModels()
+
+    private var recyclerClimber: List<UserFollowingUiData> = emptyList()
     private var recyclerGymFollowing: List<UserFollowingUiData> = emptyList()
-
-    fun LifecycleOwner.repeatOnStarted(block: suspend CoroutineScope.() -> Unit) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED, block)
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_following, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // api
         super.onViewCreated(view, savedInstanceState)
@@ -86,7 +59,7 @@ class FollowingFragment : Fragment() {
 
     private fun initStateObserve() {
         repeatOnStarted {
-            viewModel?.let { vm ->
+            viewModel.let { vm ->
                 vm.uiState.collect { uiState ->
                     uiState.followingList.let { followingList ->
 
@@ -138,7 +111,7 @@ class FollowingFragment : Fragment() {
     private fun setupRecyclerView(
         recyclerView: RecyclerView,
         adapter: RecyclerView.Adapter<*>,
-        orientation: Int
+        orientation: Int,
     ) {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity(), orientation, false)
@@ -155,6 +128,7 @@ class FollowingFragment : Fragment() {
                         binding.rvSearchFollowing.visibility = View.INVISIBLE
 
                     }
+
                     "클라이머" -> {
                         viewModel.changeMode(false)
                         viewModel.getClimberFollowing()

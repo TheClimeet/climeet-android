@@ -18,6 +18,7 @@ class DataStoreManager @Inject constructor(
         private val REFRESH_TOKEN_KEY = stringPreferencesKey(Constants.REFRESH_TOKEN)
         private val LOGIN_MODE =
             stringPreferencesKey(com.climus.climeet.presentation.util.Constants.X_MODE)
+        private val LOGIN_TYPE = stringPreferencesKey(com.climus.climeet.presentation.util.Constants.LOGIN_TYPE)
     }
 
     suspend fun getAccessToken(): String? {
@@ -35,6 +36,12 @@ class DataStoreManager @Inject constructor(
     suspend fun getLoginMode(): String? {
         return dataStore.data.map { prefs ->
             prefs[LOGIN_MODE]
+        }.first()
+    }
+
+    suspend fun getLoginType(): String? {
+        return dataStore.data.map { pref ->
+            pref[LOGIN_TYPE]
         }.first()
     }
 
@@ -56,6 +63,12 @@ class DataStoreManager @Inject constructor(
         }
     }
 
+    suspend fun putLoginType(type: String) {
+        dataStore.edit { prefs ->
+            prefs[LOGIN_TYPE] = type
+        }
+    }
+
     suspend fun deleteAccessToken() {
         dataStore.edit { prefs ->
             prefs.remove(ACCESS_TOKEN_KEY)
@@ -71,6 +84,12 @@ class DataStoreManager @Inject constructor(
     suspend fun deleteLoginMode() {
         dataStore.edit { prefs ->
             prefs.remove(LOGIN_MODE)
+        }
+    }
+
+    suspend fun deleteLoginType() {
+        dataStore.edit { prefs ->
+            prefs.remove(LOGIN_TYPE)
         }
     }
 }

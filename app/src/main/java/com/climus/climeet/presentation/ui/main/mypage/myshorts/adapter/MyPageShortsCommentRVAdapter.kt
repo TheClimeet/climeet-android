@@ -1,12 +1,10 @@
 package com.climus.climeet.presentation.ui.main.mypage.myshorts.adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.climus.climeet.R
 import com.climus.climeet.databinding.ItemMypageShortsCommentBinding
 import com.climus.climeet.presentation.ui.main.mypage.myshorts.model.MyPageShortsCommentUiData
 import com.climus.climeet.presentation.ui.main.mypage.myshorts.viewpager.MyPageMyShortsCommentViewModel
@@ -49,26 +47,15 @@ class ShortsCommentViewHolder(
 
         }
 
-        Log.d("shorts", "프로필 : ${item.profileImage}")
-
         if (item.profileImage != null) {
             Glide.with(binding.root.context)
                 .load(item.profileImage)
                 .into(binding.cvImage)
         }
 
-        binding.tvComment.text = item.contents
-        binding.tvDate.text = formatDate(item.createdAt)
+        binding.tvComment.text = item.content
+        binding.tvDate.text = item.createdAt
     }
-
-    private fun formatDate(isoDateString: String): String {
-        val isoFormatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-        val date = isoFormatter.parse(isoDateString)
-
-        val targetFormat = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault())
-        return targetFormat.format(date)
-    }
-
 }
 
 

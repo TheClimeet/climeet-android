@@ -74,7 +74,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_title"
                 app:list="@{svm.uiState.shortsThumbnailList}"
-                app:spanCount="2" />
+                app:spanCount="2"
+                tools:listitem="@layout/item_shorts_thumbnail" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="110dp"
+                android:progressTint="@color/cm_main"
+                android:visibility="@{svm.isLoading? View.VISIBLE : View.GONE}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
