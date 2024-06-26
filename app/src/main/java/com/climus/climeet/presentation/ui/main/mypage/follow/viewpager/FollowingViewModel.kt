@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.global.searchprofile.model.SearchProfileUiData
-import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowingUiData
 import com.climus.climeet.presentation.ui.main.global.toUserFollowingUiData
+import com.climus.climeet.presentation.ui.main.mypage.follow.model.FollowingUiData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,8 +22,8 @@ import javax.inject.Inject
 data class FollowingUiState(
     val isGym: Boolean = true,
     val profileList: List<SearchProfileUiData> = emptyList(),
-    val homegymList: List<UserFollowingUiData> = emptyList(),
-    val followingList: List<UserFollowingUiData> = emptyList(),
+    val gymFollowingList: List<FollowingUiData> = emptyList(),
+    val climberFollowingList: List<FollowingUiData> = emptyList(),
 )
 
 sealed class FollowingEvent {
@@ -33,7 +33,7 @@ sealed class FollowingEvent {
 }
 
 @HiltViewModel
-class FollowingViewModel @Inject constructor(private val repository: MainRepository): ViewModel() {
+class FollowingViewModel @Inject constructor(private val repository: MainRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow(FollowingUiState())
     val uiState: StateFlow<FollowingUiState> = _uiState.asStateFlow()
@@ -41,47 +41,36 @@ class FollowingViewModel @Inject constructor(private val repository: MainReposit
     private val _event = MutableSharedFlow<FollowingEvent>()
     val event: SharedFlow<FollowingEvent> = _event.asSharedFlow()
 
-    fun getClimberFollowing() {
+    fun getUserFollowing(userCategory: String) {
         viewModelScope.launch {
-            repository.getClimberFollowing().let {
-                when(it) {
-                    is BaseState.Success -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                followingList = it.body.map { item ->
-                                    item.toUserFollowingUiData(
-                                        follow = ::follow,
-                                        unFollow = ::unfollow,
-                                        navigateToProfile = ::navigateToProfile
-                                    )
-                                },
-                            )
-                        }
-                    }
-                    is BaseState.Error -> {
-                        it.msg // 서버 에러 메시지
-                        Log.d("API", it.msg)
-                    }
-                }
-            }
-        }
-    }
-
-    fun getHomeGyms() {
-        viewModelScope.launch {
-            repository.getHomeGyms().let {
+            repository.getUserFollowing(null, userCategory).let {
                 when (it) {
                     is BaseState.Success -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                homegymList = it.body.map { item ->
-                                    item.toUserFollowingUiData(
-                                        follow = ::follow,
-                                        unFollow = ::unfollow,
-                                        navigateToProfile = ::navigateToProfile
-                                    )
-                                },
-                            )
+
+                        if (userCategory == "Climber") {
+                            _uiState.update { state ->
+                                state.copy(
+                                    climberFollowingList = it.body.map { item ->
+                                        item.toUserFollowingUiData(
+                                            follow = ::follow,
+                                            unFollow = ::unfollow,
+                                            navigateToProfile = ::navigateToProfile
+                                        )
+                                    },
+                                )
+                            }
+                        } else {
+                            _uiState.update { state ->
+                                state.copy(
+                                    gymFollowingList = it.body.map { item ->
+                                        item.toUserFollowingUiData(
+                                            follow = ::follow,
+                                            unFollow = ::unfollow,
+                                            navigateToProfile = ::navigateToProfile
+                                        )
+                                    },
+                                )
+                            }
                         }
                     }
 
@@ -109,8 +98,8 @@ class FollowingViewModel @Inject constructor(private val repository: MainReposit
                     when (it) {
                         is BaseState.Success -> {
 
-                            val newList = uiState.value.profileList.map{ data ->
-                                if(data.id == id){
+                            val newList = uiState.value.profileList.map { data ->
+                                if (data.id == id) {
                                     data.copy(
                                         isFollowing = true
                                     )
@@ -135,8 +124,8 @@ class FollowingViewModel @Inject constructor(private val repository: MainReposit
                 repository.followUser(id).let {
                     when (it) {
                         is BaseState.Success -> {
-                            val newList = uiState.value.profileList.map{ data ->
-                                if(data.id == id){
+                            val newList = uiState.value.profileList.map { data ->
+                                if (data.id == id) {
                                     data.copy(
                                         isFollowing = true
                                     )
@@ -163,27 +152,23 @@ class FollowingViewModel @Inject constructor(private val repository: MainReposit
         }
     }
 
-    private fun unfollow(id: Long) {
+    fun unfollow(id: Long) {
         viewModelScope.launch {
 
             if (uiState.value.isGym) {
                 repository.unFollowGym(id).let {
                     when (it) {
                         is BaseState.Success -> {
-                            val newList = uiState.value.profileList.map{ data ->
-                                if(data.id == id){
-                                    data.copy(
-                                        isFollowing = false
-                                    )
+                            val newList = uiState.value.profileList.map { data ->
+                                if (data.id == id) {
+                                    data.copy(isFollowing = false)
                                 } else {
                                     data.copy()
                                 }
                             }
 
                             _uiState.update { state ->
-                                state.copy(
-                                    profileList = newList
-                                )
+                                state.copy(profileList = newList)
                             }
                         }
 
@@ -196,20 +181,16 @@ class FollowingViewModel @Inject constructor(private val repository: MainReposit
                 repository.unfollowUser(id).let {
                     when (it) {
                         is BaseState.Success -> {
-                            val newList = uiState.value.profileList.map{ data ->
-                                if(data.id == id){
-                                    data.copy(
-                                        isFollowing = false
-                                    )
+                            val newList = uiState.value.profileList.map { data ->
+                                if (data.id == id) {
+                                    data.copy(isFollowing = false)
                                 } else {
                                     data.copy()
                                 }
                             }
 
                             _uiState.update { state ->
-                                state.copy(
-                                    profileList = newList
-                                )
+                                state.copy(profileList = newList)
                             }
                         }
 
@@ -224,7 +205,7 @@ class FollowingViewModel @Inject constructor(private val repository: MainReposit
         }
     }
 
-    private fun navigateToProfile(id: Long) {
+    fun navigateToProfile(id: Long) {
         viewModelScope.launch {
             if (uiState.value.isGym) {
                 _event.emit(FollowingEvent.NavigateToGymProfile(id))

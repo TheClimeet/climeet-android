@@ -44,7 +44,7 @@ class ShortsCommentViewHolder(
         // 해당 댓글로 이동
         binding.root.setOnClickListener {
             // todo: 뷰모델 -> 해당 숏츠 댓글로 이동
-
+            viewModel.navigateToShortsPlayer(item.shortsId)
         }
 
         if (item.profileImage != null) {

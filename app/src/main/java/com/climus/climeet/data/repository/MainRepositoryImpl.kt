@@ -86,13 +86,13 @@ class MainRepositoryImpl @Inject constructor(
         runRemote { api.searchGym(gymName, page, size) }
 
     override suspend fun getUserFollowing(
-        userId: Long,
+        userId: Long?,
         userCategory: String
     ): BaseState<List<UserFollowingInfoResponse>> =
         runRemote { api.getUserFollowing(userId, userCategory) }
 
     override suspend fun getUserFollowers(
-        userId: Long,
+        userId: Long?,
         userCategory: String
     ): BaseState<List<UserFollowerInfoResponse>> =
         runRemote { api.getUserFollowers(userId, userCategory) }
@@ -478,6 +478,9 @@ class MainRepositoryImpl @Inject constructor(
     ): BaseState<ShortsListResponse> = runRemote {
         api.getUserShorts(uploaderId, page, size, sortType)
     }
+
+    override suspend fun getShortsById(shortsId: Long): BaseState<ShortsListResponse> =
+        runRemote { api.getShortsById(shortsId) }
 
     override suspend fun editHomeGymPrivacy(): BaseState<ResponseBody> =
         runRemote { api.editHomeGymPrivacy() }

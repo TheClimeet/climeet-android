@@ -29,10 +29,6 @@ class MyPageMyShortsLikeFragment() :
         binding.svm = sharedViewModel
         binding.rvShorts.adapter = ShortsThumbnailAdapter()
 
-        sharedViewModel.initViewModel()
-        sharedViewModel.getLikedShorts(ShortsOption.NEW_SORT)
-
-
         addOnScrollListener()
         initShortsEventObserve()
         initStateObserve()

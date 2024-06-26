@@ -7,6 +7,7 @@ data class GetMyShortsCommentsResponse(
 )
 
 data class MyShortsComments(
+    val shortsId: Long,
     val commentId: Long,
     val profileImageUrl: String?,
     val content: String,

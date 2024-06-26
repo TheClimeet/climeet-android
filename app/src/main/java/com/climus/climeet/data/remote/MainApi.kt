@@ -246,13 +246,13 @@ interface MainApi {
 
     @GET("/api/followees")
     suspend fun getUserFollowing(
-        @Query("userId") userId: Long,
+        @Query("userId") userId: Long?,
         @Query("userCategory") userCategory: String
     ): Response<List<UserFollowingInfoResponse>>
 
     @GET("/api/followers")
     suspend fun getUserFollowers(
-        @Query("userId") userId: Long,
+        @Query("userId") userId: Long?,
         @Query("userCategory") userCategory: String
     ): Response<List<UserFollowerInfoResponse>>
 
@@ -381,6 +381,11 @@ interface MainApi {
         @Query("page") page: Int,
         @Query("size") size: Int,
         @Query("sortType") sortType: userShortsSortType
+    ): Response<ShortsListResponse>
+
+    @GET("/api/shorts/{shortsId}")
+    suspend fun getShortsById(
+        @Path("shortsId") shortsId: Long
     ): Response<ShortsListResponse>
 
     @GET("/api/shorts/my-shorts")

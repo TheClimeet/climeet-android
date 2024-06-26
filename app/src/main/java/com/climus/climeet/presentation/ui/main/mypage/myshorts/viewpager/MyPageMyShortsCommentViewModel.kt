@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.mypage.myshorts.model.MyPageShortsCommentUiData
+import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +23,7 @@ data class ShortsCommentUiData(
 )
 
 sealed class MyPageMyShortsCommentEvent {
-    data class NavigateToShortsComment(val boardId: Long) : MyPageMyShortsCommentEvent()
+    data class NavigateToShortsPlayer(val shortsId: Long) : MyPageMyShortsCommentEvent()
     data class ShowToastMessage(val msg: String) : MyPageMyShortsCommentEvent()
 }
 
@@ -48,7 +49,7 @@ class MyPageMyShortsCommentViewModel @Inject constructor(val repository: MainRep
                     is BaseState.Success -> {
                         val comments = it.body.result.map { comment ->
                             MyPageShortsCommentUiData(
-                                shortsId = comment.commentId,
+                                shortsId = comment.shortsId,
                                 content = comment.content,
                                 profileImage = comment.profileImageUrl,
                                 createdAt = comment.createdDate
@@ -68,6 +69,12 @@ class MyPageMyShortsCommentViewModel @Inject constructor(val repository: MainRep
                     }
                 }
             }
+        }
+    }
+
+    fun navigateToShortsPlayer(id: Long) {
+        viewModelScope.launch {
+            _event.emit(MyPageMyShortsCommentEvent.NavigateToShortsPlayer(id))
         }
     }
 }

@@ -9,15 +9,17 @@ import com.climus.climeet.data.model.response.RouteItem
 import com.climus.climeet.data.model.response.SectorItem
 import com.climus.climeet.data.model.response.UserFollowSimpleResponse
 import com.climus.climeet.data.model.response.UserFollowerInfoResponse
+import com.climus.climeet.data.model.response.UserFollowingInfoResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
 import com.climus.climeet.presentation.ui.main.global.climerprofile.model.ProfileHomeGymUiData
 import com.climus.climeet.presentation.ui.main.global.searchprofile.model.SearchProfileUiData
-import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowerUiData
 import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowingUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.RouteUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.GymLevelUiData
 import com.climus.climeet.presentation.ui.main.global.selectsector.model.SectorNameUiData
 import com.climus.climeet.presentation.ui.main.mypage.announce.model.AnnouncementUiData
+import com.climus.climeet.presentation.ui.main.mypage.follow.model.FollowUiData
+import com.climus.climeet.presentation.ui.main.mypage.follow.model.FollowingUiData
 import com.climus.climeet.presentation.util.Constants
 
 fun SectorItem.toSectorNameUiData(
@@ -128,17 +130,32 @@ fun UserFollowerInfoResponse.toUserFollowerUiData(
     navigateToProfile: (Long) -> Unit,
     follow: (Long) -> Unit,
     unFollow: (Long) -> Unit
-) = UserFollowerUiData(
-    id = userId,
-    imgUrl = userProfileUrl,
-    followers = followerCount,
-    followings = followingCount,
-    name = userName,
+) = FollowUiData(
+    userId = userId,
+    userName = userName,
+    profileImageUrl = userProfileUrl,
+    followerCount = followerCount,
+    followingCount = followingCount,
     isFollowing = isFollower,
     navigateToProfile = navigateToProfile,
     follow = follow,
-    unFollow = unFollow,
+    unFollow = unFollow
+)
 
+fun UserFollowingInfoResponse.toUserFollowingUiData(
+    navigateToProfile: (Long) -> Unit,
+    follow: (Long) -> Unit,
+    unFollow: (Long) -> Unit
+) = FollowingUiData(
+    userId = userId,
+    userName = userName,
+    profileImageUrl = profileImgUrl,
+    followerCount = followerCount,
+    followingCount = followingCount,
+    isFollowing = isFollower,
+    navigateToProfile = navigateToProfile,
+    follow = follow,
+    unFollow = unFollow
 )
 
 fun UserHomeGymSimpleResponse.toProfileHomeGymUiData(

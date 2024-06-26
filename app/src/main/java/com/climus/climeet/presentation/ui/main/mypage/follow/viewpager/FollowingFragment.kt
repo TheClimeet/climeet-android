@@ -8,15 +8,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.R
-import com.climus.climeet.app.App
 import com.climus.climeet.databinding.FragmentFollowingBinding
 import com.climus.climeet.presentation.base.BaseFragment
-import com.climus.climeet.presentation.ui.main.global.searchprofile.adapter.FollowingRVAdapter
-import com.climus.climeet.presentation.ui.main.global.searchprofile.model.UserFollowingUiData
-import com.climus.climeet.presentation.ui.main.mypage.follow.viewpager.adapter.FollowGymRVAdapter
+import com.climus.climeet.presentation.ui.main.mypage.follow.model.FollowingUiData
+import com.climus.climeet.presentation.ui.main.mypage.follow.viewpager.adapter.FollowingClimberRVAdapter
+import com.climus.climeet.presentation.ui.main.mypage.follow.viewpager.adapter.FollowingGymRVAdapter
 import com.climus.climeet.presentation.ui.toClimerProfile
 import com.climus.climeet.presentation.ui.toGymProfile
-import com.climus.climeet.presentation.util.Constants
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,32 +24,44 @@ class FollowingFragment(val userId: Long) :
 
     private val viewModel: FollowingViewModel by viewModels()
 
-    private var recyclerClimber: List<UserFollowingUiData> = emptyList()
-    private var recyclerGymFollowing: List<UserFollowingUiData> = emptyList()
+    private var recyclerClimber: MutableList<FollowingUiData> = mutableListOf()
+    private var recyclerGym: MutableList<FollowingUiData> = mutableListOf()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) { // api
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
-        viewModel.getClimberFollowing()
-        viewModel.getHomeGyms()
+        viewModel.getUserFollowing("Manager")
+
         initEventObserve()
         initStateObserve()
         tabListener()
+    }
+
+    private fun setupFollowingList() {
+        val followingRVAdapter = FollowingClimberRVAdapter(recyclerClimber, viewModel)
+        setupRecyclerView(
+            binding.rvClimberFollowing,
+            followingRVAdapter,
+            LinearLayoutManager.VERTICAL
+        )
+    }
+
+    private fun setupFollowingGymList() {
+        val followingRVAdapter = FollowingGymRVAdapter(recyclerGym, viewModel)
+        setupRecyclerView(
+            binding.rvGymFollowing,
+            followingRVAdapter,
+            LinearLayoutManager.VERTICAL
+        )
     }
 
     private fun initEventObserve() {
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
-                    is FollowingEvent.NavigateToClimerProfile -> findNavController().toClimerProfile(
-                        it.id
-                    )
-
-                    is FollowingEvent.NavigateToGymProfile -> findNavController().toGymProfile(
-                        it.id
-                    )
-
+                    is FollowingEvent.NavigateToClimerProfile -> findNavController().toClimerProfile(it.id)
+                    is FollowingEvent.NavigateToGymProfile -> findNavController().toGymProfile(it.id)
                 }
             }
         }
@@ -61,60 +71,21 @@ class FollowingFragment(val userId: Long) :
         repeatOnStarted {
             viewModel.let { vm ->
                 vm.uiState.collect { uiState ->
-                    uiState.followingList.let { followingList ->
-
-                        recyclerClimber = followingList
+                    uiState.climberFollowingList.let { followingList ->
+                        recyclerClimber = followingList.toMutableList()
                         Log.d("recycler", recyclerClimber.toString())
+
                         setupFollowingList()
-
                     }
-                    uiState.homegymList.let { homeGymList ->
-                        recyclerGymFollowing = homeGymList
-                        Log.d("recycler", recyclerGymFollowing.toString())
-                        setupFollowingGymList()
+                    uiState.gymFollowingList.let { homeGymList ->
+                        recyclerGym = homeGymList.toMutableList()
+                        Log.d("recycler", recyclerGym.toString())
 
+                        setupFollowingGymList()
                     }
                 }
             }
         }
-    }
-
-    private fun setupFollowingList() {
-        val followingRVAdapter = FollowingRVAdapter(recyclerClimber)
-        setupRecyclerView(
-            binding.rvSearchFollowing,
-            followingRVAdapter,
-            LinearLayoutManager.VERTICAL
-        )
-    }
-
-    private fun setupFollowingGymList() {
-        val followingRVAdapter = FollowGymRVAdapter(recyclerGymFollowing, ::navToGymProfile)
-        setupRecyclerView(
-            binding.rvFollowSearchCrags,
-            followingRVAdapter,
-            LinearLayoutManager.VERTICAL
-        )
-    }
-
-    private fun navToGymProfile(gymId: Long) {
-
-        App.sharedPreferences.edit().putLong("gymId", gymId)
-            .apply()
-        Log.d("gym_profile", "홈에서 암장 아이디 : $gymId")
-
-        val access = App.sharedPreferences.getString(Constants.X_MODE, null)
-
-        findNavController().toGymProfile(gymId)
-    }
-
-    private fun setupRecyclerView(
-        recyclerView: RecyclerView,
-        adapter: RecyclerView.Adapter<*>,
-        orientation: Int,
-    ) {
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireActivity(), orientation, false)
     }
 
     private fun tabListener() {
@@ -123,17 +94,17 @@ class FollowingFragment(val userId: Long) :
                 when (tab?.text) {
                     "암장" -> {
                         viewModel.changeMode(true)
-                        viewModel.getHomeGyms()
-                        binding.rvFollowSearchCrags.visibility = View.VISIBLE
-                        binding.rvSearchFollowing.visibility = View.INVISIBLE
+                        viewModel.getUserFollowing("Manager")
+                        binding.rvGymFollowing.visibility = View.VISIBLE
+                        binding.rvClimberFollowing.visibility = View.INVISIBLE
 
                     }
 
                     "클라이머" -> {
                         viewModel.changeMode(false)
-                        viewModel.getClimberFollowing()
-                        binding.rvFollowSearchCrags.visibility = View.INVISIBLE
-                        binding.rvSearchFollowing.visibility = View.VISIBLE
+                        viewModel.getUserFollowing("Climber")
+                        binding.rvGymFollowing.visibility = View.INVISIBLE
+                        binding.rvClimberFollowing.visibility = View.VISIBLE
                     }
                 }
             }
@@ -146,4 +117,12 @@ class FollowingFragment(val userId: Long) :
         })
     }
 
+    private fun setupRecyclerView(
+        recyclerView: RecyclerView,
+        adapter: RecyclerView.Adapter<*>,
+        orientation: Int,
+    ) {
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireActivity(), orientation, false)
+    }
 }
