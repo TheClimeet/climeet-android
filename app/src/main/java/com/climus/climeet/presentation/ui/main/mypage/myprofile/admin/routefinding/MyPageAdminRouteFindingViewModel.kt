@@ -290,10 +290,9 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     }
 
     fun isColorAlreadySelected(): Boolean {
-        val isComplete =
-            !_uiState.value.levelList.any {
-                it.colorName == selectedLevel.value.colorName
-            } || modifyingLevel.value.colorName == selectedLevel.value.colorName
+        val isComplete = !_uiState.value.levelList.any {
+            it.colorName == selectedLevel.value.colorName
+        } || modifyingLevel.value.colorName == selectedLevel.value.colorName
         isCompletable.value = isComplete
         return isComplete
     }

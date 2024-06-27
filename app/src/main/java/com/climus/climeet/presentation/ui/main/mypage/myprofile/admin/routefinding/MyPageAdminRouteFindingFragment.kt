@@ -19,6 +19,7 @@ import com.climus.climeet.presentation.customview.WarningSnackBar
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheet
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheetViewModel
 import com.climus.climeet.presentation.ui.main.MainViewModel
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLevelItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.LevelColorAdapter
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.RouteFindingLevelAdapter
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.RouteFindingSectorAdapter
@@ -113,24 +114,7 @@ class MyPageAdminRouteFindingFragment :
         }
         repeatOnStarted {
             viewModel.selectedLevel.collect {
-                val isCompletable = !viewModel.isColorAlreadySelected()
-                if (isCompletable) {
-                    setTvExplain()
-                } else {
-                    binding.tvExplain.setTextColor(resources.getColor(R.color.cm_main))
-                    if (it.climeetLevel == "C" && it.colorName == "컴피") {
-                        binding.layoutSetLevel.isClickable = false
-                        binding.tvExplain.text = "컴피티션 레벨은 C에 고정되어 있어요"
-                        viewModel.isCompletable.postValue(true)
-                    } else {
-                        binding.layoutSetLevel.isClickable = true
-                        binding.tvExplain.text = ""
-                    }
-                    if (it.colorName == "-" || it.climeetLevel == "레벨 설정") {
-                        binding.tvExplain.text = "컴피티션 레벨은 C에 고정되어 있어요"
-                        viewModel.isCompletable.postValue(false)
-                    }
-                }
+                handleLevelSelection(it)
                 binding.rvLevelColor.post {
                     adapter.notifyDataSetChanged()
                 }
@@ -181,14 +165,17 @@ class MyPageAdminRouteFindingFragment :
                 sector.sectorImg.isEmpty() && sector.sectorName.isEmpty() -> {
                     showCustomSnackbar("섹터/벽면을 설정해주세요")
                 }
+
                 sector.sectorImg.isEmpty() -> {
                     showCustomSnackbar("섹터/벽면의 사진을 넣어주세요")
                 }
+
                 sector.sectorName.isEmpty() -> {
                     showCustomSnackbar("섹터/벽면의 이름을 입력해주세요")
                 }
+
                 else -> {
-                    if(viewModel.modifyingSector.value == viewModel.defaultSectorItem) {
+                    if (viewModel.modifyingSector.value == viewModel.defaultSectorItem) {
                         viewModel.addSector()
                     } else {
                         viewModel.modifySector()
@@ -219,8 +206,51 @@ class MyPageAdminRouteFindingFragment :
         binding.rvRouteFindingSector.adapter = sectorAdapter
     }
 
+    private fun handleLevelSelection(selectedLevel: UiLevelItem) {
+        val isCompletable = !viewModel.isColorAlreadySelected()
+        if (isCompletable) {
+            setTvExplain()
+        } else {
+            updateExplanationText(selectedLevel)
+        }
+    }
+
+    private fun updateExplanationText(level: UiLevelItem) {
+        binding.tvExplain.setTextColor(resources.getColor(R.color.cm_main))
+        when {
+            isCompetitionLevel(level) -> {
+                binding.layoutSetLevel.isClickable = false
+                binding.tvExplain.text = "컴피티션 레벨은 C에 고정되어 있어요"
+                handleCompetitionColor(level)
+            }
+            isLevelNothing(level) -> {
+                binding.tvExplain.text = "컴피티션 레벨은 C에 고정되어 있어요"
+                viewModel.isCompletable.postValue(false)
+            }
+            else -> {
+                binding.layoutSetLevel.isClickable = true
+                binding.tvExplain.text = ""
+            }
+        }
+    }
+
+    private fun handleCompetitionColor(level: UiLevelItem) {
+        if (level.colorName == "컴피") {
+            viewModel.isCompletable.postValue(true)
+        } else {
+            binding.layoutSetLevel.isClickable = true
+            viewModel.selectLevel("레벨 설정")
+            viewModel.isCompletable.postValue(false)
+        }
+    }
+
+    private fun isCompetitionLevel(level: UiLevelItem) =
+        level.climeetLevel == "C"
+
+    private fun isLevelNothing(level: UiLevelItem) =
+        level.colorName == "-" || level.climeetLevel == "레벨 설정"
+
     private fun setImage(uri: Uri, ivIamge: AppCompatImageView) {
-        Log.d("tlqkf", "$ivIamge")
         Glide.with(this)
             .load(uri)
             .apply(RequestOptions().dontTransform())
