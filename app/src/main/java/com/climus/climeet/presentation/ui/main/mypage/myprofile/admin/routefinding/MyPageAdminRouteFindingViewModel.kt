@@ -16,7 +16,6 @@ import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiRo
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiSectorItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.LevelColorData
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.RouteColor
-import com.climus.climeet.presentation.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -202,10 +201,11 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     val isCompletable = MutableLiveData(true)
     val isLevelAdd = MutableLiveData(true)
 
-    val selectedFloor = MutableStateFlow(1)
+    val selectedLayoutFloor = MutableStateFlow(1)
     val isSecondFloorExist = MutableLiveData(false)
 
-    val defaultSectorItem = UiSectorItem("", "", false, ::setSector)
+    val selectedSectorFloor = MutableStateFlow(1)
+    val defaultSectorItem = UiSectorItem("", "", 1, false, ::setSector)
     val selectedSector = MutableStateFlow(defaultSectorItem)
     val selectedImageType = MutableStateFlow(DataType.GYM)
     val modifyingSector = MutableStateFlow(defaultSectorItem)
@@ -301,7 +301,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         if (selectedImageType.value == DataType.GYM) {
             _uiState.update { state ->
                 val updatedLayoutList = state.layoutList.toMutableList()
-                val selectedFloor = selectedFloor.value
+                val selectedFloor = selectedLayoutFloor.value
 
                 updatedLayoutList[selectedFloor - 1] =
                     updatedLayoutList[selectedFloor - 1].copy(gymImg = uri)
@@ -321,7 +321,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     }
 
     fun selectFloor(floor: Int) {
-        selectedFloor.update { floor }
+        selectedLayoutFloor.update { floor }
         val uri = uiState.value.layoutList[floor - 1].gymImg.toUri()
 
         viewModelScope.launch {

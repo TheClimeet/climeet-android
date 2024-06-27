@@ -2,7 +2,6 @@ package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefind
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.net.toUri
@@ -105,7 +104,7 @@ class MyPageAdminRouteFindingFragment :
                     sectorAdapter.notifyDataSetChanged()
                 }
 
-                if (state.layoutList[viewModel.selectedFloor.value - 1].gymImg == "") {
+                if (state.layoutList[viewModel.selectedLayoutFloor.value - 1].gymImg == "") {
                     binding.tvImageExplain.visibility = View.VISIBLE
                 } else {
                     binding.tvImageExplain.visibility = View.GONE
@@ -121,7 +120,7 @@ class MyPageAdminRouteFindingFragment :
             }
         }
         repeatOnStarted {
-            viewModel.selectedFloor.collect {
+            viewModel.selectedLayoutFloor.collect {
                 if (it == 2) {
                     binding.btnDeleteSecondFloor.visibility = View.VISIBLE
                 } else {
