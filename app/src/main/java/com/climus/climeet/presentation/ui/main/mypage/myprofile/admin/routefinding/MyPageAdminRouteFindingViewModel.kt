@@ -36,7 +36,8 @@ data class CreateRouteUiState(
     val selectedHoldImage: Int = R.drawable.ic_black_hold,
     val selectedLevelText: String = "",
     val selectedLevelColor: Int = 0,
-    val selectedLevelColorHex: String = ""
+    val selectedLevelColorHex: String = "",
+    val selectedSectorName: String = ""
 )
 
 sealed class CreateRouteEvent {
@@ -143,6 +144,12 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
                 }
             )
         }
+
+        _createRouteUiState.update { state ->
+            state.copy(
+                selectedSectorName = name
+            )
+        }
         viewModelScope.launch {
             _createRouteEvent.emit(CreateRouteEvent.ChangeSector(imgUrl))
         }
@@ -156,6 +163,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
                         _uiState.update { state ->
                             state.copy(
                                 chipList = uiState.value.chipList + UiRouteChipData(
+                                    createRouteUiState.value.selectedSectorName,
                                     createRouteUiState.value.selectedLevelText,
                                     createRouteUiState.value.selectedLevelColorHex,
                                     it.body.imgUrl,
