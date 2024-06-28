@@ -350,7 +350,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
                 sectorList = state.sectorList.filter { it.sectorFloor == 1 }
             )
         }
-        if(selectedSectorFloor.value == 2) {
+        if (selectedSectorFloor.value == 2) {
             selectedSectorFloor.value = 1
             _floorSectorList.update { uiState.value.sectorList }
             viewModelScope.launch {
@@ -368,6 +368,15 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         }
         _floorSectorList.update { it + selectedSector.value }
         selectedSector.update { defaultSectorItem }
+    }
+
+    fun deleteSector(deleteItem: UiSectorItem) {
+        _uiState.update { state ->
+            state.copy(
+                sectorList = state.sectorList.filterNot { it == deleteItem }
+            )
+        }
+        _floorSectorList.update { uiState.value.sectorList.filter { it.sectorFloor == selectedSectorFloor.value } }
     }
 
     fun modifySector() {

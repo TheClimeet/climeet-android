@@ -49,6 +49,9 @@ class RouteFindingSectorAdapter(
                 viewModel.modifyingSector.update { item }
                 viewModel.selectedSector.update { item }
             }
+            binding.ivDelete.setOnClickListener {
+                viewModel.deleteSector(item)
+            }
         }
     }
 }

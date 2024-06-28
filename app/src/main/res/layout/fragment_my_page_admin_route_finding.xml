@@ -566,6 +566,7 @@
                                 android:paddingStart="13dp"
                                 android:paddingEnd="16dp"
                                 android:text="@string/route_finding_add_sector"
+                                android:layout_gravity="bottom"
                                 app:drawableStartCompat="@drawable/ic_add_white_14"
                                 app:layout_constraintStart_toEndOf="@+id/rv_route_finding_level"
                                 app:layout_constraintTop_toTopOf="parent" />
