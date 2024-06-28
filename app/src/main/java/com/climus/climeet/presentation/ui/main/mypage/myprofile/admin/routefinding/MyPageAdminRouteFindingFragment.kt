@@ -47,6 +47,7 @@ class MyPageAdminRouteFindingFragment :
         initStateObserve()
         initParentImageObserve()
         sectorClickListener()
+        changeSectorFloor()
     }
 
     private fun initEventObserve() {
@@ -84,6 +85,9 @@ class MyPageAdminRouteFindingFragment :
 
                     MyPageAdminRouteFindingEvent.GoToCreateRoute -> findNavController().toCreateRoute()
                     MyPageAdminRouteFindingEvent.NavigateToBack -> findNavController().navigateUp()
+                    MyPageAdminRouteFindingEvent.DeleteSecondFloor -> {
+                        binding.switchSectorFloor.isChecked = false
+                    }
                 }
             }
         }
@@ -156,7 +160,8 @@ class MyPageAdminRouteFindingFragment :
         binding.btnSectorComplete.setOnClickListener {
             viewModel.selectedSector.update {
                 it.copy(
-                    sectorName = binding.etSectorName.text.toString()
+                    sectorName = binding.etSectorName.text.toString(),
+                    sectorFloor = viewModel.selectedSectorFloor.value
                 )
             }
             val sector = viewModel.selectedSector.value
@@ -186,6 +191,28 @@ class MyPageAdminRouteFindingFragment :
         binding.tvAddSector.setOnClickListener {
             binding.etSectorName.setText("")
             viewModel.resetSector()
+        }
+    }
+
+    private fun changeSectorFloor() {
+        with(binding) {
+            switchSectorFloor.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked && !viewModel.isSecondFloorExist.value!!) {
+                    showCustomSnackbar("2층이 존재하지 않습니다.")
+                    switchSectorFloor.isChecked = false
+                } else {
+                    if (isChecked) {
+                        viewModel.changeFloorSector(2)
+                        tvSwitchFirst.setTextColor(R.color.white)
+                        tvSwitchSecond.setTextColor(R.color.black)
+                    } else {
+                        viewModel.changeFloorSector(1)
+                        tvSwitchFirst.setTextColor(R.color.black)
+                        tvSwitchSecond.setTextColor(R.color.white)
+                    }
+
+                }
+            }
         }
     }
 
@@ -222,10 +249,12 @@ class MyPageAdminRouteFindingFragment :
                 binding.tvExplain.text = "컴피티션 레벨은 C에 고정되어 있어요"
                 handleCompetitionColor(level)
             }
+
             isLevelNothing(level) -> {
                 binding.tvExplain.text = "컴피티션 레벨은 C에 고정되어 있어요"
                 viewModel.isCompletable.postValue(false)
             }
+
             else -> {
                 binding.layoutSetLevel.isClickable = true
                 binding.tvExplain.text = ""

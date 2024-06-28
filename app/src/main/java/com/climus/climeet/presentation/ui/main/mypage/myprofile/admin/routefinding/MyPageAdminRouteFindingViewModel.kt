@@ -1,6 +1,7 @@
 package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding
 
 import android.net.Uri
+import android.util.Log
 import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
 import androidx.lifecycle.MutableLiveData
@@ -60,6 +61,7 @@ sealed class MyPageAdminRouteFindingEvent {
     data object GoToGallery : MyPageAdminRouteFindingEvent()
     data object GoToCreateRoute : MyPageAdminRouteFindingEvent()
     data object NavigateToBack : MyPageAdminRouteFindingEvent()
+    data object DeleteSecondFloor : MyPageAdminRouteFindingEvent()
     data class ShowLayoutImg(val uri: Uri) : MyPageAdminRouteFindingEvent()
 }
 
@@ -204,7 +206,11 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     val selectedLayoutFloor = MutableStateFlow(1)
     val isSecondFloorExist = MutableLiveData(false)
 
+
     val selectedSectorFloor = MutableStateFlow(1)
+    private val _floorSectorList = MutableStateFlow(listOf<UiSectorItem>())
+    val floorSectorList: StateFlow<List<UiSectorItem>> = _floorSectorList
+
     val defaultSectorItem = UiSectorItem("", "", 1, false, ::setSector)
     val selectedSector = MutableStateFlow(defaultSectorItem)
     val selectedImageType = MutableStateFlow(DataType.GYM)
@@ -302,7 +308,6 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
             _uiState.update { state ->
                 val updatedLayoutList = state.layoutList.toMutableList()
                 val selectedFloor = selectedLayoutFloor.value
-
                 updatedLayoutList[selectedFloor - 1] =
                     updatedLayoutList[selectedFloor - 1].copy(gymImg = uri)
 
@@ -321,6 +326,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     }
 
     fun selectFloor(floor: Int) {
+        selectedImageType.value = DataType.GYM
         selectedLayoutFloor.update { floor }
         val uri = uiState.value.layoutList[floor - 1].gymImg.toUri()
 
@@ -335,9 +341,22 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     }
 
     fun deleteSecondFloor() {
+        selectedImageType.value = DataType.GYM
         isSecondFloorExist.postValue(false)
         updateImg("")
         selectFloor(1)
+        _uiState.update { state ->
+            state.copy(
+                sectorList = state.sectorList.filter { it.sectorFloor == 1 }
+            )
+        }
+        if(selectedSectorFloor.value == 2) {
+            selectedSectorFloor.value = 1
+            _floorSectorList.update { uiState.value.sectorList }
+            viewModelScope.launch {
+                _event.emit(MyPageAdminRouteFindingEvent.DeleteSecondFloor)
+            }
+        }
     }
 
     fun addSector() {
@@ -347,6 +366,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
                 sectorList = updatedList
             )
         }
+        _floorSectorList.update { it + selectedSector.value }
         selectedSector.update { defaultSectorItem }
     }
 
@@ -361,7 +381,24 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
             }
             state.copy(sectorList = updatedList)
         }
+        _floorSectorList.update {
+            it.map { sector ->
+                if (sector.sectorName == modifyingSector.value.sectorName) {
+                    selectedSector.value
+                } else {
+                    sector
+                }
+            }
+        }
         resetSector()
+    }
+
+    fun changeFloorSector(floor: Int) {
+        selectedSectorFloor.value = floor
+        resetSector()
+        _floorSectorList.update {
+            uiState.value.sectorList.filter { it.sectorFloor == floor }
+        }
     }
 
     fun resetSector() {
