@@ -92,7 +92,6 @@ class TimerViewModel @Inject constructor(
         }
     }
 
-    //
     fun sendClimbingRecord() {
         CoroutineScope(Dispatchers.IO).launch {
             val routeData: List<RouteRecordData>?

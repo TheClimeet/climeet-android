@@ -435,7 +435,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             cragSelectVM.resetItem()
 
             // 루트기록 API로 전송
-            //timerVM.sendClimbingRecord()
+            timerVM.sendClimbingRecord()
 
             recordVM.resetAtStop()
 
