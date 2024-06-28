@@ -366,6 +366,7 @@
                         style="@style/TextSmall"
                         android:layout_width="54dp"
                         android:layout_height="30dp"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/rect_grey8fill_nostroke_5radius"
                         android:gravity="center"
                         android:onClick="@{()->vm.selectFloor(1)}"
@@ -385,7 +386,7 @@
                         android:text="@string/plus"
                         android:visibility="@{vm.isSecondFloorExist() ? View.GONE : View.VISIBLE}"
                         app:layout_constraintStart_toEndOf="@+id/btn_first_floor"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="@+id/btn_first_floor" />
 
                     <TextView
                         android:id="@+id/btn_second_floor"
@@ -399,6 +400,17 @@
                         android:text="@string/route_finding_second_floor"
                         android:visibility="@{vm.isSecondFloorExist() ? View.VISIBLE : View.GONE}"
                         app:layout_constraintStart_toEndOf="@+id/btn_first_floor"
+                        app:layout_constraintTop_toTopOf="@+id/btn_first_floor" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/btn_delete_second_floor"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="-10dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:src="@drawable/ic_route_finding_delete"
+                        android:onClick="@{()->vm.deleteSecondFloor()}"
+                        app:layout_constraintEnd_toEndOf="@+id/btn_second_floor"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -432,22 +444,6 @@
                             android:textColor="@color/cm_main"
                             app:layout_constraintStart_toStartOf="@id/iv_add_gym_iamge"
                             app:layout_constraintTop_toBottomOf="@id/iv_add_gym_iamge" />
-
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/btn_delete_second_floor"
-                            style="@style/TextSmall"
-                            android:layout_width="65dp"
-                            android:layout_height="30dp"
-                            android:layout_marginTop="12dp"
-                            android:background="@drawable/rect_silver2fill_nostroke_8radius"
-                            android:onClick="@{()->vm.deleteSecondFloor()}"
-                            android:paddingHorizontal="16dp"
-                            android:paddingTop="5.5dp"
-                            android:paddingBottom="6.5dp"
-                            android:text="@string/delete"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/iv_add_gym_iamge" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
