@@ -16,8 +16,9 @@ import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLe
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiRouteChipData
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiRouteItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiSectorItem
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.LevelColorData
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.RouteColor
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.LevelColorData
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.MyPageAdminRouteData
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.RouteColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -236,7 +237,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
 
     // --end createRoute
 
-    private val initDate = LocalDate.now()
+    private val initDate = MyPageAdminRouteData.selectedDate
     val selectedDateText =
         MutableStateFlow("${initDate.year}년 ${initDate.monthValue}월 ${initDate.dayOfMonth}일 (${dayOfWeekMap[initDate.dayOfWeek]})")
     val selectedDate = MutableStateFlow(initDate)

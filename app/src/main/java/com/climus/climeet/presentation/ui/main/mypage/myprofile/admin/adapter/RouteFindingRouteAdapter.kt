@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter
+package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,9 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.databinding.ItemRouteFindingRouteBinding
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.adapter.CreateRouteChipAdapter
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiRouteItem
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiSectorItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.MyPageAdminRouteFindingViewModel
 
 class RouteFindingRouteAdapter(

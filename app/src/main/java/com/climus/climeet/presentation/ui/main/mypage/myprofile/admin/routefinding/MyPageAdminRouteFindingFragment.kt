@@ -18,11 +18,13 @@ import com.climus.climeet.presentation.customview.WarningSnackBar
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheet
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheetViewModel
 import com.climus.climeet.presentation.ui.main.MainViewModel
+import com.climus.climeet.presentation.ui.main.global.gymprofile.route.GymProfileRouteViewModel
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLevelItem
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.LevelColorAdapter
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.RouteFindingLevelAdapter
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.RouteFindingRouteAdapter
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.RouteFindingSectorAdapter
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.adapter.LevelColorAdapter
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.adapter.RouteFindingLevelAdapter
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.adapter.RouteFindingRouteAdapter
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.adapter.RouteFindingSectorAdapter
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.MyPageAdminRouteData
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.bottomsheet.SetLevelBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.update
@@ -33,6 +35,7 @@ class MyPageAdminRouteFindingFragment :
 
     private val parentViewModel: MainViewModel by activityViewModels()
     private val dateViewModel: SelectDateBottomSheetViewModel by viewModels()
+    private val routeViewModel: GymProfileRouteViewModel by activityViewModels()
     private val viewModel: MyPageAdminRouteFindingViewModel by activityViewModels()
     private lateinit var adapter: LevelColorAdapter
     private lateinit var levelAdapter: RouteFindingLevelAdapter
@@ -43,6 +46,8 @@ class MyPageAdminRouteFindingFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.vm = viewModel
+
+        viewModel.setSelectedDate(MyPageAdminRouteData.selectedDate)
 
         setRV()
         initEventObserve()
@@ -60,10 +65,11 @@ class MyPageAdminRouteFindingFragment :
                         SelectDateBottomSheet(
                             requireContext(),
                             dateViewModel,
-                            viewModel.selectedDate.value,
-                            viewModel::noUse
+                            MyPageAdminRouteData.selectedDate,
+                            MyPageAdminRouteData::setSelectedDate
                         ) { date ->
                             viewModel.setSelectedDate(date)
+                            routeViewModel.setSelectedDate(date)
                         }.show()
                     }
 

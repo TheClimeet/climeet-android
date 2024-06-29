@@ -121,7 +121,6 @@ class CreateClimbingRecordViewModel @Inject constructor(
 
     fun setSelectedDate(date: LocalDate) {
         selectedDate.value = date
-        CreateRecordData.setSelectedDate(date)
         setDate()
     }
 

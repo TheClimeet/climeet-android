@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter
+package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

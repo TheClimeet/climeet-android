@@ -10,7 +10,6 @@ import com.climus.climeet.databinding.FragmentMypageAdminProfileRouteBinding
 import com.climus.climeet.presentation.base.BaseFragment
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheet
 import com.climus.climeet.presentation.customview.selectdate.SelectDateBottomSheetViewModel
-import com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileData
 import com.climus.climeet.presentation.ui.main.global.gymprofile.GymProfileViewModel
 import com.climus.climeet.presentation.ui.main.global.gymprofile.route.GymProfileRouteEvent
 import com.climus.climeet.presentation.ui.main.global.gymprofile.route.GymProfileRouteViewModel
@@ -18,11 +17,13 @@ import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.GymLe
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.RouteImageAdapter
 import com.climus.climeet.presentation.ui.main.global.selectsector.adapter.SectorNameAdapter
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.MyPageAdminMyProfileViewModel
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.MyPageAdminRouteData
 import com.climus.climeet.presentation.ui.main.shorts.adapter.ShortsThumbnailAdapter
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsOption
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerEvent
 import com.climus.climeet.presentation.ui.main.shorts.player.ShortsPlayerViewModel
 import com.climus.climeet.presentation.ui.toShortsPlayer
+import java.time.LocalDate
 
 class MyPageAdminProfileRouteFragment: BaseFragment<FragmentMypageAdminProfileRouteBinding>(R.layout.fragment_mypage_admin_profile_route) {
 
@@ -45,6 +46,8 @@ class MyPageAdminProfileRouteFragment: BaseFragment<FragmentMypageAdminProfileRo
         initShortsEventObserve()
         addOnScrollListener()
 
+        MyPageAdminRouteData.setSelectedDate(LocalDate.now())
+        routeViewModel.setSelectedDate(LocalDate.now())
         routeViewModel.selectedDate.observe(viewLifecycleOwner, Observer { date ->
             routeViewModel.setDate()
         })
@@ -87,8 +90,8 @@ class MyPageAdminProfileRouteFragment: BaseFragment<FragmentMypageAdminProfileRo
                         SelectDateBottomSheet(
                             requireContext(),
                             dateViewModel,
-                            GymProfileData.selectedDate,
-                            GymProfileData::setSelectedDate
+                            MyPageAdminRouteData.selectedDate,
+                            MyPageAdminRouteData::setSelectedDate
                         ) { date ->
                             routeViewModel.setSelectedDate(date)
                         }.show()
