@@ -171,27 +171,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
                             createRouteUiState.value.selectedHoldImage
                         )
 
-                        _uiState.update { state ->
-                            val existingRouteItem = state.routeList.find { it.sectorName == selectedChipData.sectorName }
-
-                            val updatedRouteList = if (existingRouteItem != null) {
-                                state.routeList.map { item ->
-                                    if (item.sectorName == selectedChipData.sectorName) {
-                                        item.copy(chipList = item.chipList + selectedChipData)
-                                    } else {
-                                        item
-                                    }
-                                }
-                            } else {
-                                state.routeList + UiRouteItem(selectedChipData.sectorName, listOf(selectedChipData))
-                            }
-
-                            state.copy(
-                                chipList = uiState.value.chipList + selectedChipData,
-                                routeList = updatedRouteList
-                            )
-                        }
-
+                        setRoute(selectedChipData)
                     }
 
                     is BaseState.Error -> {
@@ -200,6 +180,29 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
                 }
 
             }
+        }
+    }
+
+    private fun setRoute(selectedChipData: UiRouteChipData) {
+        _uiState.update { state ->
+            val existingRouteItem = state.routeList.find { it.sectorName == selectedChipData.sectorName }
+
+            val updatedRouteList = if (existingRouteItem != null) {
+                state.routeList.map { item ->
+                    if (item.sectorName == selectedChipData.sectorName) {
+                        item.copy(chipList = item.chipList + selectedChipData)
+                    } else {
+                        item
+                    }
+                }
+            } else {
+                state.routeList + UiRouteItem(selectedChipData.sectorName, listOf(selectedChipData))
+            }
+
+            state.copy(
+                chipList = uiState.value.chipList + selectedChipData,
+                routeList = updatedRouteList
+            )
         }
     }
 
