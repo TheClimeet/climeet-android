@@ -178,6 +178,10 @@ class MyPageAdminRouteFindingFragment :
                     showCustomSnackbar("섹터/벽면의 이름을 입력해주세요")
                 }
 
+                checkExistSectorName(sector.sectorName) -> {
+                    showCustomSnackbar("중복된 섹터/벽면의 이름입니다")
+                }
+
                 else -> {
                     if (viewModel.modifyingSector.value == viewModel.defaultSectorItem) {
                         viewModel.addSector()
@@ -214,6 +218,16 @@ class MyPageAdminRouteFindingFragment :
                 }
             }
         }
+    }
+
+    private fun checkExistSectorName(sectorName: String): Boolean {
+        viewModel.uiState.value.sectorList.forEach {
+            if (it.sectorName == sectorName) {
+                return true
+            }
+        }
+
+        return false
     }
 
     private fun setTvExplain() {
