@@ -11,13 +11,32 @@
 
     </data>
 
-    <com.climus.climeet.presentation.customview.RouteView
-        android:id="@+id/route"
-        android:layout_width="63dp"
-        android:layout_height="78dp"
-        android:layout_marginEnd="8dp"
-        app:routeImgUrl="@{item.routeImg}"
-        app:routeLevelColor="@{item.gymLevelColor}"
-        app:routeLevelName="@{item.gymLevelName}" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.climus.climeet.presentation.customview.RouteView
+            android:id="@+id/route"
+            android:layout_width="63dp"
+            android:layout_height="78dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:routeImgUrl="@{item.routeImg}"
+            app:routeLevelColor="@{item.gymLevelColor}"
+            app:routeLevelName="@{item.gymLevelName}" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/iv_delete"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/ic_route_finding_delete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

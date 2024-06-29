@@ -9,8 +9,11 @@ import com.climus.climeet.databinding.ItemRouteFindingRouteBinding
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.adapter.CreateRouteChipAdapter
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiRouteItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiSectorItem
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.MyPageAdminRouteFindingViewModel
 
-class RouteFindingRouteAdapter :
+class RouteFindingRouteAdapter(
+    private val viewModel: MyPageAdminRouteFindingViewModel
+) :
     ListAdapter<UiRouteItem, RouteFindingRouteAdapter.RouteFindingRouteViewHolder>(
         diffCallback
     ) {
@@ -28,7 +31,7 @@ class RouteFindingRouteAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: UiRouteItem) {
             binding.item = item
-            binding.rvRouteChip.adapter = CreateRouteChipAdapter()
+            binding.rvRouteChip.adapter = CreateRouteChipAdapter(viewModel)
         }
     }
 

@@ -247,7 +247,7 @@ class MyPageAdminRouteFindingFragment :
         sectorAdapter = RouteFindingSectorAdapter(viewModel)
         binding.rvRouteFindingSector.adapter = sectorAdapter
 
-        routeAdapter = RouteFindingRouteAdapter()
+        routeAdapter = RouteFindingRouteAdapter(viewModel)
         binding.rvRouteFindingRoute.adapter = routeAdapter
     }
 

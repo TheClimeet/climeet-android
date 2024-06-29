@@ -83,7 +83,7 @@ class MyPageAdminCreateRouteFragment :
         binding.rvSector.itemAnimator = null
         binding.rvHold.adapter = CreateRouteHoldAdapter()
         binding.rvLevel.adapter = CreateRouteLevelAdapter()
-        binding.rvRouteChip.adapter = CreateRouteChipAdapter()
+        binding.rvRouteChip.adapter = CreateRouteChipAdapter(viewModel)
         viewModel.setData()
         initEventObserve()
         initStateObserve()

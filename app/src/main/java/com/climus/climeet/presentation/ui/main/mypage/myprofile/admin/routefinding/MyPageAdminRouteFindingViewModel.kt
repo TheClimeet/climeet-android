@@ -200,10 +200,38 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
             }
 
             state.copy(
-                chipList = uiState.value.chipList + selectedChipData,
+                chipList = state.chipList + selectedChipData,
                 routeList = updatedRouteList
             )
         }
+    }
+
+    fun deleteRoute(deletingChipData: UiRouteChipData) {
+        Log.d("tlqkf", "호출 : ${deletingChipData}")
+        _uiState.update { state ->
+            val updatedChipList = state.chipList.filter { it != deletingChipData }
+
+            val updatedRouteList = state.routeList.mapNotNull { routeItem ->
+                if (routeItem.sectorName == deletingChipData.sectorName) {
+                    val updatedChipListForSector = routeItem.chipList.filter { it != deletingChipData }
+
+                    if (updatedChipListForSector.isNotEmpty()) {
+                        routeItem.copy(chipList = updatedChipListForSector)
+                    } else {
+                        null
+                    }
+                } else {
+                    routeItem
+                }
+            }
+
+            state.copy(
+                chipList = updatedChipList,
+                routeList = updatedRouteList
+            )
+        }
+        Log.d("tlqkf", "호출 후 : ${uiState.value.chipList}\n ${uiState.value.routeList}")
+
     }
 
     // --end createRoute
