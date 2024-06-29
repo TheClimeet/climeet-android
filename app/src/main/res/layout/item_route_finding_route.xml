@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiRouteItem" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp">
+
+        <TextView
+            android:id="@+id/tv_sector"
+            style="@style/TextSmallBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rect_grey8fill_nostroke_5radius"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="6dp"
+            android:text="@{item.sectorName}"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="PEAK 1" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_route_chip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:list="@{item.chipList}"
+            app:layout_constraintTop_toBottomOf="@id/tv_sector"
+            tools:listitem="@layout/item_route_image" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

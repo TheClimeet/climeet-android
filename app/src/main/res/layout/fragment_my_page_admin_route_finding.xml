@@ -685,11 +685,20 @@
                     android:layout_marginTop="14dp"
                     app:layout_constraintTop_toBottomOf="@id/tv_route_manage">
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_route_finding_route"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toTopOf="paernt"
+                        tools:listitem="@layout/item_route_finding_route"/>
+
                     <androidx.cardview.widget.CardView
                         android:id="@+id/iv_no_route"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
+                        android:visibility="gone"
                         app:cardCornerRadius="10dp"
                         app:layout_constraintTop_toTopOf="parent">
 
