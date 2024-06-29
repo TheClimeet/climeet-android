@@ -33,6 +33,7 @@ import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetMyShortsCommentsResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetNotificationStatesResponse
+import com.climus.climeet.data.model.response.GetRouteFindingData
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
@@ -169,6 +170,10 @@ interface MainRepository {
         gymId: Long,
         timePoint: String
     ): BaseState<GetGymFilteringKeyResponse>
+
+    suspend fun getGymRouteFindingData(
+        timePoint: String
+    ): BaseState<GetRouteFindingData>
 
     suspend fun getGymRouteInfoList(
         gymId: Long,

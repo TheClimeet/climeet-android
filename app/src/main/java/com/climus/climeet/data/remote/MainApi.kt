@@ -30,6 +30,7 @@ import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetMyShortsCommentsResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetNotificationStatesResponse
+import com.climus.climeet.data.model.response.GetRouteFindingData
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
@@ -195,6 +196,11 @@ interface MainApi {
         @Path("gymId") gymId: Long,
         @Query("timePoint") timePoint: String
     ): Response<GetGymFilteringKeyResponse>
+
+    @GET("/api/gyms/{gymId}/version/all")
+    suspend fun getGymRouteFindingData(
+        @Query("timePoint") timePoint: String
+    ): Response<GetRouteFindingData>
 
     @POST("/api/gyms/{gymId}/version/route")
     suspend fun getGymRouteInfoList(

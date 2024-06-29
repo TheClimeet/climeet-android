@@ -46,8 +46,6 @@ class MyPageAdminProfileRouteFragment: BaseFragment<FragmentMypageAdminProfileRo
         initShortsEventObserve()
         addOnScrollListener()
 
-        MyPageAdminRouteData.setSelectedDate(LocalDate.now())
-        routeViewModel.setSelectedDate(LocalDate.now())
         routeViewModel.selectedDate.observe(viewLifecycleOwner, Observer { date ->
             routeViewModel.setDate()
         })

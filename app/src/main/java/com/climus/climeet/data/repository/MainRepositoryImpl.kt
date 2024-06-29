@@ -35,6 +35,7 @@ import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetMyShortsCommentsResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetNotificationStatesResponse
+import com.climus.climeet.data.model.response.GetRouteFindingData
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
@@ -200,6 +201,9 @@ class MainRepositoryImpl @Inject constructor(
         timePoint: String
     ): BaseState<GetGymFilteringKeyResponse> =
         runRemote { api.getGymFilteringKeyTime(gymId, timePoint) }
+
+    override suspend fun getGymRouteFindingData(timePoint: String): BaseState<GetRouteFindingData> =
+        runRemote { api.getGymRouteFindingData(timePoint) }
 
     override suspend fun getGymRouteInfoList(
         gymId: Long,
