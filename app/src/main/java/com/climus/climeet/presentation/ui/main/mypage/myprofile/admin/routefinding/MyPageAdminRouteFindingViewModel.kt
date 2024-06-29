@@ -14,6 +14,7 @@ import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiHo
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLayoutItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLevelItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiRouteChipData
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiRouteItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiSectorItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.LevelColorData
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.RouteColor
@@ -53,6 +54,7 @@ data class MyPageAdminRouteFindingUiState(
     val sectorList: List<UiSectorItem> = emptyList(),
     val holdList: List<UiHoldItem> = emptyList(),
     val chipList: List<UiRouteChipData> = emptyList(),
+    val routeList: List<UiRouteItem> = emptyList()
 )
 
 sealed class MyPageAdminRouteFindingEvent {
@@ -161,17 +163,35 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
             repository.uploadFile(file).let {
                 when (it) {
                     is BaseState.Success -> {
+                        val selectedChipData = UiRouteChipData(
+                            createRouteUiState.value.selectedSectorName,
+                            createRouteUiState.value.selectedLevelText,
+                            createRouteUiState.value.selectedLevelColorHex,
+                            it.body.imgUrl,
+                            createRouteUiState.value.selectedHoldImage
+                        )
+
                         _uiState.update { state ->
+                            val existingRouteItem = state.routeList.find { it.sectorName == selectedChipData.sectorName }
+
+                            val updatedRouteList = if (existingRouteItem != null) {
+                                state.routeList.map { item ->
+                                    if (item.sectorName == selectedChipData.sectorName) {
+                                        item.copy(chipList = item.chipList + selectedChipData)
+                                    } else {
+                                        item
+                                    }
+                                }
+                            } else {
+                                state.routeList + UiRouteItem(selectedChipData.sectorName, listOf(selectedChipData))
+                            }
+
                             state.copy(
-                                chipList = uiState.value.chipList + UiRouteChipData(
-                                    createRouteUiState.value.selectedSectorName,
-                                    createRouteUiState.value.selectedLevelText,
-                                    createRouteUiState.value.selectedLevelColorHex,
-                                    it.body.imgUrl,
-                                    createRouteUiState.value.selectedHoldImage
-                                )
+                                chipList = uiState.value.chipList + selectedChipData,
+                                routeList = updatedRouteList
                             )
                         }
+
                     }
 
                     is BaseState.Error -> {
