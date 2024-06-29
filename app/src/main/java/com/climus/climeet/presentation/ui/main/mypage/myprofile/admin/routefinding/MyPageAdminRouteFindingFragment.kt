@@ -21,6 +21,7 @@ import com.climus.climeet.presentation.ui.main.MainViewModel
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLevelItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.LevelColorAdapter
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.RouteFindingLevelAdapter
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.RouteFindingRouteAdapter
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter.RouteFindingSectorAdapter
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.bottomsheet.SetLevelBottomSheet
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,9 +34,10 @@ class MyPageAdminRouteFindingFragment :
     private val parentViewModel: MainViewModel by activityViewModels()
     private val dateViewModel: SelectDateBottomSheetViewModel by viewModels()
     private val viewModel: MyPageAdminRouteFindingViewModel by activityViewModels()
-    private lateinit var lvAdapter: RouteFindingLevelAdapter
     private lateinit var adapter: LevelColorAdapter
+    private lateinit var levelAdapter: RouteFindingLevelAdapter
     private lateinit var sectorAdapter: RouteFindingSectorAdapter
+    private lateinit var routeAdapter: RouteFindingRouteAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -101,8 +103,8 @@ class MyPageAdminRouteFindingFragment :
                     setTvExplain()
                 }
                 binding.rvRouteFindingLevel.post {
-                    lvAdapter.submitList(state.levelList)
-                    lvAdapter.notifyDataSetChanged()
+                    levelAdapter.submitList(state.levelList)
+                    levelAdapter.notifyDataSetChanged()
                 }
                 binding.rvRouteFindingSector.post {
                     sectorAdapter.notifyDataSetChanged()
@@ -239,11 +241,14 @@ class MyPageAdminRouteFindingFragment :
         adapter = LevelColorAdapter(viewModel)
         binding.rvLevelColor.adapter = adapter
 
-        lvAdapter = RouteFindingLevelAdapter(viewModel)
-        binding.rvRouteFindingLevel.adapter = lvAdapter
+        levelAdapter = RouteFindingLevelAdapter(viewModel)
+        binding.rvRouteFindingLevel.adapter = levelAdapter
 
         sectorAdapter = RouteFindingSectorAdapter(viewModel)
         binding.rvRouteFindingSector.adapter = sectorAdapter
+
+        routeAdapter = RouteFindingRouteAdapter()
+        binding.rvRouteFindingRoute.adapter = routeAdapter
     }
 
     private fun handleLevelSelection(selectedLevel: UiLevelItem) {

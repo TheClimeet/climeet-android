@@ -689,8 +689,9 @@
                         android:id="@+id/rv_route_finding_route"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:list="@{vm.uiState.routeList}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintTop_toTopOf="paernt"
+                        app:layout_constraintTop_toTopOf="parent"
                         tools:listitem="@layout/item_route_finding_route"/>
 
                     <androidx.cardview.widget.CardView
