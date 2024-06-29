@@ -47,6 +47,7 @@ class MyPageAdminRouteFindingFragment :
 
         binding.vm = viewModel
 
+        viewModel.getRouteFindingData()
         viewModel.setSelectedDate(MyPageAdminRouteData.selectedDate)
 
         setRV()

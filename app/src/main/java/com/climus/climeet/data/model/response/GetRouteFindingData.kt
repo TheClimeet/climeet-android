@@ -10,10 +10,10 @@ data class GetRouteFindingData(
     val gymId: String,
     val timePoint: String,
     val maxFloor: Int,
-    val difficultyList: List<difficultyItem>,
-    val layoutList: List<layoutItem>,
-    val sectorList: List<sectorItem>,
-    val routeList: List<routeItem>
+    val difficultyList: List<difficultyItem>? = emptyList(),
+    val layoutList: List<layoutItem>? = emptyList(),
+    val sectorList: List<sectorItem>? = emptyList(),
+    val routeList: List<routeItem>? = emptyList()
 ) {
     data class difficultyItem(
         val climeetDifficultyName: String,
@@ -22,9 +22,9 @@ data class GetRouteFindingData(
         val gymDifficultyColor: String
     ) {
         fun toUiLevelItem(setLevelListener: (String, String) -> Unit) = UiLevelItem(
-            colorName = climeetDifficultyName,
+            colorName = gymDifficultyName,
             colorHex = gymDifficultyColor,
-            climeetLevel = gymDifficultyName,
+            climeetLevel = climeetDifficultyName,
             setLevelListener
         )
     }

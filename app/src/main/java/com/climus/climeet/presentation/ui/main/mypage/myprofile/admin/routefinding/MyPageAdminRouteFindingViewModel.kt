@@ -186,7 +186,8 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
 
     private fun setRoute(selectedChipData: UiRouteChipData) {
         _uiState.update { state ->
-            val existingRouteItem = state.routeList.find { it.sectorName == selectedChipData.sectorName }
+            val existingRouteItem =
+                state.routeList.find { it.sectorName == selectedChipData.sectorName }
 
             val updatedRouteList = if (existingRouteItem != null) {
                 state.routeList.map { item ->
@@ -214,7 +215,8 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
 
             val updatedRouteList = state.routeList.mapNotNull { routeItem ->
                 if (routeItem.sectorName == deletingChipData.sectorName) {
-                    val updatedChipListForSector = routeItem.chipList.filter { it != deletingChipData }
+                    val updatedChipListForSector =
+                        routeItem.chipList.filter { it != deletingChipData }
 
                     if (updatedChipListForSector.isNotEmpty()) {
                         routeItem.copy(chipList = updatedChipListForSector)
@@ -258,7 +260,6 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     val selectedLayoutFloor = MutableStateFlow(1)
     val isSecondFloorExist = MutableLiveData(false)
 
-
     val selectedSectorFloor = MutableStateFlow(1)
     private val _floorSectorList = MutableStateFlow(listOf<UiSectorItem>())
     val floorSectorList: StateFlow<List<UiSectorItem>> = _floorSectorList
@@ -268,11 +269,74 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     val selectedImageType = MutableStateFlow(DataType.GYM)
     val modifyingSector = MutableStateFlow(defaultSectorItem)
 
+    fun getRouteFindingData() {
+        viewModelScope.launch {
+            repository.getGymRouteFindingData(selectedDate.value.toString()).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        val result = it.body
+                        Log.d("tlqkf", "${result}")
+                        if (result.maxFloor == 2) {
+                            isSecondFloorExist.postValue(true)
+                        }
+
+                        val chipDataList: List<UiRouteChipData> =
+                            result.routeList?.map { data -> data.toUiRouteChipData() } ?: emptyList()
+                        val routeItemList = groupBySectorName(chipDataList)
+
+                        _uiState.update { state ->
+                            val updatedLayoutList: List<UiLayoutItem> =
+                                result.layoutList?.map { data -> data.toUiLayoutItem() }
+                                    ?: emptyList()
+                            val completeLayoutList = listOf(
+                                UiLayoutItem(
+                                    floor = 1,
+                                    gymImg = updatedLayoutList.find { it.floor == 1 }?.gymImg ?: ""
+                                ),
+                                UiLayoutItem(
+                                    floor = 2,
+                                    gymImg = updatedLayoutList.find { it.floor == 2 }?.gymImg ?: ""
+                                )
+                            )
+
+                            state.copy(
+                                levelList = result.difficultyList?.map { data ->
+                                    data.toUiLevelItem(
+                                        ::setLevelColor
+                                    )
+                                } ?: emptyList(),
+                                layoutList = completeLayoutList,
+                                sectorList = result.sectorList?.map { data -> data.toUiSectorItem(::setSector) }
+                                    ?: emptyList(),
+                                chipList = chipDataList,
+                                routeList = routeItemList
+                            )
+                        }
+                        _floorSectorList.update { uiState.value.sectorList.filter { it.sectorFloor == 1 } }
+                    }
+
+                    is BaseState.Error -> {
+
+                    }
+                }
+            }
+        }
+    }
+
+    private fun groupBySectorName(chipList: List<UiRouteChipData>): List<UiRouteItem> {
+        val groupedMap = chipList.groupBy { it.sectorName }
+
+        return groupedMap.map { (sectorName, chips) ->
+            UiRouteItem(sectorName, chips)
+        }
+    }
+
     fun setSelectedDate(updateDate: LocalDate) {
         selectedDate.update { updateDate }
         selectedDateText.update {
             "${updateDate.year}년 ${updateDate.monthValue}월 ${updateDate.dayOfMonth}일 (${dayOfWeekMap[updateDate.dayOfWeek]})"
         }
+        getRouteFindingData()
     }
 
     fun selectColor(color: RouteColor) {
