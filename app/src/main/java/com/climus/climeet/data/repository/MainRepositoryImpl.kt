@@ -12,6 +12,7 @@ import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.GymServiceUpdateRequest
 import com.climus.climeet.data.model.request.NotificationUpdateRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
+import com.climus.climeet.data.model.request.UpdateGymRouteVersionRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -211,6 +212,9 @@ class MainRepositoryImpl @Inject constructor(
     ): BaseState<GetGymRouteInfoResponse> = runRemote {
         api.getGymRouteInfoList(gymId, body)
     }
+
+    override suspend fun updateGymRouteVersion(body: UpdateGymRouteVersionRequest): BaseState<ResponseBody> =
+        runRemote { api.updateGymRouteVersion(body) }
 
     override suspend fun uploadShorts(
         video: MultipartBody.Part?,

@@ -10,12 +10,12 @@ data class GetRouteFindingData(
     val gymId: String,
     val timePoint: String,
     val maxFloor: Int,
-    val difficultyList: List<difficultyItem>? = emptyList(),
-    val layoutList: List<layoutItem>? = emptyList(),
-    val sectorList: List<sectorItem>? = emptyList(),
-    val routeList: List<routeItem>? = emptyList()
+    val difficultyList: List<DifficultyItem>? = emptyList(),
+    val layoutList: List<LayoutItem>? = emptyList(),
+    val sectorList: List<RouteFindingSectorItem>? = emptyList(),
+    val routeList: List<RouteFindingRouteItem>? = emptyList()
 ) {
-    data class difficultyItem(
+    data class DifficultyItem(
         val climeetDifficultyName: String,
         val gymDifficultyName: String,
         val difficulty: Int,
@@ -29,7 +29,7 @@ data class GetRouteFindingData(
         )
     }
 
-    data class layoutItem(
+    data class LayoutItem(
         val id: Int,
         val imgUrl: String,
         val floor: Int
@@ -40,7 +40,7 @@ data class GetRouteFindingData(
         )
     }
 
-    data class sectorItem(
+    data class RouteFindingSectorItem(
         val sectorId: Int,
         val name: String,
         val floor: Int,
@@ -55,7 +55,7 @@ data class GetRouteFindingData(
         )
     }
 
-    data class routeItem(
+    data class RouteFindingRouteItem(
         val routeId: Int,
         val sectorId: Int,
         val sectorName: String,

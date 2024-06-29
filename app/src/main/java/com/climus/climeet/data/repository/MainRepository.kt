@@ -10,6 +10,7 @@ import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.GymServiceUpdateRequest
 import com.climus.climeet.data.model.request.NotificationUpdateRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
+import com.climus.climeet.data.model.request.UpdateGymRouteVersionRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -179,6 +180,10 @@ interface MainRepository {
         gymId: Long,
         body: GetGymRouteInfoRequest
     ): BaseState<GetGymRouteInfoResponse>
+
+    suspend fun updateGymRouteVersion(
+        body: UpdateGymRouteVersionRequest
+    ): BaseState<ResponseBody>
 
     suspend fun createTimerClimbingRecord(
         body: CreateTimerClimbingRecordRequest

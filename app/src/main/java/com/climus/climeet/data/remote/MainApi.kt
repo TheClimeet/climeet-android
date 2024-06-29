@@ -7,6 +7,7 @@ import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.GymServiceUpdateRequest
 import com.climus.climeet.data.model.request.NotificationUpdateRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
+import com.climus.climeet.data.model.request.UpdateGymRouteVersionRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -207,6 +208,11 @@ interface MainApi {
         @Path("gymId") gymId: Long,
         @Body params: GetGymRouteInfoRequest
     ): Response<GetGymRouteInfoResponse>
+
+    @POST("/api/gyms/version")
+    suspend fun updateGymRouteVersion(
+        @Body params: UpdateGymRouteVersionRequest
+    ): Response<ResponseBody>
 
     @POST("/api/climbing-records")
     suspend fun createTimerClimbingRecord(

@@ -275,7 +275,6 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
                 when (it) {
                     is BaseState.Success -> {
                         val result = it.body
-                        Log.d("tlqkf", "${result}")
                         if (result.maxFloor == 2) {
                             isSecondFloorExist.postValue(true)
                         }
