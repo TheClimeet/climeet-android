@@ -58,7 +58,8 @@ data class MyPageAdminRouteFindingUiState(
     val sectorList: List<UiSectorItem> = emptyList(),
     val holdList: List<UiHoldItem> = emptyList(),
     val chipList: List<UiRouteChipData> = emptyList(),
-    val routeList: List<UiRouteItem> = emptyList()
+    val routeList: List<UiRouteItem> = emptyList(),
+    var isReturningFromCreateRoute: Boolean = false
 )
 
 sealed class MyPageAdminRouteFindingEvent {
@@ -270,6 +271,14 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     val selectedSector = MutableStateFlow(defaultSectorItem)
     val selectedImageType = MutableStateFlow(DataType.GYM)
     val modifyingSector = MutableStateFlow(defaultSectorItem)
+
+    fun updateIsReturningFromCreateRoute(flag : Boolean) {
+        _uiState.update {
+            it.copy(
+                isReturningFromCreateRoute = flag
+            )
+        }
+    }
 
     fun getRouteFindingData() {
         viewModelScope.launch {

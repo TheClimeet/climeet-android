@@ -47,8 +47,11 @@ class MyPageAdminRouteFindingFragment :
 
         binding.vm = viewModel
 
-        viewModel.getRouteFindingData()
-        viewModel.setSelectedDate(MyPageAdminRouteData.selectedDate)
+        if (!viewModel.uiState.value.isReturningFromCreateRoute) {
+            viewModel.getRouteFindingData()
+            viewModel.setSelectedDate(MyPageAdminRouteData.selectedDate)
+        }
+        viewModel.updateIsReturningFromCreateRoute(false)
 
         binding.btnRouteFindingBack.setOnClickListener {
             viewModel.navigateToBack(requireContext())
@@ -60,6 +63,13 @@ class MyPageAdminRouteFindingFragment :
         initParentImageObserve()
         sectorClickListener()
         changeSectorFloor()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.uiState.value.isReturningFromCreateRoute) {
+            viewModel.updateIsReturningFromCreateRoute(false)
+        }
     }
 
     private fun initEventObserve() {
@@ -96,7 +106,10 @@ class MyPageAdminRouteFindingFragment :
                         binding.ivAddGymIamge
                     )
 
-                    MyPageAdminRouteFindingEvent.GoToCreateRoute -> findNavController().toCreateRoute()
+                    MyPageAdminRouteFindingEvent.GoToCreateRoute ->  {
+                        viewModel.updateIsReturningFromCreateRoute(true)
+                        findNavController().toCreateRoute()
+                    }
                     MyPageAdminRouteFindingEvent.NavigateToBack -> findNavController().navigateUp()
                     MyPageAdminRouteFindingEvent.DeleteSecondFloor -> {
                         binding.switchSectorFloor.isChecked = false
