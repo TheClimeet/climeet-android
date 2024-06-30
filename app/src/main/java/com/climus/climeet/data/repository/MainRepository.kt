@@ -336,7 +336,7 @@ interface MainRepository {
 
     fun findExistRoute(sectorId: Long, routeId: Long): RouteRecordData?
 
-    fun getAverageDifficultyOfCompleted(): Double
+    fun getAverageDifficultyOfCompleted(): Double?
 
     fun getAllLevelRecord(): List<RouteRecordData>
 

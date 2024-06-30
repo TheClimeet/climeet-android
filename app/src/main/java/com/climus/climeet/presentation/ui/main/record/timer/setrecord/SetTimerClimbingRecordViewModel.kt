@@ -24,6 +24,7 @@ import com.climus.climeet.presentation.ui.main.global.selectsector.model.Selecte
 import com.climus.climeet.presentation.ui.main.global.toGymLevelUiData
 import com.climus.climeet.presentation.ui.main.global.toRouteUiData
 import com.climus.climeet.presentation.ui.main.global.toSectorNameUiData
+import com.climus.climeet.presentation.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -112,6 +113,11 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     private var firstFloorRouteList: List<RouteUiData> = emptyList()
     private var secondFloorRouteList: List<RouteUiData> = emptyList()
 
+    // items 초기화
+    fun clearItems() {
+        _items.value = emptyList()
+    }
+
     private fun recalculateAvgRate() {
         if (totalRoute.value == "--" || totalComplete.value == "--") {
             avgCompleteRate.value = 0.0
@@ -139,33 +145,35 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
 
     private fun getClimbingData() {
 
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             // Room DB에서 루트기록 가져오기
             val routeDataList = repository.getAllRoute()
 
-            withContext(Dispatchers.Main) {
-                if (routeDataList != null) {
-                    isSelectedCrag.value = true
+            if(_items.value.isEmpty()) {
+                withContext(Dispatchers.Main) {
+                    if (routeDataList != null) {
+                        isSelectedCrag.value = true
 
-                    routeDataList.forEach { routeData ->
-                        // API로 가져온 루트 정보 불러오기
-                        var matchedData = findMatchedData(routeData.routeId, routeData.sectorId, 1)
-                        if (matchedData != null) {
-                            setItem(matchedData, routeData)
-                        } else {
-                            // 2층이 존재하면 2층 데이터를 가져와 일치 확인하고, 있으면 넣어주기
-                            if (isSecondFloorExist) {
-                                matchedData =
-                                    findMatchedData(routeData.routeId, routeData.sectorId, 2)
-                                if (matchedData != null) {
-                                    setItem(matchedData, routeData)
+                        routeDataList.forEach { routeData ->
+                            // API로 가져온 루트 정보 불러오기
+                            var matchedData =
+                                findMatchedData(routeData.routeId, routeData.sectorId, 1)
+                            if (matchedData != null) {
+                                setItem(matchedData, routeData)
+                            } else {
+                                // 2층이 존재하면 2층 데이터를 가져와 일치 확인하고, 있으면 넣어주기
+                                if (isSecondFloorExist) {
+                                    matchedData =
+                                        findMatchedData(routeData.routeId, routeData.sectorId, 2)
+                                    if (matchedData != null) {
+                                        setItem(matchedData, routeData)
+                                    }
                                 }
                             }
                         }
+                        setAvgLevel()
+                        resetView.value = true  // 일시정지 일 때 루트기록 보이게 화면 재설정
                     }
-                    //Log.d("recorddd", "재설정 끝 items\n${items.value}")
-                    setAvgLevel()
-                    resetView.value = true  // 일시정지 일 때 루트기록 보이게 화면 재설정
                 }
             }
         }
@@ -206,7 +214,6 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
             repository.getGymFilteringKey(id).let {
                 when (it) {
                     is BaseState.Success -> {
-                        Log.d("recorddd", "암장 정보 가져오기 성공")
                         sectorNameList = it.body.sectorList.map { data ->
                             data.toSectorNameUiData(::selectSectorName)
                         }
@@ -643,7 +650,7 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
     }
 
     private fun setRoomChallengeNum(item: RouteUiData, plus: Boolean) {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             if (plus) {
                 // 도전 횟수 증가
                 val record = repository.findExistRoute(item.sectorId, item.routeId)
@@ -763,13 +770,18 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
 
     // 상단 평균 레벨 설정
     private fun setAvgLevel() {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             delay(1000)
-            val completedRoutes = repository.getAverageDifficultyOfCompleted().roundToInt()
+            val completedRoutes = repository.getAverageDifficultyOfCompleted()?.roundToInt()
+
             withContext(Dispatchers.Main) {
                 if (completedRoutes != null && totalComplete.value != "--") {
                     // 난이도 이름과 매칭
-                    avgLevel.value = gymLevelList[completedRoutes].levelName
+                    if(gymLevelList.size >= completedRoutes && gymLevelList.isNotEmpty()) {
+                        avgLevel.value = gymLevelList[completedRoutes].levelName
+                    } else {
+                        avgLevel.value = getLevelName(completedRoutes)
+                    }
                     sharedPreferences.edit().putString(TOP_LEVEL, avgLevel.value).apply()
                 } else {
                     avgLevel.value = "--"
@@ -777,6 +789,10 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
                 //Log.d("recorddd", "평균 레벨 계산: $completedRoutes ${avgLevel.value}")
             }
         }
+    }
+
+    private fun getLevelName(avgLevel: Int): String {
+        return Constants.levelColorMap[avgLevel] ?: "Unknown"
     }
 
     companion object {

@@ -91,6 +91,7 @@ class SetTimerClimbingRecordFragment :
             viewModel.items.collect { items ->
                 routeItemAdapter.items = items
                 routeItemAdapter.notifyDataSetChanged()
+                //Log.d("settimerrecord", "adapter에 item 설정완 : $items")
             }
         }
     }

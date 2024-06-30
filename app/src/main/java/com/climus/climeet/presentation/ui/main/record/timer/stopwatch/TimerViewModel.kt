@@ -93,7 +93,7 @@ class TimerViewModel @Inject constructor(
     }
 
     fun sendClimbingRecord() {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val routeData: List<RouteRecordData>?
             val requestBody: CreateTimerClimbingRecordRequest
 
@@ -101,7 +101,7 @@ class TimerViewModel @Inject constructor(
             routeData = repository.getAllRoute()
 
             // avgDifficulty 계산
-            val avgDifficulty = if (routeData?.isNotEmpty() == true) {
+            val avgDifficulty = if (routeData.isNotEmpty()) {
                 val totalDifficulty = routeData.sumBy { it.difficulty }
                 totalDifficulty / routeData.size
             } else {
@@ -139,18 +139,16 @@ class TimerViewModel @Inject constructor(
             )
             // Log.d("recorddd", "리퀘스트 : $requestBody")
 
-            viewModelScope.launch {
-                repository.createTimerClimbingRecord(requestBody).let {
-                    when (it) {
-                        is BaseState.Success -> {
-                            // 성공
-                            Log.d("testss", it.toString())
-                        }
+            repository.createTimerClimbingRecord(requestBody).let {
+                when (it) {
+                    is BaseState.Success -> {
+                        // 성공
+                        Log.d("testss", it.toString())
+                    }
 
-                        is BaseState.Error -> {
-                            it.msg // 서버 에러 메시지
-                            Log.d("testss", it.msg)
-                        }
+                    is BaseState.Error -> {
+                        it.msg // 서버 에러 메시지
+                        Log.d("testss", it.msg)
                     }
                 }
             }

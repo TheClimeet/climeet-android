@@ -91,8 +91,8 @@
                         style="@style/TextMediumBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="30sp"
                         android:text="@{recordVM.avgLevel}"
+                        android:textSize="30sp"
                         app:layout_constraintEnd_toEndOf="@id/tv_avg_level"
                         app:layout_constraintStart_toStartOf="@id/tv_avg_level"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -387,7 +387,7 @@
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/rect_mainfill_nostroke_20radius"
                                 android:minHeight="0dp"
-                                android:onClick="@{() ->  recordVM.selectFloor(2)}"
+                                android:onClick="@{() -> recordVM.selectFloor(2)}"
                                 android:outlineProvider="none"
                                 android:paddingVertical="5dp"
                                 android:text="2층"

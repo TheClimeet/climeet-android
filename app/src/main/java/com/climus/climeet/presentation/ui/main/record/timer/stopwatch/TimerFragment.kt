@@ -213,6 +213,7 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
             recordVM.items.collect { items ->
                 routeItemAdapter.items = items
                 routeItemAdapter.notifyDataSetChanged()
+                //Log.d("timer", "adapter에 item 설정완 : $items")
             }
         }
     }
@@ -253,6 +254,10 @@ class TimerFragment : BaseFragment<FragmentTimerBinding>(R.layout.fragment_timer
     override fun onDestroy() {
         super.onDestroy()
         timerVM.unregisterReceiver(requireContext())
+        recordVM.apiCheck = false
+
+        // items 초기화
+        recordVM.clearItems()
     }
 
     // spf -> viewmodel
