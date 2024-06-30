@@ -533,7 +533,10 @@ class SetTimerClimbingRecordViewModel @Inject constructor(
 
     // 삭제 다이얼로그 띄우기
     fun showDeleteDialog(context: Context, id: Long) {
-        val dialog = DeleteDialog(context) { isDelete ->
+        val description = "기록이 삭제되면 복구할 수 없어요.\n정말 루트 기록을 삭제하시겠어요?"
+        val rightText = "삭제"
+        val leftText = "취소"
+        val dialog = DeleteDialog(context, description, rightText, leftText) { isDelete ->
             if (isDelete) {
                 removeItem(id)
             }

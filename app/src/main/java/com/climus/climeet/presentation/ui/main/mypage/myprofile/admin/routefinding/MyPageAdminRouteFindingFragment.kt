@@ -50,6 +50,10 @@ class MyPageAdminRouteFindingFragment :
         viewModel.getRouteFindingData()
         viewModel.setSelectedDate(MyPageAdminRouteData.selectedDate)
 
+        binding.btnRouteFindingBack.setOnClickListener {
+            viewModel.navigateToBack(requireContext())
+        }
+
         setRV()
         initEventObserve()
         initStateObserve()

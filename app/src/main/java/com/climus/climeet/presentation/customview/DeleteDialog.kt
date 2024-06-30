@@ -9,6 +9,9 @@ import com.climus.climeet.databinding.DialogDeleteBinding
 
 class DeleteDialog(
     context: Context,
+    private val explainText: String,
+    private val rightText: String,
+    private val leftText: String,
     private val itemClickListener: (Boolean) -> Unit,
 ) : Dialog(context) {
 
@@ -24,6 +27,9 @@ class DeleteDialog(
     private fun initView() = with(binding) {
         window?.attributes?.y = 200
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        tvDescription.text = explainText
+        btnDelete.text = rightText
+        btnRefuse.text = leftText
         btnDelete.setOnClickListener {
             itemClickListener(true)
             dismiss()

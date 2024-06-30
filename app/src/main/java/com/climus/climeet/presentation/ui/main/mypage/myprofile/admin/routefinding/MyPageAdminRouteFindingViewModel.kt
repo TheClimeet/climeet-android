@@ -1,5 +1,6 @@
 package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.core.graphics.toColorInt
@@ -11,15 +12,16 @@ import com.climus.climeet.R
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.UpdateGymRouteVersionRequest
 import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.customview.DeleteDialog
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.LevelColorData
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.MyPageAdminRouteData
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.RouteColor
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiHoldItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLayoutItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLevelItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiRouteChipData
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiRouteItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiSectorItem
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.LevelColorData
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.MyPageAdminRouteData
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.RouteColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -67,7 +69,8 @@ sealed class MyPageAdminRouteFindingEvent {
     data object NavigateToBack : MyPageAdminRouteFindingEvent()
     data object DeleteSecondFloor : MyPageAdminRouteFindingEvent()
     data class ShowLayoutImg(val uri: Uri) : MyPageAdminRouteFindingEvent()
-    data class UpdateRouteFindingData(val msg: String, val isSuccess: Boolean) : MyPageAdminRouteFindingEvent()
+    data class UpdateRouteFindingData(val msg: String, val isSuccess: Boolean) :
+        MyPageAdminRouteFindingEvent()
 }
 
 @HiltViewModel
@@ -535,7 +538,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
             difficulty = uiState.value.levelList.map { data -> data.toDifficultyRequestItem() },
             layout = uiState.value.layoutList.map { data -> data.toLayoutRequestItem() },
             sector = uiState.value.sectorList.map { data -> data.toSectorRequestItem() },
-            route = uiState.value.chipList.map {data -> data.toRouteRequestItem()}
+            route = uiState.value.chipList.map { data -> data.toRouteRequestItem() }
         )
 
         val newRouteVersion = UpdateGymRouteVersionRequest(
@@ -546,13 +549,24 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
 
         viewModelScope.launch {
             repository.updateGymRouteVersion(newRouteVersion).let {
-                when(it) {
+                when (it) {
                     is BaseState.Success -> {
-                        _event.emit(MyPageAdminRouteFindingEvent.UpdateRouteFindingData("루트 버전이 업데이트 되었습니다", true))
+                        _event.emit(
+                            MyPageAdminRouteFindingEvent.UpdateRouteFindingData(
+                                "루트 버전이 업데이트 되었습니다",
+                                true
+                            )
+                        )
                     }
+
                     is BaseState.Error -> {
                         Log.d("routeFindingTest", it.toString())
-                        _event.emit(MyPageAdminRouteFindingEvent.UpdateRouteFindingData("업데이트 실패", false))
+                        _event.emit(
+                            MyPageAdminRouteFindingEvent.UpdateRouteFindingData(
+                                "업데이트 실패",
+                                false
+                            )
+                        )
                     }
                 }
             }
@@ -590,10 +604,19 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         }
     }
 
-    fun navigateToBack() {
-        viewModelScope.launch {
-            _event.emit(MyPageAdminRouteFindingEvent.NavigateToBack)
-        }
+    fun navigateToBack(context: Context) {
+        val description = "수정 내용을 저장하시겠습니까?"
+        val rightText = "저장하기"
+        val leftText = "취소"
+        DeleteDialog(context, description, rightText, leftText) { isDelete ->
+            if (isDelete) {
+                saveRouteFindingData()
+            } else {
+                viewModelScope.launch {
+                    _event.emit(MyPageAdminRouteFindingEvent.NavigateToBack)
+                }
+            }
+        }.show()
     }
 
     companion object {
