@@ -509,6 +509,9 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun updateAdminProfileImage(body: String): BaseState<ResponseBody> =
         runRemote { api.updateAdminProfileImage(body) }
 
+    override suspend fun updateAdminName(body: String): BaseState<ResponseBody> =
+        runRemote { api.updateAdminName(body) }
+
     override suspend fun updateAdminBackgroundImage(body: String): BaseState<ResponseBody> =
         runRemote { api.updateAdminBackgroundImage(body) }
 

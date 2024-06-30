@@ -467,6 +467,11 @@ interface MainApi {
         @Body params: String
     ): Response<ResponseBody>
 
+    @PATCH("/api/gyms/name")
+    suspend fun updateAdminName(
+        @Body params: String
+    ): Response<ResponseBody>
+
     @PATCH("/api/gyms/background-image")
     suspend fun updateAdminBackgroundImage(
         @Body params: String

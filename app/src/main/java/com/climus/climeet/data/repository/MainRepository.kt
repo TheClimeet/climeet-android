@@ -302,6 +302,10 @@ interface MainRepository {
         body: String
     ): BaseState<ResponseBody>
 
+    suspend fun updateAdminName(
+        body: String
+    ): BaseState<ResponseBody>
+
     suspend fun updateAdminBackgroundImage(
         body: String
     ): BaseState<ResponseBody>
