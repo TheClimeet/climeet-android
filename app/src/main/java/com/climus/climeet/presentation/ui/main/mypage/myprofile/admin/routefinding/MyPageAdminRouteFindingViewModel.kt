@@ -425,9 +425,8 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         if (selectedImageType.value == DataType.GYM) {
             _uiState.update { state ->
                 val updatedLayoutList = state.layoutList.toMutableList()
-                val selectedFloor = selectedLayoutFloor.value
-                updatedLayoutList[selectedFloor - 1] =
-                    updatedLayoutList[selectedFloor - 1].copy(gymImg = uri)
+                updatedLayoutList[1] =
+                    updatedLayoutList[1].copy(gymImg = uri)
 
                 state.copy(
                     layoutList = updatedLayoutList

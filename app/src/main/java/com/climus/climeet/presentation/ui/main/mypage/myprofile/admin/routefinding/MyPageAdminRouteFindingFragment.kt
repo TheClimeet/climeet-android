@@ -128,11 +128,14 @@ class MyPageAdminRouteFindingFragment :
                     sectorAdapter.notifyDataSetChanged()
                 }
 
-                if (state.layoutList[viewModel.selectedLayoutFloor.value - 1].gymImg == "") {
+                val curLayoutGymImg = state.layoutList[viewModel.selectedLayoutFloor.value - 1].gymImg
+                if (curLayoutGymImg == "") {
                     binding.tvImageExplain.visibility = View.VISIBLE
                 } else {
+                    setImage(curLayoutGymImg.toUri(), binding.ivAddGymIamge)
                     binding.tvImageExplain.visibility = View.GONE
                 }
+
             }
         }
         repeatOnStarted {
@@ -145,11 +148,6 @@ class MyPageAdminRouteFindingFragment :
         }
         repeatOnStarted {
             viewModel.selectedLayoutFloor.collect {
-                if (it == 2) {
-                    binding.btnDeleteSecondFloor.visibility = View.VISIBLE
-                } else {
-                    binding.btnDeleteSecondFloor.visibility = View.GONE
-                }
                 if (viewModel.uiState.value.layoutList[it - 1].gymImg == "") {
                     binding.tvImageExplain.visibility = View.VISIBLE
                 } else {

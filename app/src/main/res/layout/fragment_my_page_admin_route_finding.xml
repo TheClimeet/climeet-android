@@ -408,6 +408,7 @@
                         android:layout_marginEnd="-10dp"
                         android:backgroundTint="@android:color/transparent"
                         android:src="@drawable/ic_route_finding_delete"
+                        android:visibility="@{vm.isSecondFloorExist() ? View.VISIBLE : View.GONE}"
                         android:onClick="@{()->vm.deleteSecondFloor()}"
                         app:layout_constraintEnd_toEndOf="@+id/btn_second_floor"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -691,7 +692,8 @@
                         app:list="@{vm.uiState.routeList}"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:listitem="@layout/item_route_finding_route"/>
+                        tools:listitem="@layout/item_route_finding_route"
+                        tools:itemCount="3"/>
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/iv_no_route"
