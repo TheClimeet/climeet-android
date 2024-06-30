@@ -269,15 +269,19 @@ class MyPageAdminRouteFindingFragment :
     private fun setRV() {
         adapter = LevelColorAdapter(viewModel)
         binding.rvLevelColor.adapter = adapter
+        binding.rvLevelColor.itemAnimator = null
 
         levelAdapter = RouteFindingLevelAdapter(viewModel)
         binding.rvRouteFindingLevel.adapter = levelAdapter
+        binding.rvRouteFindingLevel.itemAnimator = null
 
         sectorAdapter = RouteFindingSectorAdapter(viewModel)
         binding.rvRouteFindingSector.adapter = sectorAdapter
+        binding.rvRouteFindingSector.itemAnimator = null
 
         routeAdapter = RouteFindingRouteAdapter(viewModel)
         binding.rvRouteFindingRoute.adapter = routeAdapter
+        binding.rvRouteFindingRoute.itemAnimator = null
     }
 
     private fun handleLevelSelection(selectedLevel: UiLevelItem) {

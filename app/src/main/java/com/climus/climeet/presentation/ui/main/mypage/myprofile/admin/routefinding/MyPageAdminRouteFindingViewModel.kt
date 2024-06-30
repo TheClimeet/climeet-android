@@ -272,7 +272,7 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     val selectedImageType = MutableStateFlow(DataType.GYM)
     val modifyingSector = MutableStateFlow(defaultSectorItem)
 
-    fun updateIsReturningFromCreateRoute(flag : Boolean) {
+    fun updateIsReturningFromCreateRoute(flag: Boolean) {
         _uiState.update {
             it.copy(
                 isReturningFromCreateRoute = flag
@@ -472,8 +472,17 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
         updateImg("")
         selectFloor(1)
         _uiState.update { state ->
+            val secondFloorSectorList = state.sectorList.filter { it.sectorFloor == 2 }
+            val updatedRouteList = state.routeList.filterNot { route ->
+                secondFloorSectorList.any { it.sectorName == route.sectorName }
+            }
+            val updatedChipList = state.chipList.filterNot { chip ->
+                secondFloorSectorList.any { it.sectorName == chip.sectorName }
+            }
             state.copy(
-                sectorList = state.sectorList.filter { it.sectorFloor == 1 }
+                sectorList = state.sectorList.filter { it.sectorFloor == 1 },
+                routeList = updatedRouteList,
+                chipList = updatedChipList
             )
         }
         if (selectedSectorFloor.value == 2) {
@@ -499,10 +508,13 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     fun deleteSector(deleteItem: UiSectorItem) {
         _uiState.update { state ->
             state.copy(
-                sectorList = state.sectorList.filterNot { it == deleteItem }
+                sectorList = state.sectorList.filterNot { it.sectorName == deleteItem.sectorName },
+                chipList = state.chipList.filterNot { it.sectorName == deleteItem.sectorName },
+                routeList = state.routeList.filterNot { it.sectorName == deleteItem.sectorName }
             )
         }
-        _floorSectorList.update { uiState.value.sectorList.filter { it.sectorFloor == selectedSectorFloor.value } }
+        _floorSectorList.update { it.filterNot { it.sectorName == deleteItem.sectorName } }
+
     }
 
     fun modifySector() {
