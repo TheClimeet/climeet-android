@@ -476,7 +476,7 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun updateAnnouncementUnlike(boardId: Long): BaseState<ResponseBody> =
         runRemote { api.updateAnnouncementUnlike(boardId) }
 
-    override suspend fun getAdminGymId(): BaseState<Long> =
+    override suspend fun getAdminGymId(): BaseState<Int> =
         runRemote { api.getAdminGymId() }
 
     override suspend fun getUserShorts(

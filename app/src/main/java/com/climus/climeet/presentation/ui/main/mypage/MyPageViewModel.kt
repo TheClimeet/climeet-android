@@ -54,6 +54,12 @@ class MyPageViewModel @Inject constructor(
     private val _event = MutableSharedFlow<MyPageEvent>()
     val event: SharedFlow<MyPageEvent> = _event.asSharedFlow()
 
+    val gymId = MutableStateFlow(0L)
+
+    init {
+        getAdminGymId()
+    }
+
     fun getProfileInfo() {
         viewModelScope.launch {
             repository.getMyPageProfile().let {
@@ -83,18 +89,18 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getAdminGymId(): Long {
-        return withContext(Dispatchers.IO) {
-            var gymId = 0L
-            when(val result = repository.getAdminGymId()) {
+    private fun getAdminGymId() {
+        viewModelScope.launch {
+            when (val result = repository.getAdminGymId()) {
                 is BaseState.Success -> {
-                    gymId = result.body
+                    gymId.value = result.body.toLong()
+                    Log.d("gymIdTest", "${result.body}")
                 }
+
                 is BaseState.Error -> {
-                    Log.d("API", result.msg)
+                    Log.d("gymIdTest", result.msg)
                 }
             }
-            gymId
         }
     }
 
@@ -129,13 +135,9 @@ class MyPageViewModel @Inject constructor(
             mode?.let {
                 when (it) {
                     "CLIMER" -> _event.emit(MyPageEvent.NavigateToClimerMyProfile)
-                    "ADMIN" -> {
-                        val gymId = getAdminGymId()
-                        _event.emit(MyPageEvent.NavigateToAdminMyProfile(gymId))
-                    }
+                    "ADMIN" -> _event.emit(MyPageEvent.NavigateToAdminMyProfile(gymId.value))
                 }
-            } ?: run {
-            }
+            } ?: run {}
         }
     }
 

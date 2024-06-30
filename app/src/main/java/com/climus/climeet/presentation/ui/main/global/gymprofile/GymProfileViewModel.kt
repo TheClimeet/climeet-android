@@ -52,37 +52,37 @@ class GymProfileViewModel @Inject constructor(
         }
     }
 
-    fun setGymId(id : Long) {
+    fun setGymId(id: Long) {
         viewModelScope.launch {
             gymId.value = id
         }
+        getGymProfileInfo(id)
     }
 
-    fun getGymProfileInfo() {
+    fun getGymProfileInfo(id: Long) {
+        Log.d("gymIdTest", "viewModel : $id")
         viewModelScope.launch {
-            gymId.value?.let {
-                repository.getGymProfileTopInfo(it).let { result ->
-                    when (result) {
-                        is BaseState.Success -> {
-                            _uiState.update { state ->
-                                state.copy(
-                                    gymId = gymId.value!!,
-                                    gymProfileImageUrl = result.body.gymProfileImageUrl,
-                                    gymBackGroundImageUrl = result.body.gymBackGroundImageUrl,
-                                    gymName = result.body.gymName,
-                                    followerCount = result.body.followerCount,
-                                    followingCount = result.body.followingCount,
-                                    averageRating = result.body.averageRating,
-                                    reviewCount = result.body.reviewCount
-                                )
-                            }
-                            followState.value = result.body.isFollower
+            repository.getGymProfileTopInfo(id).let { result ->
+                when (result) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                gymId = gymId.value!!,
+                                gymProfileImageUrl = result.body.gymProfileImageUrl,
+                                gymBackGroundImageUrl = result.body.gymBackGroundImageUrl,
+                                gymName = result.body.gymName,
+                                followerCount = result.body.followerCount,
+                                followingCount = result.body.followingCount,
+                                averageRating = result.body.averageRating,
+                                reviewCount = result.body.reviewCount
+                            )
                         }
+                        followState.value = result.body.isFollower
+                    }
 
-                        is BaseState.Error -> {
-                            result.msg
-                            Log.d("gym_profile", "상단 정보 불러오기 실패")
-                        }
+                    is BaseState.Error -> {
+                        result.msg
+                        Log.d("gym_profile", "상단 정보 불러오기 실패")
                     }
                 }
             }

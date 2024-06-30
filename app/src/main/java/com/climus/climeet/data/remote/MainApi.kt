@@ -498,7 +498,7 @@ interface MainApi {
     ): Response<GetMyShortsCommentsResponse>
 
     @GET("/api/manager/gym-id")
-    suspend fun getAdminGymId(): Response<Long>
+    suspend fun getAdminGymId(): Response<Int>
 
     @PATCH("/api/gyms/service")
     suspend fun updateGymService(

@@ -5,6 +5,7 @@ import android.graphics.BlendModeColorFilter
 import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -49,7 +50,7 @@ class MyPageAdminMyProfileFragment :
     override fun onResume() {
         super.onResume()
         // 상단 정보 설정
-        sharedViewModel.getGymProfileInfo()
+        sharedViewModel.getGymProfileInfo(gymId)
     }
 
     private fun initEventObserve() {
@@ -84,6 +85,7 @@ class MyPageAdminMyProfileFragment :
     }
 
     private fun initCragInfo() {
+        Log.d("gymIdTest", "init : $gymId")
         sharedViewModel.setGymId(gymId)
     }
 

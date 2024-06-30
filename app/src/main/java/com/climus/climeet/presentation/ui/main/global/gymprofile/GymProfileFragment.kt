@@ -36,7 +36,6 @@ class GymProfileFragment : BaseFragment<FragmentGymProfileBinding>(R.layout.frag
         initCragInfo()
         initViewPager()
         initClickListener()
-        viewModel.getGymProfileInfo()
     }
 
     private fun initCragInfo() {

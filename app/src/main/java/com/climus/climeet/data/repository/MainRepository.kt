@@ -438,5 +438,5 @@ interface MainRepository {
         boardId: Long
     ): BaseState<ResponseBody>
 
-    suspend fun getAdminGymId(): BaseState<Long>
+    suspend fun getAdminGymId(): BaseState<Int>
 }
