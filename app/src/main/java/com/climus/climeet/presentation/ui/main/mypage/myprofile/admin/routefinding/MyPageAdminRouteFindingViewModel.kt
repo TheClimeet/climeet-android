@@ -285,6 +285,21 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
             repository.getGymRouteFindingData(selectedDate.value.toString()).let {
                 when (it) {
                     is BaseState.Success -> {
+                        selectedLevel.value = defaultLevelItem
+                        modifyingLevel.value = defaultLevelItem
+
+                        isCompletable.postValue(true)
+                        isLevelAdd.postValue(true)
+
+                        selectedLayoutFloor.value = 1
+
+                        selectFloor(1)
+                        selectedSectorFloor.value = 1
+                        selectedSector.value = defaultSectorItem
+                        modifyingSector.value = defaultSectorItem
+                        selectedImageType.value = DataType.GYM
+                        _event.emit(MyPageAdminRouteFindingEvent.DeleteSecondFloor)
+
                         val result = it.body
                         if (result.maxFloor == 2) {
                             isSecondFloorExist.postValue(true)
