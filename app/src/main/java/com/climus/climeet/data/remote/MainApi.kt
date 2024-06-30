@@ -6,6 +6,7 @@ import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.GymServiceUpdateRequest
 import com.climus.climeet.data.model.request.NotificationUpdateRequest
+import com.climus.climeet.data.model.request.PatchAdminNameRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
 import com.climus.climeet.data.model.request.UpdateGymRouteVersionRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
@@ -469,7 +470,7 @@ interface MainApi {
 
     @PATCH("/api/gyms/name")
     suspend fun updateAdminName(
-        @Body params: String
+        @Body params: PatchAdminNameRequest
     ): Response<ResponseBody>
 
     @PATCH("/api/gyms/background-image")

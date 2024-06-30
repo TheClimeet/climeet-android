@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.request.PatchAdminNameRequest
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.InputState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -117,7 +118,17 @@ class MyPageAdminProfileEditViewModel @Inject constructor(
             // todo : 암장 이름
             if(newName.value != gymName && newName.value.isNotEmpty()){
                 Log.d("mypage_admin", "수정된 암장 이름 : $newName")
-                AdminEditProfileForm.setNameUpdatedState(true)
+                repository.updateAdminName(PatchAdminNameRequest(newName.value)).let {
+                    when(it) {
+                        is BaseState.Success -> {
+                            Log.d("mypage_admin", "프로필 이름 수정")
+                            AdminEditProfileForm.setNameUpdatedState(true)
+                        }
+                        is BaseState.Error -> {
+                            _event.emit(AdminProfileEditEvent.ShowToastMessage(it.msg))
+                        }
+                    }
+                }
             }
 
             AdminEditProfileForm.resetState()
