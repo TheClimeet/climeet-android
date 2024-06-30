@@ -6,10 +6,10 @@ data class UpdateGymRouteVersionRequest(
     val newData: NewData
 ) {
     data class ExistingData(
-        val difficulty: List<String>,
-        val layout: List<Int>,
-        val sector: List<Int>,
-        val route: List<Int>
+        val difficulty: List<String> = emptyList(),
+        val layout: List<Int> = emptyList(),
+        val sector: List<Int> = emptyList(),
+        val route: List<Int> = emptyList()
     )
 
     data class NewData(

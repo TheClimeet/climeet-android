@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.R
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.model.request.UpdateGymRouteVersionRequest
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiHoldItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLayoutItem
@@ -66,6 +67,7 @@ sealed class MyPageAdminRouteFindingEvent {
     data object NavigateToBack : MyPageAdminRouteFindingEvent()
     data object DeleteSecondFloor : MyPageAdminRouteFindingEvent()
     data class ShowLayoutImg(val uri: Uri) : MyPageAdminRouteFindingEvent()
+    data class UpdateRouteFindingData(val msg: String, val isSuccess: Boolean) : MyPageAdminRouteFindingEvent()
 }
 
 @HiltViewModel
@@ -209,7 +211,6 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     }
 
     fun deleteRoute(deletingChipData: UiRouteChipData) {
-        Log.d("tlqkf", "호출 : ${deletingChipData}")
         _uiState.update { state ->
             val updatedChipList = state.chipList.filter { it != deletingChipData }
 
@@ -233,8 +234,6 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
                 routeList = updatedRouteList
             )
         }
-        Log.d("tlqkf", "호출 후 : ${uiState.value.chipList}\n ${uiState.value.routeList}")
-
     }
 
     // --end createRoute
@@ -280,7 +279,8 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
                         }
 
                         val chipDataList: List<UiRouteChipData> =
-                            result.routeList?.map { data -> data.toUiRouteChipData() } ?: emptyList()
+                            result.routeList?.map { data -> data.toUiRouteChipData() }
+                                ?: emptyList()
                         val routeItemList = groupBySectorName(chipDataList)
 
                         _uiState.update { state ->
@@ -528,6 +528,35 @@ class MyPageAdminRouteFindingViewModel @Inject constructor(
     fun resetSector() {
         selectedSector.update { defaultSectorItem }
         modifyingSector.update { defaultSectorItem }
+    }
+
+    fun saveRouteFindingData() {
+        val newData = UpdateGymRouteVersionRequest.NewData(
+            difficulty = uiState.value.levelList.map { data -> data.toDifficultyRequestItem() },
+            layout = uiState.value.layoutList.map { data -> data.toLayoutRequestItem() },
+            sector = uiState.value.sectorList.map { data -> data.toSectorRequestItem() },
+            route = uiState.value.chipList.map {data -> data.toRouteRequestItem()}
+        )
+
+        val newRouteVersion = UpdateGymRouteVersionRequest(
+            timePoint = selectedDate.value.toString(),
+            existingData = UpdateGymRouteVersionRequest.ExistingData(),
+            newData = newData
+        )
+
+        viewModelScope.launch {
+            repository.updateGymRouteVersion(newRouteVersion).let {
+                when(it) {
+                    is BaseState.Success -> {
+                        _event.emit(MyPageAdminRouteFindingEvent.UpdateRouteFindingData("루트 버전이 업데이트 되었습니다", true))
+                    }
+                    is BaseState.Error -> {
+                        Log.d("routeFindingTest", it.toString())
+                        _event.emit(MyPageAdminRouteFindingEvent.UpdateRouteFindingData("업데이트 실패", false))
+                    }
+                }
+            }
+        }
     }
 
     fun noUse(dateDate: LocalDate) {}

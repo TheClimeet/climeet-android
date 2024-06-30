@@ -97,6 +97,13 @@ class MyPageAdminRouteFindingFragment :
                     MyPageAdminRouteFindingEvent.DeleteSecondFloor -> {
                         binding.switchSectorFloor.isChecked = false
                     }
+
+                    is MyPageAdminRouteFindingEvent.UpdateRouteFindingData -> if (it.isSuccess) {
+                        showToastMessage(it.msg)
+                        findNavController().navigateUp()
+                    } else {
+                        showToastMessage(it.msg)
+                    }
                 }
             }
         }

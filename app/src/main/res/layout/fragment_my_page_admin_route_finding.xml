@@ -723,6 +723,7 @@
                     android:background="@drawable/rect_grey8fill_nostroke_8radius"
                     android:text="@string/route_finding_update_complete"
                     android:textSize="18sp"
+                    android:onClick="@{()->vm.saveRouteFindingData()}"
                     app:isEnabledBasedOnLists="@{vm.uiState}"
                     app:layout_constraintTop_toBottomOf="@id/layout_route_manage" />
 
