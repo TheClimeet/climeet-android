@@ -253,7 +253,7 @@ class MyPageAdminRouteFindingFragment :
 
     private fun checkExistSectorName(sectorName: String): Boolean {
         viewModel.uiState.value.sectorList.forEach {
-            if (it.sectorName == sectorName) {
+            if (it.sectorName == sectorName && viewModel.modifyingSector.value.sectorName != sectorName) {
                 return true
             }
         }
