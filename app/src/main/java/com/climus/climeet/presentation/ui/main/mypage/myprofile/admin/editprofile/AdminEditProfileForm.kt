@@ -17,6 +17,8 @@ object AdminEditProfileForm {
     private val _backgroundUriState = MutableStateFlow("")
     val backgroundUriState: StateFlow<String> = _backgroundUriState
 
+    var isBackgroundChange = false
+
     fun setProfileImage(image: String) {
         profileImg = image
         _profileUriState.value = image
@@ -27,6 +29,7 @@ object AdminEditProfileForm {
     fun setBackgroundImage(image: String) {
         backgroundImg = image
         _backgroundUriState.value = image
+        isBackgroundChange = true
 
         Log.d("form", "배경 이미지 uri 저장 : $image")
     }

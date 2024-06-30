@@ -5,6 +5,7 @@ import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.GymServiceUpdateRequest
+import com.climus.climeet.data.model.request.ImgUrlRequest
 import com.climus.climeet.data.model.request.NotificationUpdateRequest
 import com.climus.climeet.data.model.request.PatchAdminNameRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
@@ -465,7 +466,7 @@ interface MainApi {
 
     @PATCH("/api/gyms/profile-image")
     suspend fun updateAdminProfileImage(
-        @Body params: String
+        @Body params: ImgUrlRequest
     ): Response<ResponseBody>
 
     @PATCH("/api/gyms/name")
@@ -475,7 +476,7 @@ interface MainApi {
 
     @PATCH("/api/gyms/background-image")
     suspend fun updateAdminBackgroundImage(
-        @Body params: String
+        @Body params: ImgUrlRequest
     ): Response<ResponseBody>
 
     @PATCH("/api/profile-name")

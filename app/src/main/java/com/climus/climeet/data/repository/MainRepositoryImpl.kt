@@ -10,6 +10,7 @@ import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.GymServiceUpdateRequest
+import com.climus.climeet.data.model.request.ImgUrlRequest
 import com.climus.climeet.data.model.request.NotificationUpdateRequest
 import com.climus.climeet.data.model.request.PatchAdminNameRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
@@ -507,13 +508,13 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun updateUserName(name: String): BaseState<ResponseBody> =
         runRemote { api.updateUserName(name) }
 
-    override suspend fun updateAdminProfileImage(body: String): BaseState<ResponseBody> =
+    override suspend fun updateAdminProfileImage(body: ImgUrlRequest): BaseState<ResponseBody> =
         runRemote { api.updateAdminProfileImage(body) }
 
     override suspend fun updateAdminName(body: PatchAdminNameRequest): BaseState<ResponseBody> =
         runRemote { api.updateAdminName(body) }
 
-    override suspend fun updateAdminBackgroundImage(body: String): BaseState<ResponseBody> =
+    override suspend fun updateAdminBackgroundImage(body: ImgUrlRequest): BaseState<ResponseBody> =
         runRemote { api.updateAdminBackgroundImage(body) }
 
     override suspend fun updateGymService(body: GymServiceUpdateRequest): BaseState<ResponseBody> =
