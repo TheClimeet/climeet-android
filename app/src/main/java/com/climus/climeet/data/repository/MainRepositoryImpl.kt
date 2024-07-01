@@ -374,7 +374,7 @@ class MainRepositoryImpl @Inject constructor(
         return routeRecordDao.findExistRoute(sectorId, routeId)
     }
 
-    override fun getAverageDifficultyOfCompleted(): Double {
+    override fun getAverageDifficultyOfCompleted(): Double? {
         return routeRecordDao.getAverageDifficultyOfCompleted()
     }
 

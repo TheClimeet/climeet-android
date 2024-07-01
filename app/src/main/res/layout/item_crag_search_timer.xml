@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="15dp"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:maxLines="2"
             android:text="@{data.name}"
             app:keyword="@{keyword}"
             app:layout_constraintBottom_toBottomOf="parent"

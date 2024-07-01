@@ -33,8 +33,8 @@ interface RouteRecordDao {
     @Query("SELECT * FROM route_record WHERE sectorId = :sectorId AND routeId = :routeId LIMIT 1")
     fun findExistRoute(sectorId: Long, routeId: Long): RouteRecordData?
 
-    @Query("SELECT AVG(difficulty) FROM route_record WHERE isCompleted = 1")
-    fun getAverageDifficultyOfCompleted(): Double
+    @Query("SELECT AVG(difficulty) FROM route_record WHERE isCompleted = 1 AND difficulty != 10")
+    fun getAverageDifficultyOfCompleted(): Double?
 
     // 레벨별 평균 완등률 계산
     @Query("SELECT * FROM route_record WHERE levelName IN (SELECT DISTINCT levelName FROM route_record)")

@@ -72,4 +72,17 @@ object Constants {
         "컴피" to "#BEDF22"
     )
 
+    val levelColorMap = mapOf(
+        0 to "하양",
+        1 to "빨강",
+        2 to "주황",
+        3 to "노랑",
+        4 to "초록",
+        5 to "하늘",
+        6 to "파랑",
+        7 to "남색",
+        8 to "갈색",
+        9 to "회색",
+        10 to "컴피"
+    )
 }
