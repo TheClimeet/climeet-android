@@ -8,7 +8,7 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.DialogSetLevelBottomSheetBinding
 import com.climus.climeet.presentation.customview.WarningSnackBar
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.MyPageAdminRouteFindingViewModel
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.LevelColorData
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.LevelColorData
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class SetLevelBottomSheet(

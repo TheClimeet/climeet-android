@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model
+package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model
 
 object LevelColorData {
     private val colorNamesAndHexes = listOf(

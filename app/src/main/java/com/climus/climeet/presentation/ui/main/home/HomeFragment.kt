@@ -69,10 +69,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
         sharedViewModel.initViewModel()
         sharedViewModel.getShorts(ShortsOption.NEW_SORT)
-
-        binding.textView4.setOnClickListener {
-            findNavController().toRouteFinding()
-        }
     }
 
     private fun initShortsObserve() {

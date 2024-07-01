@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.repository.AuthRepository
 import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.ui.main.mypage.MyPageEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,7 +29,8 @@ data class GymProfileInfoUiState(
 
 @HiltViewModel
 class GymProfileViewModel @Inject constructor(
-    private val repository: MainRepository
+    private val repository: MainRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(GymProfileInfoUiState())
@@ -37,37 +40,49 @@ class GymProfileViewModel @Inject constructor(
 
     val followState = MutableStateFlow(false)
 
-    fun setGymId(id : Long) {
+    var isModeClimer = MutableStateFlow(true)
+
+    init {
+        getLoginMode()
+    }
+
+    private fun getLoginMode() {
         viewModelScope.launch {
-            gymId.value = id
+            isModeClimer.value = authRepository.getLoginMode() == "CLIMER"
         }
     }
 
-    fun getGymProfileInfo() {
+    fun setGymId(id: Long) {
         viewModelScope.launch {
-            gymId.value?.let {
-                repository.getGymProfileTopInfo(it).let { result ->
-                    when (result) {
-                        is BaseState.Success -> {
-                            _uiState.update { state ->
-                                state.copy(
-                                    gymId = gymId.value!!,
-                                    gymProfileImageUrl = result.body.gymProfileImageUrl,
-                                    gymBackGroundImageUrl = result.body.gymBackGroundImageUrl,
-                                    gymName = result.body.gymName,
-                                    followerCount = result.body.followerCount,
-                                    followingCount = result.body.followingCount,
-                                    averageRating = result.body.averageRating,
-                                    reviewCount = result.body.reviewCount
-                                )
-                            }
-                            followState.value = result.body.isFollower
-                        }
+            gymId.value = id
+        }
+        getGymProfileInfo(id)
+    }
 
-                        is BaseState.Error -> {
-                            result.msg
-                            Log.d("gym_profile", "상단 정보 불러오기 실패")
+    fun getGymProfileInfo(id: Long) {
+        Log.d("gymIdTest", "viewModel : $id")
+        viewModelScope.launch {
+            repository.getGymProfileTopInfo(id).let { result ->
+                when (result) {
+                    is BaseState.Success -> {
+                        _uiState.update { state ->
+                            state.copy(
+                                gymId = gymId.value!!,
+                                gymProfileImageUrl = result.body.gymProfileImageUrl,
+                                gymBackGroundImageUrl = result.body.gymBackGroundImageUrl,
+                                gymName = result.body.gymName,
+                                followerCount = result.body.followerCount,
+                                followingCount = result.body.followingCount,
+                                averageRating = result.body.averageRating,
+                                reviewCount = result.body.reviewCount
+                            )
                         }
+                        followState.value = result.body.isFollower
+                    }
+
+                    is BaseState.Error -> {
+                        result.msg
+                        Log.d("gym_profile", "상단 정보 불러오기 실패")
                     }
                 }
             }

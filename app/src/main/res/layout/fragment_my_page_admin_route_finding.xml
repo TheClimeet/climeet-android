@@ -37,7 +37,6 @@
                     android:background="@android:color/transparent"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_back"
-                    android:onClick="@{()->vm.navigateToBack()}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -366,6 +365,7 @@
                         style="@style/TextSmall"
                         android:layout_width="54dp"
                         android:layout_height="30dp"
+                        android:layout_marginTop="10dp"
                         android:background="@drawable/rect_grey8fill_nostroke_5radius"
                         android:gravity="center"
                         android:onClick="@{()->vm.selectFloor(1)}"
@@ -385,7 +385,7 @@
                         android:text="@string/plus"
                         android:visibility="@{vm.isSecondFloorExist() ? View.GONE : View.VISIBLE}"
                         app:layout_constraintStart_toEndOf="@+id/btn_first_floor"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="@+id/btn_first_floor" />
 
                     <TextView
                         android:id="@+id/btn_second_floor"
@@ -399,6 +399,18 @@
                         android:text="@string/route_finding_second_floor"
                         android:visibility="@{vm.isSecondFloorExist() ? View.VISIBLE : View.GONE}"
                         app:layout_constraintStart_toEndOf="@+id/btn_first_floor"
+                        app:layout_constraintTop_toTopOf="@+id/btn_first_floor" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/btn_delete_second_floor"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="-10dp"
+                        android:backgroundTint="@android:color/transparent"
+                        android:src="@drawable/ic_route_finding_delete"
+                        android:visibility="@{vm.isSecondFloorExist() ? View.VISIBLE : View.GONE}"
+                        android:onClick="@{()->vm.deleteSecondFloor()}"
+                        app:layout_constraintEnd_toEndOf="@+id/btn_second_floor"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -433,22 +445,6 @@
                             app:layout_constraintStart_toStartOf="@id/iv_add_gym_iamge"
                             app:layout_constraintTop_toBottomOf="@id/iv_add_gym_iamge" />
 
-                        <androidx.appcompat.widget.AppCompatButton
-                            android:id="@+id/btn_delete_second_floor"
-                            style="@style/TextSmall"
-                            android:layout_width="65dp"
-                            android:layout_height="30dp"
-                            android:layout_marginTop="12dp"
-                            android:background="@drawable/rect_silver2fill_nostroke_8radius"
-                            android:onClick="@{()->vm.deleteSecondFloor()}"
-                            android:paddingHorizontal="16dp"
-                            android:paddingTop="5.5dp"
-                            android:paddingBottom="6.5dp"
-                            android:text="@string/delete"
-                            android:textColor="@color/black"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/iv_add_gym_iamge" />
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -463,6 +459,59 @@
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layout_gym_image" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_sector_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/rect_grey8fill_nostroke_999radius"
+                    android:padding="2dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_sector_manage"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_sector_manage">
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switch_sector_floor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:checked="false"
+                        android:textColor="@color/white"
+                        android:thumb="@drawable/selector_thumb_sector"
+                        app:thumbTint="@color/cm_main"
+                        app:track="@drawable/selector_track_sector"
+                        app:trackTint="@color/cm_grey8" />
+
+                    <LinearLayout
+                        android:layout_width="122dp"
+                        android:layout_height="30dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:id="@+id/tv_switch_first"
+                            style="@style/TextSmallBold"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/route_finding_first_floor"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/tv_switch_second"
+                            style="@style/TextSmallBold"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/route_finding_second_floor" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_sector_manage"
@@ -498,7 +547,7 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintVertical_bias="1.0"
-                                app:list="@{vm.uiState.sectorList}"
+                                app:list="@{vm.floorSectorList}"
                                 tools:itemCount="3"
                                 tools:listitem="@layout/item_route_finding_sector" />
 
@@ -513,6 +562,7 @@
                                 android:paddingStart="13dp"
                                 android:paddingEnd="16dp"
                                 android:text="@string/route_finding_add_sector"
+                                android:layout_gravity="bottom"
                                 app:drawableStartCompat="@drawable/ic_add_white_14"
                                 app:layout_constraintStart_toEndOf="@+id/rv_route_finding_level"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -602,8 +652,8 @@
                     style="@style/TextRegularBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="43dp"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="43dp"
                     android:text="@string/route_finding_route_manage"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -617,37 +667,48 @@
                     android:layout_marginEnd="20dp"
                     android:background="@drawable/rect_grey8fill_nostroke_5radius"
                     android:drawablePadding="3dp"
+                    android:onClick="@{()->vm.goToCreateRoute()}"
                     android:paddingVertical="6dp"
                     android:paddingStart="13dp"
                     android:paddingEnd="16dp"
                     android:text="@string/route_finding_add_route"
-                    android:onClick="@{()->vm.goToCreateRoute()}"
                     app:drawableStartCompat="@drawable/ic_add_white_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_route_manage"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tv_route_manage"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_route_manage"/>
+                    app:layout_constraintTop_toTopOf="@+id/tv_route_manage" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_route_manage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="14dp"
                     app:layout_constraintTop_toBottomOf="@id/tv_route_manage">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_route_finding_route"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:list="@{vm.uiState.routeList}"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:listitem="@layout/item_route_finding_route"
+                        tools:itemCount="3"/>
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/iv_no_route"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
+                        android:visibility="@{vm.uiState.routeList.empty ? View.VISIBLE : View.GONE}"
                         app:cardCornerRadius="10dp"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_no_route"
-                            android:scaleType="centerCrop" />
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_no_route" />
 
                     </androidx.cardview.widget.CardView>
 
@@ -658,12 +719,14 @@
                     style="@style/TextRegularBold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="64dp"
                     android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="64dp"
                     android:background="@drawable/rect_grey8fill_nostroke_8radius"
                     android:text="@string/route_finding_update_complete"
                     android:textSize="18sp"
-                    app:layout_constraintTop_toBottomOf="@id/layout_route_manage"/>
+                    android:onClick="@{()->vm.saveRouteFindingData()}"
+                    app:isEnabledBasedOnLists="@{vm.uiState}"
+                    app:layout_constraintTop_toBottomOf="@id/layout_route_manage" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

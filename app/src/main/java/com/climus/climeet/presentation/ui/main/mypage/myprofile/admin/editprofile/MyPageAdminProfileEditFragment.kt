@@ -2,6 +2,7 @@ package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.editprofi
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -41,6 +42,7 @@ class MyPageAdminProfileEditFragment :
         binding.svm = mainViewModel
         binding.vm = viewModel
 
+        Log.d("tqlkf", "${backgroundState}")
         viewModel.initState(backgroundState, gymName, gymProfile)
 
         gymId = parentViewModel.getGymId()

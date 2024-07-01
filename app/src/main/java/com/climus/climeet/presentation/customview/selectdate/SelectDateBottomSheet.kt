@@ -35,6 +35,8 @@ class SelectDateBottomSheet(
         initEventObserve()
         setDatePicker(curDate)
 
+        viewModel.setIsTodayToFalse()
+
         binding.tvOk.setOnClickListener {
             val date = LocalDate.of(
                 binding.datepicker.year,

@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter
+package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -48,6 +48,9 @@ class RouteFindingSectorAdapter(
             binding.root.setOnClickListener {
                 viewModel.modifyingSector.update { item }
                 viewModel.selectedSector.update { item }
+            }
+            binding.ivDelete.setOnClickListener {
+                viewModel.deleteSector(item)
             }
         }
     }

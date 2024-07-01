@@ -10,8 +10,11 @@ import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.GymServiceUpdateRequest
+import com.climus.climeet.data.model.request.ImgUrlRequest
 import com.climus.climeet.data.model.request.NotificationUpdateRequest
+import com.climus.climeet.data.model.request.PatchAdminNameRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
+import com.climus.climeet.data.model.request.UpdateGymRouteVersionRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -35,6 +38,7 @@ import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetMyShortsCommentsResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetNotificationStatesResponse
+import com.climus.climeet.data.model.response.GetRouteFindingData
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
@@ -201,12 +205,18 @@ class MainRepositoryImpl @Inject constructor(
     ): BaseState<GetGymFilteringKeyResponse> =
         runRemote { api.getGymFilteringKeyTime(gymId, timePoint) }
 
+    override suspend fun getGymRouteFindingData(timePoint: String): BaseState<GetRouteFindingData> =
+        runRemote { api.getGymRouteFindingData(timePoint) }
+
     override suspend fun getGymRouteInfoList(
         gymId: Long,
         body: GetGymRouteInfoRequest
     ): BaseState<GetGymRouteInfoResponse> = runRemote {
         api.getGymRouteInfoList(gymId, body)
     }
+
+    override suspend fun updateGymRouteVersion(body: UpdateGymRouteVersionRequest): BaseState<ResponseBody> =
+        runRemote { api.updateGymRouteVersion(body) }
 
     override suspend fun uploadShorts(
         video: MultipartBody.Part?,
@@ -467,7 +477,7 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun updateAnnouncementUnlike(boardId: Long): BaseState<ResponseBody> =
         runRemote { api.updateAnnouncementUnlike(boardId) }
 
-    override suspend fun getAdminGymId(): BaseState<Long> =
+    override suspend fun getAdminGymId(): BaseState<Int> =
         runRemote { api.getAdminGymId() }
 
     override suspend fun getUserShorts(
@@ -498,10 +508,13 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun updateUserName(name: String): BaseState<ResponseBody> =
         runRemote { api.updateUserName(name) }
 
-    override suspend fun updateAdminProfileImage(body: String): BaseState<ResponseBody> =
+    override suspend fun updateAdminProfileImage(body: ImgUrlRequest): BaseState<ResponseBody> =
         runRemote { api.updateAdminProfileImage(body) }
 
-    override suspend fun updateAdminBackgroundImage(body: String): BaseState<ResponseBody> =
+    override suspend fun updateAdminName(body: PatchAdminNameRequest): BaseState<ResponseBody> =
+        runRemote { api.updateAdminName(body) }
+
+    override suspend fun updateAdminBackgroundImage(body: ImgUrlRequest): BaseState<ResponseBody> =
         runRemote { api.updateAdminBackgroundImage(body) }
 
     override suspend fun updateGymService(body: GymServiceUpdateRequest): BaseState<ResponseBody> =

@@ -5,8 +5,11 @@ import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.GymServiceUpdateRequest
+import com.climus.climeet.data.model.request.ImgUrlRequest
 import com.climus.climeet.data.model.request.NotificationUpdateRequest
+import com.climus.climeet.data.model.request.PatchAdminNameRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
+import com.climus.climeet.data.model.request.UpdateGymRouteVersionRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -30,6 +33,7 @@ import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetMyShortsCommentsResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetNotificationStatesResponse
+import com.climus.climeet.data.model.response.GetRouteFindingData
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
@@ -196,11 +200,21 @@ interface MainApi {
         @Query("timePoint") timePoint: String
     ): Response<GetGymFilteringKeyResponse>
 
+    @GET("/api/gyms/{gymId}/version/all")
+    suspend fun getGymRouteFindingData(
+        @Query("timePoint") timePoint: String
+    ): Response<GetRouteFindingData>
+
     @POST("/api/gyms/{gymId}/version/route")
     suspend fun getGymRouteInfoList(
         @Path("gymId") gymId: Long,
         @Body params: GetGymRouteInfoRequest
     ): Response<GetGymRouteInfoResponse>
+
+    @POST("/api/gyms/version")
+    suspend fun updateGymRouteVersion(
+        @Body params: UpdateGymRouteVersionRequest
+    ): Response<ResponseBody>
 
     @POST("/api/climbing-records")
     suspend fun createTimerClimbingRecord(
@@ -452,12 +466,17 @@ interface MainApi {
 
     @PATCH("/api/gyms/profile-image")
     suspend fun updateAdminProfileImage(
-        @Body params: String
+        @Body params: ImgUrlRequest
+    ): Response<ResponseBody>
+
+    @PATCH("/api/gyms/name")
+    suspend fun updateAdminName(
+        @Body params: PatchAdminNameRequest
     ): Response<ResponseBody>
 
     @PATCH("/api/gyms/background-image")
     suspend fun updateAdminBackgroundImage(
-        @Body params: String
+        @Body params: ImgUrlRequest
     ): Response<ResponseBody>
 
     @PATCH("/api/profile-name")
@@ -480,7 +499,7 @@ interface MainApi {
     ): Response<GetMyShortsCommentsResponse>
 
     @GET("/api/manager/gym-id")
-    suspend fun getAdminGymId(): Response<Long>
+    suspend fun getAdminGymId(): Response<Int>
 
     @PATCH("/api/gyms/service")
     suspend fun updateGymService(

@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.adapter
+package com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.climus.climeet.databinding.ItemRouteFindingLevelBinding
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.UiLevelItem
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.MyPageAdminRouteFindingViewModel
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.LevelColor
-import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.RouteColor
+import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.RouteColor
 
 class RouteFindingLevelAdapter(
     private val viewModel: MyPageAdminRouteFindingViewModel

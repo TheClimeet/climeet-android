@@ -8,8 +8,11 @@ import com.climus.climeet.data.model.request.CreateGymProfileReviewRequest
 import com.climus.climeet.data.model.request.CreateTimerClimbingRecordRequest
 import com.climus.climeet.data.model.request.GetGymRouteInfoRequest
 import com.climus.climeet.data.model.request.GymServiceUpdateRequest
+import com.climus.climeet.data.model.request.ImgUrlRequest
 import com.climus.climeet.data.model.request.NotificationUpdateRequest
+import com.climus.climeet.data.model.request.PatchAdminNameRequest
 import com.climus.climeet.data.model.request.ShortsDetailRequest
+import com.climus.climeet.data.model.request.UpdateGymRouteVersionRequest
 import com.climus.climeet.data.model.response.BannerDetailInfoResponse
 import com.climus.climeet.data.model.response.BestClearClimberSimpleResponse
 import com.climus.climeet.data.model.response.BestFollowGymSimpleResponse
@@ -33,6 +36,7 @@ import com.climus.climeet.data.model.response.GetGymSkillDistributionResponse
 import com.climus.climeet.data.model.response.GetMyShortsCommentsResponse
 import com.climus.climeet.data.model.response.GetMyStatsTargetGymMonthResponse
 import com.climus.climeet.data.model.response.GetNotificationStatesResponse
+import com.climus.climeet.data.model.response.GetRouteFindingData
 import com.climus.climeet.data.model.response.GetSelectDateRecordResponse
 import com.climus.climeet.data.model.response.GetUserInfoResponse
 import com.climus.climeet.data.model.response.GymCompleteBestClimberResponse
@@ -170,10 +174,18 @@ interface MainRepository {
         timePoint: String
     ): BaseState<GetGymFilteringKeyResponse>
 
+    suspend fun getGymRouteFindingData(
+        timePoint: String
+    ): BaseState<GetRouteFindingData>
+
     suspend fun getGymRouteInfoList(
         gymId: Long,
         body: GetGymRouteInfoRequest
     ): BaseState<GetGymRouteInfoResponse>
+
+    suspend fun updateGymRouteVersion(
+        body: UpdateGymRouteVersionRequest
+    ): BaseState<ResponseBody>
 
     suspend fun createTimerClimbingRecord(
         body: CreateTimerClimbingRecordRequest
@@ -289,11 +301,15 @@ interface MainRepository {
     ): BaseState<ResponseBody>
 
     suspend fun updateAdminProfileImage(
-        body: String
+        body: ImgUrlRequest
+    ): BaseState<ResponseBody>
+
+    suspend fun updateAdminName(
+        body: PatchAdminNameRequest
     ): BaseState<ResponseBody>
 
     suspend fun updateAdminBackgroundImage(
-        body: String
+        body: ImgUrlRequest
     ): BaseState<ResponseBody>
 
     suspend fun updateGymService(
@@ -423,5 +439,5 @@ interface MainRepository {
         boardId: Long
     ): BaseState<ResponseBody>
 
-    suspend fun getAdminGymId(): BaseState<Long>
+    suspend fun getAdminGymId(): BaseState<Int>
 }

@@ -6,7 +6,7 @@
 
         <variable
             name="rc"
-            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.routefinding.model.RouteColor" />
+            type="com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.model.RouteColor" />
 
     </data>
 
