@@ -62,17 +62,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.climus.climeet.presentation.customview.EmptyCircleView
-            android:id="@+id/iv_climeet_level"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            app:ecColor="@color/cm_grey4"
-            app:ecText="V5"
-            app:ecTextSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

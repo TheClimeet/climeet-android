@@ -8,7 +8,6 @@ data class ShortsListResponse(
 
 data class ShortsItem(
     val isManager: Boolean,
-    val climeetDifficultyName: String?,
     val gymDifficultyColor: String?,
     val gymDifficultyName: String?,
     val gymName: String?,

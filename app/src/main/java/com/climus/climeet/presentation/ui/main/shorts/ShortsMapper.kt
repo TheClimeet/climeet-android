@@ -11,7 +11,6 @@ import com.climus.climeet.presentation.ui.main.shorts.model.ShortsCommentUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
 import com.climus.climeet.presentation.ui.main.shorts.model.UpdatedFollowUiData
-import com.climus.climeet.presentation.util.Constants.climeetColor
 
 fun SearchAvailableGymItem.toSearchCragUiData(
     keyword: String,
@@ -28,28 +27,16 @@ fun ShortsItem.toShortsThumbnailUiData(
     onClickListener: (Long, Int) -> Unit
 ): ShortsThumbnailUiData {
 
-    var climeetLevelColor = ""
-    climeetColor[climeetDifficultyName]?.let {
-        climeetLevelColor = it
-    }
-
     return ShortsThumbnailUiData(
         shortsId = shortsId,
         thumbnailImg = thumbnailImageUrl ?: "https://climeet-production-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpeg",
         gymName = gymName,
         originLevelColor = shortsDetailInfo.gymDifficultyColor,
-        climeetLevelColor = climeetLevelColor,
-        climeetDifficultyName = climeetDifficultyName,
         onClickListener = onClickListener
     )
 }
 
 fun ShortsItem.toShortsUiData(): ShortsUiData {
-
-    var climeetLevelColor = ""
-    climeetColor[climeetDifficultyName]?.let {
-        climeetLevelColor = it
-    }
 
     return ShortsUiData(
         isManager = isManager,
@@ -57,7 +44,6 @@ fun ShortsItem.toShortsUiData(): ShortsUiData {
         thumbnailImg = thumbnailImageUrl ?: "https://climeet-production-bucket.s3.ap-northeast-2.amazonaws.com/default_profile.jpeg",
         gymId = shortsDetailInfo.gymId,
         gymName = gymName,
-        climeetLevelColor = climeetLevelColor,
         gymLevelName = gymDifficultyName,
         routeImgUrl = shortsDetailInfo.routeImageUrl,
         gymLevelColor = gymDifficultyColor,

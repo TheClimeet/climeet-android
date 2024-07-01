@@ -6,7 +6,6 @@ data class ShortsUiData(
     val thumbnailImg: String? = "",
     val gymId: Long? = -1,
     val gymName: String? = "",
-    val climeetLevelColor: String,
     val gymLevelName: String? = "",
     val gymDifficulty: Int? = 0,
     val gymLevelColor: String?,

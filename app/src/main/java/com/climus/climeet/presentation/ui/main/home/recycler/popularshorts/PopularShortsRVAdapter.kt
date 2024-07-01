@@ -1,18 +1,12 @@
 package com.climus.climeet.presentation.ui.main.home.recycler.popularshorts
 
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.climus.climeet.data.model.response.ShortsItem
-import com.climus.climeet.data.model.response.ShortsSimpleResponse
 import com.climus.climeet.databinding.ItemPopularShortsBinding
-import com.climus.climeet.presentation.ui.main.home.model.PopularShorts
 import com.climus.climeet.presentation.ui.main.shorts.model.ShortsThumbnailUiData
-import com.climus.climeet.presentation.ui.main.shorts.model.ShortsUiData
-import com.climus.climeet.presentation.util.Constants
 import kotlin.math.min
 
 
@@ -47,12 +41,6 @@ class PopularShortsRVAdapter (private val shortsList: List<ShortsThumbnailUiData
             if (shorts.originLevelColor != null) {
                 val circleColor: Int = Color.parseColor(shorts.originLevelColor)
                 binding.ivPopularShortsCircle.setColorFilter(circleColor)
-
-                val levelColor: Int = Color.parseColor(shorts.climeetLevelColor)
-                val gradientDrawable = GradientDrawable()
-                gradientDrawable.shape = GradientDrawable.OVAL
-                gradientDrawable.setColor(Color.TRANSPARENT)
-                gradientDrawable.setStroke(6, levelColor) // 테두리의 너비와 색상
             }
 
         }
