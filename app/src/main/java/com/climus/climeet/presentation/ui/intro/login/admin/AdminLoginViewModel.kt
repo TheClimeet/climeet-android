@@ -108,15 +108,4 @@ class AdminLoginViewModel @Inject constructor(
 
     }
 
-    fun testerLogin() {
-        viewModelScope.launch {
-
-            authRepository.putAccessToken(Constants.TEST_ADMIN_TOKEN)
-            authRepository.putLoginMode("ADMIN")
-
-            _event.emit(AdminLoginEvent.GoToMainActivity)
-        }
-    }
-
-
 }
