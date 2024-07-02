@@ -44,6 +44,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".presentation.ui.onboard.OnBoardActivity"
+            android:exported="false"/>
+
         <activity android:name=".presentation.ui.intro.IntroActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false"/>

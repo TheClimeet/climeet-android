@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.climus.climeet.data.config.DataStoreManager
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.response.RefreshTokenResponse
 import com.climus.climeet.data.model.runRemote
@@ -24,6 +25,8 @@ class AuthRepositoryImpl @Inject constructor(
         private val REFRESH_TOKEN_KEY = stringPreferencesKey(Constants.REFRESH_TOKEN)
         private val LOGIN_MODE =
             stringPreferencesKey(com.climus.climeet.presentation.util.Constants.X_MODE)
+        private val IS_FIRST_APP =
+            stringPreferencesKey(com.climus.climeet.presentation.util.Constants.IS_FIRST_APP)
     }
 
     override suspend fun getAccessToken(): String? {
@@ -42,6 +45,18 @@ class AuthRepositoryImpl @Inject constructor(
         return dataStore.data.map { prefs ->
             prefs[LOGIN_MODE]
         }.first()
+    }
+
+    override suspend fun getIsFirstApp(): String? {
+        return dataStore.data.map { pref ->
+            pref[IS_FIRST_APP]
+        }.first()
+    }
+
+    override suspend fun putIsFirstApp() {
+        dataStore.edit { prefs ->
+            prefs[IS_FIRST_APP] = ""
+        }
     }
 
     override suspend fun putAccessToken(token: String) {

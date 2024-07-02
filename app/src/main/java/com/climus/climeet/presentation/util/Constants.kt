@@ -9,11 +9,12 @@ object Constants {
     const val X_REFRESH_TOKEN = "X_REFRESH_TOKEN"
     const val X_MODE = "X_MODE"
     const val CLIMBER_MODE = "CLIMER"
-    const val ADMINE_MODE = "ADMIN"
+    const val ADMIN_MODE = "ADMIN"
 
     const val KAKAO = "KAKAO"
     const val NAVER = "NAVER"
     const val LOGIN_TYPE = "LOGIN_TYPE"
+    const val IS_FIRST_APP = "IS_FIRST_APP"
 
     const val TEST_CLIMER_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3NStjbGltYmVyIn0.fQI53JkY9Xxc57Oyy3Pvbd9JxwHBKWeLIVt18_7gE0Y"
     const val TEST_ADMIN_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxK21hbmFnZXIiLCJpYXQiOjE3MTg5NTU5ODZ9.vt0ijflpp7O-2kIrYxom_cMoUsvSjef03SSv_BXVnpE"

@@ -1,17 +1,19 @@
-package com.climus.climeet.presentation.ui.intro.onboard
+package com.climus.climeet.presentation.ui.onboard
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.climus.climeet.R
-import com.climus.climeet.databinding.FragmentOnboardBinding
-import com.climus.climeet.presentation.base.BaseFragment
+import com.climus.climeet.databinding.ActivityOnboardBinding
+import com.climus.climeet.presentation.base.BaseActivity
+import com.climus.climeet.presentation.ui.intro.IntroActivity
 
-class OnBoardFragment : BaseFragment<FragmentOnboardBinding>(R.layout.fragment_onboard) {
+class OnBoardActivity : BaseActivity<ActivityOnboardBinding>(ActivityOnboardBinding::inflate) {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         setViewpager()
         setBtnListener()
@@ -43,12 +45,9 @@ class OnBoardFragment : BaseFragment<FragmentOnboardBinding>(R.layout.fragment_o
 
     private fun setBtnListener() {
         binding.btnStart.setOnClickListener {
-            findNavController().toLogin()
+            val intent = Intent(this, IntroActivity::class.java)
+            startActivity(intent)
         }
     }
 
-    private fun NavController.toLogin() {
-        val action = OnBoardFragmentDirections.actionOnboardFragmentToLoginFragment()
-        navigate(action)
-    }
 }

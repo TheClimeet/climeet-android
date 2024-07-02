@@ -15,6 +15,7 @@ import javax.inject.Inject
 sealed class SplashEvent {
     data object NavigateToMainActivity : SplashEvent()
     data object NavigateToIntroActivity : SplashEvent()
+    data object NavigateToOnboardActivity : SplashEvent()
 }
 
 @HiltViewModel
@@ -27,10 +28,15 @@ class SplashViewModel @Inject constructor(
 
     fun checkLoginType() {
         viewModelScope.launch {
-            authRepository.getRefreshToken()?.let {
-                refreshToken(it)
-            } ?: run {
-                _event.emit(SplashEvent.NavigateToIntroActivity)
+
+            authRepository.getIsFirstApp()?.let{
+                authRepository.getRefreshToken()?.let {
+                    refreshToken(it)
+                } ?: run {
+                    _event.emit(SplashEvent.NavigateToIntroActivity)
+                }
+            } ?: run{
+                _event.emit(SplashEvent.NavigateToOnboardActivity)
             }
         }
     }

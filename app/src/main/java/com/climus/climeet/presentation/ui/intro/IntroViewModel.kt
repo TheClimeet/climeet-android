@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
+import com.climus.climeet.data.repository.AuthRepository
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.intro.signup.admin.AdminSignupForm
 import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
@@ -38,7 +39,8 @@ sealed class IntroEvent {
 
 @HiltViewModel
 class IntroViewModel @Inject constructor(
-    private val repository: MainRepository
+    private val repository: MainRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(IntroUiState())
@@ -51,6 +53,16 @@ class IntroViewModel @Inject constructor(
     val imageUri: SharedFlow<Uri> = _imageUri.asSharedFlow()
 
     private var urlType: UrlType? = null
+
+    init{
+        storeIsFirstApp()
+    }
+
+    private fun storeIsFirstApp(){
+        viewModelScope.launch {
+            authRepository.putIsFirstApp()
+        }
+    }
 
     fun signUpProgressStop(){
         _uiState.update { state ->

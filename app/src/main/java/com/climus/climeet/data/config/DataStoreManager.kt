@@ -19,6 +19,7 @@ class DataStoreManager @Inject constructor(
         private val LOGIN_MODE =
             stringPreferencesKey(com.climus.climeet.presentation.util.Constants.X_MODE)
         private val LOGIN_TYPE = stringPreferencesKey(com.climus.climeet.presentation.util.Constants.LOGIN_TYPE)
+
     }
 
     suspend fun getAccessToken(): String? {
@@ -44,6 +45,8 @@ class DataStoreManager @Inject constructor(
             pref[LOGIN_TYPE]
         }.first()
     }
+
+
 
     suspend fun putAccessToken(token: String) {
         dataStore.edit { prefs ->

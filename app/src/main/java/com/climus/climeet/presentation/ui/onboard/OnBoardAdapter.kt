@@ -1,4 +1,4 @@
-package com.climus.climeet.presentation.ui.intro.onboard
+package com.climus.climeet.presentation.ui.onboard
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

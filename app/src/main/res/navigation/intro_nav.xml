@@ -3,17 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/intro_nav"
-    app:startDestination="@id/onboard_fragment">
-
-    <fragment
-        android:id="@+id/onboard_fragment"
-        android:name="com.climus.climeet.presentation.ui.intro.onboard.OnBoardFragment"
-        android:label="onBoard">
-
-        <action
-            android:id="@+id/action_onboard_fragment_to_login_fragment"
-            app:destination="@id/login_fragment" />
-    </fragment>
+    app:startDestination="@id/login_fragment">
 
     <fragment
         android:id="@+id/login_fragment"

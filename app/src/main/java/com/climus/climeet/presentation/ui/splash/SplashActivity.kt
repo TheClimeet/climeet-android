@@ -9,7 +9,9 @@ import com.climus.climeet.databinding.ActivitySplashBinding
 import com.climus.climeet.presentation.base.BaseActivity
 import com.climus.climeet.presentation.ui.intro.IntroActivity
 import com.climus.climeet.presentation.ui.main.MainActivity
+import com.climus.climeet.presentation.ui.onboard.OnBoardActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 
 @AndroidEntryPoint
 class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding::inflate) {
@@ -31,12 +33,35 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
             viewModel.event.collect {
                 when (it) {
                     is SplashEvent.NavigateToIntroActivity -> {
-                        startActivity(Intent(this@SplashActivity, IntroActivity::class.java))
+                        startActivity(
+                            Intent(
+                                this@SplashActivity,
+                                IntroActivity::class.java
+                            )
+                        )
+                        delay(500)
                         finish()
                     }
 
                     is SplashEvent.NavigateToMainActivity -> {
-                        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                        startActivity(
+                            Intent(
+                                this@SplashActivity,
+                                MainActivity::class.java
+                            )
+                        )
+                        delay(500)
+                        finish()
+                    }
+
+                    is SplashEvent.NavigateToOnboardActivity -> {
+                        startActivity(
+                            Intent(
+                                this@SplashActivity,
+                                OnBoardActivity::class.java
+                            )
+                        )
+                        delay(500)
                         finish()
                     }
                 }
