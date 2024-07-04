@@ -11,7 +11,7 @@ data class UserFollowingInfoResponse(
     val userName : String,
 
     @SerializedName("userProfileUrl")
-    val profileImgUrl : String,
+    val profileImgUrl : String?,
 
     @SerializedName("followerCount")
     val followerCount : Int,

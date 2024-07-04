@@ -58,8 +58,8 @@ class AnnounceDetailViewModel @Inject constructor(val repository: MainRepository
                             state.copy(
                                 boardId = it.body.boardId,
                                 title = it.body.title,
-                                createdAt = formatDate(it.body.createdAt),
-                                profileImageUrl = it.body.profileImageUrl,
+                                createdAt = if(it.body.createdAt == null) "" else formatDate(it.body.createdAt),
+                                profileImageUrl = it.body.profileImageUrl ?: "",
                                 profileName = it.body.profileName,
                                 followerCount = it.body.followerCount.toString(),
                                 followingCount = it.body.followingCount.toString(),

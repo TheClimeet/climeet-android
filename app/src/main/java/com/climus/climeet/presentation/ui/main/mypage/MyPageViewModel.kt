@@ -72,7 +72,7 @@ class MyPageViewModel @Inject constructor(
                             state.copy(
                                 userId = profileInfo.userId,
                                 userName = profileInfo.userName,
-                                profileImgUrl = profileInfo.profileImgUrl,
+                                profileImgUrl = profileInfo.profileImgUrl ?: "",
                                 followerCount = profileInfo.followerCount,
                                 followingCount = profileInfo.followingCount,
                                 isManager = profileInfo.isManager

@@ -133,7 +133,7 @@ fun UserFollowerInfoResponse.toUserFollowerUiData(
 ) = FollowUiData(
     userId = userId,
     userName = userName,
-    profileImageUrl = userProfileUrl,
+    profileImageUrl = userProfileUrl ?: "",
     followerCount = followerCount,
     followingCount = followingCount,
     isFollowing = isFollower,
@@ -149,7 +149,7 @@ fun UserFollowingInfoResponse.toUserFollowingUiData(
 ) = FollowingUiData(
     userId = userId,
     userName = userName,
-    profileImageUrl = profileImgUrl,
+    profileImageUrl = profileImgUrl ?: "",
     followerCount = followerCount,
     followingCount = followingCount,
     isFollowing = isFollower,
@@ -170,7 +170,7 @@ fun UserHomeGymSimpleResponse.toProfileHomeGymUiData(
 
 fun GetAnnouncementResponse.toAnnouncementUiData() = AnnouncementUiData(
     boardId = boardId,
-    createdAt = createdAt,
+    createdAt = createdAt ?: "",
     likeCount = likeCount,
     title = title,
     content = content,

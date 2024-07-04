@@ -44,7 +44,7 @@ class MyPageAnnounceViewModel @Inject constructor(val repository: MainRepository
                     is BaseState.Success -> {
                         val announcements = it.body.map { response ->
                             response.toAnnouncementUiData().copy(
-                                createdAt = formatDate(response.createdAt)
+                                createdAt = if(response.createdAt == null) "" else formatDate(response.createdAt)
                             )
                         }
                         _uiState.update { state ->

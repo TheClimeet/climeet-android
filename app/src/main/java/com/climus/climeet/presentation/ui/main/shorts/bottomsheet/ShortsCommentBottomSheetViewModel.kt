@@ -71,7 +71,7 @@ class ShortsCommentBottomSheetViewModel @Inject constructor(
             repository.getMyPageProfile().let{
                 when(it){
                     is BaseState.Success -> {
-                        _event.emit(ShortsCommentBottomSheetEvent.SetMyProfile(it.body.profileImgUrl))
+                        _event.emit(ShortsCommentBottomSheetEvent.SetMyProfile(it.body.profileImgUrl ?: ""))
                     }
 
                     is BaseState.Error -> {
