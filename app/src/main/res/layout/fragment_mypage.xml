@@ -280,7 +280,7 @@
                     android:gravity="start|center"
                     android:onClick="@{() -> vm.navigateToPolicy()}"
                     android:paddingStart="30dp"
-                    android:text="   운영정책"
+                    android:text="   운영정책 및 개인정보 처리방침"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/btn_alarm" />
 
