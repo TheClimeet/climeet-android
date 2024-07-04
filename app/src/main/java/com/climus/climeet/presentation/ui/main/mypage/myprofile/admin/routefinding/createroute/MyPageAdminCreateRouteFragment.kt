@@ -17,6 +17,7 @@ import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.climus.climeet.R
 import com.climus.climeet.databinding.FragmentMypageAdminCreateRouteBinding
@@ -84,6 +85,9 @@ class MyPageAdminCreateRouteFragment :
         binding.rvHold.adapter = CreateRouteHoldAdapter()
         binding.rvLevel.adapter = CreateRouteLevelAdapter()
         binding.rvRouteChip.adapter = CreateRouteChipAdapter(viewModel)
+        binding.btnBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
         viewModel.setData()
         initEventObserve()
         initStateObserve()
