@@ -11,6 +11,7 @@ import com.climus.climeet.data.model.request.FcmTokenRequest
 import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.main.mypage.myprofile.admin.editprofile.AdminEditProfileForm
+import com.climus.climeet.presentation.util.Constants.ADMIN_MODE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,13 +50,13 @@ class MainViewModel @Inject constructor(
     private val _shortsThumbnail = MutableSharedFlow<String>()
     val shortsThumbnail: SharedFlow<String> = _shortsThumbnail.asSharedFlow()
 
-    private var userMode: String? = null
+    var userMode: String? = null
 
     fun checkUserMode(): Boolean {
         viewModelScope.launch {
             userMode = dataStoreManager.getLoginMode()
         }
-        return userMode == "ADMIN"
+        return userMode == ADMIN_MODE
     }
 
     fun goToGalleryForVideo() {

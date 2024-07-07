@@ -29,6 +29,7 @@ import com.climus.climeet.presentation.ui.saveCameraImage
 import com.climus.climeet.presentation.ui.toMultiPart
 import com.climus.climeet.presentation.ui.toMultiPartImage
 import com.climus.climeet.presentation.ui.toVideoThumbnail
+import com.climus.climeet.presentation.util.Constants.ADMIN_MODE
 import com.climus.climeet.presentation.util.Constants.CAMERA_PERMISSION
 import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION_IMAGE
 import com.climus.climeet.presentation.util.Constants.STORAGE_PERMISSION_VIDEO
@@ -80,6 +81,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     R.id.upload_fragment -> {
                         onCheckVideoPermissions()
                         false
+                    }
+
+                    R.id.record_fragment -> {
+                        if(viewModel.userMode == ADMIN_MODE){
+                            showToastMessage("관리자 모드에서는 이용할 수 없습니다")
+                            false
+                        } else {
+                            navController.navigate(R.id.record_fragment)
+                            true
+                        }
                     }
 
                     else -> {
@@ -219,6 +230,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                             it
                         ) != PackageManager.PERMISSION_GRANTED
                     ) {
+                        showToastMessage("갤러리 권한을 허용해주세요")
                         return
                     }
                 }

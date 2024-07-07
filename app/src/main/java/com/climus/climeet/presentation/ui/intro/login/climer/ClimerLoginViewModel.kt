@@ -8,6 +8,7 @@ import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.model.request.AuthRequest
 import com.climus.climeet.data.repository.AuthRepository
 import com.climus.climeet.data.repository.IntroRepository
+import com.climus.climeet.presentation.util.Constants.CLIMBER_MODE
 import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -48,7 +49,7 @@ class ClimerLoginViewModel @Inject constructor(
                                 it.body.refreshToken?.let { data ->
                                     authRepository.putRefreshToken(data)
                                 }
-                                authRepository.putLoginMode("CLIMER")
+                                authRepository.putLoginMode(CLIMBER_MODE)
                                 dataStoreManager.putLoginType(type)
                                 _event.emit(ClimerLoginEvent.GoToMainActivity)
                             }

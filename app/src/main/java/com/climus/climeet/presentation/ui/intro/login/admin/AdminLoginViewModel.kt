@@ -7,6 +7,7 @@ import com.climus.climeet.data.model.request.ManagerLoginRequest
 import com.climus.climeet.data.repository.AuthRepository
 import com.climus.climeet.data.repository.IntroRepository
 import com.climus.climeet.presentation.util.Constants
+import com.climus.climeet.presentation.util.Constants.ADMIN_MODE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -86,7 +87,7 @@ class AdminLoginViewModel @Inject constructor(
 
                         authRepository.putAccessToken(it.body.accessToken)
                         authRepository.putRefreshToken(it.body.refreshToken)
-                        authRepository.putLoginMode("ADMIN")
+                        authRepository.putLoginMode(ADMIN_MODE)
 
                         _event.emit(AdminLoginEvent.GoToMainActivity)
                     }
