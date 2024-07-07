@@ -76,9 +76,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         binding.mainBnv.apply {
             setupWithNavController(navController)
             setOnItemSelectedListener { item ->
-                NavigationUI.onNavDestinationSelected(item, navController)
-                navController.popBackStack(item.itemId, inclusive = false)
-                true
+                when(item.itemId){
+                    R.id.upload_fragment -> {
+                        onCheckVideoPermissions()
+                        false
+                    }
+
+                    else -> {
+                        NavigationUI.onNavDestinationSelected(item, navController)
+                        navController.popBackStack(item.itemId, inclusive = false)
+                        true
+                    }
+                }
             }
         }
 
@@ -110,7 +119,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         repeatOnStarted {
             viewModel.event.collect {
                 when (it) {
-                    is MainEvent.GoToGalleryForVideo -> onCheckVideoPermissions()
+                    is MainEvent.GoToGalleryForVideo -> openGalleryForVideo()
                     is MainEvent.GoToSetProfileImage -> showMethodSelectionDialog(it.context)
                     is MainEvent.ShowToastMessage -> showToastMessage(it.msg)
                     is MainEvent.ChangeStatusBarBlack -> {
@@ -146,7 +155,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 STORAGE_PERMISSION_VIDEO
             )
         } else {
-            openGalleryForVideo()
+            navController.navigate(R.id.upload_fragment)
         }
     }
 
@@ -213,7 +222,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                         return
                     }
                 }
-                openGalleryForVideo()
+                navController.navigate(R.id.upload_fragment)
             }
             STORAGE_PERMISSION_IMAGE -> {
                 neededPermissionList.forEach {
