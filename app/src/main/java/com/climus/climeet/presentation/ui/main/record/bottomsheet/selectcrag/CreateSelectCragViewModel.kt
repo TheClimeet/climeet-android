@@ -9,6 +9,7 @@ import com.climus.climeet.data.repository.MainRepository
 import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragEvent
 import com.climus.climeet.presentation.ui.intro.signup.climer.followcrag.FollowCragUiState
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
+import com.climus.climeet.presentation.ui.intro.signup.climer.toAuthFollowCrag
 import com.climus.climeet.presentation.ui.intro.signup.climer.toFollowCrag
 import com.climus.climeet.presentation.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel

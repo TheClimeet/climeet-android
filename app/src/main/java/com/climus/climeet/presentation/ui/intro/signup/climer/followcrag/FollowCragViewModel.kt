@@ -4,7 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.climus.climeet.data.model.BaseState
 import com.climus.climeet.data.repository.MainRepository
+import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
+import com.climus.climeet.presentation.ui.intro.signup.climer.model.AuthFollowCrag
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
+import com.climus.climeet.presentation.ui.intro.signup.climer.toAuthFollowCrag
 import com.climus.climeet.presentation.ui.intro.signup.climer.toFollowCrag
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -22,7 +25,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class FollowCragUiState(
-    val searchList: List<FollowCrag> = emptyList(),
+    val searchList: List<AuthFollowCrag> = emptyList(),
     val progressState: Boolean = false,
     val emptyResultState: Boolean = false,
 )
@@ -79,7 +82,11 @@ class FollowCragViewModel @Inject constructor(
                                     _uiState.update { state ->
                                         state.copy(
                                             searchList = result.body.result.map { item ->
-                                                item.toFollowCrag(it)
+                                                item.toAuthFollowCrag(
+                                                    it,
+                                                    ::followCrag,
+                                                    ::removeFollowCrag
+                                                )
                                             },
                                             progressState = false
                                         )
@@ -109,6 +116,14 @@ class FollowCragViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun followCrag(id: Long) {
+        ClimerSignupForm.addFollowGym(id)
+    }
+
+    private fun removeFollowCrag(id: Long) {
+        ClimerSignupForm.removeFollowGym(id)
     }
 
     fun deleteKeyword() {

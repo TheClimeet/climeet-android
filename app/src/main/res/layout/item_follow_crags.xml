@@ -10,7 +10,7 @@
             type="String" />
         <variable
             name="item"
-            type="com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag" />
+            type="com.climus.climeet.presentation.ui.intro.signup.climer.model.AuthFollowCrag" />
 
     </data>
 

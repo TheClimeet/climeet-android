@@ -11,12 +11,13 @@ import com.climus.climeet.R
 import com.climus.climeet.databinding.ItemFollowCragsBinding
 import com.climus.climeet.presentation.ui.intro.signup.admin.model.SearchCragUiData
 import com.climus.climeet.presentation.ui.intro.signup.climer.ClimerSignupForm
+import com.climus.climeet.presentation.ui.intro.signup.climer.model.AuthFollowCrag
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
 
 class FollowCragRVAdapter() : RecyclerView.Adapter<FollowCragRVAdapter.ViewHolder>(){
 
     private val followStatus = SparseBooleanArray()
-    private var searchList: List<FollowCrag> = emptyList()
+    private var searchList: List<AuthFollowCrag> = emptyList()
     private var keyword: String = ""
 
     override fun onCreateViewHolder(
@@ -66,14 +67,14 @@ class FollowCragRVAdapter() : RecyclerView.Adapter<FollowCragRVAdapter.ViewHolde
     override fun getItemCount(): Int = searchList.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setList(list: List<FollowCrag>, keyword: String) {
+    fun setList(list: List<AuthFollowCrag>, keyword: String) {
         searchList = list
         this.keyword = keyword
         notifyDataSetChanged()
     }
 
     inner class ViewHolder(val binding: ItemFollowCragsBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(followCrag: FollowCrag, keyword: String) {
+        fun bind(followCrag: AuthFollowCrag, keyword: String) {
             binding.keyword = keyword
             binding.item = followCrag
 

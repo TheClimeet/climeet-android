@@ -47,17 +47,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/btn_camera"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_camera"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.core.widget.NestedScrollView
@@ -196,10 +185,10 @@
                 <HorizontalScrollView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="20dp"
                     android:clipToPadding="false"
                     android:paddingHorizontal="20dp"
-                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rv_hold">
 
@@ -221,11 +210,11 @@
                             android:id="@+id/btn_create_route_bottom"
                             android:layout_width="63dp"
                             android:layout_height="78dp"
-                            android:layout_toRightOf="@id/rv_route_chip"
-                            android:layout_marginTop="7dp"
                             android:layout_marginStart="6dp"
+                            android:layout_marginTop="7dp"
+                            android:layout_toRightOf="@id/rv_route_chip"
                             android:onClick="@{() -> vm.createRoute()}"
-                            android:src="@drawable/ic_plus_routechip"/>
+                            android:src="@drawable/ic_plus_routechip" />
 
                     </RelativeLayout>
 

@@ -1,20 +1,32 @@
 package com.climus.climeet.presentation.ui.intro.signup.climer
 
 import com.climus.climeet.data.model.response.SearchAvailableGymItem
-import com.climus.climeet.data.model.response.SearchGymItem
-import com.climus.climeet.data.model.response.UserHomeGymDetailResponse
 import com.climus.climeet.data.model.response.UserHomeGymSimpleResponse
+import com.climus.climeet.presentation.ui.intro.signup.climer.model.AuthFollowCrag
 import com.climus.climeet.presentation.ui.intro.signup.climer.model.FollowCrag
-import com.climus.climeet.presentation.util.Constants
 
-fun SearchAvailableGymItem.toFollowCrag(
+fun SearchAvailableGymItem.toAuthFollowCrag(
     keyword: String,
-) = FollowCrag(
+    onFollowCrag: (Long) -> Unit,
+    onUnFollowCrag: (Long) -> Unit
+) = AuthFollowCrag(
     id = id,
     imgUrl = profileImageUrl,
     followers = follower,
     name = name,
     keyword = keyword,
+    onFollowCancelListener = onUnFollowCrag,
+    onFollowListener = onFollowCrag
+)
+
+fun SearchAvailableGymItem.toFollowCrag(
+    keyword: String,
+)= FollowCrag(
+    id = id,
+    imgUrl = profileImageUrl,
+    name = name,
+    keyword = keyword,
+    followers = follower
 )
 
 fun UserHomeGymSimpleResponse.toFollowCrag(
@@ -24,6 +36,6 @@ fun UserHomeGymSimpleResponse.toFollowCrag(
     imgUrl = gymProfileUrl,
     name = gymName,
     keyword = keyword,
-    followers = 0,
+    followers = followerCount,
     isFollowing = true
 )
